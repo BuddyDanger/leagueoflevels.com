@@ -43,6 +43,7 @@
 				<ul class="nav">
 					<li class="nav-item"><a class="nav-link" href="/"><i class="dripicons-meter"></i>Dashboard</a></li>
 					<li class="nav-item"><a class="nav-link" href="/scores/"><i class="dripicons-rocket"></i>Live Scoring</a></li>
+					<li class="nav-item <% If Session.Contents("LoggedIn") = "yes" Then %>d-block<% Else %>d-none<% End If %>"><a class="nav-link" href="/eliminator/"><i class="dripicons-crosshair"></i>Eliminator</a></li>
 					<li class="nav-item"><a class="nav-link" href="#"><i class="dripicons-list"></i>Standings</a></li>
 					<li class="nav-item"><a class="nav-link" href="#"><i class="dripicons-calendar"></i>Schedule</a></li>
 					<li class="nav-item"><a class="nav-link" href="/podcasts/"><i class="dripicons-headset"></i>Podcasts</a></li>

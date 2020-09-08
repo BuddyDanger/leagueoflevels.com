@@ -1,6 +1,6 @@
 <%
-	thisYear = 2019
-	thisPeriod = 12
+	thisYear = 2020
+	thisPeriod = 1
 
 	Function GetToken (League)
 
