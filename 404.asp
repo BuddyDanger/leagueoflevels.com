@@ -245,6 +245,53 @@
 
 	End If
 
+	'*****************************************************
+	'*** BET  ********************************************
+	'*****************************************************
+	If Session.Contents("SITE_Level_1") = "sportsbook" Then
+
+		Session.Contents("SITE_Bet_MatchupID") = ""
+
+		arLevels = Split(LevelString, "||")
+		RebuildURL = 0
+		LevelCount = 1
+		DeadPage = 0
+
+		For Each Level In arLevels
+
+			MatchFound = 0
+			StrippedLevel = Level
+			If InStr(StrippedLevel, "-") Then StrippedLevel = Replace(StrippedLevel, "-", " ")
+
+			If MatchFound = 0 And IsNumeric(Level) Then
+				sqlGetMatchup = "SELECT MatchupID FROM Matchups WHERE MatchupID = " & Level
+				Set rsMatchup = sqlDatabase.Execute(sqlGetMatchup)
+				If Not rsMatchup.Eof Then
+
+					Session.Contents("SITE_Bet_MatchupID") = rsMatchup("MatchupID")
+
+					sTransferURL = "matchup.asp"
+					MatchFound = 1
+					IsSingleMatchup = 1
+					DeadPage = 0
+
+					rsMatchup.Close
+					Set rsMatchup = Nothing
+
+				Else
+					IsSingleMatchup = 0
+				End If
+
+			End If
+
+			LevelCount = LevelCount + 1
+
+		Next
+
+		If IsSingleMatchup = 0 Then sTransferURL = "index.asp"
+
+	End If
+
 	If DeadPage = 0 Then
 
 		sFinalTransfer = "/" & Session.Contents("SITE_Level_1") & "/" & sTransferURL

@@ -1,6 +1,5 @@
 StartTime = Now()
 WScript.Echo("STARTING..." & vbcrlf)
-On Error Resume Next
 
 Function GetToken (League)
 
@@ -151,7 +150,7 @@ Function CalculateWinPercentage (TeamPMR1, TeamPMR2, TeamProjected1, TeamProject
 		homeWindowDifference = 0
 	End If
 
-	If homeProjectedWindowUpper > awayProjectedWindowUpper Then homeWindowDifference = homeWindowDifference + homeProjectedWindowUpper - awayProjectedWindowUpper
+	If homeProjectedWindowUpper > awayProjectedWindowUpper Then homeWindowDifference = homeWindowDifference + (homeProjectedWindowUpper - awayProjectedWindowUpper)
 
 	If (homeLiveProjectedFPTS = 0 And awayLiveProjectedFPTS > 0) Then
 		homeWinProbability = 0
@@ -191,7 +190,7 @@ Function CalculateWinPercentage (TeamPMR1, TeamPMR2, TeamProjected1, TeamProject
 								homeWinProbability = 99
 								awayWinProbability = 1
 							Else
-								homeWinProbability = FormatNumber((tieWin + homeTeamWin) / overallSpreadLarge * 100, 0)
+								homeWinProbability = FormatNumber((tieWin + homeWindowDifference) / overallSpreadLarge * 100, 0)
 								awayWinProbability = 100 - homeWinProbability
 							End If
 						End If
@@ -226,7 +225,156 @@ arrFLFFL = rsMatchups.GetRows()
 rsMatchups.Close
 Set rsMatchups = Nothing
 
+Set oXMLOmega = CreateObject("MSXML2.DOMDocument.3.0")
+oXMLOmega.loadXML(GetScores("OMEGA"))
+oXMLOmega.setProperty "SelectionLanguage", "XPath"
+
+Set oXMLSLFFL = CreateObject("MSXML2.DOMDocument.3.0")
+oXMLSLFFL.loadXML(GetScores("SLFFL"))
+oXMLSLFFL.setProperty "SelectionLanguage", "XPath"
+
+Set oXMLFLFFL = CreateObject("MSXML2.DOMDocument.3.0")
+oXMLFLFFL.loadXML(GetScores("FLFFL"))
+oXMLFLFFL.setProperty "SelectionLanguage", "XPath"
+
 WScript.Echo(vbcrlf & "Matchups Loaded...")
+
+For i = 0 To UBound(arrCup, 2)
+
+	MatchupID = arrCup(0, i)
+	TeamID1 = arrCup(2, i)
+	TeamID2 = arrCup(3, i)
+
+	TeamProjectedScore1 = 0
+	TeamProjectedScore2 = 0
+	TeamSpread1Display = ""
+	TeamSpread2Display = ""
+	TeamScore1 = 0
+	TeamScore2 = 0
+	TeamWinPercentage1 = 0
+	TeamWinPercentage2 = 0
+
+	sqlGetTeams = "SELECT TeamName, LevelID, CBSLogo, CBSID FROM Teams WHERE TeamID = " & TeamID1 & " AND LevelID <> 1;SELECT TeamName, LevelID, CBSLogo, CBSID FROM Teams WHERE TeamID = " & TeamID2 & " AND LevelID <> 1;"
+	Set rsTeams = sqlDatabase.Execute(sqlGetTeams)
+
+	TeamCBSID1 = rsTeams("CBSID")
+	TeamName1 = rsTeams("TeamName")
+	TeamLevelID1 = rsTeams("LevelID")
+	Set rsTeams = rsTeams.NextRecordset()
+	TeamCBSID2 = rsTeams("CBSID")
+	TeamName2 = rsTeams("TeamName")
+	TeamLevelID2 = rsTeams("LevelID")
+
+	rsTeams.Close
+	Set rsTeams = Nothing
+
+	If CInt(TeamLevelID1) = 2 Then
+		Set objTeam1 = oXMLSLFFL.selectSingleNode(".//team[@id = " & TeamCBSID1 & "]")
+		TeamLevelName1 = "SLFFL"
+	End If
+
+	If CInt(TeamLevelID1) = 3 Then
+		Set objTeam1 = oXMLFLFFL.selectSingleNode(".//team[@id = " & TeamCBSID1 & "]")
+		TeamLevelName1 = "FLFFL"
+	End If
+
+	If CInt(TeamLevelID2) = 2 Then
+		Set objTeam2 = oXMLSLFFL.selectSingleNode(".//team[@id = " & TeamCBSID2 & "]")
+		TeamLevelName2 = "SLFFL"
+	End If
+
+	If CInt(TeamLevelID2) = 3 Then
+		Set objTeam2 = oXMLFLFFL.selectSingleNode(".//team[@id = " & TeamCBSID2 & "]")
+		TeamLevelName2 = "FLFFL"
+	End If
+
+	Set objTeamScore1 = objTeam1.getElementsByTagName("pts")
+	Set objTeamPMR1 = objTeam1.getElementsByTagName("pmr")
+
+	Set objTeamScore2 = objTeam2.getElementsByTagName("pts")
+	Set objTeamPMR2 = objTeam2.getElementsByTagName("pmr")
+
+	TeamScore1 = CDbl(objTeamScore1.item(0).text)
+	TeamPMR1 = CInt(objTeamPMR1.item(0).text)
+
+	TeamScore2 = CDbl(objTeamScore2.item(0).text)
+	TeamPMR2 = CInt(objTeamPMR2.item(0).text)
+
+	Set projectionsXML1 = CreateObject("MSXML2.DOMDocument.3.0")
+	projectionsXML1.loadXML(GetProjections(TeamLevelName1, TeamCBSID1))
+	projectionsXML1.setProperty "SelectionLanguage", "XPath"
+	Set projectionsTeam1 = projectionsXML1.selectSingleNode(".//team[@id = " & TeamCBSID1 & "]/points")
+
+	Set projectionsXML2 = CreateObject("MSXML2.DOMDocument.3.0")
+	projectionsXML2.loadXML(GetProjections(TeamLevelName2, TeamCBSID2))
+	projectionsXML2.setProperty "SelectionLanguage", "XPath"
+	Set projectionsTeam2 = projectionsXML2.selectSingleNode(".//team[@id = " & TeamCBSID2 & "]/points")
+
+	TeamProjectedScore1 = projectionsTeam1.text
+	TeamProjectedScore2 = projectionsTeam2.text
+
+	TeamSpread1 = TeamProjectedScore2 - TeamProjectedScore1
+	TeamSpread2 = TeamProjectedScore1 - TeamProjectedScore2
+
+	MatchupWinPercentage = CalculateWinPercentage(TeamPMR1, TeamPMR2, TeamProjectedScore1, TeamProjectedScore2, TeamScore1, TeamScore2)
+	arrWinPercentages = Split(MatchupWinPercentage, "/")
+
+	TeamWinPercentage1Display = arrWinPercentages(0)
+	TeamWinPercentage2Display = arrWinPercentages(1)
+
+	TeamWinPercentageInt1 = CInt(Replace(TeamWinPercentage1Display, "%", ""))
+	TeamWinPercentageInt2 = CInt(Replace(TeamWinPercentage2Display, "%", ""))
+
+	TeamWinPercentage1 = TeamWinPercentageInt1 * 0.01
+	TeamWinPercentage2 = TeamWinPercentageInt2 * 0.01
+
+	largerPercentage = TeamWinPercentage1
+	smallerPercentage = TeamWinPercentage2
+	If TeamWinPercentageInt1 < TeamWinPercentageInt2 Then
+		largerPercentage = TeamWinPercentage2
+		smallerPercentage = TeamWinPercentage1
+	End If
+
+	TeamWinPercentage1 = largerPercentage
+	TeamWinPercentage2 = smallerPercentage
+	If CInt(TeamProjectedScore1) < CInt(TeamProjectedScore2) Then
+		TeamWinPercentage2 = largerPercentage
+		TeamWinPercentage1 = smallerPercentage
+	End If
+
+	WScript.Echo(MatchupWinPercentage)
+
+	sqlGetMoneylines = "SELECT TOP 1 Moneyline FROM Moneylines WHERE Percentage >= " & TeamWinPercentage1 & " ORDER BY Percentage ASC; SELECT TOP 1 Moneyline FROM Moneylines WHERE Percentage >= " & TeamWinPercentage2 & " ORDER BY Percentage ASC;"
+	Set rsMoneylines = sqlDatabase.Execute(sqlGetMoneylines)
+
+	TeamMoneyline1 = rsMoneylines("Moneyline")
+	Set rsMoneylines = rsMoneylines.NextRecordset()
+	TeamMoneyline2 = rsMoneylines("Moneyline")
+
+	rsMoneylines.Close
+	Set rsMoneylines = Nothing
+
+	TeamMoneyline1Display = TeamMoneyline1
+	If CInt(TeamMoneyline1) > 0 Then TeamMoneyline1Display = "+" & TeamMoneyline1Display
+
+	TeamMoneyline2Display = TeamMoneyline2
+	If CInt(TeamMoneyline2) > 0 Then TeamMoneyline2Display = "+" & TeamMoneyline2Display
+
+	TeamSpread1Display = TeamSpread1
+	If TeamSpread1 > 0 Then TeamSpread1Display = "+" & TeamSpread1Display
+
+	TeamSpread2Display = TeamSpread2
+	If TeamSpread2 > 0 Then TeamSpread2Display = "+" & TeamSpread2Display
+
+	'CalculateWinPercentage(TeamPMR1, TeamPMR2, TeamProjectedScore1, TeamProjectedScore2, TeamScore1, TeamScore2)'
+	WScript.Echo(vbcrlf & vbcrlf & "MATCHUP #" & MatchupID & " (CUP) ----------")
+	WScript.Echo(vbcrlf & TeamName1 & " (" & TeamProjectedScore1 & " Proj, " & TeamSpread1Display & " Spread, " & TeamWinPercentage1 * 100 & "% Win, " & TeamMoneyline1Display & " ML)")
+	WScript.Echo(vbcrlf & TeamName2 & " (" & TeamProjectedScore2 & " Proj, " & TeamSpread2Display & " Spread, " & TeamWinPercentage2 * 100 & "% Win, " & TeamMoneyline2Display & " ML)")
+
+	sqlUpdate = "UPDATE Matchups SET TeamScore1 = " & TeamScore1 & ", TeamScore2 = " & TeamScore2 & ", TeamPMR1 = " & TeamPMR1 & ", TeamPMR2 = " & TeamPMR2 & ", TeamProjected1 = " &  TeamProjectedScore1 & ", TeamProjected2 = " &  TeamProjectedScore2 & ", TeamWinPercentage1 = " &  TeamWinPercentage1 & ", TeamWinPercentage2 = " &  TeamWinPercentage2 & ", TeamMoneyline1 = " &  TeamMoneyline1 & ", TeamMoneyline2 = " &  TeamMoneyline2 & ", TeamSpread1 = " &  TeamSpread1 & ", TeamSpread2 = " &  TeamSpread2 & "  WHERE MatchupID = " & MatchupID
+	Set rsUpdate = sqlDatabase.Execute(sqlUpdate)
+
+Next
 
 For i = 0 To UBound(arrOmega, 2)
 
@@ -243,7 +391,7 @@ For i = 0 To UBound(arrOmega, 2)
 	TeamWinPercentage1 = 0
 	TeamWinPercentage2 = 0
 
-	sqlGetTeams = "SELECT TeamName, CBSLogo, CBSID FROM Teams WHERE TeamID = " & TeamID1 & ";SELECT TeamName, CBSLogo, CBSID FROM Teams WHERE TeamID = " & TeamID2 & ";"
+	sqlGetTeams = "SELECT TeamName, CBSLogo, CBSID FROM Teams WHERE TeamID = " & TeamID1 & " AND LevelID = 1;SELECT TeamName, CBSLogo, CBSID FROM Teams WHERE TeamID = " & TeamID2 & " AND LevelID = 1;"
 	Set rsTeams = sqlDatabase.Execute(sqlGetTeams)
 
 	TeamCBSID1 = rsTeams("CBSID")
@@ -255,11 +403,8 @@ For i = 0 To UBound(arrOmega, 2)
 	rsTeams.Close
 	Set rsTeams = Nothing
 
-	Set oXML = CreateObject("MSXML2.DOMDocument.3.0")
-	oXML.loadXML(GetScores("OMEGA"))
-	oXML.setProperty "SelectionLanguage", "XPath"
-	Set objTeam1 = oXML.selectSingleNode(".//team[@id = " & TeamCBSID1 & "]")
-	Set objTeam2 = oXML.selectSingleNode(".//team[@id = " & TeamCBSID2 & "]")
+	Set objTeam1 = oXMLOmega.selectSingleNode(".//team[@id = " & TeamCBSID1 & "]")
+	Set objTeam2 = oXMLOmega.selectSingleNode(".//team[@id = " & TeamCBSID2 & "]")
 
 	Set objTeamScore1 = objTeam1.getElementsByTagName("pts")
 	Set objTeamPMR1 = objTeam1.getElementsByTagName("pmr")
@@ -286,14 +431,50 @@ For i = 0 To UBound(arrOmega, 2)
 	TeamProjectedScore1 = projectionsTeam1.text
 	TeamProjectedScore2 = projectionsTeam2.text
 
-	TeamSpread1 = TeamProjectedScore1 - TeamProjectedScore2
-	TeamSpread2 = TeamProjectedScore2 - TeamProjectedScore1
+	TeamSpread1 = TeamProjectedScore2 - TeamProjectedScore1
+	TeamSpread2 = TeamProjectedScore1 - TeamProjectedScore2
 
 	MatchupWinPercentage = CalculateWinPercentage(TeamPMR1, TeamPMR2, TeamProjectedScore1, TeamProjectedScore2, TeamScore1, TeamScore2)
 	arrWinPercentages = Split(MatchupWinPercentage, "/")
 
-	TeamWinPercentage1 = arrWinPercentages(0)
-	TeamWinPercentage2 = arrWinPercentages(1)
+	TeamWinPercentage1Display = arrWinPercentages(0)
+	TeamWinPercentage2Display = arrWinPercentages(1)
+
+	TeamWinPercentageInt1 = CInt(Replace(TeamWinPercentage1Display, "%", ""))
+	TeamWinPercentageInt2 = CInt(Replace(TeamWinPercentage2Display, "%", ""))
+
+	TeamWinPercentage1 = TeamWinPercentageInt1 * 0.01
+	TeamWinPercentage2 = TeamWinPercentageInt2 * 0.01
+
+	largerPercentage = TeamWinPercentage1
+	smallerPercentage = TeamWinPercentage2
+	If TeamWinPercentageInt1 < TeamWinPercentageInt2 Then
+		largerPercentage = TeamWinPercentage2
+		smallerPercentage = TeamWinPercentage1
+	End If
+
+	TeamWinPercentage1 = largerPercentage
+	TeamWinPercentage2 = smallerPercentage
+	If CInt(TeamProjectedScore1) < CInt(TeamProjectedScore2) Then
+		TeamWinPercentage2 = largerPercentage
+		TeamWinPercentage1 = smallerPercentage
+	End If
+
+	sqlGetMoneylines = "SELECT TOP 1 Moneyline FROM Moneylines WHERE Percentage >= " & TeamWinPercentage1 & " ORDER BY Percentage ASC; SELECT TOP 1 Moneyline FROM Moneylines WHERE Percentage >= " & TeamWinPercentage2 & " ORDER BY Percentage ASC;"
+	Set rsMoneylines = sqlDatabase.Execute(sqlGetMoneylines)
+
+	TeamMoneyline1 = rsMoneylines("Moneyline")
+	Set rsMoneylines = rsMoneylines.NextRecordset()
+	TeamMoneyline2 = rsMoneylines("Moneyline")
+
+	rsMoneylines.Close
+	Set rsMoneylines = Nothing
+
+	TeamMoneyline1Display = TeamMoneyline1
+	If CInt(TeamMoneyline1) > 0 Then TeamMoneyline1Display = "+" & TeamMoneyline1Display
+
+	TeamMoneyline2Display = TeamMoneyline2
+	If CInt(TeamMoneyline2) > 0 Then TeamMoneyline2Display = "+" & TeamMoneyline2Display
 
 	TeamSpread1Display = TeamSpread1
 	If TeamSpread1 > 0 Then TeamSpread1Display = "+" & TeamSpread1Display
@@ -301,9 +482,12 @@ For i = 0 To UBound(arrOmega, 2)
 	TeamSpread2Display = TeamSpread2
 	If TeamSpread2 > 0 Then TeamSpread2Display = "+" & TeamSpread2Display
 
-	WScript.Echo(vbcrlf & MatchupID & " - " & TeamName1 & " (Proj. " & TeamProjectedScore1 & ", " & TeamSpread1Display & ", " & TeamWinPercentage1 & "%) vs " & TeamName2 & " (Proj. " & TeamProjectedScore2 & ", " & TeamSpread2Display & ", " & TeamWinPercentage2 & "%)")
+	'CalculateWinPercentage(TeamPMR1, TeamPMR2, TeamProjectedScore1, TeamProjectedScore2, TeamScore1, TeamScore2)'
+	WScript.Echo(vbcrlf & vbcrlf & "MATCHUP #" & MatchupID & " (OMEGA) ----------")
+	WScript.Echo(vbcrlf & TeamName1 & " (" & TeamProjectedScore1 & " Proj, " & TeamSpread1Display & " Spread, " & TeamWinPercentage1 * 100 & "% Win, " & TeamMoneyline1Display & " ML)")
+	WScript.Echo(vbcrlf & TeamName2 & " (" & TeamProjectedScore2 & " Proj, " & TeamSpread2Display & " Spread, " & TeamWinPercentage2 * 100 & "% Win, " & TeamMoneyline2Display & " ML)")
 
-	sqlUpdate = "UPDATE Matchups SET TeamScore1 = " & TeamScore1 & ", TeamScore2 = " & TeamScore2 & ", TeamPMR1 = " & TeamPMR1 & ", TeamPMR2 = " & TeamPMR2 & ", TeamProjected1 = " &  TeamProjectedScore1 & ", TeamProjected2 = " &  TeamProjectedScore2 & ", TeamWinPercentage1 = " &  TeamWinPercentage1 & ", TeamWinPercentage2 = " &  TeamWinPercentage2 & ", TeamSpread1 = " &  TeamSpread1 & ", TeamSpread2 = " &  TeamSpread2 & "  WHERE MatchupID = " & MatchupID
+	sqlUpdate = "UPDATE Matchups SET TeamScore1 = " & TeamScore1 & ", TeamScore2 = " & TeamScore2 & ", TeamPMR1 = " & TeamPMR1 & ", TeamPMR2 = " & TeamPMR2 & ", TeamProjected1 = " &  TeamProjectedScore1 & ", TeamProjected2 = " &  TeamProjectedScore2 & ", TeamWinPercentage1 = " &  TeamWinPercentage1 & ", TeamWinPercentage2 = " &  TeamWinPercentage2 & ", TeamMoneyline1 = " &  TeamMoneyline1 & ", TeamMoneyline2 = " &  TeamMoneyline2 & ", TeamSpread1 = " &  TeamSpread1 & ", TeamSpread2 = " &  TeamSpread2 & "  WHERE MatchupID = " & MatchupID
 	Set rsUpdate = sqlDatabase.Execute(sqlUpdate)
 
 Next
@@ -324,7 +508,7 @@ For i = 0 To UBound(arrSLFFL, 2)
 	TeamWinPercentage1 = 0
 	TeamWinPercentage2 = 0
 
-	sqlGetTeams = "SELECT TeamName, CBSLogo, CBSID FROM Teams WHERE TeamID = " & TeamID1 & ";SELECT TeamName, CBSLogo, CBSID FROM Teams WHERE TeamID = " & TeamID2 & ";"
+	sqlGetTeams = "SELECT TeamName, CBSLogo, CBSID FROM Teams WHERE TeamID = " & TeamID1 & " AND LevelID = 2;SELECT TeamName, CBSLogo, CBSID FROM Teams WHERE TeamID = " & TeamID2 & " AND LevelID = 2;"
 	Set rsTeams = sqlDatabase.Execute(sqlGetTeams)
 
 	TeamCBSID1 = rsTeams("CBSID")
@@ -336,12 +520,8 @@ For i = 0 To UBound(arrSLFFL, 2)
 	rsTeams.Close
 	Set rsTeams = Nothing
 
-	Set oXML = CreateObject("MSXML2.DOMDocument.3.0")
-	oXML.loadXML(GetScores("SLFFL"))
-
-	oXML.setProperty "SelectionLanguage", "XPath"
-	Set objTeam1 = oXML.selectSingleNode(".//team[@id = " & TeamCBSID1 & "]")
-	Set objTeam2 = oXML.selectSingleNode(".//team[@id = " & TeamCBSID2 & "]")
+	Set objTeam1 = oXMLSLFFL.selectSingleNode(".//team[@id = " & TeamCBSID1 & "]")
+	Set objTeam2 = oXMLSLFFL.selectSingleNode(".//team[@id = " & TeamCBSID2 & "]")
 
 	Set objTeamScore1 = objTeam1.getElementsByTagName("pts")
 	Set objTeamPMR1 = objTeam1.getElementsByTagName("pmr")
@@ -368,14 +548,50 @@ For i = 0 To UBound(arrSLFFL, 2)
 	TeamProjectedScore1 = projectionsTeam1.text
 	TeamProjectedScore2 = projectionsTeam2.text
 
-	TeamSpread1 = TeamProjectedScore1 - TeamProjectedScore2
-	TeamSpread2 = TeamProjectedScore2 - TeamProjectedScore1
+	TeamSpread1 = TeamProjectedScore2 - TeamProjectedScore1
+	TeamSpread2 = TeamProjectedScore1 - TeamProjectedScore2
 
 	MatchupWinPercentage = CalculateWinPercentage(TeamPMR1, TeamPMR2, TeamProjectedScore1, TeamProjectedScore2, TeamScore1, TeamScore2)
 	arrWinPercentages = Split(MatchupWinPercentage, "/")
 
-	TeamWinPercentage1 = arrWinPercentages(0)
-	TeamWinPercentage2 = arrWinPercentages(1)
+	TeamWinPercentage1Display = arrWinPercentages(0)
+	TeamWinPercentage2Display = arrWinPercentages(1)
+
+	TeamWinPercentageInt1 = CInt(Replace(TeamWinPercentage1Display, "%", ""))
+	TeamWinPercentageInt2 = CInt(Replace(TeamWinPercentage2Display, "%", ""))
+
+	TeamWinPercentage1 = TeamWinPercentageInt1 * 0.01
+	TeamWinPercentage2 = TeamWinPercentageInt2 * 0.01
+
+	largerPercentage = TeamWinPercentage1
+	smallerPercentage = TeamWinPercentage2
+	If TeamWinPercentageInt1 < TeamWinPercentageInt2 Then
+		largerPercentage = TeamWinPercentage2
+		smallerPercentage = TeamWinPercentage1
+	End If
+
+	TeamWinPercentage1 = largerPercentage
+	TeamWinPercentage2 = smallerPercentage
+	If CInt(TeamProjectedScore1) < CInt(TeamProjectedScore2) Then
+		TeamWinPercentage2 = largerPercentage
+		TeamWinPercentage1 = smallerPercentage
+	End If
+
+	sqlGetMoneylines = "SELECT TOP 1 Moneyline FROM Moneylines WHERE Percentage >= " & TeamWinPercentage1 & " ORDER BY Percentage ASC; SELECT TOP 1 Moneyline FROM Moneylines WHERE Percentage >= " & TeamWinPercentage2 & " ORDER BY Percentage ASC;"
+	Set rsMoneylines = sqlDatabase.Execute(sqlGetMoneylines)
+
+	TeamMoneyline1 = rsMoneylines("Moneyline")
+	Set rsMoneylines = rsMoneylines.NextRecordset()
+	TeamMoneyline2 = rsMoneylines("Moneyline")
+
+	rsMoneylines.Close
+	Set rsMoneylines = Nothing
+
+	TeamMoneyline1Display = TeamMoneyline1
+	If CInt(TeamMoneyline1) > 0 Then TeamMoneyline1Display = "+" & TeamMoneyline1Display
+
+	TeamMoneyline2Display = TeamMoneyline2
+	If CInt(TeamMoneyline2) > 0 Then TeamMoneyline2Display = "+" & TeamMoneyline2Display
 
 	TeamSpread1Display = TeamSpread1
 	If TeamSpread1 > 0 Then TeamSpread1Display = "+" & TeamSpread1Display
@@ -383,9 +599,12 @@ For i = 0 To UBound(arrSLFFL, 2)
 	TeamSpread2Display = TeamSpread2
 	If TeamSpread2 > 0 Then TeamSpread2Display = "+" & TeamSpread2Display
 
-	WScript.Echo(vbcrlf & MatchupID & " - " & TeamName1 & " (Proj. " & TeamProjectedScore1 & ", " & TeamSpread1Display & ", " & TeamWinPercentage1 & "%) vs " & TeamName2 & " (Proj. " & TeamProjectedScore2 & ", " & TeamSpread2Display & ", " & TeamWinPercentage2 & "%)")
+	'CalculateWinPercentage(TeamPMR1, TeamPMR2, TeamProjectedScore1, TeamProjectedScore2, TeamScore1, TeamScore2)'
+	WScript.Echo(vbcrlf & vbcrlf & "MATCHUP #" & MatchupID & " (SLFFL) ----------")
+	WScript.Echo(vbcrlf & TeamName1 & " (" & TeamProjectedScore1 & " Proj, " & TeamSpread1Display & " Spread, " & TeamWinPercentage1 * 100 & "% Win, " & TeamMoneyline1Display & " ML)")
+	WScript.Echo(vbcrlf & TeamName2 & " (" & TeamProjectedScore2 & " Proj, " & TeamSpread2Display & " Spread, " & TeamWinPercentage2 * 100 & "% Win, " & TeamMoneyline2Display & " ML)")
 
-	sqlUpdate = "UPDATE Matchups SET TeamScore1 = " & TeamScore1 & ", TeamScore2 = " & TeamScore2 & ", TeamPMR1 = " & TeamPMR1 & ", TeamPMR2 = " & TeamPMR2 & ", TeamProjected1 = " &  TeamProjectedScore1 & ", TeamProjected2 = " &  TeamProjectedScore2 & ", TeamWinPercentage1 = " &  TeamWinPercentage1 & ", TeamWinPercentage2 = " &  TeamWinPercentage2 & ", TeamSpread1 = " &  TeamSpread1 & ", TeamSpread2 = " &  TeamSpread2 & "  WHERE MatchupID = " & MatchupID
+	sqlUpdate = "UPDATE Matchups SET TeamScore1 = " & TeamScore1 & ", TeamScore2 = " & TeamScore2 & ", TeamPMR1 = " & TeamPMR1 & ", TeamPMR2 = " & TeamPMR2 & ", TeamProjected1 = " &  TeamProjectedScore1 & ", TeamProjected2 = " &  TeamProjectedScore2 & ", TeamWinPercentage1 = " &  TeamWinPercentage1 & ", TeamWinPercentage2 = " &  TeamWinPercentage2 & ", TeamMoneyline1 = " &  TeamMoneyline1 & ", TeamMoneyline2 = " &  TeamMoneyline2 & ", TeamSpread1 = " &  TeamSpread1 & ", TeamSpread2 = " &  TeamSpread2 & "  WHERE MatchupID = " & MatchupID
 	Set rsUpdate = sqlDatabase.Execute(sqlUpdate)
 
 Next
@@ -405,7 +624,7 @@ For i = 0 To UBound(arrFLFFL, 2)
 	TeamWinPercentage1 = 0
 	TeamWinPercentage2 = 0
 
-	sqlGetTeams = "SELECT TeamName, CBSLogo, CBSID FROM Teams WHERE TeamID = " & TeamID1 & ";SELECT TeamName, CBSLogo, CBSID FROM Teams WHERE TeamID = " & TeamID2 & ";"
+	sqlGetTeams = "SELECT TeamName, CBSLogo, CBSID FROM Teams WHERE TeamID = " & TeamID1 & " AND LevelID = 3; SELECT TeamName, CBSLogo, CBSID FROM Teams WHERE TeamID = " & TeamID2 & " AND LevelID = 3;"
 	Set rsTeams = sqlDatabase.Execute(sqlGetTeams)
 
 	TeamCBSID1 = rsTeams("CBSID")
@@ -417,12 +636,8 @@ For i = 0 To UBound(arrFLFFL, 2)
 	rsTeams.Close
 	Set rsTeams = Nothing
 
-	Set oXML = CreateObject("MSXML2.DOMDocument.3.0")
-	oXML.loadXML(GetScores("FLFFL"))
-
-	oXML.setProperty "SelectionLanguage", "XPath"
-	Set objTeam1 = oXML.selectSingleNode(".//team[@id = " & TeamCBSID1 & "]")
-	Set objTeam2 = oXML.selectSingleNode(".//team[@id = " & TeamCBSID2 & "]")
+	Set objTeam1 = oXMLFLFFL.selectSingleNode(".//team[@id = " & TeamCBSID1 & "]")
+	Set objTeam2 = oXMLFLFFL.selectSingleNode(".//team[@id = " & TeamCBSID2 & "]")
 
 	Set objTeamScore1 = objTeam1.getElementsByTagName("pts")
 	Set objTeamPMR1 = objTeam1.getElementsByTagName("pmr")
@@ -449,14 +664,50 @@ For i = 0 To UBound(arrFLFFL, 2)
 	TeamProjectedScore1 = projectionsTeam1.text
 	TeamProjectedScore2 = projectionsTeam2.text
 
-	TeamSpread1 = TeamProjectedScore1 - TeamProjectedScore2
-	TeamSpread2 = TeamProjectedScore2 - TeamProjectedScore1
+	TeamSpread1 = TeamProjectedScore2 - TeamProjectedScore1
+	TeamSpread2 = TeamProjectedScore1 - TeamProjectedScore2
 
 	MatchupWinPercentage = CalculateWinPercentage(TeamPMR1, TeamPMR2, TeamProjectedScore1, TeamProjectedScore2, TeamScore1, TeamScore2)
 	arrWinPercentages = Split(MatchupWinPercentage, "/")
 
-	TeamWinPercentage1 = arrWinPercentages(0)
-	TeamWinPercentage2 = arrWinPercentages(1)
+	TeamWinPercentage1Display = arrWinPercentages(0)
+	TeamWinPercentage2Display = arrWinPercentages(1)
+
+	TeamWinPercentageInt1 = CInt(Replace(TeamWinPercentage1Display, "%", ""))
+	TeamWinPercentageInt2 = CInt(Replace(TeamWinPercentage2Display, "%", ""))
+
+	TeamWinPercentage1 = TeamWinPercentageInt1 * 0.01
+	TeamWinPercentage2 = TeamWinPercentageInt2 * 0.01
+
+	largerPercentage = TeamWinPercentage1
+	smallerPercentage = TeamWinPercentage2
+	If TeamWinPercentageInt1 < TeamWinPercentageInt2 Then
+		largerPercentage = TeamWinPercentage2
+		smallerPercentage = TeamWinPercentage1
+	End If
+
+	TeamWinPercentage1 = largerPercentage
+	TeamWinPercentage2 = smallerPercentage
+	If CInt(TeamProjectedScore1) < CInt(TeamProjectedScore2) Then
+		TeamWinPercentage2 = largerPercentage
+		TeamWinPercentage1 = smallerPercentage
+	End If
+
+	sqlGetMoneylines = "SELECT TOP 1 Moneyline FROM Moneylines WHERE Percentage >= " & TeamWinPercentage1 & " ORDER BY Percentage ASC; SELECT TOP 1 Moneyline FROM Moneylines WHERE Percentage >= " & TeamWinPercentage2 & " ORDER BY Percentage ASC;"
+	Set rsMoneylines = sqlDatabase.Execute(sqlGetMoneylines)
+
+	TeamMoneyline1 = rsMoneylines("Moneyline")
+	Set rsMoneylines = rsMoneylines.NextRecordset()
+	TeamMoneyline2 = rsMoneylines("Moneyline")
+
+	rsMoneylines.Close
+	Set rsMoneylines = Nothing
+
+	TeamMoneyline1Display = TeamMoneyline1
+	If CInt(TeamMoneyline1) > 0 Then TeamMoneyline1Display = "+" & TeamMoneyline1Display
+
+	TeamMoneyline2Display = TeamMoneyline2
+	If CInt(TeamMoneyline2) > 0 Then TeamMoneyline2Display = "+" & TeamMoneyline2Display
 
 	TeamSpread1Display = TeamSpread1
 	If TeamSpread1 > 0 Then TeamSpread1Display = "+" & TeamSpread1Display
@@ -464,102 +715,12 @@ For i = 0 To UBound(arrFLFFL, 2)
 	TeamSpread2Display = TeamSpread2
 	If TeamSpread2 > 0 Then TeamSpread2Display = "+" & TeamSpread2Display
 
-	WScript.Echo(vbcrlf & MatchupID & " - " & TeamName1 & " (Proj. " & TeamProjectedScore1 & ", " & TeamSpread1Display & ", " & TeamWinPercentage1 & "%) vs " & TeamName2 & " (Proj. " & TeamProjectedScore2 & ", " & TeamSpread2Display & ", " & TeamWinPercentage2 & "%)")
+	'CalculateWinPercentage(TeamPMR1, TeamPMR2, TeamProjectedScore1, TeamProjectedScore2, TeamScore1, TeamScore2)'
+	WScript.Echo(vbcrlf & vbcrlf & "MATCHUP #" & MatchupID & " (FLFFL) ----------")
+	WScript.Echo(vbcrlf & TeamName1 & " (" & TeamProjectedScore1 & " Proj, " & TeamSpread1Display & " Spread, " & TeamWinPercentage1 * 100 & "% Win, " & TeamMoneyline1Display & " ML)")
+	WScript.Echo(vbcrlf & TeamName2 & " (" & TeamProjectedScore2 & " Proj, " & TeamSpread2Display & " Spread, " & TeamWinPercentage2 * 100 & "% Win, " & TeamMoneyline2Display & " ML)")
 
-	sqlUpdate = "UPDATE Matchups SET TeamScore1 = " & TeamScore1 & ", TeamScore2 = " & TeamScore2 & ", TeamPMR1 = " & TeamPMR1 & ", TeamPMR2 = " & TeamPMR2 & ", TeamProjected1 = " &  TeamProjectedScore1 & ", TeamProjected2 = " &  TeamProjectedScore2 & ", TeamWinPercentage1 = " &  TeamWinPercentage1 & ", TeamWinPercentage2 = " &  TeamWinPercentage2 & ", TeamSpread1 = " &  TeamSpread1 & ", TeamSpread2 = " &  TeamSpread2 & "  WHERE MatchupID = " & MatchupID
-	Set rsUpdate = sqlDatabase.Execute(sqlUpdate)
-
-Next
-
-For i = 0 To UBound(arrCup, 2)
-
-	MatchupID = arrCup(0, i)
-	TeamID1 = arrCup(2, i)
-	TeamID2 = arrCup(3, i)
-
-	TeamProjectedScore1 = 0
-	TeamProjectedScore2 = 0
-	TeamSpread1Display = ""
-	TeamSpread2Display = ""
-	TeamScore1 = 0
-	TeamScore2 = 0
-	TeamWinPercentage1 = 0
-	TeamWinPercentage2 = 0
-	
-	sqlGetTeams = "SELECT TeamName, LevelID, CBSLogo, CBSID FROM Teams WHERE TeamID = " & TeamID1 & ";SELECT TeamName, LevelID, CBSLogo, CBSID FROM Teams WHERE TeamID = " & TeamID2 & ";"
-	Set rsTeams = sqlDatabase.Execute(sqlGetTeams)
-
-	TeamCBSID1 = rsTeams("CBSID")
-	TeamLevelID1 = rsTeams("LevelID")
-	Set rsTeams = rsTeams.NextRecordset()
-	TeamCBSID2 = rsTeams("CBSID")
-	TeamLevelID2 = rsTeams("LevelID")
-
-	If CInt(TeamLevelID1) = 2 Then TeamLevelName1 = "SLFFL"
-	If CInt(TeamLevelID1) = 3 Then TeamLevelName1 = "FLFFL"
-	If CInt(TeamLevelID2) = 2 Then TeamLevelName2 = "SLFFL"
-	If CInt(TeamLevelID2) = 3 Then TeamLevelName2 = "FLFFL"
-
-	rsTeams.Close
-	Set rsTeams = Nothing
-
-	Set oXML1 = CreateObject("MSXML2.DOMDocument.3.0")
-	oXML1.loadXML(GetScores(TeamLevelName1))
-	oXML1.setProperty "SelectionLanguage", "XPath"
-
-	Set oXML2 = CreateObject("MSXML2.DOMDocument.3.0")
-	oXML2.loadXML(GetScores(TeamLevelName2))
-	oXML2.setProperty "SelectionLanguage", "XPath"
-
-	Set objTeam1 = oXML1.selectSingleNode(".//team[@id = " & TeamCBSID1 & "]")
-	Set objTeam2 = oXML2.selectSingleNode(".//team[@id = " & TeamCBSID2 & "]")
-
-	Set objTeamScore1 = objTeam1.getElementsByTagName("pts")
-	Set objTeamPMR1 = objTeam1.getElementsByTagName("pmr")
-
-	Set objTeamScore2 = objTeam2.getElementsByTagName("pts")
-	Set objTeamPMR2 = objTeam2.getElementsByTagName("pmr")
-
-	TeamScore1 = CDbl(objTeamScore1.item(0).text)
-	TeamPMR1 = CInt(objTeamPMR1.item(0).text)
-
-	TeamScore2 = CDbl(objTeamScore2.item(0).text)
-	TeamPMR2 = CInt(objTeamPMR2.item(0).text)
-
-	'sqlUpdate = "UPDATE Matchups SET TeamScore1 = " & TeamScore1 & ", TeamScore2 = " & TeamScore2 & ", TeamPMR1 = " & TeamPMR1 & ", TeamPMR2 = " & TeamPMR2 & " WHERE MatchupID = " & MatchupID
-	'Set rsUpdate = sqlDatabase.Execute(sqlUpdate)
-
-	Set projectionsXML1 = CreateObject("MSXML2.DOMDocument.3.0")
-	projectionsXML1.loadXML(GetProjections(TeamLevelName1, TeamCBSID1))
-	projectionsXML1.setProperty "SelectionLanguage", "XPath"
-	Set projectionsTeam1 = projectionsXML1.selectSingleNode(".//team[@id = " & TeamCBSID1 & "]/points")
-
-	Set projectionsXML2 = CreateObject("MSXML2.DOMDocument.3.0")
-	projectionsXML2.loadXML(GetProjections(TeamLevelName2, TeamCBSID2))
-	projectionsXML2.setProperty "SelectionLanguage", "XPath"
-	Set projectionsTeam2 = projectionsXML2.selectSingleNode(".//team[@id = " & TeamCBSID2 & "]/points")
-
-	TeamProjectedScore1 = projectionsTeam1.text
-	TeamProjectedScore2 = projectionsTeam2.text
-
-	TeamSpread1 = TeamProjectedScore1 - TeamProjectedScore2
-	TeamSpread2 = TeamProjectedScore2 - TeamProjectedScore1
-
-	MatchupWinPercentage = CalculateWinPercentage(TeamPMR1, TeamPMR2, TeamProjectedScore1, TeamProjectedScore2, TeamScore1, TeamScore2)
-	arrWinPercentages = Split(MatchupWinPercentage, "/")
-
-	TeamWinPercentage1 = arrWinPercentages(0)
-	TeamWinPercentage2 = arrWinPercentages(1)
-
-	TeamSpread1Display = TeamSpread1
-	If TeamSpread1 > 0 Then TeamSpread1Display = "+" & TeamSpread1Display
-
-	TeamSpread2Display = TeamSpread2
-	If TeamSpread2 > 0 Then TeamSpread2Display = "+" & TeamSpread2Display
-
-	WScript.Echo(vbcrlf & MatchupID & " - " & TeamName1 & " (Proj. " & TeamProjectedScore1 & ", " & TeamSpread1Display & ", " & TeamWinPercentage1 & "%) vs " & TeamName2 & " (Proj. " & TeamProjectedScore2 & ", " & TeamSpread2Display & ", " & TeamWinPercentage2 & "%)")
-
-	sqlUpdate = "UPDATE Matchups SET TeamScore1 = " & TeamScore1 & ", TeamScore2 = " & TeamScore2 & ", TeamPMR1 = " & TeamPMR1 & ", TeamPMR2 = " & TeamPMR2 & ", TeamProjected1 = " &  TeamProjectedScore1 & ", TeamProjected2 = " &  TeamProjectedScore2 & ", TeamWinPercentage1 = " &  TeamWinPercentage1 & ", TeamWinPercentage2 = " &  TeamWinPercentage2 & ", TeamSpread1 = " &  TeamSpread1 & ", TeamSpread2 = " &  TeamSpread2 & "  WHERE MatchupID = " & MatchupID
+	sqlUpdate = "UPDATE Matchups SET TeamScore1 = " & TeamScore1 & ", TeamScore2 = " & TeamScore2 & ", TeamPMR1 = " & TeamPMR1 & ", TeamPMR2 = " & TeamPMR2 & ", TeamProjected1 = " &  TeamProjectedScore1 & ", TeamProjected2 = " &  TeamProjectedScore2 & ", TeamWinPercentage1 = " &  TeamWinPercentage1 & ", TeamWinPercentage2 = " &  TeamWinPercentage2 & ", TeamMoneyline1 = " &  TeamMoneyline1 & ", TeamMoneyline2 = " &  TeamMoneyline2 & ", TeamSpread1 = " &  TeamSpread1 & ", TeamSpread2 = " &  TeamSpread2 & "  WHERE MatchupID = " & MatchupID
 	Set rsUpdate = sqlDatabase.Execute(sqlUpdate)
 
 Next

@@ -75,8 +75,8 @@
 
 		var pageUrl = window.location.protocol + '//' + window.location.hostname  + '/' + pageLink1;
 
-		if (pageCount > 2) { var pageLink2 = pagePath.split('/')[2]; var pageUrl = window.location.protocol + '//' + window.location.hostname + '/' + pageLink1 + '/' + pageLink2; }
-		if (pageCount > 3) { var pageLink3 = pagePath.split('/')[3]; var pageUrl = window.location.protocol + '//' + window.location.hostname  + '/' + pageLink1 + '/' + pageLink2 + '/' + pageLink3; }
+		if (pageCount > 2) { var pageLink2 = pagePath.split('/')[2]; var pageUrl = window.location.protocol + '//' + window.location.hostname + '/' + pageLink1 + '/'; }
+		if (pageCount > 3) { var pageLink3 = pagePath.split('/')[3]; var pageUrl = window.location.protocol + '//' + window.location.hostname  + '/' + pageLink1 + '/'; }
 
 		$(".left-sidenav a").each(function () {
 

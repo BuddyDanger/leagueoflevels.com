@@ -76,15 +76,7 @@
 
 					<div class="row">
 
-						<!--#include virtual="/assets/asp/dashboard/header.asp" -->
-
-						<!-- LOGGED IN -->
-						<!--#include virtual="/assets/asp/dashboard/timeline.asp" -->
 						
-						<!-- LOGGED OUT -->
-						<!--#include virtual="/assets/asp/dashboard/login.asp" -->
-
-						<!--#include virtual="/assets/asp/dashboard/power-rankings.asp" -->
 
 					</div>
 
