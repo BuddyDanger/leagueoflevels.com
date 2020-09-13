@@ -400,7 +400,7 @@
 
 												<div style="border-bottom: 1px solid #e8ebf3;"><h4>Moneyline Wager</h4></div>
 
-												<form action="/sportsbook/<%= thisMatchupID %>/" method="post">
+												<!--<form action="/sportsbook/<%= thisMatchupID %>/" method="post">-->
 													<div class="form-group">
 
 														<input type="hidden" id="inputTicketGo" name="inputTicketGo" value="go" />
@@ -435,7 +435,7 @@
 														<button type="submit" class="btn btn-block btn-success mb-3">Place Bet</button>
 
 													</div>
-												</form>
+												<!--</form>-->
 
 											</div>
 
@@ -449,7 +449,7 @@
 
 												<div style="border-bottom: 1px solid #e8ebf3;"><h4>Point Spread Wager</h4></div>
 
-												<form action="/sportsbook/<%= thisMatchupID %>/" method="post">
+												<!--<form action="/sportsbook/<%= thisMatchupID %>/" method="post">-->
 													<div class="form-group">
 
 														<input type="hidden" id="inputTicketGo" name="inputTicketGo" value="go" />
@@ -484,7 +484,7 @@
 														<button type="submit" class="btn btn-block btn-success mb-3">Place Bet</button>
 
 													</div>
-												</form>
+												<!--</form>-->
 
 											</div>
 
@@ -498,7 +498,7 @@
 
 												<div style="border-bottom: 1px solid #e8ebf3;"><h4>Over / Under Wager</h4></div>
 
-												<form action="/sportsbook/<%= thisMatchupID %>/" method="post">
+												<!--<form action="/sportsbook/<%= thisMatchupID %>/" method="post">-->
 													<div class="form-group">
 
 														<input type="hidden" id="inputTicketGo" name="inputTicketGo" value="go" />
@@ -530,7 +530,7 @@
 														<button type="submit" class="btn btn-block btn-success mb-3">Place Bet</button>
 
 													</div>
-												</form>
+												<!--</form>-->
 
 											</div>
 
