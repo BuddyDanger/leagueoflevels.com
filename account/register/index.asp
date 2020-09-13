@@ -76,7 +76,7 @@
 			objConfig.Fields.Item("http://schemas.microsoft.com/cdo/configuration/smtpconnectiontimeout") = 60
 			objConfig.Fields.Item("http://schemas.microsoft.com/cdo/configuration/smtpauthenticate") = 1
 			objConfig.Fields.Item("http://schemas.microsoft.com/cdo/configuration/sendusername") = "info@leagueoflevels.com"
-			objConfig.Fields.Item("http://schemas.microsoft.com/cdo/configuration/sendpassword") = "JackieHammerBattle"
+			objConfig.Fields.Item("http://schemas.microsoft.com/cdo/configuration/sendpassword") = "TheHammer123"
 			objConfig.Fields.Item("http://schemas.microsoft.com/cdo/configuration/smtpusessl") = True
 
 			objConfig.Fields.Update
