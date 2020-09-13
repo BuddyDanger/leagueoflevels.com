@@ -13,11 +13,11 @@
 <%
 					arrTeams = Split(Session.Contents("AccountTeams"), ",")
 
-					sqlGetRecentHistory = "SELECT TOP 5 M.MatchupID, L.LevelID, L.Title, M.Year, M.Period, M.IsPlayoffs, T1.TeamName AS Team1, M.TeamScore1, T2.TeamName AS Team2, M.TeamScore2, T1.TeamID AS TeamID1, T2.TeamID AS TeamID2 FROM Matchups M "
+					sqlGetRecentHistory = "SELECT TOP 6 M.MatchupID, L.LevelID, L.Title, M.Year, M.Period, M.IsPlayoffs, T1.TeamName AS Team1, M.TeamScore1, T2.TeamName AS Team2, M.TeamScore2, T1.TeamID AS TeamID1, T2.TeamID AS TeamID2 FROM Matchups M "
 					sqlGetRecentHistory = sqlGetRecentHistory & "INNER JOIN Levels L ON L.LevelID = M.LevelID "
 					sqlGetRecentHistory = sqlGetRecentHistory & "INNER JOIN Teams T1 ON T1.TeamID = M.TeamID1 "
 					sqlGetRecentHistory = sqlGetRecentHistory & "INNER JOIN Teams T2 ON T2.TeamID = M.TeamID2 "
-					sqlGetRecentHistory = sqlGetRecentHistory & "WHERE "
+					sqlGetRecentHistory = sqlGetRecentHistory & "WHERE ("
 
 					For i = 0 To UBound(arrTeams)
 
@@ -27,7 +27,7 @@
 
 					If Right(sqlGetRecentHistory, 3) = "OR " Then sqlGetRecentHistory = Left(sqlGetRecentHistory, Len(sqlGetRecentHistory) - 3)
 
-					sqlGetRecentHistory = sqlGetRecentHistory & " ORDER BY M.Year DESC, M.Period DESC, L.LevelID ASC"
+					sqlGetRecentHistory = sqlGetRecentHistory & ") AND M.Year = " & thisYear & " AND M.Period <= " & thisPeriod & " ORDER BY M.Year DESC, M.Period DESC, L.LevelID ASC"
 
 					Set rsRecentHistory = sqlDatabase.Execute(sqlGetRecentHistory)
 

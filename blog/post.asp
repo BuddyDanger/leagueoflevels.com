@@ -1,5 +1,6 @@
 <!--#include virtual="/adovbs.inc"-->
 <!--#include virtual="/assets/asp/sql/connection.asp" -->
+<!--#include virtual="/assets/asp/framework/session.asp" -->
 <!--#include virtual="/assets/asp/functions/master.asp"-->
 <%
 	sqlGetBlog = "SELECT PostDate, MainImage, BlogLink, FullTitle, Teaser, BlogHTML FROM Blogs WHERE BlogID = " & Session.Contents("SITE_BlogID")

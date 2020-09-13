@@ -342,8 +342,6 @@ For i = 0 To UBound(arrCup, 2)
 		TeamWinPercentage1 = smallerPercentage
 	End If
 
-	WScript.Echo(MatchupWinPercentage)
-
 	sqlGetMoneylines = "SELECT TOP 1 Moneyline FROM Moneylines WHERE Percentage >= " & TeamWinPercentage1 & " ORDER BY Percentage ASC; SELECT TOP 1 Moneyline FROM Moneylines WHERE Percentage >= " & TeamWinPercentage2 & " ORDER BY Percentage ASC;"
 	Set rsMoneylines = sqlDatabase.Execute(sqlGetMoneylines)
 

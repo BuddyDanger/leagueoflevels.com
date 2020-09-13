@@ -1,5 +1,6 @@
 <!--#include virtual="/adovbs.inc"-->
 <!--#include virtual="/assets/asp/sql/connection.asp" -->
+<!--#include virtual="/assets/asp/framework/session.asp" -->
 <!--#include virtual="/assets/asp/functions/master.asp"-->
 <!DOCTYPE html>
 <html lang="en">

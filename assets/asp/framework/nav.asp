@@ -43,17 +43,17 @@
 				<ul class="nav">
 					<li class="nav-item"><a class="nav-link" href="/"><i class="dripicons-meter"></i>Dashboard</a></li>
 					<li class="nav-item"><a class="nav-link" href="/scores/"><i class="dripicons-rocket"></i>Live Scoring</a></li>
-					<!--<li class="nav-item <% If Session.Contents("LoggedIn") = "yes" Then %>d-block<% Else %>d-none<% End If %>"><a class="nav-link" href="/sportsbook/"><i class="dripicons-jewel"></i>Sportsbook</a></li>-->
+					<li class="nav-item"><a class="nav-link" href="/sportsbook/"><i class="dripicons-jewel"></i>Sportsbook</a></li>
 					<!--<li class="nav-item <% If Session.Contents("LoggedIn") = "yes" Then %>d-block<% Else %>d-none<% End If %>"><a class="nav-link" href="/eliminator/"><i class="dripicons-crosshair"></i>Eliminator</a></li>-->
 					<!--<li class="nav-item"><a class="nav-link" href="#"><i class="dripicons-list"></i>Standings</a></li>-->
 					<!--<li class="nav-item"><a class="nav-link" href="/schedule/"><i class="dripicons-calendar"></i>Schedule</a></li>-->
 					<li class="nav-item"><a class="nav-link" href="/podcasts/"><i class="dripicons-headset"></i>Podcasts</a></li>
 					<li class="nav-item"><a class="nav-link" href="/blog/"><i class="dripicons-broadcast"></i>Blog</a></li>
 					<li class="nav-item"><a class="nav-link" href="https://www.redbubble.com/people/leagueoflevels/shop" target="_blank"><i class="dripicons-cart"></i>Shop</a></li>
-					<!--<li class="nav-item <% If Session.Contents("LoggedIn") = "yes" Then %>d-block<% Else %>d-none<% End If %>"><a class="nav-link" href="/account/"><i class="dripicons-toggles"></i>Account Profile</a></li>-->
-					<!--<li class="nav-item <% If Session.Contents("LoggedIn") <> "yes" Then %>d-block<% Else %>d-none<% End If %>"><a class="nav-link" href="/account/login/"><i class="dripicons-enter"></i>Login</a></li>-->
-					<!--<li class="nav-item <% If Session.Contents("LoggedIn") <> "yes" Then %>d-block<% Else %>d-none<% End If %>"><a class="nav-link" href="/account/register/"><i class="dripicons-user-id"></i>Register</a></li>-->
-					<!--<li class="nav-item <% If Session.Contents("LoggedIn") <> "yes" Then %>d-block<% Else %>d-none<% End If %>"><a class="nav-link" href="/account/reset-password/"><i class="dripicons-retweet"></i>Reset Password</a></li>-->
+					<li class="nav-item <% If Session.Contents("LoggedIn") = "yes" Then %>d-block<% Else %>d-none<% End If %>"><a class="nav-link" href="/account/"><i class="dripicons-toggles"></i>Account Profile</a></li>
+					<li class="nav-item <% If Session.Contents("LoggedIn") <> "yes" Then %>d-block<% Else %>d-none<% End If %>"><a class="nav-link" href="/account/login/"><i class="dripicons-enter"></i>Login</a></li>
+					<li class="nav-item <% If Session.Contents("LoggedIn") <> "yes" Then %>d-block<% Else %>d-none<% End If %>"><a class="nav-link" href="/account/register/"><i class="dripicons-user-id"></i>Register</a></li>
+					<li class="nav-item <% If Session.Contents("LoggedIn") <> "yes" Then %>d-block<% Else %>d-none<% End If %>"><a class="nav-link" href="/account/reset-password/"><i class="dripicons-retweet"></i>Reset Password</a></li>
 				</ul>
 
 			</div>

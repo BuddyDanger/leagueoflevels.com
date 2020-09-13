@@ -1,5 +1,6 @@
 <!--#include virtual="/adovbs.inc"-->
 <!--#include virtual="/assets/asp/sql/connection.asp" -->
+<!--#include virtual="/assets/asp/framework/session.asp" -->
 <!--#include virtual="/assets/asp/functions/master.asp"-->
 <!DOCTYPE html>
 <html lang="en">
@@ -73,91 +74,94 @@
 
 								<div class="row">
 									<div class="col-12">
-										<div class="card">
 
-											<div class="card-body">
-
-												<table class="table">
-													<thead>
-														<tr>
-															<td class="border-0" width="5%" style="min-width: 80px;"><b>LEVEL</b></td>
-															<td class="border-0" width="60%"><b>MATCHUP</b></td>
-															<td class="border-0" width="5%"><b>PMR</b></td>
-															<td class="border-0" width="5%"><b>SCORE</b></td>
-															<td class="border-0" width="5%"><b>PROJ</b></td>
-															<td class="border-0" width="5%" nowrap><b>WIN %</b></td>
-															<td class="border-0" width="5%"><b><b>ML</b></td>
-															<td class="border-0" width="5%"><b>SPREAD</b></td>
-															<td class="border-0" width="5%"></td>
-														</tr>
-													</thead>
-												</table>
+										<div class="row">
 <%
-												sqlGetSchedules = "SELECT MatchupID, Matchups.LevelID, Year, Period, IsPlayoffs, TeamID1, TeamID2, Team1.TeamName AS TeamName1, Team2.TeamName AS TeamName2, TeamScore1, TeamScore2, TeamPMR1, TeamPMR2, Leg, TeamProjected1, TeamProjected2, TeamWinPercentage1, TeamWinPercentage2, TeamMoneyline1, TeamMoneyline2, TeamSpread1, TeamSpread2 FROM Matchups "
-												sqlGetSchedules = sqlGetSchedules & "INNER JOIN Teams AS Team1 ON Team1.TeamID = Matchups.TeamID1 "
-												sqlGetSchedules = sqlGetSchedules & "INNER JOIN Teams AS Team2 ON Team2.TeamID = Matchups.TeamID2 "
-												sqlGetSchedules = sqlGetSchedules & "WHERE Matchups.Year = " & thisYear & " AND Matchups.Period = " & thisPeriod & " AND (TeamPMR1 > 0 OR TeamPMR2 > 0) AND (TeamWinPercentage1 >= 0.20 AND TeamWinPercentage1 <= 0.80)  AND (TeamWinPercentage2 >= 0.20 AND TeamWinPercentage2 <= 0.80) "
-												sqlGetSchedules = sqlGetSchedules & "ORDER BY CASE WHEN Matchups.LevelID = 1 THEN '1' WHEN Matchups.LevelID = 0 THEN '2' WHEN Matchups.LevelID = 2 THEN '3' WHEN Matchups.LevelID = 3 THEN '4' ELSE Matchups.LevelID END ASC, Matchups.MatchupID DESC"
-												Set rsSchedules = sqlDatabase.Execute(sqlGetSchedules)
+											sqlGetSchedules = "SELECT MatchupID, Matchups.LevelID, Year, Period, IsPlayoffs, TeamID1, TeamID2, Team1.TeamName AS TeamName1, Team2.TeamName AS TeamName2, TeamScore1, TeamScore2, TeamPMR1, TeamPMR2, Leg, TeamProjected1, TeamProjected2, TeamWinPercentage1, TeamWinPercentage2, TeamMoneyline1, TeamMoneyline2, TeamSpread1, TeamSpread2 FROM Matchups "
+											sqlGetSchedules = sqlGetSchedules & "INNER JOIN Teams AS Team1 ON Team1.TeamID = Matchups.TeamID1 "
+											sqlGetSchedules = sqlGetSchedules & "INNER JOIN Teams AS Team2 ON Team2.TeamID = Matchups.TeamID2 "
+											sqlGetSchedules = sqlGetSchedules & "WHERE Matchups.Year = " & thisYear & " AND Matchups.Period = " & thisPeriod & " AND (TeamPMR1 > 0 OR TeamPMR2 > 0) AND (TeamWinPercentage1 >= 0.20 AND TeamWinPercentage1 <= 0.80)  AND (TeamWinPercentage2 >= 0.20 AND TeamWinPercentage2 <= 0.80) "
+											sqlGetSchedules = sqlGetSchedules & "ORDER BY CASE WHEN Matchups.LevelID = 1 THEN '1' WHEN Matchups.LevelID = 0 THEN '2' WHEN Matchups.LevelID = 2 THEN '3' WHEN Matchups.LevelID = 3 THEN '4' ELSE Matchups.LevelID END ASC, Matchups.MatchupID DESC"
+											Set rsSchedules = sqlDatabase.Execute(sqlGetSchedules)
 
-												Do While Not rsSchedules.Eof
+											Do While Not rsSchedules.Eof
 
-													thisMatchupID = rsSchedules("MatchupID")
-													thisLevelID = rsSchedules("LevelID")
-													thisTeamName1 = rsSchedules("TeamName1")
-													thisTeamName2 = rsSchedules("TeamName2")
-													thisTeamScore1 = rsSchedules("TeamScore1")
-													thisTeamScore2 = rsSchedules("TeamScore2")
-													thisTeamPMR1 = rsSchedules("TeamPMR1")
-													thisTeamPMR2 = rsSchedules("TeamPMR2")
-													thisTeamProjected1 = rsSchedules("TeamProjected1")
-													thisTeamProjected2 = rsSchedules("TeamProjected2")
-													thisTeamWinPercentage1 = rsSchedules("TeamWinPercentage1")
-													thisTeamWinPercentage2 = rsSchedules("TeamWinPercentage2")
-													thisTeamMoneyline1 = rsSchedules("TeamMoneyline1")
-													thisTeamMoneyline2 = rsSchedules("TeamMoneyline2")
-													thisTeamSpread1 = rsSchedules("TeamSpread1")
-													thisTeamSpread2 = rsSchedules("TeamSpread2")
+												thisMatchupID = rsSchedules("MatchupID")
+												thisLevelID = rsSchedules("LevelID")
+												thisTeamName1 = rsSchedules("TeamName1")
+												thisTeamName2 = rsSchedules("TeamName2")
+												thisTeamScore1 = rsSchedules("TeamScore1")
+												thisTeamScore2 = rsSchedules("TeamScore2")
+												thisTeamPMR1 = rsSchedules("TeamPMR1")
+												thisTeamPMR2 = rsSchedules("TeamPMR2")
+												thisTeamProjected1 = rsSchedules("TeamProjected1")
+												thisTeamProjected2 = rsSchedules("TeamProjected2")
+												thisTeamWinPercentage1 = rsSchedules("TeamWinPercentage1")
+												thisTeamWinPercentage2 = rsSchedules("TeamWinPercentage2")
+												thisTeamMoneyline1 = rsSchedules("TeamMoneyline1")
+												thisTeamMoneyline2 = rsSchedules("TeamMoneyline2")
+												thisTeamSpread1 = rsSchedules("TeamSpread1")
+												thisTeamSpread2 = rsSchedules("TeamSpread2")
 
-													thisTeamWinPercentage1 = (thisTeamWinPercentage1 * 100) & "%"
-													thisTeamWinPercentage2 = (thisTeamWinPercentage2 * 100) & "%"
+												thisTeamWinPercentage1 = (thisTeamWinPercentage1 * 100) & "%"
+												thisTeamWinPercentage2 = (thisTeamWinPercentage2 * 100) & "%"
 
-													If CInt(thisLevelID) = 0 Then LevelCell = "<td width=""5%"" rowspan=""2"" class=""text-center"" style=""background-color: #D00000; color: #fff; min-width: 80px;""><b>CUP</b></td>"
-													If CInt(thisLevelID) = 1 Then LevelCell = "<td width=""5%"" rowspan=""2"" class=""text-center"" style=""background-color: #FFBA08; color: #fff; min-width: 80px;""><b>OMEGA</b></td>"
-													If CInt(thisLevelID) = 2 Then LevelCell = "<td width=""5%"" rowspan=""2"" class=""text-center"" style=""background-color: #136F63; color: #fff; min-width: 80px;""><b>SLFFL</b></td>"
-													If CInt(thisLevelID) = 3 Then LevelCell = "<td width=""5%"" rowspan=""2"" class=""text-center"" style=""background-color: #032B43; color: #fff; min-width: 80px;""><b>FLFFL</b></td>"
+												If thisTeamMoneyline1 > 0 Then thisTeamMoneyline1 = "+" & thisTeamMoneyline1
+												If thisTeamMoneyline2 > 0 Then thisTeamMoneyline2 = "+" & thisTeamMoneyline2
+
+												If thisTeamSpread1 > 0 Then thisTeamSpread1 = "+" & thisTeamSpread1
+												If thisTeamSpread2 > 0 Then thisTeamSpread2 = "+" & thisTeamSpread2
+
+												If CInt(thisLevelID) = 0 Then
+													headerBGcolor = "D00000"
+													headerTextColor = "fff"
+													headerText = "CUP"
+													cardText = "520000"
+												End If
+												If CInt(thisLevelID) = 1 Then
+													headerBGcolor = "FFBA08"
+													headerTextColor = "fff"
+													headerText = "OMEGA"
+													cardText = "805C04"
+												End If
+												If CInt(thisLevelID) = 2 Then
+													headerBGcolor = "136F63"
+													headerTextColor = "fff"
+													headerText = "SAME LEVEL"
+													cardText = "0F574D"
+												End If
+												If CInt(thisLevelID) = 3 Then
+													headerBGcolor = "032B43"
+													headerTextColor = "fff"
+													headerText = "FARM LEVEL"
+													cardText = "03324F"
+												End If
 %>
-													<table class="table table-bordered">
-														<tr>
-															<%= LevelCell %>
-															<td width="60%"><%= thisTeamName1 %></td>
-															<td width="5%"><%= thisTeamPMR1 %></td>
-															<td width="5%"><%= thisTeamScore1 %></td>
-															<td width="5%"><%= thisTeamProjected1 %></td>
-															<td width="5%"><%= thisTeamWinPercentage1 %></td>
-															<td width="5%"><%= thisTeamMoneyline1 %></td>
-															<td width="5%"><%= thisTeamSpread1 %></td>
-															<td width="5%" class="text-center" rowspan="2"><button onclick="window.location.href = '/sportsbook/<%= thisMatchupID %>/';" type="button" class="btn btn-success btn-sm">BET</button></td>
-														</tr>
-														<tr>
-															<td width="60%"><%= thisTeamName2 %></td>
-															<td width="5%"><%= thisTeamPMR2 %></td>
-															<td width="5%"><%= thisTeamScore2 %></td>
-															<td width="5%"><%= thisTeamProjected2 %></td>
-															<td width="5%"><%= thisTeamWinPercentage2 %></td>
-															<td width="5%"><%= thisTeamMoneyline2 %></td>
-															<td width="5%"><%= thisTeamSpread2 %></td>
-														</tr>
-													</table>
+												<div class="col-xxxl-4 col-xxl-4 col-xl-4 col-lg-6 col-md-6 col-sm-6 col-xs-6 col-xxs-6">
+													<a href="/sportsbook/<%= thisMatchupID %>/" style="text-decoration: none; display: block;">
+														<ul class="list-group" style="margin-bottom: 1rem;">
+															<li class="list-group-item" style="padding-top: 0.25rem; padding-bottom: 0.25rem; font-size: 0.75rem; text-align: center; background-color: #<%= headerBGcolor %>; color: #<%= headerTextColor %>;"><strong><%= headerText %></strong> #<%= thisMatchupID %></li>
+															<li class="list-group-item">
+																<span style="font-size: 1em; background-color: #fff; color: #<%= cardText %>; float: right;"><%= thisTeamScore1 %></span>
+																<div style="font-size: 13px; color: #<%= cardText %>;"><b><%= thisTeamName1 %></b></div>
+																<div style="font-size: 13px; color: #<%= cardText %>;"><%= thisTeamProjected1 %> Proj., <%= thisTeamWinPercentage1 %> Win, <%= thisTeamSpread1 %> Spread, <%= thisTeamMoneyline1 %> ML</div>
+															</li>
+															<li class="list-group-item">
+																<span style="font-size: 1em; background-color: #fff; color: #<%= cardText %>; float: right;"><%= thisTeamScore2 %></span>
+																<div style="font-size: 13px; color: #<%= cardText %>;"><b><%= thisTeamName2 %></b></div>
+																<div style="font-size: 13px; color: #<%= cardText %>;"><%= thisTeamProjected2 %> Proj., <%= thisTeamWinPercentage2 %> Win, <%= thisTeamSpread2 %> Spread, <%= thisTeamMoneyline2 %> ML</div>
+															</li>
+														</ul>
+													</a>
+												</div>
 <%
-													rsSchedules.MoveNext
+												rsSchedules.MoveNext
 
-												Loop
+											Loop
 
-												rsSchedules.Close
-												Set rsSchedules = Nothing
+											rsSchedules.Close
+											Set rsSchedules = Nothing
 %>
-											</div>
 										</div>
 									</div>
 								</div>

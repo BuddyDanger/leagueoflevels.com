@@ -230,7 +230,7 @@
 										<button type="submit" class="btn btn-primary btn-sm mt-2 mr-2 mb-4">Upload New Logo</button>
                                     </form>
 
-									<div><img src="/assets/images/uploads/<%= Session.Contents("AccountImage") %>" class="img-fluid" /></div>
+									<div><img src="https://samelevel.imgix.net/<%= Session.Contents("AccountImage") %>" class="img-fluid" /></div>
 
                                 </div>
                             </div>
