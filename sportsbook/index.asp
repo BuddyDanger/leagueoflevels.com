@@ -77,6 +77,39 @@
 
 										<div class="row">
 <%
+											sqlGetSportsbookData = "SELECT SUM(BetAmount) AS TotalActiveBetAmount, SUM(PayoutAmount) AS TotalPotentialPayout, COUNT(TicketSlipID) AS TotalActiveTickets, COUNT(DISTINCT AccountID) AS TotalBettingUsers FROM TicketSlips WHERE IsWinner IS NULL"
+											Set rsSportsbookData = sqlDatabase.Execute(sqlGetSportsbookData)
+
+											If Not rsSportsbookData.Eof Then
+
+												thisTotalActiveBetAmount = rsSportsbookData("TotalActiveBetAmount")
+												thisTotalPotentialPayout = rsSportsbookData("TotalPotentialPayout")
+												thisTotalActiveTickets = rsSportsbookData("TotalActiveTickets")
+												thisTotalBettingUsers = rsSportsbookData("TotalBettingUsers")
+%>
+												<div class="col-xxxl-4 col-xxl-4 col-xl-4 col-lg-6 col-md-6 col-sm-12 col-xs-12 col-xxs-12">
+													<a href="/sportsbook/tickets/" style="text-decoration: none; display: block;">
+														<ul class="list-group" style="margin-bottom: 1rem;">
+															<li class="list-group-item" style="padding-top: 0.25rem; padding-bottom: 0.25rem; font-size: 0.75rem; text-align: center; background-color: #4d79f6; color: #fff;"><strong>ACTIVE STATS</strong></li>
+															<li class="list-group-item">
+																<span style="font-size: 1em; background-color: #fff; color: #03324F; float: right;"><%= FormatNumber(thisTotalActiveBetAmount, 0) %></span>
+																<div style="font-size: 13px; color: #03324F;"><b>TOTAL SCHMECKLES BET</b></div>
+																<div style="font-size: 13px; color: #03324F;">Across <%= thisTotalActiveTickets %> Individual Active Ticket Slips</div>
+															</li>
+															<li class="list-group-item">
+																<span style="font-size: 1em; background-color: #fff; color: #03324F; float: right;"><%= FormatNumber(thisTotalPotentialPayout, 0) %></span>
+																<div style="font-size: 13px; color: #03324F;"><b>TOTAL POTENTIAL PAYOUT</b></div>
+																<div style="font-size: 13px; color: #03324F;">Across <%= thisTotalBettingUsers %> LOL Owner Accounts</div>
+															</li>
+														</ul>
+													</a>
+												</div>
+<%
+												rsSportsbookData.Close
+												Set rsSportsbookData = Nothing
+
+											End If
+
 											sqlGetSchedules = "SELECT MatchupID, Matchups.LevelID, Year, Period, IsPlayoffs, TeamID1, TeamID2, Team1.TeamName AS TeamName1, Team2.TeamName AS TeamName2, TeamScore1, TeamScore2, TeamPMR1, TeamPMR2, Leg, TeamProjected1, TeamProjected2, TeamWinPercentage1, TeamWinPercentage2, TeamMoneyline1, TeamMoneyline2, TeamSpread1, TeamSpread2 FROM Matchups "
 											sqlGetSchedules = sqlGetSchedules & "INNER JOIN Teams AS Team1 ON Team1.TeamID = Matchups.TeamID1 "
 											sqlGetSchedules = sqlGetSchedules & "INNER JOIN Teams AS Team2 ON Team2.TeamID = Matchups.TeamID2 "
@@ -137,7 +170,7 @@
 													cardText = "03324F"
 												End If
 %>
-												<div class="col-xxxl-4 col-xxl-4 col-xl-4 col-lg-6 col-md-6 col-sm-6 col-xs-6 col-xxs-6">
+												<div class="col-xxxl-4 col-xxl-4 col-xl-4 col-lg-6 col-md-6 col-sm-12 col-xs-12 col-xxs-12">
 													<a href="/sportsbook/<%= thisMatchupID %>/" style="text-decoration: none; display: block;">
 														<ul class="list-group" style="margin-bottom: 1rem;">
 															<li class="list-group-item" style="padding-top: 0.25rem; padding-bottom: 0.25rem; font-size: 0.75rem; text-align: center; background-color: #<%= headerBGcolor %>; color: #<%= headerTextColor %>;"><strong><%= headerText %></strong> #<%= thisMatchupID %></li>

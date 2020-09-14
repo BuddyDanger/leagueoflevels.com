@@ -303,13 +303,13 @@
 								<div class="float-right">
 
 									<ol class="breadcrumb">
-										<li class="breadcrumb-item"><a href="javascript:void(0);">Main</a></li>
-										<li class="breadcrumb-item active">Sportsbook</li>
+										<li class="breadcrumb-item"><a href="/">Main</a></li>
+										<li class="breadcrumb-item active"><a href="/sportsbook/">Sportsbook</a></li>
 									</ol>
 
 								</div>
 
-								<h4 class="page-title">Sportsbook / Matchup #<%= Session.Contents("SITE_Bet_MatchupID") %></h4>
+								<h4 class="page-title"><a href="/sportsbook/">Sportsbook</a> / Matchup #<%= Session.Contents("SITE_Bet_MatchupID") %></h4>
 
 							</div>
 
@@ -353,7 +353,7 @@
 										cardText = "03324F"
 									End If
 %>
-									<div class="col-xxxl-4 col-xxl-4 col-xl-4 col-lg-6 col-md-6 col-sm-6 col-xs-6 col-xxs-6">
+									<div class="col-xxxl-4 col-xxl-4 col-xl-4 col-lg-12 col-md-12 col-sm-12 col-xs-12 col-xxs-12">
 										<a href="/sportsbook/<%= thisMatchupID %>/" style="text-decoration: none; display: block;">
 											<ul class="list-group" style="margin-bottom: 1rem;">
 												<li class="list-group-item" style="padding-top: 0.25rem; padding-bottom: 0.25rem; font-size: 0.75rem; text-align: center; background-color: #<%= headerBGcolor %>; color: #<%= headerTextColor %>;"><strong><%= headerText %></strong> #<%= thisMatchupID %></li>
@@ -395,7 +395,7 @@
 
 								<div class="row">
 
-									<div class="col-12 col-lg-4">
+									<div class="col-12 col-xl-4 col-lg-6">
 										<div class="card">
 
 											<div class="card-body">
@@ -416,7 +416,7 @@
 														<input type="hidden" id="inputMoneylinePayout" name="inputMoneylinePayout" value="" />
 
 														<label class="form-check-label-lg mt-4" for="inputMoneylineTeam" class="col-form-label"><b>Team (ML)</b></label>
-														<select class="form-control form-control-lg form-check-input-lg" name="inputMoneylineTeam" id="inputMoneylineTeam" onchange="calculate_moneyline_payout(document.getElementById('inputMoneylineBetAmount').value)" required>
+														<select <%= thisFormDisabled %> class="form-control form-control-lg form-check-input-lg" name="inputMoneylineTeam" id="inputMoneylineTeam" onchange="calculate_moneyline_payout(document.getElementById('inputMoneylineBetAmount').value)" required>
 															<option></option>
 															<option value="1"><%= thisTeamName1 %> (<%= thisTeamMoneyline1 %> ML)</option>
 															<option value="2"><%= thisTeamName2 %> (<%= thisTeamMoneyline2 %> ML)</option>
@@ -427,14 +427,14 @@
 
 														<div class="row">
 															<div class="col-12 col-md-6">
-																<label class="col-form-label mt-3 mb-3"><b>TO WIN:</b>  <span id="winMoneyline"><span></label>
+																<label class="col-form-label mt-3 mb-md-3 mb-sm-0"><b>TO WIN:</b>  <span id="winMoneyline"><span></label>
 															</div>
 															<div class="col-12 col-md-6">
 																<label class="col-form-label mt-3 mb-3"><b>PAYOUT:</b>  <span id="payoutMoneyline"><span></label>
 															</div>
 														</div>
 
-														<button type="submit" class="btn btn-block btn-success mb-3">Place Bet</button>
+														<button <%= thisFormDisabled %> type="submit" class="btn btn-block btn-success mb-3">Place Bet</button>
 
 													</div>
 												</form>
@@ -444,7 +444,7 @@
 										</div>
 									</div>
 
-									<div class="col-12 col-lg-4">
+									<div class="col-12 col-xl-4 col-lg-6">
 										<div class="card">
 
 											<div class="card-body">
@@ -465,7 +465,7 @@
 														<input type="hidden" id="inputSpreadPayout" name="inputSpreadPayout" value="" />
 
 														<label class="form-check-label-lg mt-4" for="inputSpreadTeam" class="col-form-label"><b>Team (Spread)</b></label>
-														<select class="form-control form-control-lg form-check-input-lg" name="inputSpreadTeam" id="inputSpreadTeam" onchange="calculate_spread_payout('document.getElementById('inputSpreadBetAmount').value')" required>
+														<select <%= thisFormDisabled %> class="form-control form-control-lg form-check-input-lg" name="inputSpreadTeam" id="inputSpreadTeam" onchange="calculate_spread_payout('document.getElementById('inputSpreadBetAmount').value')" required>
 															<option></option>
 															<option value="1"><%= thisTeamName1 %> (<%= thisTeamSpread1 %>)</option>
 															<option value="2"><%= thisTeamName2 %> (<%= thisTeamSpread2 %>)</option>
@@ -476,14 +476,14 @@
 
 														<div class="row">
 															<div class="col-12 col-md-6">
-																<label class="col-form-label mt-3 mb-3"><b>TO WIN:</b>  <span id="winSpread"><span></label>
+																<label class="col-form-label mt-3 mb-md-3 mb-sm-0"><b>TO WIN:</b>  <span id="winSpread"><span></label>
 															</div>
 															<div class="col-12 col-md-6">
 																<label class="col-form-label mt-3 mb-3"><b>PAYOUT:</b>  <span id="payoutSpread"><span></label>
 															</div>
 														</div>
 
-														<button type="submit" class="btn btn-block btn-success mb-3">Place Bet</button>
+														<button <%= thisFormDisabled %> type="submit" class="btn btn-block btn-success mb-3">Place Bet</button>
 
 													</div>
 												</form>
@@ -493,7 +493,7 @@
 										</div>
 									</div>
 
-									<div class="col-12 col-lg-4">
+									<div class="col-12 col-xl-4 col-lg-6">
 										<div class="card">
 
 											<div class="card-body">
@@ -511,7 +511,7 @@
 														<input type="hidden" id="inputOverUnderPayout" name="inputOverUnderPayout" value="" />
 
 														<label class="form-check-label-lg mt-4" for="inputOverUnderBet" class="col-form-label"><b>Over / Under (Points)</b></label>
-														<select class="form-control form-control-lg form-check-input-lg" name="inputOverUnderBet" id="inputOverUnderBet" onchange="calculate_ou_payout(document.getElementById('inputOverUnderBetAmount').value)">
+														<select <%= thisFormDisabled %> class="form-control form-control-lg form-check-input-lg" name="inputOverUnderBet" id="inputOverUnderBet" onchange="calculate_ou_payout(document.getElementById('inputOverUnderBetAmount').value)">
 															<option></option>
 															<option value="1">OVER (<%= thisTeamProjected1 + thisTeamProjected2 %>)</option>
 															<option value="2">UNDER (<%= thisTeamProjected1 + thisTeamProjected2 %>)</option>
@@ -522,14 +522,14 @@
 
 														<div class="row">
 															<div class="col-12 col-md-6">
-																<label class="col-form-label mt-3 mb-3"><b>TO WIN:</b>  <span id="winOverUnder"><span></label>
+																<label class="col-form-label mt-3 mb-md-3 mb-sm-0"><b>TO WIN:</b>  <span id="winOverUnder"><span></label>
 															</div>
 															<div class="col-12 col-md-6">
 																<label class="col-form-label mt-3 mb-3"><b>PAYOUT:</b>  <span id="payoutOverUnder"><span></label>
 															</div>
 														</div>
 
-														<button type="submit" class="btn btn-block btn-success mb-3">Place Bet</button>
+														<button <%= thisFormDisabled %> type="submit" class="btn btn-block btn-success mb-3">Place Bet</button>
 
 													</div>
 												</form>

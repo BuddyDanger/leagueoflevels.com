@@ -88,6 +88,8 @@
 
 					</div>
 
+					<!--#include virtual="/assets/asp/dashboard/active-tickets.asp" -->
+
 				</div>
 
 				<footer class="footer text-center text-sm-left">&copy; <%= Year(Now()) %> League of Levels Fantasy <span class="text-muted d-none d-sm-inline-block float-right"></span></footer>
