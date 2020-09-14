@@ -317,6 +317,8 @@
 
 								<div class="row">
 <%
+									If thisTeamWinPercentage1 < 0.2 Or thisTeamWinPercentage1 > 0.8 Then thisFormDisabled = "disabled"
+
 									thisTeamWinPercentage1 = (thisTeamWinPercentage1 * 100) & "%"
 									thisTeamWinPercentage2 = (thisTeamWinPercentage2 * 100) & "%"
 
@@ -400,7 +402,7 @@
 
 												<div style="border-bottom: 1px solid #e8ebf3;"><h4>Moneyline Wager</h4></div>
 
-												<!--<form action="/sportsbook/<%= thisMatchupID %>/" method="post">-->
+												<form action="/sportsbook/<%= thisMatchupID %>/" method="post">
 													<div class="form-group">
 
 														<input type="hidden" id="inputTicketGo" name="inputTicketGo" value="go" />
@@ -421,7 +423,7 @@
 														</select>
 
 														<label for="inputMoneylineBetAmount" class="col-form-label mt-2"><b>Bet Amount (Schmeckles)</b></label>
-														<input type="number" class="form-control form-control-lg" min="0" max="<%= thisSchmeckleTotal %>" id="inputMoneylineBetAmount" name="inputMoneylineBetAmount" onkeyup="calculate_moneyline_payout(this.value)" required>
+														<input <%= thisFormDisabled %> type="number" class="form-control form-control-lg" min="0" max="<%= thisSchmeckleTotal %>" id="inputMoneylineBetAmount" name="inputMoneylineBetAmount" onkeyup="calculate_moneyline_payout(this.value)" required>
 
 														<div class="row">
 															<div class="col-12 col-md-6">
@@ -435,7 +437,7 @@
 														<button type="submit" class="btn btn-block btn-success mb-3">Place Bet</button>
 
 													</div>
-												<!--</form>-->
+												</form>
 
 											</div>
 
@@ -449,7 +451,7 @@
 
 												<div style="border-bottom: 1px solid #e8ebf3;"><h4>Point Spread Wager</h4></div>
 
-												<!--<form action="/sportsbook/<%= thisMatchupID %>/" method="post">-->
+												<form action="/sportsbook/<%= thisMatchupID %>/" method="post">
 													<div class="form-group">
 
 														<input type="hidden" id="inputTicketGo" name="inputTicketGo" value="go" />
@@ -470,7 +472,7 @@
 														</select>
 
 														<label for="inputSpreadBetAmount" class="col-form-label mt-2"><b>Bet Amount (Schmeckles)</b></label>
-														<input type="number" class="form-control form-control-lg" min="0" max="<%= thisSchmeckleTotal %>" id="inputSpreadBetAmount" name="inputSpreadBetAmount" onkeyup="calculate_spread_payout(this.value)" required>
+														<input <%= thisFormDisabled %> type="number" class="form-control form-control-lg" min="0" max="<%= thisSchmeckleTotal %>" id="inputSpreadBetAmount" name="inputSpreadBetAmount" onkeyup="calculate_spread_payout(this.value)" required>
 
 														<div class="row">
 															<div class="col-12 col-md-6">
@@ -484,7 +486,7 @@
 														<button type="submit" class="btn btn-block btn-success mb-3">Place Bet</button>
 
 													</div>
-												<!--</form>-->
+												</form>
 
 											</div>
 
@@ -498,7 +500,7 @@
 
 												<div style="border-bottom: 1px solid #e8ebf3;"><h4>Over / Under Wager</h4></div>
 
-												<!--<form action="/sportsbook/<%= thisMatchupID %>/" method="post">-->
+												<form action="/sportsbook/<%= thisMatchupID %>/" method="post">
 													<div class="form-group">
 
 														<input type="hidden" id="inputTicketGo" name="inputTicketGo" value="go" />
@@ -516,7 +518,7 @@
 														</select>
 
 														<label for="inputOverUnderBetAmount" class="col-form-label mt-2"><b>Bet Amount (Schmeckles)</b></label>
-														<input type="number" class="form-control form-control-lg" min="0" max="<%= thisSchmeckleTotal %>" id="inputOverUnderBetAmount" name="inputOverUnderBetAmount" onkeyup="calculate_ou_payout(this.value)">
+														<input <%= thisFormDisabled %> type="number" class="form-control form-control-lg" min="0" max="<%= thisSchmeckleTotal %>" id="inputOverUnderBetAmount" name="inputOverUnderBetAmount" onkeyup="calculate_ou_payout(this.value)">
 
 														<div class="row">
 															<div class="col-12 col-md-6">
@@ -530,7 +532,7 @@
 														<button type="submit" class="btn btn-block btn-success mb-3">Place Bet</button>
 
 													</div>
-												<!--</form>-->
+												</form>
 
 											</div>
 

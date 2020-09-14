@@ -304,19 +304,81 @@ For i = 0 To UBound(arrCup, 2)
 	projectionsXML1.loadXML(GetProjections(TeamLevelName1, TeamCBSID1))
 	projectionsXML1.setProperty "SelectionLanguage", "XPath"
 	Set projectionsTeam1 = projectionsXML1.selectSingleNode(".//team[@id = " & TeamCBSID1 & "]/points")
+	Set projectionsTeamPlayers1 = projectionsXML1.selectNodes(".//team[@id = " & TeamCBSID1 & "]/active_players/active_player")
 
 	Set projectionsXML2 = CreateObject("MSXML2.DOMDocument.3.0")
 	projectionsXML2.loadXML(GetProjections(TeamLevelName2, TeamCBSID2))
 	projectionsXML2.setProperty "SelectionLanguage", "XPath"
 	Set projectionsTeam2 = projectionsXML2.selectSingleNode(".//team[@id = " & TeamCBSID2 & "]/points")
+	Set projectionsTeamPlayers2 = projectionsXML2.selectNodes(".//team[@id = " & TeamCBSID2 & "]/active_players/active_player")
 
 	TeamProjectedScore1 = projectionsTeam1.text
 	TeamProjectedScore2 = projectionsTeam2.text
 
-	TeamSpread1 = TeamProjectedScore2 - TeamProjectedScore1
-	TeamSpread2 = TeamProjectedScore1 - TeamProjectedScore2
+	TeamNewProjectedScore1 = 0
+	TeamNewProjectedScore2 = 0
 
-	MatchupWinPercentage = CalculateWinPercentage(TeamPMR1, TeamPMR2, TeamProjectedScore1, TeamProjectedScore2, TeamScore1, TeamScore2)
+	For Each Player In projectionsTeamPlayers1
+
+		thisPlayerID = Player.getAttribute("id")
+		Set thisPlayer = Player.getElementsByTagName("points")
+		thisPlayerOriginalProjection = CDbl(thisPlayer.item(0).text)
+
+		If CInt(TeamLevelID1) = 2 Then
+			Set objPlayerLiveProjection = oXMLSLFFL.selectSingleNode(".//player[@id = " & thisPlayerID & "]")
+		End If
+
+		If CInt(TeamLevelID1) = 3 Then
+			Set objPlayerLiveProjection = oXMLFLFFL.selectSingleNode(".//player[@id = " & thisPlayerID & "]")
+		End If
+
+		Set objPlayerLiveProjectionPoints = objPlayerLiveProjection.getElementsByTagName("fpts")
+		thisPlayerLiveProjectionPoints = CDbl(objPlayerLiveProjectionPoints.item(0).text)
+		Set objPlayerLiveProjectionPMR = objPlayerLiveProjection.getElementsByTagName("minutes_remaining")
+		thisPlayerLiveProjectionPMR = CDbl(objPlayerLiveProjectionPMR.item(0).text)
+		thisPlayerLiveProjectionMinutesPlayed = 60 - thisPlayerLiveProjectionPMR
+
+		thisOriginalPPM = thisPlayerOriginalProjection / 60
+		thisNewProjection = ((thisPlayerOriginalProjection / 60) * thisPlayerLiveProjectionPMR) + thisPlayerLiveProjectionPoints
+
+		TeamNewProjectedScore1 = TeamNewProjectedScore1 + thisNewProjection
+
+	Next
+
+	For Each Player In projectionsTeamPlayers2
+
+		thisPlayerID = Player.getAttribute("id")
+		Set thisPlayer = Player.getElementsByTagName("points")
+		thisPlayerOriginalProjection = CDbl(thisPlayer.item(0).text)
+
+		If CInt(TeamLevelID2) = 2 Then
+			Set objPlayerLiveProjection = oXMLSLFFL.selectSingleNode(".//player[@id = " & thisPlayerID & "]")
+		End If
+
+		If CInt(TeamLevelID2) = 3 Then
+			Set objPlayerLiveProjection = oXMLFLFFL.selectSingleNode(".//player[@id = " & thisPlayerID & "]")
+		End If
+
+		Set objPlayerLiveProjectionPoints = objPlayerLiveProjection.getElementsByTagName("fpts")
+		thisPlayerLiveProjectionPoints = CDbl(objPlayerLiveProjectionPoints.item(0).text)
+		Set objPlayerLiveProjectionPMR = objPlayerLiveProjection.getElementsByTagName("minutes_remaining")
+		thisPlayerLiveProjectionPMR = CDbl(objPlayerLiveProjectionPMR.item(0).text)
+		thisPlayerLiveProjectionMinutesPlayed = 60 - thisPlayerLiveProjectionPMR
+
+		thisOriginalPPM = thisPlayerOriginalProjection / 60
+		thisNewProjection = ((thisPlayerOriginalProjection / 60) * thisPlayerLiveProjectionPMR) + thisPlayerLiveProjectionPoints
+
+		TeamNewProjectedScore2 = TeamNewProjectedScore2 + thisNewProjection
+
+	Next
+
+	TeamNewProjectedScore1 = FormatNumber(TeamNewProjectedScore1, 2)
+	TeamNewProjectedScore2 = FormatNumber(TeamNewProjectedScore2, 2)
+
+	TeamSpread1 = CInt(TeamNewProjectedScore2 - TeamNewProjectedScore1)
+	TeamSpread2 = CInt(TeamNewProjectedScore1 - TeamNewProjectedScore2)
+
+	MatchupWinPercentage = CalculateWinPercentage(TeamPMR1, TeamPMR2, TeamNewProjectedScore1, TeamNewProjectedScore2, TeamScore1, TeamScore2)
 	arrWinPercentages = Split(MatchupWinPercentage, "/")
 
 	TeamWinPercentage1Display = arrWinPercentages(0)
@@ -337,10 +399,13 @@ For i = 0 To UBound(arrCup, 2)
 
 	TeamWinPercentage1 = largerPercentage
 	TeamWinPercentage2 = smallerPercentage
-	If CInt(TeamProjectedScore1) < CInt(TeamProjectedScore2) Then
+	If CInt(TeamNewProjectedScore1) < CInt(TeamNewProjectedScore2) Then
 		TeamWinPercentage2 = largerPercentage
 		TeamWinPercentage1 = smallerPercentage
 	End If
+
+	TeamMoneyline1 = 100
+	TeamMoneyline2 = 100
 
 	sqlGetMoneylines = "SELECT TOP 1 Moneyline FROM Moneylines WHERE Percentage >= " & TeamWinPercentage1 & " ORDER BY Percentage ASC; SELECT TOP 1 Moneyline FROM Moneylines WHERE Percentage >= " & TeamWinPercentage2 & " ORDER BY Percentage ASC;"
 	Set rsMoneylines = sqlDatabase.Execute(sqlGetMoneylines)
@@ -366,10 +431,10 @@ For i = 0 To UBound(arrCup, 2)
 
 	'CalculateWinPercentage(TeamPMR1, TeamPMR2, TeamProjectedScore1, TeamProjectedScore2, TeamScore1, TeamScore2)'
 	WScript.Echo(vbcrlf & vbcrlf & "MATCHUP #" & MatchupID & " (CUP) ----------")
-	WScript.Echo(vbcrlf & TeamName1 & " (" & TeamProjectedScore1 & " Proj, " & TeamSpread1Display & " Spread, " & TeamWinPercentage1 * 100 & "% Win, " & TeamMoneyline1Display & " ML)")
-	WScript.Echo(vbcrlf & TeamName2 & " (" & TeamProjectedScore2 & " Proj, " & TeamSpread2Display & " Spread, " & TeamWinPercentage2 * 100 & "% Win, " & TeamMoneyline2Display & " ML)")
+	WScript.Echo(vbcrlf & TeamName1 & " (" & TeamNewProjectedScore1 & " Proj, " & TeamSpread1Display & " Spread, " & TeamWinPercentage1 * 100 & "% Win, " & TeamMoneyline1Display & " ML)")
+	WScript.Echo(vbcrlf & TeamName2 & " (" & TeamNewProjectedScore2 & " Proj, " & TeamSpread2Display & " Spread, " & TeamWinPercentage2 * 100 & "% Win, " & TeamMoneyline2Display & " ML)")
 
-	sqlUpdate = "UPDATE Matchups SET TeamScore1 = " & TeamScore1 & ", TeamScore2 = " & TeamScore2 & ", TeamPMR1 = " & TeamPMR1 & ", TeamPMR2 = " & TeamPMR2 & ", TeamProjected1 = " &  TeamProjectedScore1 & ", TeamProjected2 = " &  TeamProjectedScore2 & ", TeamWinPercentage1 = " &  TeamWinPercentage1 & ", TeamWinPercentage2 = " &  TeamWinPercentage2 & ", TeamMoneyline1 = " &  TeamMoneyline1 & ", TeamMoneyline2 = " &  TeamMoneyline2 & ", TeamSpread1 = " &  TeamSpread1 & ", TeamSpread2 = " &  TeamSpread2 & "  WHERE MatchupID = " & MatchupID
+	sqlUpdate = "UPDATE Matchups SET TeamScore1 = " & TeamScore1 & ", TeamScore2 = " & TeamScore2 & ", TeamPMR1 = " & TeamPMR1 & ", TeamPMR2 = " & TeamPMR2 & ", TeamProjected1 = " &  TeamNewProjectedScore1 & ", TeamProjected2 = " &  TeamNewProjectedScore2 & ", TeamWinPercentage1 = " &  TeamWinPercentage1 & ", TeamWinPercentage2 = " &  TeamWinPercentage2 & ", TeamMoneyline1 = " &  TeamMoneyline1 & ", TeamMoneyline2 = " &  TeamMoneyline2 & ", TeamSpread1 = " &  TeamSpread1 & ", TeamSpread2 = " &  TeamSpread2 & "  WHERE MatchupID = " & MatchupID
 	Set rsUpdate = sqlDatabase.Execute(sqlUpdate)
 
 Next
@@ -420,19 +485,69 @@ For i = 0 To UBound(arrOmega, 2)
 	projectionsXML1.loadXML(GetProjections("OMEGA", TeamCBSID1))
 	projectionsXML1.setProperty "SelectionLanguage", "XPath"
 	Set projectionsTeam1 = projectionsXML1.selectSingleNode(".//team[@id = " & TeamCBSID1 & "]/points")
+	Set projectionsTeamPlayers1 = projectionsXML1.selectNodes(".//team[@id = " & TeamCBSID1 & "]/active_players/active_player")
 
 	Set projectionsXML2 = CreateObject("MSXML2.DOMDocument.3.0")
 	projectionsXML2.loadXML(GetProjections("OMEGA", TeamCBSID2))
 	projectionsXML2.setProperty "SelectionLanguage", "XPath"
 	Set projectionsTeam2 = projectionsXML2.selectSingleNode(".//team[@id = " & TeamCBSID2 & "]/points")
+	Set projectionsTeamPlayers2 = projectionsXML2.selectNodes(".//team[@id = " & TeamCBSID2 & "]/active_players/active_player")
 
 	TeamProjectedScore1 = projectionsTeam1.text
 	TeamProjectedScore2 = projectionsTeam2.text
 
-	TeamSpread1 = TeamProjectedScore2 - TeamProjectedScore1
-	TeamSpread2 = TeamProjectedScore1 - TeamProjectedScore2
+	TeamNewProjectedScore1 = 0
+	TeamNewProjectedScore2 = 0
 
-	MatchupWinPercentage = CalculateWinPercentage(TeamPMR1, TeamPMR2, TeamProjectedScore1, TeamProjectedScore2, TeamScore1, TeamScore2)
+	For Each Player In projectionsTeamPlayers1
+
+		thisPlayerID = Player.getAttribute("id")
+		Set thisPlayer = Player.getElementsByTagName("points")
+		thisPlayerOriginalProjection = CDbl(thisPlayer.item(0).text)
+
+		Set objPlayerLiveProjection = oXMLOmega.selectSingleNode(".//player[@id = " & thisPlayerID & "]")
+
+		Set objPlayerLiveProjectionPoints = objPlayerLiveProjection.getElementsByTagName("fpts")
+		thisPlayerLiveProjectionPoints = CDbl(objPlayerLiveProjectionPoints.item(0).text)
+		Set objPlayerLiveProjectionPMR = objPlayerLiveProjection.getElementsByTagName("minutes_remaining")
+		thisPlayerLiveProjectionPMR = CDbl(objPlayerLiveProjectionPMR.item(0).text)
+		thisPlayerLiveProjectionMinutesPlayed = 60 - thisPlayerLiveProjectionPMR
+
+		thisOriginalPPM = thisPlayerOriginalProjection / 60
+		thisNewProjection = ((thisPlayerOriginalProjection / 60) * thisPlayerLiveProjectionPMR) + thisPlayerLiveProjectionPoints
+
+		TeamNewProjectedScore1 = TeamNewProjectedScore1 + thisNewProjection
+
+	Next
+
+	For Each Player In projectionsTeamPlayers2
+
+		thisPlayerID = Player.getAttribute("id")
+		Set thisPlayer = Player.getElementsByTagName("points")
+		thisPlayerOriginalProjection = CDbl(thisPlayer.item(0).text)
+
+		Set objPlayerLiveProjection = oXMLOmega.selectSingleNode(".//player[@id = " & thisPlayerID & "]")
+
+		Set objPlayerLiveProjectionPoints = objPlayerLiveProjection.getElementsByTagName("fpts")
+		thisPlayerLiveProjectionPoints = CDbl(objPlayerLiveProjectionPoints.item(0).text)
+		Set objPlayerLiveProjectionPMR = objPlayerLiveProjection.getElementsByTagName("minutes_remaining")
+		thisPlayerLiveProjectionPMR = CDbl(objPlayerLiveProjectionPMR.item(0).text)
+		thisPlayerLiveProjectionMinutesPlayed = 60 - thisPlayerLiveProjectionPMR
+
+		thisOriginalPPM = thisPlayerOriginalProjection / 60
+		thisNewProjection = ((thisPlayerOriginalProjection / 60) * thisPlayerLiveProjectionPMR) + thisPlayerLiveProjectionPoints
+
+		TeamNewProjectedScore2 = TeamNewProjectedScore2 + thisNewProjection
+
+	Next
+
+	TeamNewProjectedScore1 = FormatNumber(TeamNewProjectedScore1, 2)
+	TeamNewProjectedScore2 = FormatNumber(TeamNewProjectedScore2, 2)
+
+	TeamSpread1 = CInt(TeamNewProjectedScore2 - TeamNewProjectedScore1)
+	TeamSpread2 = CInt(TeamNewProjectedScore1 - TeamNewProjectedScore2)
+
+	MatchupWinPercentage = CalculateWinPercentage(TeamPMR1, TeamPMR2, TeamNewProjectedScore1, TeamNewProjectedScore2, TeamScore1, TeamScore2)
 	arrWinPercentages = Split(MatchupWinPercentage, "/")
 
 	TeamWinPercentage1Display = arrWinPercentages(0)
@@ -453,7 +568,7 @@ For i = 0 To UBound(arrOmega, 2)
 
 	TeamWinPercentage1 = largerPercentage
 	TeamWinPercentage2 = smallerPercentage
-	If CInt(TeamProjectedScore1) < CInt(TeamProjectedScore2) Then
+	If CInt(TeamNewProjectedScore1) < CInt(TeamNewProjectedScore2) Then
 		TeamWinPercentage2 = largerPercentage
 		TeamWinPercentage1 = smallerPercentage
 	End If
@@ -482,10 +597,10 @@ For i = 0 To UBound(arrOmega, 2)
 
 	'CalculateWinPercentage(TeamPMR1, TeamPMR2, TeamProjectedScore1, TeamProjectedScore2, TeamScore1, TeamScore2)'
 	WScript.Echo(vbcrlf & vbcrlf & "MATCHUP #" & MatchupID & " (OMEGA) ----------")
-	WScript.Echo(vbcrlf & TeamName1 & " (" & TeamProjectedScore1 & " Proj, " & TeamSpread1Display & " Spread, " & TeamWinPercentage1 * 100 & "% Win, " & TeamMoneyline1Display & " ML)")
-	WScript.Echo(vbcrlf & TeamName2 & " (" & TeamProjectedScore2 & " Proj, " & TeamSpread2Display & " Spread, " & TeamWinPercentage2 * 100 & "% Win, " & TeamMoneyline2Display & " ML)")
+	WScript.Echo(vbcrlf & TeamName1 & " (" & TeamNewProjectedScore1 & " Proj, " & TeamSpread1Display & " Spread, " & TeamWinPercentage1 * 100 & "% Win, " & TeamMoneyline1Display & " ML)")
+	WScript.Echo(vbcrlf & TeamName2 & " (" & TeamNewProjectedScore2 & " Proj, " & TeamSpread2Display & " Spread, " & TeamWinPercentage2 * 100 & "% Win, " & TeamMoneyline2Display & " ML)")
 
-	sqlUpdate = "UPDATE Matchups SET TeamScore1 = " & TeamScore1 & ", TeamScore2 = " & TeamScore2 & ", TeamPMR1 = " & TeamPMR1 & ", TeamPMR2 = " & TeamPMR2 & ", TeamProjected1 = " &  TeamProjectedScore1 & ", TeamProjected2 = " &  TeamProjectedScore2 & ", TeamWinPercentage1 = " &  TeamWinPercentage1 & ", TeamWinPercentage2 = " &  TeamWinPercentage2 & ", TeamMoneyline1 = " &  TeamMoneyline1 & ", TeamMoneyline2 = " &  TeamMoneyline2 & ", TeamSpread1 = " &  TeamSpread1 & ", TeamSpread2 = " &  TeamSpread2 & "  WHERE MatchupID = " & MatchupID
+	sqlUpdate = "UPDATE Matchups SET TeamScore1 = " & TeamScore1 & ", TeamScore2 = " & TeamScore2 & ", TeamPMR1 = " & TeamPMR1 & ", TeamPMR2 = " & TeamPMR2 & ", TeamProjected1 = " &  TeamNewProjectedScore1 & ", TeamProjected2 = " &  TeamNewProjectedScore2 & ", TeamWinPercentage1 = " &  TeamWinPercentage1 & ", TeamWinPercentage2 = " &  TeamWinPercentage2 & ", TeamMoneyline1 = " &  TeamMoneyline1 & ", TeamMoneyline2 = " &  TeamMoneyline2 & ", TeamSpread1 = " &  TeamSpread1 & ", TeamSpread2 = " &  TeamSpread2 & "  WHERE MatchupID = " & MatchupID
 	Set rsUpdate = sqlDatabase.Execute(sqlUpdate)
 
 Next
@@ -537,19 +652,69 @@ For i = 0 To UBound(arrSLFFL, 2)
 	projectionsXML1.loadXML(GetProjections("SLFFL", TeamCBSID1))
 	projectionsXML1.setProperty "SelectionLanguage", "XPath"
 	Set projectionsTeam1 = projectionsXML1.selectSingleNode(".//team[@id = " & TeamCBSID1 & "]/points")
+	Set projectionsTeamPlayers1 = projectionsXML1.selectNodes(".//team[@id = " & TeamCBSID1 & "]/active_players/active_player")
 
 	Set projectionsXML2 = CreateObject("MSXML2.DOMDocument.3.0")
 	projectionsXML2.loadXML(GetProjections("SLFFL", TeamCBSID2))
 	projectionsXML2.setProperty "SelectionLanguage", "XPath"
 	Set projectionsTeam2 = projectionsXML2.selectSingleNode(".//team[@id = " & TeamCBSID2 & "]/points")
+	Set projectionsTeamPlayers2 = projectionsXML2.selectNodes(".//team[@id = " & TeamCBSID2 & "]/active_players/active_player")
 
 	TeamProjectedScore1 = projectionsTeam1.text
 	TeamProjectedScore2 = projectionsTeam2.text
 
-	TeamSpread1 = TeamProjectedScore2 - TeamProjectedScore1
-	TeamSpread2 = TeamProjectedScore1 - TeamProjectedScore2
+	TeamNewProjectedScore1 = 0
+	TeamNewProjectedScore2 = 0
 
-	MatchupWinPercentage = CalculateWinPercentage(TeamPMR1, TeamPMR2, TeamProjectedScore1, TeamProjectedScore2, TeamScore1, TeamScore2)
+	For Each Player In projectionsTeamPlayers1
+
+		thisPlayerID = Player.getAttribute("id")
+		Set thisPlayer = Player.getElementsByTagName("points")
+		thisPlayerOriginalProjection = CDbl(thisPlayer.item(0).text)
+
+		Set objPlayerLiveProjection = oXMLSLFFL.selectSingleNode(".//player[@id = " & thisPlayerID & "]")
+
+		Set objPlayerLiveProjectionPoints = objPlayerLiveProjection.getElementsByTagName("fpts")
+		thisPlayerLiveProjectionPoints = CDbl(objPlayerLiveProjectionPoints.item(0).text)
+		Set objPlayerLiveProjectionPMR = objPlayerLiveProjection.getElementsByTagName("minutes_remaining")
+		thisPlayerLiveProjectionPMR = CDbl(objPlayerLiveProjectionPMR.item(0).text)
+		thisPlayerLiveProjectionMinutesPlayed = 60 - thisPlayerLiveProjectionPMR
+
+		thisOriginalPPM = thisPlayerOriginalProjection / 60
+		thisNewProjection = ((thisPlayerOriginalProjection / 60) * thisPlayerLiveProjectionPMR) + thisPlayerLiveProjectionPoints
+
+		TeamNewProjectedScore1 = TeamNewProjectedScore1 + thisNewProjection
+
+	Next
+
+	For Each Player In projectionsTeamPlayers2
+
+		thisPlayerID = Player.getAttribute("id")
+		Set thisPlayer = Player.getElementsByTagName("points")
+		thisPlayerOriginalProjection = CDbl(thisPlayer.item(0).text)
+
+		Set objPlayerLiveProjection = oXMLSLFFL.selectSingleNode(".//player[@id = " & thisPlayerID & "]")
+
+		Set objPlayerLiveProjectionPoints = objPlayerLiveProjection.getElementsByTagName("fpts")
+		thisPlayerLiveProjectionPoints = CDbl(objPlayerLiveProjectionPoints.item(0).text)
+		Set objPlayerLiveProjectionPMR = objPlayerLiveProjection.getElementsByTagName("minutes_remaining")
+		thisPlayerLiveProjectionPMR = CDbl(objPlayerLiveProjectionPMR.item(0).text)
+		thisPlayerLiveProjectionMinutesPlayed = 60 - thisPlayerLiveProjectionPMR
+
+		thisOriginalPPM = thisPlayerOriginalProjection / 60
+		thisNewProjection = ((thisPlayerOriginalProjection / 60) * thisPlayerLiveProjectionPMR) + thisPlayerLiveProjectionPoints
+
+		TeamNewProjectedScore2 = TeamNewProjectedScore2 + thisNewProjection
+
+	Next
+
+	TeamNewProjectedScore1 = FormatNumber(TeamNewProjectedScore1, 2)
+	TeamNewProjectedScore2 = FormatNumber(TeamNewProjectedScore2, 2)
+
+	TeamSpread1 = CInt(TeamNewProjectedScore2 - TeamNewProjectedScore1)
+	TeamSpread2 = CInt(TeamNewProjectedScore1 - TeamNewProjectedScore2)
+
+	MatchupWinPercentage = CalculateWinPercentage(TeamPMR1, TeamPMR2, TeamNewProjectedScore1, TeamNewProjectedScore2, TeamScore1, TeamScore2)
 	arrWinPercentages = Split(MatchupWinPercentage, "/")
 
 	TeamWinPercentage1Display = arrWinPercentages(0)
@@ -570,7 +735,7 @@ For i = 0 To UBound(arrSLFFL, 2)
 
 	TeamWinPercentage1 = largerPercentage
 	TeamWinPercentage2 = smallerPercentage
-	If CInt(TeamProjectedScore1) < CInt(TeamProjectedScore2) Then
+	If CInt(TeamNewProjectedScore1) < CInt(TeamNewProjectedScore2) Then
 		TeamWinPercentage2 = largerPercentage
 		TeamWinPercentage1 = smallerPercentage
 	End If
@@ -599,10 +764,10 @@ For i = 0 To UBound(arrSLFFL, 2)
 
 	'CalculateWinPercentage(TeamPMR1, TeamPMR2, TeamProjectedScore1, TeamProjectedScore2, TeamScore1, TeamScore2)'
 	WScript.Echo(vbcrlf & vbcrlf & "MATCHUP #" & MatchupID & " (SLFFL) ----------")
-	WScript.Echo(vbcrlf & TeamName1 & " (" & TeamProjectedScore1 & " Proj, " & TeamSpread1Display & " Spread, " & TeamWinPercentage1 * 100 & "% Win, " & TeamMoneyline1Display & " ML)")
-	WScript.Echo(vbcrlf & TeamName2 & " (" & TeamProjectedScore2 & " Proj, " & TeamSpread2Display & " Spread, " & TeamWinPercentage2 * 100 & "% Win, " & TeamMoneyline2Display & " ML)")
+	WScript.Echo(vbcrlf & TeamName1 & " (" & TeamNewProjectedScore1 & " Proj, " & TeamSpread1Display & " Spread, " & TeamWinPercentage1 * 100 & "% Win, " & TeamMoneyline1Display & " ML)")
+	WScript.Echo(vbcrlf & TeamName2 & " (" & TeamNewProjectedScore2 & " Proj, " & TeamSpread2Display & " Spread, " & TeamWinPercentage2 * 100 & "% Win, " & TeamMoneyline2Display & " ML)")
 
-	sqlUpdate = "UPDATE Matchups SET TeamScore1 = " & TeamScore1 & ", TeamScore2 = " & TeamScore2 & ", TeamPMR1 = " & TeamPMR1 & ", TeamPMR2 = " & TeamPMR2 & ", TeamProjected1 = " &  TeamProjectedScore1 & ", TeamProjected2 = " &  TeamProjectedScore2 & ", TeamWinPercentage1 = " &  TeamWinPercentage1 & ", TeamWinPercentage2 = " &  TeamWinPercentage2 & ", TeamMoneyline1 = " &  TeamMoneyline1 & ", TeamMoneyline2 = " &  TeamMoneyline2 & ", TeamSpread1 = " &  TeamSpread1 & ", TeamSpread2 = " &  TeamSpread2 & "  WHERE MatchupID = " & MatchupID
+	sqlUpdate = "UPDATE Matchups SET TeamScore1 = " & TeamScore1 & ", TeamScore2 = " & TeamScore2 & ", TeamPMR1 = " & TeamPMR1 & ", TeamPMR2 = " & TeamPMR2 & ", TeamProjected1 = " &  TeamNewProjectedScore1 & ", TeamProjected2 = " &  TeamNewProjectedScore2 & ", TeamWinPercentage1 = " &  TeamWinPercentage1 & ", TeamWinPercentage2 = " &  TeamWinPercentage2 & ", TeamMoneyline1 = " &  TeamMoneyline1 & ", TeamMoneyline2 = " &  TeamMoneyline2 & ", TeamSpread1 = " &  TeamSpread1 & ", TeamSpread2 = " &  TeamSpread2 & "  WHERE MatchupID = " & MatchupID
 	Set rsUpdate = sqlDatabase.Execute(sqlUpdate)
 
 Next
@@ -653,19 +818,69 @@ For i = 0 To UBound(arrFLFFL, 2)
 	projectionsXML1.loadXML(GetProjections("FLFFL", TeamCBSID1))
 	projectionsXML1.setProperty "SelectionLanguage", "XPath"
 	Set projectionsTeam1 = projectionsXML1.selectSingleNode(".//team[@id = " & TeamCBSID1 & "]/points")
+	Set projectionsTeamPlayers1 = projectionsXML1.selectNodes(".//team[@id = " & TeamCBSID1 & "]/active_players/active_player")
 
 	Set projectionsXML2 = CreateObject("MSXML2.DOMDocument.3.0")
 	projectionsXML2.loadXML(GetProjections("FLFFL", TeamCBSID2))
 	projectionsXML2.setProperty "SelectionLanguage", "XPath"
 	Set projectionsTeam2 = projectionsXML2.selectSingleNode(".//team[@id = " & TeamCBSID2 & "]/points")
+	Set projectionsTeamPlayers2 = projectionsXML2.selectNodes(".//team[@id = " & TeamCBSID2 & "]/active_players/active_player")
 
 	TeamProjectedScore1 = projectionsTeam1.text
 	TeamProjectedScore2 = projectionsTeam2.text
 
-	TeamSpread1 = TeamProjectedScore2 - TeamProjectedScore1
-	TeamSpread2 = TeamProjectedScore1 - TeamProjectedScore2
+	TeamNewProjectedScore1 = 0
+	TeamNewProjectedScore2 = 0
 
-	MatchupWinPercentage = CalculateWinPercentage(TeamPMR1, TeamPMR2, TeamProjectedScore1, TeamProjectedScore2, TeamScore1, TeamScore2)
+	For Each Player In projectionsTeamPlayers1
+
+		thisPlayerID = Player.getAttribute("id")
+		Set thisPlayer = Player.getElementsByTagName("points")
+		thisPlayerOriginalProjection = CDbl(thisPlayer.item(0).text)
+
+		Set objPlayerLiveProjection = oXMLFLFFL.selectSingleNode(".//player[@id = " & thisPlayerID & "]")
+
+		Set objPlayerLiveProjectionPoints = objPlayerLiveProjection.getElementsByTagName("fpts")
+		thisPlayerLiveProjectionPoints = CDbl(objPlayerLiveProjectionPoints.item(0).text)
+		Set objPlayerLiveProjectionPMR = objPlayerLiveProjection.getElementsByTagName("minutes_remaining")
+		thisPlayerLiveProjectionPMR = CDbl(objPlayerLiveProjectionPMR.item(0).text)
+		thisPlayerLiveProjectionMinutesPlayed = 60 - thisPlayerLiveProjectionPMR
+
+		thisOriginalPPM = thisPlayerOriginalProjection / 60
+		thisNewProjection = ((thisPlayerOriginalProjection / 60) * thisPlayerLiveProjectionPMR) + thisPlayerLiveProjectionPoints
+
+		TeamNewProjectedScore1 = TeamNewProjectedScore1 + thisNewProjection
+
+	Next
+
+	For Each Player In projectionsTeamPlayers2
+
+		thisPlayerID = Player.getAttribute("id")
+		Set thisPlayer = Player.getElementsByTagName("points")
+		thisPlayerOriginalProjection = CDbl(thisPlayer.item(0).text)
+
+		Set objPlayerLiveProjection = oXMLFLFFL.selectSingleNode(".//player[@id = " & thisPlayerID & "]")
+
+		Set objPlayerLiveProjectionPoints = objPlayerLiveProjection.getElementsByTagName("fpts")
+		thisPlayerLiveProjectionPoints = CDbl(objPlayerLiveProjectionPoints.item(0).text)
+		Set objPlayerLiveProjectionPMR = objPlayerLiveProjection.getElementsByTagName("minutes_remaining")
+		thisPlayerLiveProjectionPMR = CDbl(objPlayerLiveProjectionPMR.item(0).text)
+		thisPlayerLiveProjectionMinutesPlayed = 60 - thisPlayerLiveProjectionPMR
+
+		thisOriginalPPM = thisPlayerOriginalProjection / 60
+		thisNewProjection = ((thisPlayerOriginalProjection / 60) * thisPlayerLiveProjectionPMR) + thisPlayerLiveProjectionPoints
+
+		TeamNewProjectedScore2 = TeamNewProjectedScore2 + thisNewProjection
+
+	Next
+
+	TeamNewProjectedScore1 = FormatNumber(TeamNewProjectedScore1, 2)
+	TeamNewProjectedScore2 = FormatNumber(TeamNewProjectedScore2, 2)
+
+	TeamSpread1 = CInt(TeamNewProjectedScore2 - TeamNewProjectedScore1)
+	TeamSpread2 = CInt(TeamNewProjectedScore1 - TeamNewProjectedScore2)
+
+	MatchupWinPercentage = CalculateWinPercentage(TeamPMR1, TeamPMR2, TeamNewProjectedScore1, TeamNewProjectedScore2, TeamScore1, TeamScore2)
 	arrWinPercentages = Split(MatchupWinPercentage, "/")
 
 	TeamWinPercentage1Display = arrWinPercentages(0)
@@ -686,7 +901,7 @@ For i = 0 To UBound(arrFLFFL, 2)
 
 	TeamWinPercentage1 = largerPercentage
 	TeamWinPercentage2 = smallerPercentage
-	If CInt(TeamProjectedScore1) < CInt(TeamProjectedScore2) Then
+	If CInt(TeamNewProjectedScore1) < CInt(TeamNewProjectedScore2) Then
 		TeamWinPercentage2 = largerPercentage
 		TeamWinPercentage1 = smallerPercentage
 	End If
@@ -715,10 +930,10 @@ For i = 0 To UBound(arrFLFFL, 2)
 
 	'CalculateWinPercentage(TeamPMR1, TeamPMR2, TeamProjectedScore1, TeamProjectedScore2, TeamScore1, TeamScore2)'
 	WScript.Echo(vbcrlf & vbcrlf & "MATCHUP #" & MatchupID & " (FLFFL) ----------")
-	WScript.Echo(vbcrlf & TeamName1 & " (" & TeamProjectedScore1 & " Proj, " & TeamSpread1Display & " Spread, " & TeamWinPercentage1 * 100 & "% Win, " & TeamMoneyline1Display & " ML)")
-	WScript.Echo(vbcrlf & TeamName2 & " (" & TeamProjectedScore2 & " Proj, " & TeamSpread2Display & " Spread, " & TeamWinPercentage2 * 100 & "% Win, " & TeamMoneyline2Display & " ML)")
+	WScript.Echo(vbcrlf & TeamName1 & " (" & TeamNewProjectedScore1 & " Proj, " & TeamSpread1Display & " Spread, " & TeamWinPercentage1 * 100 & "% Win, " & TeamMoneyline1Display & " ML)")
+	WScript.Echo(vbcrlf & TeamName2 & " (" & TeamNewProjectedScore2 & " Proj, " & TeamSpread2Display & " Spread, " & TeamWinPercentage2 * 100 & "% Win, " & TeamMoneyline2Display & " ML)")
 
-	sqlUpdate = "UPDATE Matchups SET TeamScore1 = " & TeamScore1 & ", TeamScore2 = " & TeamScore2 & ", TeamPMR1 = " & TeamPMR1 & ", TeamPMR2 = " & TeamPMR2 & ", TeamProjected1 = " &  TeamProjectedScore1 & ", TeamProjected2 = " &  TeamProjectedScore2 & ", TeamWinPercentage1 = " &  TeamWinPercentage1 & ", TeamWinPercentage2 = " &  TeamWinPercentage2 & ", TeamMoneyline1 = " &  TeamMoneyline1 & ", TeamMoneyline2 = " &  TeamMoneyline2 & ", TeamSpread1 = " &  TeamSpread1 & ", TeamSpread2 = " &  TeamSpread2 & "  WHERE MatchupID = " & MatchupID
+	sqlUpdate = "UPDATE Matchups SET TeamScore1 = " & TeamScore1 & ", TeamScore2 = " & TeamScore2 & ", TeamPMR1 = " & TeamPMR1 & ", TeamPMR2 = " & TeamPMR2 & ", TeamProjected1 = " &  TeamNewProjectedScore1 & ", TeamProjected2 = " &  TeamNewProjectedScore2 & ", TeamWinPercentage1 = " &  TeamWinPercentage1 & ", TeamWinPercentage2 = " &  TeamWinPercentage2 & ", TeamMoneyline1 = " &  TeamMoneyline1 & ", TeamMoneyline2 = " &  TeamMoneyline2 & ", TeamSpread1 = " &  TeamSpread1 & ", TeamSpread2 = " &  TeamSpread2 & "  WHERE MatchupID = " & MatchupID
 	Set rsUpdate = sqlDatabase.Execute(sqlUpdate)
 
 Next
