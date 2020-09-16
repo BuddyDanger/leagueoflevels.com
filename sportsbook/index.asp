@@ -86,6 +86,9 @@
 												thisTotalPotentialPayout = rsSportsbookData("TotalPotentialPayout")
 												thisTotalActiveTickets = rsSportsbookData("TotalActiveTickets")
 												thisTotalBettingUsers = rsSportsbookData("TotalBettingUsers")
+
+												If Not IsNumeric(thisTotalActiveBetAmount) Then thisTotalActiveBetAmount = 0
+												If Not IsNumeric(thisTotalPotentialPayout) Then thisTotalPotentialPayout = 0
 %>
 												<div class="col-xxxl-4 col-xxl-4 col-xl-4 col-lg-6 col-md-6 col-sm-12 col-xs-12 col-xxs-12">
 													<a href="/sportsbook/tickets/" style="text-decoration: none; display: block;">
@@ -113,7 +116,7 @@
 											sqlGetSchedules = "SELECT MatchupID, Matchups.LevelID, Year, Period, IsPlayoffs, TeamID1, TeamID2, Team1.TeamName AS TeamName1, Team2.TeamName AS TeamName2, TeamScore1, TeamScore2, TeamPMR1, TeamPMR2, Leg, TeamProjected1, TeamProjected2, TeamWinPercentage1, TeamWinPercentage2, TeamMoneyline1, TeamMoneyline2, TeamSpread1, TeamSpread2 FROM Matchups "
 											sqlGetSchedules = sqlGetSchedules & "INNER JOIN Teams AS Team1 ON Team1.TeamID = Matchups.TeamID1 "
 											sqlGetSchedules = sqlGetSchedules & "INNER JOIN Teams AS Team2 ON Team2.TeamID = Matchups.TeamID2 "
-											sqlGetSchedules = sqlGetSchedules & "WHERE Matchups.Year = " & thisYear & " AND Matchups.Period = " & thisPeriod & " AND (TeamPMR1 > 0 OR TeamPMR2 > 0) AND (TeamWinPercentage1 >= 0.20 AND TeamWinPercentage1 <= 0.80)  AND (TeamWinPercentage2 >= 0.20 AND TeamWinPercentage2 <= 0.80) "
+											sqlGetSchedules = sqlGetSchedules & "WHERE Matchups.Year = " & Session.Contents("CurrentYear") & " AND Matchups.Period = " & Session.Contents("CurrentPeriod") & " AND (TeamPMR1 > 0 OR TeamPMR2 > 0) AND (TeamWinPercentage1 >= 0.20 AND TeamWinPercentage1 <= 0.80)  AND (TeamWinPercentage2 >= 0.20 AND TeamWinPercentage2 <= 0.80) "
 											sqlGetSchedules = sqlGetSchedules & "ORDER BY CASE WHEN Matchups.LevelID = 1 THEN '1' WHEN Matchups.LevelID = 0 THEN '2' WHEN Matchups.LevelID = 2 THEN '3' WHEN Matchups.LevelID = 3 THEN '4' ELSE Matchups.LevelID END ASC, Matchups.MatchupID DESC"
 											Set rsSchedules = sqlDatabase.Execute(sqlGetSchedules)
 

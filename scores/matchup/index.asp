@@ -197,7 +197,7 @@
 													End If
 
 													Set oXML = CreateObject("MSXML2.DOMDocument.3.0")
-													oXML.loadXML(GetScores(LevelTitle))
+													oXML.loadXML(GetScores(LevelTitle, Session.Contents("CurrentPeriod")))
 
 													oXML.setProperty "SelectionLanguage", "XPath"
 													Set objTeam = oXML.selectSingleNode(".//team[@id = " & TeamCBSID1 & "]")
@@ -394,7 +394,7 @@
 													End If
 
 													Set oXML = CreateObject("MSXML2.DOMDocument.3.0")
-													oXML.loadXML(GetScores(LevelTitle))
+													oXML.loadXML(GetScores(LevelTitle, Session.Contents("CurrentPeriod")))
 
 													oXML.setProperty "SelectionLanguage", "XPath"
 													Set objTeam = oXML.selectSingleNode(".//team[@id = " & TeamCBSID2 & "]")

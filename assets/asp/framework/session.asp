@@ -1,4 +1,21 @@
 <%
+	If Len(Session.Contents("CurrentYear")) = 0 Then
+
+		sqlGetYearPeriod = "SELECT TOP 1 Year, Period FROM YearPeriods WHERE StartDate < GetDate() ORDER BY StartDate DESC"
+		Set rsYearPeriod = sqlDatabase.Execute(sqlGetYearPeriod)
+
+		If Not rsYearPeriod.Eof Then
+
+			Session.Contents("CurrentYear") = rsYearPeriod("Year")
+			Session.Contents("CurrentPeriod") = rsYearPeriod("Period")
+
+			rsYearPeriod.Close
+			Set rsYearPeriod = Nothing
+
+		End If
+
+	End If
+
 	If Session.Contents("LoggedIn") <> "yes" Then
 
 		Session.Contents("LoggedIn") = "no"

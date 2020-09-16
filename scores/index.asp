@@ -11,22 +11,22 @@
 		<meta http-equiv="x-ua-compatible" content="IE=edge,chrome=1" />
 		<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
-		<title>Live Scoring / Week <%= thisPeriod %> / League of Levels</title>
+		<title>Live Scoring / Week <%= Session.Contents("CurrentPeriod") %> / League of Levels</title>
 
 		<meta name="description" content="" />
 
 		<meta property="og:site_name" content="LeagueOfLevels.com" />
 		<meta property="og:url" content="https://www.leagueoflevels.com/scores/" />
-		<meta property="og:title" content="Live Scoring / Week <%= thisPeriod %> / League of Levels" />
+		<meta property="og:title" content="Live Scoring / Week <%= Session.Contents("CurrentPeriod") %> / League of Levels" />
 		<meta property="og:description" content="" />
 		<meta property="og:type" content="article" />
 
 		<meta name="twitter:site" content="samelevel" />
 		<meta name="twitter:url" content="https://www.leagueoflevels.com/scores/" />
-		<meta name="twitter:title" content="Live Scoring / Week <%= thisPeriod %> / League of Levels" />
+		<meta name="twitter:title" content="Live Scoring / Week <%= Session.Contents("CurrentPeriod") %> / League of Levels" />
 		<meta name="twitter:description" content="" />
 
-		<meta name="title" content="Live Scoring / Week <%= thisPeriod %> / League of Levels" />
+		<meta name="title" content="Live Scoring / Week <%= Session.Contents("CurrentPeriod") %> / League of Levels" />
 		<meta name="medium" content="article" />
 
 		<link rel="shortcut icon" href="/favicon.ico" />
@@ -66,16 +66,16 @@
 
 								</div>
 
-								<h4 class="page-title">Live Scoring / Week <%= thisPeriod %></h4>
+								<h4 class="page-title">Live Scoring / Week <%= Session.Contents("CurrentPeriod") %></h4>
 
 							</div>
 
 							<div class="page-content">
 <%
-								sqlMatchups = "SELECT Matchups.MatchupID, Matchups.LevelID, Matchups.TeamID1, Teams1.TeamName AS TeamName1, Teams1.CBSLogo AS CBSLogo1, Teams1.CBSID AS CBSID1, Matchups.TeamID2, Teams2.TeamName, Teams2.CBSLogo, Teams2.CBSID, Matchups.TeamScore1, Matchups.TeamScore2, Matchups.TeamPMR1, Matchups.TeamPMR2 FROM Matchups INNER JOIN Teams AS Teams1 ON Teams1.TeamID = Matchups.TeamID1 INNER JOIN Teams AS Teams2 ON Teams2.TeamID = Matchups.TeamID2 WHERE Matchups.Year = " & thisYear & " AND Matchups.Period = " & thisPeriod & " AND Matchups.LevelID = 1;"
-								sqlMatchups = sqlMatchups & "SELECT Matchups.MatchupID, Matchups.LevelID, Matchups.TeamID1, Teams1.TeamName AS TeamName1, Teams1.CBSLogo AS CBSLogo1, Teams1.CBSID AS CBSID1, Matchups.TeamID2, Teams2.TeamName, Teams2.CBSLogo, Teams2.CBSID, Matchups.TeamScore1, Matchups.TeamScore2, Matchups.TeamPMR1, Matchups.TeamPMR2, Matchups.Leg FROM Matchups INNER JOIN Teams AS Teams1 ON Teams1.TeamID = Matchups.TeamID1 INNER JOIN Teams AS Teams2 ON Teams2.TeamID = Matchups.TeamID2 WHERE Matchups.Year = " & thisYear & " AND Matchups.Period = " & thisPeriod & " AND Matchups.LevelID = 0;"
-								sqlMatchups = sqlMatchups & "SELECT Matchups.MatchupID, Matchups.LevelID, Matchups.TeamID1, Teams1.TeamName AS TeamName1, Teams1.CBSLogo AS CBSLogo1, Teams1.CBSID AS CBSID1, Matchups.TeamID2, Teams2.TeamName, Teams2.CBSLogo, Teams2.CBSID, Matchups.TeamScore1, Matchups.TeamScore2, Matchups.TeamPMR1, Matchups.TeamPMR2 FROM Matchups INNER JOIN Teams AS Teams1 ON Teams1.TeamID = Matchups.TeamID1 INNER JOIN Teams AS Teams2 ON Teams2.TeamID = Matchups.TeamID2 WHERE Matchups.Year = " & thisYear & " AND Matchups.Period = " & thisPeriod & " AND Matchups.LevelID = 2;"
-								sqlMatchups = sqlMatchups & "SELECT Matchups.MatchupID, Matchups.LevelID, Matchups.TeamID1, Teams1.TeamName AS TeamName1, Teams1.CBSLogo AS CBSLogo1, Teams1.CBSID AS CBSID1, Matchups.TeamID2, Teams2.TeamName, Teams2.CBSLogo, Teams2.CBSID, Matchups.TeamScore1, Matchups.TeamScore2, Matchups.TeamPMR1, Matchups.TeamPMR2 FROM Matchups INNER JOIN Teams AS Teams1 ON Teams1.TeamID = Matchups.TeamID1 INNER JOIN Teams AS Teams2 ON Teams2.TeamID = Matchups.TeamID2 WHERE Matchups.Year = " & thisYear & " AND Matchups.Period = " & thisPeriod & " AND Matchups.LevelID = 3;"
+								sqlMatchups = "SELECT Matchups.MatchupID, Matchups.LevelID, Matchups.TeamID1, Teams1.TeamName AS TeamName1, Teams1.CBSLogo AS CBSLogo1, Teams1.CBSID AS CBSID1, Matchups.TeamID2, Teams2.TeamName, Teams2.CBSLogo, Teams2.CBSID, Matchups.TeamScore1, Matchups.TeamScore2, Matchups.TeamPMR1, Matchups.TeamPMR2 FROM Matchups INNER JOIN Teams AS Teams1 ON Teams1.TeamID = Matchups.TeamID1 INNER JOIN Teams AS Teams2 ON Teams2.TeamID = Matchups.TeamID2 WHERE Matchups.Year = " & Session.Contents("CurrentYear") & " AND Matchups.Period = " & Session.Contents("CurrentPeriod") & " AND Matchups.LevelID = 1;"
+								sqlMatchups = sqlMatchups & "SELECT Matchups.MatchupID, Matchups.LevelID, Matchups.TeamID1, Teams1.TeamName AS TeamName1, Teams1.CBSLogo AS CBSLogo1, Teams1.CBSID AS CBSID1, Matchups.TeamID2, Teams2.TeamName, Teams2.CBSLogo, Teams2.CBSID, Matchups.TeamScore1, Matchups.TeamScore2, Matchups.TeamPMR1, Matchups.TeamPMR2, Matchups.Leg FROM Matchups INNER JOIN Teams AS Teams1 ON Teams1.TeamID = Matchups.TeamID1 INNER JOIN Teams AS Teams2 ON Teams2.TeamID = Matchups.TeamID2 WHERE Matchups.Year = " & Session.Contents("CurrentYear") & " AND Matchups.Period = " & Session.Contents("CurrentPeriod") & " AND Matchups.LevelID = 0;"
+								sqlMatchups = sqlMatchups & "SELECT Matchups.MatchupID, Matchups.LevelID, Matchups.TeamID1, Teams1.TeamName AS TeamName1, Teams1.CBSLogo AS CBSLogo1, Teams1.CBSID AS CBSID1, Matchups.TeamID2, Teams2.TeamName, Teams2.CBSLogo, Teams2.CBSID, Matchups.TeamScore1, Matchups.TeamScore2, Matchups.TeamPMR1, Matchups.TeamPMR2 FROM Matchups INNER JOIN Teams AS Teams1 ON Teams1.TeamID = Matchups.TeamID1 INNER JOIN Teams AS Teams2 ON Teams2.TeamID = Matchups.TeamID2 WHERE Matchups.Year = " & Session.Contents("CurrentYear") & " AND Matchups.Period = " & Session.Contents("CurrentPeriod") & " AND Matchups.LevelID = 2;"
+								sqlMatchups = sqlMatchups & "SELECT Matchups.MatchupID, Matchups.LevelID, Matchups.TeamID1, Teams1.TeamName AS TeamName1, Teams1.CBSLogo AS CBSLogo1, Teams1.CBSID AS CBSID1, Matchups.TeamID2, Teams2.TeamName, Teams2.CBSLogo, Teams2.CBSID, Matchups.TeamScore1, Matchups.TeamScore2, Matchups.TeamPMR1, Matchups.TeamPMR2 FROM Matchups INNER JOIN Teams AS Teams1 ON Teams1.TeamID = Matchups.TeamID1 INNER JOIN Teams AS Teams2 ON Teams2.TeamID = Matchups.TeamID2 WHERE Matchups.Year = " & Session.Contents("CurrentYear") & " AND Matchups.Period = " & Session.Contents("CurrentPeriod") & " AND Matchups.LevelID = 3;"
 								Set rsMatchups = sqlDatabase.Execute(sqlMatchups)
 
 								arrOmega = rsMatchups.GetRows()
@@ -178,7 +178,7 @@
 
 												If CInt(Leg) = 2 Then
 
-													sqlGetLastWeek = "SELECT * FROM Matchups WHERE (TeamID1 = " & TeamID1 & " OR TeamID2 = " & TeamID1 & ") AND LevelID = 0 AND Year = " & thisYear & " AND Period = " & thisPeriod - 1
+													sqlGetLastWeek = "SELECT * FROM Matchups WHERE (TeamID1 = " & TeamID1 & " OR TeamID2 = " & TeamID1 & ") AND LevelID = 0 AND Year = " & Session.Contents("CurrentYear") & " AND Period = " & Session.Contents("CurrentPeriod") - 1
 													Set rsLastWeek = sqlDatabase.Execute(sqlGetLastWeek)
 
 													If CInt(rsLastWeek("TeamID1")) = CInt(TeamID1) Then BaseScore1 = rsLastWeek("TeamScore1")
@@ -187,7 +187,7 @@
 													rsLastWeek.Close
 													Set rsLastWeek = Nothing
 
-													sqlGetLastWeek = "SELECT * FROM Matchups WHERE (TeamID1 = " & TeamID2 & " OR TeamID2 = " & TeamID2 & ") AND LevelID = 0 AND Year = " & thisYear & " AND Period = " & thisPeriod - 1
+													sqlGetLastWeek = "SELECT * FROM Matchups WHERE (TeamID1 = " & TeamID2 & " OR TeamID2 = " & TeamID2 & ") AND LevelID = 0 AND Year = " & Session.Contents("CurrentYear") & " AND Period = " & Session.Contents("CurrentPeriod") - 1
 													Set rsLastWeek = sqlDatabase.Execute(sqlGetLastWeek)
 
 													If CInt(rsLastWeek("TeamID1")) = CInt(TeamID2) Then BaseScore2 = rsLastWeek("TeamScore1")

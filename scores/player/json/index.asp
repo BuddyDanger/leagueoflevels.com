@@ -1,5 +1,6 @@
 <!--#include virtual="/adovbs.inc"-->
 <!--#include virtual="/assets/asp/sql/connection.asp"-->
+<!--#include virtual="/assets/asp/framework/session.asp"-->
 <!--#include virtual="/assets/asp/functions/master.asp"-->
 <%
 	Response.ContentType = "application/json"
@@ -9,7 +10,7 @@
 	thisPlayerID = Request.QueryString("id")
 
 	Set oXML = CreateObject("MSXML2.DOMDocument.3.0")
-	oXML.loadXML(GetScores(leagueTitle))
+	oXML.loadXML(GetScores(leagueTitle, Session.Contents("CurrentPeriod")))
 
 	oXML.setProperty "SelectionLanguage", "XPath"
 	Set objPlayer = oXML.selectSingleNode(".//player[@id = " & thisPlayerID & "]")

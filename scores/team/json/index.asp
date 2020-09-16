@@ -1,5 +1,6 @@
 <!--#include virtual="/adovbs.inc"-->
 <!--#include virtual="/assets/asp/sql/connection.asp"-->
+<!--#include virtual="/assets/asp/framework/session.asp"-->
 <!--#include virtual="/assets/asp/functions/master.asp"-->
 <%
 	Response.ContentType = "application/json"
@@ -14,7 +15,7 @@
 
 		If CInt(Leg) = 2 Then
 
-			sqlGetLastWeek = "SELECT * FROM Matchups WHERE (TeamID1 = " & teamID & " OR TeamID2 = " & teamID & ") AND LevelID = 0 AND Year = " & thisYear & " AND Period = " & thisPeriod - 1
+			sqlGetLastWeek = "SELECT * FROM Matchups WHERE (TeamID1 = " & teamID & " OR TeamID2 = " & teamID & ") AND LevelID = 0 AND Year = " & Session.Contents("CurrentYear") & " AND Period = " & Session.Contents("CurrentPeriod") - 1
 			Set rsLastWeek = sqlDatabase.Execute(sqlGetLastWeek)
 
 			If CInt(rsLastWeek("TeamID1")) = CInt(teamID) Then BaseScore = rsLastWeek("TeamScore1")
@@ -43,7 +44,7 @@
 	thisCBSID = rsCBSID("CBSID")
 
 	Set oXML = CreateObject("MSXML2.DOMDocument.3.0")
-	oXML.loadXML(GetScores(leagueTitle))
+	oXML.loadXML(GetScores(leagueTitle, Session.Contents("CurrentPeriod")))
 
 	oXML.setProperty "SelectionLanguage", "XPath"
 	Set objTeam = oXML.selectSingleNode(".//team[@id = " & thisCBSID & "]")

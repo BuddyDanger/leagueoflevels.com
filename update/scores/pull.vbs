@@ -29,10 +29,10 @@ Function GetToken (League)
 
 End Function
 
-Function GetScores (League)
+Function GetScores (League, thisPeriod)
 
 	If UCase(League) = "OMEGA" Then
-		liveSLFFL = "http://api.cbssports.com/fantasy/league/scoring/live?version=3.0&response_format=xml&league_id=omegalevel&access_token=" & GetToken("OMEGA")
+		liveSLFFL = "http://api.cbssports.com/fantasy/league/scoring/live?version=3.0&response_format=xml&period=" & thisPeriod & "&league_id=omegalevel&access_token=" & GetToken("OMEGA")
 		Set xmlhttpSLFFL = CreateObject("Microsoft.XMLHTTP")
 
 		xmlhttpSLFFL.open "GET", liveSLFFL, false
@@ -40,7 +40,7 @@ Function GetScores (League)
 	End If
 
 	If UCase(League) = "SLFFL" Then
-		liveSLFFL = "http://api.cbssports.com/fantasy/league/scoring/live?version=3.0&response_format=xml&league_id=samelevel&access_token=" & GetToken("SLFFL")
+		liveSLFFL = "http://api.cbssports.com/fantasy/league/scoring/live?version=3.0&response_format=xml&period=" & thisPeriod & "&league_id=samelevel&access_token=" & GetToken("SLFFL")
 		Set xmlhttpSLFFL = CreateObject("Microsoft.XMLHTTP")
 
 		xmlhttpSLFFL.open "GET", liveSLFFL, false
@@ -49,7 +49,7 @@ Function GetScores (League)
 
 	If UCase(League) = "FLFFL" Then
 
-		liveSLFFL = "http://api.cbssports.com/fantasy/league/scoring/live?version=3.0&response_format=xml&league_id=farmlevel&access_token=" & GetToken("FARM")
+		liveSLFFL = "http://api.cbssports.com/fantasy/league/scoring/live?version=3.0&response_format=xml&period=" & thisPeriod & "&league_id=farmlevel&access_token=" & GetToken("FARM")
 		Set xmlhttpSLFFL = CreateObject("Microsoft.XMLHTTP")
 
 		xmlhttpSLFFL.open "GET", liveSLFFL, false
@@ -61,10 +61,10 @@ Function GetScores (League)
 
 End Function
 
-Function GetProjections (League, CBSID)
+Function GetProjections (League, CBSID, thisPeriod)
 
 	If UCase(League) = "OMEGA" Then
-		liveSLFFL = "http://api.cbssports.com/fantasy/league/scoring/preview?version=3.0&response_format=xml&team_id=" & CBSID & "&league_id=omegalevel&access_token=" & GetToken("OMEGA")
+		liveSLFFL = "http://api.cbssports.com/fantasy/league/scoring/preview?version=3.0&response_format=xml&period=" & thisPeriod & "&team_id=" & CBSID & "&league_id=omegalevel&access_token=" & GetToken("OMEGA")
 		Set xmlhttpSLFFL = CreateObject("Microsoft.XMLHTTP")
 
 		xmlhttpSLFFL.open "GET", liveSLFFL, false
@@ -72,7 +72,7 @@ Function GetProjections (League, CBSID)
 	End If
 
 	If UCase(League) = "SLFFL" Then
-		liveSLFFL = "http://api.cbssports.com/fantasy/league/scoring/preview?version=3.0&response_format=xml&team_id=" & CBSID & "&league_id=samelevel&access_token=" & GetToken("SLFFL")
+		liveSLFFL = "http://api.cbssports.com/fantasy/league/scoring/preview?version=3.0&response_format=xml&period=" & thisPeriod & "&team_id=" & CBSID & "&league_id=samelevel&access_token=" & GetToken("SLFFL")
 		Set xmlhttpSLFFL = CreateObject("Microsoft.XMLHTTP")
 
 		xmlhttpSLFFL.open "GET", liveSLFFL, false
@@ -81,7 +81,7 @@ Function GetProjections (League, CBSID)
 
 	If UCase(League) = "FLFFL" Then
 
-		liveSLFFL = "http://api.cbssports.com/fantasy/league/scoring/preview?version=3.0&response_format=xml&team_id=" & CBSID & "&league_id=farmlevel&access_token=" & GetToken("FARM")
+		liveSLFFL = "http://api.cbssports.com/fantasy/league/scoring/preview?version=3.0&response_format=xml&period=" & thisPeriod & "&team_id=" & CBSID & "&league_id=farmlevel&access_token=" & GetToken("FARM")
 		Set xmlhttpSLFFL = CreateObject("Microsoft.XMLHTTP")
 
 		xmlhttpSLFFL.open "GET", liveSLFFL, false
@@ -204,12 +204,22 @@ Function CalculateWinPercentage (TeamPMR1, TeamPMR2, TeamProjected1, TeamProject
 
 End Function
 
-thisYear = 2020
-thisPeriod = 1
-
 Set sqlDatabase = CreateObject("ADODB.Connection")
 sqlDatabase.CursorLocation = adUseServer
 sqlDatabase.Open "Driver={SQL Server Native Client 11.0};Server=tcp:samelevel.database.windows.net,1433;Database=NextLevelDB;Uid=samelevel;Pwd=TheHammer123;Encrypt=yes;Connection Timeout=60;"
+
+sqlGetYearPeriod = "SELECT TOP 1 Year, Period FROM YearPeriods WHERE StartDate < GetDate() ORDER BY StartDate DESC"
+Set rsYearPeriod = sqlDatabase.Execute(sqlGetYearPeriod)
+
+If Not rsYearPeriod.Eof Then
+
+	thisYear = rsYearPeriod("Year")
+	thisPeriod = rsYearPeriod("Period")
+
+	rsYearPeriod.Close
+	Set rsYearPeriod = Nothing
+
+End If
 
 sqlGetMatchups = "SELECT MatchupID, LevelID, TeamID1, TeamID2 FROM [dbo].[Matchups] WHERE Year = " & thisYear & " AND Period = " & thisPeriod & " AND LevelID = 1; SELECT MatchupID, LevelID, TeamID1, TeamID2 FROM [dbo].[Matchups] WHERE Year = " & thisYear & " AND Period = " & thisPeriod & " AND LevelID = 0; SELECT MatchupID, LevelID, TeamID1, TeamID2 FROM [dbo].[Matchups] WHERE Year = " & thisYear & " AND Period = " & thisPeriod & " AND LevelID = 2; SELECT MatchupID, LevelID, TeamID1, TeamID2 FROM [dbo].[Matchups] WHERE Year = " & thisYear & " AND Period = " & thisPeriod & " AND LevelID = 3;"
 Set rsMatchups = sqlDatabase.Execute(sqlGetMatchups)
@@ -226,15 +236,15 @@ rsMatchups.Close
 Set rsMatchups = Nothing
 
 Set oXMLOmega = CreateObject("MSXML2.DOMDocument.3.0")
-oXMLOmega.loadXML(GetScores("OMEGA"))
+oXMLOmega.loadXML(GetScores("OMEGA", thisPeriod))
 oXMLOmega.setProperty "SelectionLanguage", "XPath"
 
 Set oXMLSLFFL = CreateObject("MSXML2.DOMDocument.3.0")
-oXMLSLFFL.loadXML(GetScores("SLFFL"))
+oXMLSLFFL.loadXML(GetScores("SLFFL", thisPeriod))
 oXMLSLFFL.setProperty "SelectionLanguage", "XPath"
 
 Set oXMLFLFFL = CreateObject("MSXML2.DOMDocument.3.0")
-oXMLFLFFL.loadXML(GetScores("FLFFL"))
+oXMLFLFFL.loadXML(GetScores("FLFFL", thisPeriod))
 oXMLFLFFL.setProperty "SelectionLanguage", "XPath"
 
 WScript.Echo(vbcrlf & "Matchups Loaded...")
@@ -301,13 +311,13 @@ For i = 0 To UBound(arrCup, 2)
 	TeamPMR2 = CInt(objTeamPMR2.item(0).text)
 
 	Set projectionsXML1 = CreateObject("MSXML2.DOMDocument.3.0")
-	projectionsXML1.loadXML(GetProjections(TeamLevelName1, TeamCBSID1))
+	projectionsXML1.loadXML(GetProjections(TeamLevelName1, TeamCBSID1, thisPeriod))
 	projectionsXML1.setProperty "SelectionLanguage", "XPath"
 	Set projectionsTeam1 = projectionsXML1.selectSingleNode(".//team[@id = " & TeamCBSID1 & "]/points")
 	Set projectionsTeamPlayers1 = projectionsXML1.selectNodes(".//team[@id = " & TeamCBSID1 & "]/active_players/active_player")
 
 	Set projectionsXML2 = CreateObject("MSXML2.DOMDocument.3.0")
-	projectionsXML2.loadXML(GetProjections(TeamLevelName2, TeamCBSID2))
+	projectionsXML2.loadXML(GetProjections(TeamLevelName2, TeamCBSID2, thisPeriod))
 	projectionsXML2.setProperty "SelectionLanguage", "XPath"
 	Set projectionsTeam2 = projectionsXML2.selectSingleNode(".//team[@id = " & TeamCBSID2 & "]/points")
 	Set projectionsTeamPlayers2 = projectionsXML2.selectNodes(".//team[@id = " & TeamCBSID2 & "]/active_players/active_player")
@@ -482,13 +492,13 @@ For i = 0 To UBound(arrOmega, 2)
 	TeamPMR2 = CInt(objTeamPMR2.item(0).text)
 
 	Set projectionsXML1 = CreateObject("MSXML2.DOMDocument.3.0")
-	projectionsXML1.loadXML(GetProjections("OMEGA", TeamCBSID1))
+	projectionsXML1.loadXML(GetProjections("OMEGA", TeamCBSID1, thisPeriod))
 	projectionsXML1.setProperty "SelectionLanguage", "XPath"
 	Set projectionsTeam1 = projectionsXML1.selectSingleNode(".//team[@id = " & TeamCBSID1 & "]/points")
 	Set projectionsTeamPlayers1 = projectionsXML1.selectNodes(".//team[@id = " & TeamCBSID1 & "]/active_players/active_player")
 
 	Set projectionsXML2 = CreateObject("MSXML2.DOMDocument.3.0")
-	projectionsXML2.loadXML(GetProjections("OMEGA", TeamCBSID2))
+	projectionsXML2.loadXML(GetProjections("OMEGA", TeamCBSID2, thisPeriod))
 	projectionsXML2.setProperty "SelectionLanguage", "XPath"
 	Set projectionsTeam2 = projectionsXML2.selectSingleNode(".//team[@id = " & TeamCBSID2 & "]/points")
 	Set projectionsTeamPlayers2 = projectionsXML2.selectNodes(".//team[@id = " & TeamCBSID2 & "]/active_players/active_player")
@@ -649,13 +659,13 @@ For i = 0 To UBound(arrSLFFL, 2)
 	TeamPMR2 = CInt(objTeamPMR2.item(0).text)
 
 	Set projectionsXML1 = CreateObject("MSXML2.DOMDocument.3.0")
-	projectionsXML1.loadXML(GetProjections("SLFFL", TeamCBSID1))
+	projectionsXML1.loadXML(GetProjections("SLFFL", TeamCBSID1, thisPeriod))
 	projectionsXML1.setProperty "SelectionLanguage", "XPath"
 	Set projectionsTeam1 = projectionsXML1.selectSingleNode(".//team[@id = " & TeamCBSID1 & "]/points")
 	Set projectionsTeamPlayers1 = projectionsXML1.selectNodes(".//team[@id = " & TeamCBSID1 & "]/active_players/active_player")
 
 	Set projectionsXML2 = CreateObject("MSXML2.DOMDocument.3.0")
-	projectionsXML2.loadXML(GetProjections("SLFFL", TeamCBSID2))
+	projectionsXML2.loadXML(GetProjections("SLFFL", TeamCBSID2, thisPeriod))
 	projectionsXML2.setProperty "SelectionLanguage", "XPath"
 	Set projectionsTeam2 = projectionsXML2.selectSingleNode(".//team[@id = " & TeamCBSID2 & "]/points")
 	Set projectionsTeamPlayers2 = projectionsXML2.selectNodes(".//team[@id = " & TeamCBSID2 & "]/active_players/active_player")
@@ -815,13 +825,13 @@ For i = 0 To UBound(arrFLFFL, 2)
 	TeamPMR2 = CInt(objTeamPMR2.item(0).text)
 
 	Set projectionsXML1 = CreateObject("MSXML2.DOMDocument.3.0")
-	projectionsXML1.loadXML(GetProjections("FLFFL", TeamCBSID1))
+	projectionsXML1.loadXML(GetProjections("FLFFL", TeamCBSID1, thisPeriod))
 	projectionsXML1.setProperty "SelectionLanguage", "XPath"
 	Set projectionsTeam1 = projectionsXML1.selectSingleNode(".//team[@id = " & TeamCBSID1 & "]/points")
 	Set projectionsTeamPlayers1 = projectionsXML1.selectNodes(".//team[@id = " & TeamCBSID1 & "]/active_players/active_player")
 
 	Set projectionsXML2 = CreateObject("MSXML2.DOMDocument.3.0")
-	projectionsXML2.loadXML(GetProjections("FLFFL", TeamCBSID2))
+	projectionsXML2.loadXML(GetProjections("FLFFL", TeamCBSID2, thisPeriod))
 	projectionsXML2.setProperty "SelectionLanguage", "XPath"
 	Set projectionsTeam2 = projectionsXML2.selectSingleNode(".//team[@id = " & TeamCBSID2 & "]/points")
 	Set projectionsTeamPlayers2 = projectionsXML2.selectNodes(".//team[@id = " & TeamCBSID2 & "]/active_players/active_player")

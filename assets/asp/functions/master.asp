@@ -1,7 +1,4 @@
 <%
-	thisYear = 2020
-	thisPeriod = 1
-
 	Function GetToken (League)
 
 		Set xmlhttpSLFFL = Server.CreateObject("Microsoft.XMLHTTP")
@@ -46,10 +43,10 @@
 
 	End Function
 
-	Function GetScores (League)
+	Function GetScores (League, Period)
 
 		If UCase(League) = "OMEGA" Then
-			liveSLFFL = "http://api.cbssports.com/fantasy/league/scoring/live?version=3.0&response_format=xml&league_id=samelevel&access_token=" & GetToken("OMEGA")
+			liveSLFFL = "http://api.cbssports.com/fantasy/league/scoring/live?version=3.0&response_format=xml&league_id=omegalevel&period=" & Period & "&access_token=" & GetToken("OMEGA")
 			Set xmlhttpSLFFL = Server.CreateObject("Microsoft.XMLHTTP")
 
 			xmlhttpSLFFL.open "GET", liveSLFFL, false
@@ -57,7 +54,7 @@
 		End If
 
 		If UCase(League) = "SLFFL" Then
-			liveSLFFL = "http://api.cbssports.com/fantasy/league/scoring/live?version=3.0&response_format=xml&league_id=samelevel&access_token=" & GetToken("SLFFL")
+			liveSLFFL = "http://api.cbssports.com/fantasy/league/scoring/live?version=3.0&response_format=xml&league_id=samelevel&period=" & Period & "&access_token=" & GetToken("SLFFL")
 			Set xmlhttpSLFFL = Server.CreateObject("Microsoft.XMLHTTP")
 
 			xmlhttpSLFFL.open "GET", liveSLFFL, false
@@ -66,7 +63,7 @@
 
 		If UCase(League) = "FLFFL" Then
 
-			liveSLFFL = "http://api.cbssports.com/fantasy/league/scoring/live?version=3.0&response_format=xml&league_id=farmlevel&access_token=" & GetToken("FARM")
+			liveSLFFL = "http://api.cbssports.com/fantasy/league/scoring/live?version=3.0&response_format=xml&league_id=farmlevel&period=" & Period & "&access_token=" & GetToken("FARM")
 			Set xmlhttpSLFFL = Server.CreateObject("Microsoft.XMLHTTP")
 
 			xmlhttpSLFFL.open "GET", liveSLFFL, false
@@ -101,7 +98,7 @@
 
 			Set oXML = CreateObject("MSXML2.DOMDocument.3.0")
 			oXML.async = "false"
-			oXML.loadXML(GetScores(League))
+			oXML.loadXML(GetScores(League, Session.Contents("CurrentPeriod")))
 
 			Set objTeams = oXML.getElementsByTagName("team")
 

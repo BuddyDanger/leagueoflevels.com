@@ -27,10 +27,9 @@
 
 					If Right(sqlGetRecentHistory, 3) = "OR " Then sqlGetRecentHistory = Left(sqlGetRecentHistory, Len(sqlGetRecentHistory) - 3)
 
-					sqlGetRecentHistory = sqlGetRecentHistory & ") AND M.Year = " & thisYear & " AND M.Period <= " & thisPeriod & " ORDER BY M.Year DESC, M.Period DESC, L.LevelID ASC"
+					sqlGetRecentHistory = sqlGetRecentHistory & ") AND M.Year = " & Session.Contents("CurrentYear") & " AND M.Period <= " & Session.Contents("CurrentPeriod") & " ORDER BY M.Year DESC, M.Period DESC, L.LevelID ASC"
 
 					Set rsRecentHistory = sqlDatabase.Execute(sqlGetRecentHistory)
-
 					Do While Not rsRecentHistory.Eof
 
 						thisYear = rsRecentHistory("Year")

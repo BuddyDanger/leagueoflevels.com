@@ -132,17 +132,21 @@
 				rsVerify.Close
 				Set rsVerify = Nothing
 
-				'ADD 2020 SCHMECKS'
-				Set rsAddSchmeckles = Server.CreateObject("ADODB.RecordSet")
-				rsAddSchmeckles.CursorType = adOpenKeySet
-				rsAddSchmeckles.LockType = adLockOptimistic
-				rsAddSchmeckles.Open "SchmeckleTransactions", sqlDatabase, , , adCmdTable
-				rsAddSchmeckles.AddNew
-				rsAddSchmeckles("TransactionTypeID") = 1000
-				rsAddSchmeckles("TransactionTotal") = 5000
-				rsAddSchmeckles("AccountID") = thisAccountID
-				rsAddSchmeckles.Update
-				Set rsAddSchmeckles = Nothing
+				sqlCheckDeposits = "SELECT * FROM SchmeckleTransactions WHERE AccountID = " & thisAccountID & " AND TransactionTypeID = 1000 AND TransactionTotal = 5000"
+				Set rsDeposits   = sqlDatabase.Execute(sqlCheckDeposits)
+
+				If rsDeposits.Eof Then
+					Set rsAddSchmeckles = Server.CreateObject("ADODB.RecordSet")
+					rsAddSchmeckles.CursorType = adOpenKeySet
+					rsAddSchmeckles.LockType = adLockOptimistic
+					rsAddSchmeckles.Open "SchmeckleTransactions", sqlDatabase, , , adCmdTable
+					rsAddSchmeckles.AddNew
+					rsAddSchmeckles("TransactionTypeID") = 1000
+					rsAddSchmeckles("TransactionTotal") = 5000
+					rsAddSchmeckles("AccountID") = thisAccountID
+					rsAddSchmeckles.Update
+					Set rsAddSchmeckles = Nothing
+				End If
 
 				'ATTACH TEAMS'
 				sqlGetTeams = "SELECT * FROM Teams WHERE EmailAddress = '" & thisEmail & "'"
