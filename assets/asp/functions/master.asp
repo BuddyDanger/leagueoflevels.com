@@ -1,4 +1,18 @@
 <%
+	Function ParseForAbsolutePath (sRawURI)
+
+		On Error Resume Next
+		iStringStart = InStr(1, sRawURI, "//", 1)
+		If iStringStart > 0 Then
+			iStringStart = InStr(iStringStart+2, sRawURI, "/", 1)
+			sFinalPath = Mid(sRawURI, iStringStart)
+		End If
+		If Err.Number <> 0 Then sFinalPath = ""
+		On Error Goto 0
+		ParseForAbsolutePath = sFinalPath
+
+	End Function
+
 	Function GetToken (League)
 
 		Set xmlhttpSLFFL = Server.CreateObject("Microsoft.XMLHTTP")

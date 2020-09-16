@@ -42,10 +42,10 @@
 					<div class="col-12 col-md-6 text-left text-md-right ml-auto">
 
 						<div class="button-list">
-							<a type="button" href="#" class="btn btn-lg btn-blue btn-circle"><i class="fab fa-facebook-f"></i></a>
-							<button type="button" class="btn btn-lg btn-secondary btn-circle ml-2"><i class="fab fa-twitter"></i></button>
-							<button type="button" class="btn btn-lg btn-pink btn-circle ml-2"><i class="fab fa-instagram"></i></button>
-							<button type="button" class="btn btn-lg btn-purple btn-circle ml-2 mr-0"><i class="fas fa-at"></i></button>
+							<!--<a type="button" href="/locks/<%= Session.Contents("AccountProfileURL") %>/" class="btn btn-md btn-pink btn-circle mr-2"><i class="fas fa-lock"></i> &nbsp;<b>LOCKS</b></a>
+							<a type="button" href="/sportsbook/tickets/<%= Session.Contents("AccountProfileURL") %>/" class="btn btn-md btn-pink btn-circle mr-2"><i class="fas fa-ticket-alt"></i> &nbsp;<b>SLIPS</b></a>-->
+							<a type="button" href="/schmeckles/<%= Session.Contents("AccountProfileURL") %>/" class="btn btn-md btn-pink btn-circle mr-2"><i class="fas fa-money-bill-wave"></i> &nbsp;<b>SCHMECKS</b></a>
+							<a type="button" href="/account/" class="btn btn-md btn-purple btn-circle mr-0"><i class="fas fa-user-cog"></i></a>
 						</div>
 
 					</div>

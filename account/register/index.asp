@@ -28,6 +28,13 @@
 
 		If Len(errorDetails) = 0 Then
 
+			thisProfileURL = LCase(thisName)
+			If InStr(thisProfileURL, "'") Then thisProfileURL = Replace(thisProfileURL, "'", "")
+			If InStr(thisProfileURL, "?") Then thisProfileURL = Replace(thisProfileURL, "?", "")
+			If InStr(thisProfileURL, "&") Then thisProfileURL = Replace(thisProfileURL, "&", "")
+			If InStr(thisProfileURL, "-") Then thisProfileURL = Replace(thisProfileURL, "-", "~")
+			If InStr(thisProfileURL, " ") Then thisProfileURL = Replace(thisProfileURL, " ", "-")
+
 			'REGISTER ACCOUNT
 			Set rsInsert = Server.CreateObject("ADODB.RecordSet")
 			rsInsert.CursorType = adOpenKeySet
@@ -37,6 +44,7 @@
 
 			rsInsert("ProfileName") = thisName
 			rsInsert("ProfileImage") = thisImage
+			rsInsert("ProfileURL") = thisProfileURL
 			rsInsert("Email") = thisEmail
 			rsInsert("Password") = SecretHashPassword
 

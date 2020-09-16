@@ -49,6 +49,14 @@
 
 			</ul>
 <%
+		Else
+%>
+			<div class="topbar-nav float-right mb-0 mt-3 mr-1">
+
+				<a class="btn btn-secondary mr-2" href="/account/register/">REGSITER</a><a class="btn btn-secondary" href="/account/login/">LOGIN</a>
+
+			</div>
+<%
 		End If
 %>
 		<ul class="list-unstyled topbar-nav mb-0">

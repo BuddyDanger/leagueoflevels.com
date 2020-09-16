@@ -309,6 +309,50 @@
 
 	End If
 
+	'*****************************************************
+	'*** SCHMECKLES  *************************************
+	'*****************************************************
+	If Session.Contents("SITE_Level_1") = "schmeckles" Then
+
+		Session.Contents("SITE_Schmeckles_AccountID") = ""
+
+		arLevels = Split(LevelString, "||")
+		RebuildURL = 0
+		LevelCount = 1
+		DeadPage = 0
+
+		For Each Level In arLevels
+
+			MatchFound = 0
+			StrippedLevel = Level
+			If InStr(StrippedLevel, "-") Then StrippedLevel = Replace(StrippedLevel, "-", " ")
+
+			If MatchFound = 0 Then
+
+				sqlCheckProfiles = "SELECT * FROM Accounts WHERE ProfileURL = '" & Level & "'"
+				Set rsProfile = sqlDatabase.Execute(sqlCheckProfiles)
+
+				If Not rsProfile.Eof Then
+
+					Session.Contents("SITE_Schmeckles_AccountID") = rsProfile("AccountID")
+					Session.Contents("SITE_Schmeckles_AccountProfileName") = rsProfile("ProfileName")
+
+					 sTransferURL = "index.asp"
+
+					MatchFound = 1
+
+				End If
+
+			End If
+
+			LevelCount = LevelCount + 1
+
+		Next
+
+		If IsSingleMatchup = 0 Then sTransferURL = "index.asp"
+
+	End If
+
 	If DeadPage = 0 Then
 
 		sFinalTransfer = "/" & Session.Contents("SITE_Level_1") & "/" & sTransferURL

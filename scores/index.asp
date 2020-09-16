@@ -118,7 +118,7 @@
 												If TeamPMR2 < 161 Then TeamPMRColor2 = "danger"
 												TeamPMRPercent2 = (TeamPMR2 * 100) / 420
 %>
-												<div class="col-xxxl-4 col-xxl-4 col-xl-4 col-lg-6 col-md-6 col-sm-6 col-xs-6 col-xxs-6">
+												<div class="col-xxxl-4 col-xxl-4 col-xl-4 col-lg-6 col-md-6 col-sm-12">
 													<a href="/scores/<%= MatchupID %>/" style="text-decoration: none; display: block;">
 														<ul class="list-group" id="matchup-<%= MatchupID %>" style="margin-bottom: 1rem;">
 															<li class="list-group-item" style="padding-top: 0.25rem; padding-bottom: 0.25rem; font-size: 0.75rem; text-align: center; background-color: #FFBA08; color: #fff;"><strong>OMEGA</strong> #<%= MatchupID %></li>
@@ -221,7 +221,7 @@
 												If TeamID1 = 44 Then TeamName1 = "Overlords"
 												If TeamID2 = 44 Then TeamName2 = "Overlords"
 %>
-												<div class="col-xxxl-3 col-xxl-3 col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xs-6 col-xxs-6">
+												<div class="col-xxxl-3 col-xxl-3 col-xl-3 col-lg-6 col-md-6 col-sm-12">
 													<a href="/scores/<%= MatchupID %>/" style="text-decoration: none; display: block;">
 														<ul class="list-group" id="matchup-<%= MatchupID %>" style="margin-bottom: 1rem;">
 															<li class="list-group-item" style="padding-top: 0.25rem; padding-bottom: 0.25rem; font-size: 0.75rem; text-align: center; background-color: #D00000; color: #fff;"><strong>NEXT LEVEL CUP</strong> #<%= MatchupID %></li>

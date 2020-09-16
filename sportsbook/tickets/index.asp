@@ -84,6 +84,7 @@
 											sqlGetTicketSlips = sqlGetTicketSlips & "LEFT JOIN Teams T1 ON T1.TeamID = Matchups.TeamID1 "
 											sqlGetTicketSlips = sqlGetTicketSlips & "LEFT JOIN Teams T2 ON T2.TeamID = Matchups.TeamID2 "
 											sqlGetTicketSlips = sqlGetTicketSlips & "LEFT JOIN Teams T3 ON T3.TeamID = TicketSlips.TeamID "
+											sqlGetTicketSlips = sqlGetTicketSlips & "WHERE TicketSlips.DateProcessed IS NULL "
 											Set rsTicketSlips = sqlDatabase.Execute(sqlGetTicketSlips)
 
 											Do While Not rsTicketSlips.Eof

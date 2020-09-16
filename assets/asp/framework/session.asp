@@ -43,6 +43,7 @@
 				Session.Contents("AccountID") = rsAccount("AccountID")
 				Session.Contents("AccountHash") = rsAccount("Password")
 				Session.Contents("AccountName") = rsAccount("ProfileName")
+				Session.Contents("AccountProfileURL") = rsAccount("ProfileURL")
 				Session.Contents("AccountImage") = rsAccount("ProfileImage")
 				Session.Contents("AccountEmail") = rsAccount("Email")
 

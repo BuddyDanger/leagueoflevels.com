@@ -29,8 +29,14 @@
 
 		If Len(errorDetails) = 0 Then
 
-			'UPDATE ACCOUNT
-			sqlModAccount = "UPDATE Accounts SET Email = '" & thisEmail & "', ProfileName = '" & thisName & "', Hash = '" & sha256(thisEmail) & "' WHERE AccountID = " & Session.Contents("AccountID")
+			thisProfileURL = LCase(thisName)
+			If InStr(thisProfileURL, "'") Then thisProfileURL = Replace(thisProfileURL, "'", "")
+			If InStr(thisProfileURL, "?") Then thisProfileURL = Replace(thisProfileURL, "?", "")
+			If InStr(thisProfileURL, "&") Then thisProfileURL = Replace(thisProfileURL, "&", "")
+			If InStr(thisProfileURL, "-") Then thisProfileURL = Replace(thisProfileURL, "-", "~")
+			If InStr(thisProfileURL, " ") Then thisProfileURL = Replace(thisProfileURL, " ", "-")
+
+			sqlModAccount = "UPDATE Accounts SET Email = '" & thisEmail & "', ProfileName = '" & thisName & "', ProfileURL = '" & thisProfileURL & "', Hash = '" & sha256(thisEmail) & "' WHERE AccountID = " & Session.Contents("AccountID")
 			Set rsAccount = sqlDatabase.Execute(sqlModAccount)
 
 			blockProfileDetailsSuccess = ""
