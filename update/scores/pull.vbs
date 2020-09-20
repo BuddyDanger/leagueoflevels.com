@@ -333,6 +333,8 @@ For i = 0 To UBound(arrCup, 2)
 		thisPlayerID = Player.getAttribute("id")
 		Set thisPlayer = Player.getElementsByTagName("points")
 		thisPlayerOriginalProjection = CDbl(thisPlayer.item(0).text)
+		Set thisPlayerPosition = Player.getElementsByTagName("position")
+		thisPlayerPosition = thisPlayerPosition.item(0).text
 
 		If CInt(TeamLevelID1) = 2 Then
 			Set objPlayerLiveProjection = oXMLSLFFL.selectSingleNode(".//player[@id = " & thisPlayerID & "]")
@@ -348,8 +350,16 @@ For i = 0 To UBound(arrCup, 2)
 		thisPlayerLiveProjectionPMR = CDbl(objPlayerLiveProjectionPMR.item(0).text)
 		thisPlayerLiveProjectionMinutesPlayed = 60 - thisPlayerLiveProjectionPMR
 
-		thisOriginalPPM = thisPlayerOriginalProjection / 60
-		thisNewProjection = ((thisPlayerOriginalProjection / 60) * thisPlayerLiveProjectionPMR) + thisPlayerLiveProjectionPoints
+		If thisPlayerPosition = "DST" And thisPlayerLiveProjectionPMR > 30 Then
+
+			thisNewProjection = thisPlayerOriginalProjection
+
+		Else
+
+			thisOriginalPPM = thisPlayerOriginalProjection / 60
+			thisNewProjection = ((thisPlayerOriginalProjection / 60) * thisPlayerLiveProjectionPMR) + thisPlayerLiveProjectionPoints
+
+		End If
 
 		TeamNewProjectedScore1 = TeamNewProjectedScore1 + thisNewProjection
 
@@ -360,6 +370,8 @@ For i = 0 To UBound(arrCup, 2)
 		thisPlayerID = Player.getAttribute("id")
 		Set thisPlayer = Player.getElementsByTagName("points")
 		thisPlayerOriginalProjection = CDbl(thisPlayer.item(0).text)
+		Set thisPlayerPosition = Player.getElementsByTagName("position")
+		thisPlayerPosition = thisPlayerPosition.item(0).text
 
 		If CInt(TeamLevelID2) = 2 Then
 			Set objPlayerLiveProjection = oXMLSLFFL.selectSingleNode(".//player[@id = " & thisPlayerID & "]")
@@ -375,8 +387,16 @@ For i = 0 To UBound(arrCup, 2)
 		thisPlayerLiveProjectionPMR = CDbl(objPlayerLiveProjectionPMR.item(0).text)
 		thisPlayerLiveProjectionMinutesPlayed = 60 - thisPlayerLiveProjectionPMR
 
-		thisOriginalPPM = thisPlayerOriginalProjection / 60
-		thisNewProjection = ((thisPlayerOriginalProjection / 60) * thisPlayerLiveProjectionPMR) + thisPlayerLiveProjectionPoints
+		If thisPlayerPosition = "DST" And thisPlayerLiveProjectionPMR > 30 Then
+
+			thisNewProjection = thisPlayerOriginalProjection
+
+		Else
+
+			thisOriginalPPM = thisPlayerOriginalProjection / 60
+			thisNewProjection = ((thisPlayerOriginalProjection / 60) * thisPlayerLiveProjectionPMR) + thisPlayerLiveProjectionPoints
+
+		End If
 
 		TeamNewProjectedScore2 = TeamNewProjectedScore2 + thisNewProjection
 
@@ -514,6 +534,8 @@ For i = 0 To UBound(arrOmega, 2)
 		thisPlayerID = Player.getAttribute("id")
 		Set thisPlayer = Player.getElementsByTagName("points")
 		thisPlayerOriginalProjection = CDbl(thisPlayer.item(0).text)
+		Set thisPlayerPosition = Player.getElementsByTagName("position")
+		thisPlayerPosition = thisPlayerPosition.item(0).text
 
 		Set objPlayerLiveProjection = oXMLOmega.selectSingleNode(".//player[@id = " & thisPlayerID & "]")
 
@@ -523,8 +545,16 @@ For i = 0 To UBound(arrOmega, 2)
 		thisPlayerLiveProjectionPMR = CDbl(objPlayerLiveProjectionPMR.item(0).text)
 		thisPlayerLiveProjectionMinutesPlayed = 60 - thisPlayerLiveProjectionPMR
 
-		thisOriginalPPM = thisPlayerOriginalProjection / 60
-		thisNewProjection = ((thisPlayerOriginalProjection / 60) * thisPlayerLiveProjectionPMR) + thisPlayerLiveProjectionPoints
+		If thisPlayerPosition = "DST" And thisPlayerLiveProjectionPMR > 30 Then
+
+			thisNewProjection = thisPlayerOriginalProjection
+
+		Else
+
+			thisOriginalPPM = thisPlayerOriginalProjection / 60
+			thisNewProjection = ((thisPlayerOriginalProjection / 60) * thisPlayerLiveProjectionPMR) + thisPlayerLiveProjectionPoints
+
+		End If
 
 		TeamNewProjectedScore1 = TeamNewProjectedScore1 + thisNewProjection
 
@@ -535,6 +565,8 @@ For i = 0 To UBound(arrOmega, 2)
 		thisPlayerID = Player.getAttribute("id")
 		Set thisPlayer = Player.getElementsByTagName("points")
 		thisPlayerOriginalProjection = CDbl(thisPlayer.item(0).text)
+		Set thisPlayerPosition = Player.getElementsByTagName("position")
+		thisPlayerPosition = thisPlayerPosition.item(0).text
 
 		Set objPlayerLiveProjection = oXMLOmega.selectSingleNode(".//player[@id = " & thisPlayerID & "]")
 
@@ -544,8 +576,16 @@ For i = 0 To UBound(arrOmega, 2)
 		thisPlayerLiveProjectionPMR = CDbl(objPlayerLiveProjectionPMR.item(0).text)
 		thisPlayerLiveProjectionMinutesPlayed = 60 - thisPlayerLiveProjectionPMR
 
-		thisOriginalPPM = thisPlayerOriginalProjection / 60
-		thisNewProjection = ((thisPlayerOriginalProjection / 60) * thisPlayerLiveProjectionPMR) + thisPlayerLiveProjectionPoints
+		If thisPlayerPosition = "DST" And thisPlayerLiveProjectionPMR > 30 Then
+
+			thisNewProjection = thisPlayerOriginalProjection
+
+		Else
+
+			thisOriginalPPM = thisPlayerOriginalProjection / 60
+			thisNewProjection = ((thisPlayerOriginalProjection / 60) * thisPlayerLiveProjectionPMR) + thisPlayerLiveProjectionPoints
+
+		End If
 
 		TeamNewProjectedScore2 = TeamNewProjectedScore2 + thisNewProjection
 
@@ -681,6 +721,8 @@ For i = 0 To UBound(arrSLFFL, 2)
 		thisPlayerID = Player.getAttribute("id")
 		Set thisPlayer = Player.getElementsByTagName("points")
 		thisPlayerOriginalProjection = CDbl(thisPlayer.item(0).text)
+		Set thisPlayerPosition = Player.getElementsByTagName("position")
+		thisPlayerPosition = thisPlayerPosition.item(0).text
 
 		Set objPlayerLiveProjection = oXMLSLFFL.selectSingleNode(".//player[@id = " & thisPlayerID & "]")
 
@@ -690,8 +732,16 @@ For i = 0 To UBound(arrSLFFL, 2)
 		thisPlayerLiveProjectionPMR = CDbl(objPlayerLiveProjectionPMR.item(0).text)
 		thisPlayerLiveProjectionMinutesPlayed = 60 - thisPlayerLiveProjectionPMR
 
-		thisOriginalPPM = thisPlayerOriginalProjection / 60
-		thisNewProjection = ((thisPlayerOriginalProjection / 60) * thisPlayerLiveProjectionPMR) + thisPlayerLiveProjectionPoints
+		If thisPlayerPosition = "DST" And thisPlayerLiveProjectionPMR > 30 Then
+
+			thisNewProjection = thisPlayerOriginalProjection
+
+		Else
+
+			thisOriginalPPM = thisPlayerOriginalProjection / 60
+			thisNewProjection = ((thisPlayerOriginalProjection / 60) * thisPlayerLiveProjectionPMR) + thisPlayerLiveProjectionPoints
+
+		End If
 
 		TeamNewProjectedScore1 = TeamNewProjectedScore1 + thisNewProjection
 
@@ -702,6 +752,8 @@ For i = 0 To UBound(arrSLFFL, 2)
 		thisPlayerID = Player.getAttribute("id")
 		Set thisPlayer = Player.getElementsByTagName("points")
 		thisPlayerOriginalProjection = CDbl(thisPlayer.item(0).text)
+		Set thisPlayerPosition = Player.getElementsByTagName("position")
+		thisPlayerPosition = thisPlayerPosition.item(0).text
 
 		Set objPlayerLiveProjection = oXMLSLFFL.selectSingleNode(".//player[@id = " & thisPlayerID & "]")
 
@@ -711,8 +763,16 @@ For i = 0 To UBound(arrSLFFL, 2)
 		thisPlayerLiveProjectionPMR = CDbl(objPlayerLiveProjectionPMR.item(0).text)
 		thisPlayerLiveProjectionMinutesPlayed = 60 - thisPlayerLiveProjectionPMR
 
-		thisOriginalPPM = thisPlayerOriginalProjection / 60
-		thisNewProjection = ((thisPlayerOriginalProjection / 60) * thisPlayerLiveProjectionPMR) + thisPlayerLiveProjectionPoints
+		If thisPlayerPosition = "DST" And thisPlayerLiveProjectionPMR > 30 Then
+
+			thisNewProjection = thisPlayerOriginalProjection
+
+		Else
+
+			thisOriginalPPM = thisPlayerOriginalProjection / 60
+			thisNewProjection = ((thisPlayerOriginalProjection / 60) * thisPlayerLiveProjectionPMR) + thisPlayerLiveProjectionPoints
+
+		End If
 
 		TeamNewProjectedScore2 = TeamNewProjectedScore2 + thisNewProjection
 
@@ -847,6 +907,8 @@ For i = 0 To UBound(arrFLFFL, 2)
 		thisPlayerID = Player.getAttribute("id")
 		Set thisPlayer = Player.getElementsByTagName("points")
 		thisPlayerOriginalProjection = CDbl(thisPlayer.item(0).text)
+		Set thisPlayerPosition = Player.getElementsByTagName("position")
+		thisPlayerPosition = thisPlayerPosition.item(0).text
 
 		Set objPlayerLiveProjection = oXMLFLFFL.selectSingleNode(".//player[@id = " & thisPlayerID & "]")
 
@@ -856,8 +918,16 @@ For i = 0 To UBound(arrFLFFL, 2)
 		thisPlayerLiveProjectionPMR = CDbl(objPlayerLiveProjectionPMR.item(0).text)
 		thisPlayerLiveProjectionMinutesPlayed = 60 - thisPlayerLiveProjectionPMR
 
-		thisOriginalPPM = thisPlayerOriginalProjection / 60
-		thisNewProjection = ((thisPlayerOriginalProjection / 60) * thisPlayerLiveProjectionPMR) + thisPlayerLiveProjectionPoints
+		If thisPlayerPosition = "DST" And thisPlayerLiveProjectionPMR > 30 Then
+
+			thisNewProjection = thisPlayerOriginalProjection
+
+		Else
+
+			thisOriginalPPM = thisPlayerOriginalProjection / 60
+			thisNewProjection = ((thisPlayerOriginalProjection / 60) * thisPlayerLiveProjectionPMR) + thisPlayerLiveProjectionPoints
+
+		End If
 
 		TeamNewProjectedScore1 = TeamNewProjectedScore1 + thisNewProjection
 
@@ -868,6 +938,8 @@ For i = 0 To UBound(arrFLFFL, 2)
 		thisPlayerID = Player.getAttribute("id")
 		Set thisPlayer = Player.getElementsByTagName("points")
 		thisPlayerOriginalProjection = CDbl(thisPlayer.item(0).text)
+		Set thisPlayerPosition = Player.getElementsByTagName("position")
+		thisPlayerPosition = thisPlayerPosition.item(0).text
 
 		Set objPlayerLiveProjection = oXMLFLFFL.selectSingleNode(".//player[@id = " & thisPlayerID & "]")
 
@@ -877,8 +949,16 @@ For i = 0 To UBound(arrFLFFL, 2)
 		thisPlayerLiveProjectionPMR = CDbl(objPlayerLiveProjectionPMR.item(0).text)
 		thisPlayerLiveProjectionMinutesPlayed = 60 - thisPlayerLiveProjectionPMR
 
-		thisOriginalPPM = thisPlayerOriginalProjection / 60
-		thisNewProjection = ((thisPlayerOriginalProjection / 60) * thisPlayerLiveProjectionPMR) + thisPlayerLiveProjectionPoints
+		If thisPlayerPosition = "DST" And thisPlayerLiveProjectionPMR > 30 Then
+
+			thisNewProjection = thisPlayerOriginalProjection
+
+		Else
+
+			thisOriginalPPM = thisPlayerOriginalProjection / 60
+			thisNewProjection = ((thisPlayerOriginalProjection / 60) * thisPlayerLiveProjectionPMR) + thisPlayerLiveProjectionPoints
+
+		End If
 
 		TeamNewProjectedScore2 = TeamNewProjectedScore2 + thisNewProjection
 

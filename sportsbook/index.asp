@@ -87,8 +87,8 @@
 												thisTotalActiveTickets = rsSportsbookData("TotalActiveTickets")
 												thisTotalBettingUsers = rsSportsbookData("TotalBettingUsers")
 
-												If Not IsNumeric(thisTotalActiveBetAmount) Then thisTotalActiveBetAmount = 0
-												If Not IsNumeric(thisTotalPotentialPayout) Then thisTotalPotentialPayout = 0
+												If IsNull(thisTotalActiveBetAmount) Then thisTotalActiveBetAmount = 0
+												If IsNull(thisTotalPotentialPayout) Then thisTotalPotentialPayout = 0
 %>
 												<div class="col-xxxl-4 col-xxl-4 col-xl-4 col-lg-6 col-md-6 col-sm-12 col-xs-12 col-xxs-12">
 													<a href="/sportsbook/tickets/" style="text-decoration: none; display: block;">
