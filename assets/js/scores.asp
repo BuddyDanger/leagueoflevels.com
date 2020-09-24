@@ -135,7 +135,7 @@
 		loopThroughArray(CUP_ID, function (arrayElement, loopTime) {
 
 			var thisID = arrayElement;
-			var data = {"league":"CUP", "id":thisID, "leg":"2"};
+			var data = {"league":"CUP", "id":thisID, "leg":"1"};
 			data = $.param(data);
 
 			$.ajax({
