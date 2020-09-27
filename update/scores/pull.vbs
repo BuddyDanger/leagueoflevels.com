@@ -350,9 +350,15 @@ For i = 0 To UBound(arrCup, 2)
 		thisPlayerLiveProjectionPMR = CDbl(objPlayerLiveProjectionPMR.item(0).text)
 		thisPlayerLiveProjectionMinutesPlayed = 60 - thisPlayerLiveProjectionPMR
 
-		If thisPlayerPosition = "DST" And thisPlayerLiveProjectionPMR > 30 Then
+		If thisPlayerPosition = "DST" Then
+
+			thisOriginalDecline = (thisPlayerOriginalProjection - 20) / 60
+			thisLiveDecline = thisOriginalDecline
+			If thisPlayerLiveProjectionMinutesPlayed > 0 Then thisLiveDecline = (thisPlayerLiveProjectionPoints - 20) / thisPlayerLiveProjectionMinutesPlayed
+			thisAdjustedDecline = (thisOriginalDecline + thisLiveDecline) / 2
 
 			thisNewProjection = thisPlayerOriginalProjection
+			If thisPlayerLiveProjectionPMR < 30 And thisPlayerLiveProjectionPoints < thisPlayerOriginalProjection Then thisNewProjection = thisPlayerLiveProjectionPoints
 
 		Else
 
@@ -387,9 +393,15 @@ For i = 0 To UBound(arrCup, 2)
 		thisPlayerLiveProjectionPMR = CDbl(objPlayerLiveProjectionPMR.item(0).text)
 		thisPlayerLiveProjectionMinutesPlayed = 60 - thisPlayerLiveProjectionPMR
 
-		If thisPlayerPosition = "DST" And thisPlayerLiveProjectionPMR > 30 Then
+		If thisPlayerPosition = "DST" Then
+
+			thisOriginalDecline = (thisPlayerOriginalProjection - 20) / 60
+			thisLiveDecline = thisOriginalDecline
+			If thisPlayerLiveProjectionMinutesPlayed > 0 Then thisLiveDecline = (thisPlayerLiveProjectionPoints - 20) / thisPlayerLiveProjectionMinutesPlayed
+			thisAdjustedDecline = (thisOriginalDecline + thisLiveDecline) / 2
 
 			thisNewProjection = thisPlayerOriginalProjection
+			If thisPlayerLiveProjectionPMR < 30 And thisPlayerLiveProjectionPoints < thisPlayerOriginalProjection Then thisNewProjection = thisPlayerLiveProjectionPoints
 
 		Else
 
@@ -545,9 +557,15 @@ For i = 0 To UBound(arrOmega, 2)
 		thisPlayerLiveProjectionPMR = CDbl(objPlayerLiveProjectionPMR.item(0).text)
 		thisPlayerLiveProjectionMinutesPlayed = 60 - thisPlayerLiveProjectionPMR
 
-		If thisPlayerPosition = "DST" And thisPlayerLiveProjectionPMR > 30 Then
+		If thisPlayerPosition = "DST" Then
+
+			thisOriginalDecline = (thisPlayerOriginalProjection - 20) / 60
+			thisLiveDecline = thisOriginalDecline
+			If thisPlayerLiveProjectionMinutesPlayed > 0 Then thisLiveDecline = (thisPlayerLiveProjectionPoints - 20) / thisPlayerLiveProjectionMinutesPlayed
+			thisAdjustedDecline = (thisOriginalDecline + thisLiveDecline) / 2
 
 			thisNewProjection = thisPlayerOriginalProjection
+			If thisPlayerLiveProjectionPMR < 30 And thisPlayerLiveProjectionPoints < thisPlayerOriginalProjection Then thisNewProjection = thisPlayerLiveProjectionPoints
 
 		Else
 
@@ -576,9 +594,15 @@ For i = 0 To UBound(arrOmega, 2)
 		thisPlayerLiveProjectionPMR = CDbl(objPlayerLiveProjectionPMR.item(0).text)
 		thisPlayerLiveProjectionMinutesPlayed = 60 - thisPlayerLiveProjectionPMR
 
-		If thisPlayerPosition = "DST" And thisPlayerLiveProjectionPMR > 30 Then
+		If thisPlayerPosition = "DST" Then
+
+			thisOriginalDecline = (thisPlayerOriginalProjection - 20) / 60
+			thisLiveDecline = thisOriginalDecline
+			If thisPlayerLiveProjectionMinutesPlayed > 0 Then thisLiveDecline = (thisPlayerLiveProjectionPoints - 20) / thisPlayerLiveProjectionMinutesPlayed
+			thisAdjustedDecline = (thisOriginalDecline + thisLiveDecline) / 2
 
 			thisNewProjection = thisPlayerOriginalProjection
+			If thisPlayerLiveProjectionPMR < 30 And thisPlayerLiveProjectionPoints < thisPlayerOriginalProjection Then thisNewProjection = thisPlayerLiveProjectionPoints
 
 		Else
 
@@ -732,9 +756,15 @@ For i = 0 To UBound(arrSLFFL, 2)
 		thisPlayerLiveProjectionPMR = CDbl(objPlayerLiveProjectionPMR.item(0).text)
 		thisPlayerLiveProjectionMinutesPlayed = 60 - thisPlayerLiveProjectionPMR
 
-		If thisPlayerPosition = "DST" And thisPlayerLiveProjectionPMR > 30 Then
+		If thisPlayerPosition = "DST" Then
+
+			thisOriginalDecline = (thisPlayerOriginalProjection - 20) / 60
+			thisLiveDecline = thisOriginalDecline
+			If thisPlayerLiveProjectionMinutesPlayed > 0 Then thisLiveDecline = (thisPlayerLiveProjectionPoints - 20) / thisPlayerLiveProjectionMinutesPlayed
+			thisAdjustedDecline = (thisOriginalDecline + thisLiveDecline) / 2
 
 			thisNewProjection = thisPlayerOriginalProjection
+			If thisPlayerLiveProjectionPMR < 30 And thisPlayerLiveProjectionPoints < thisPlayerOriginalProjection Then thisNewProjection = thisPlayerLiveProjectionPoints
 
 		Else
 
@@ -763,9 +793,15 @@ For i = 0 To UBound(arrSLFFL, 2)
 		thisPlayerLiveProjectionPMR = CDbl(objPlayerLiveProjectionPMR.item(0).text)
 		thisPlayerLiveProjectionMinutesPlayed = 60 - thisPlayerLiveProjectionPMR
 
-		If thisPlayerPosition = "DST" And thisPlayerLiveProjectionPMR > 30 Then
+		If thisPlayerPosition = "DST" Then
+
+			thisOriginalDecline = (thisPlayerOriginalProjection - 20) / 60
+			thisLiveDecline = thisOriginalDecline
+			If thisPlayerLiveProjectionMinutesPlayed > 0 Then thisLiveDecline = (thisPlayerLiveProjectionPoints - 20) / thisPlayerLiveProjectionMinutesPlayed
+			thisAdjustedDecline = (thisOriginalDecline + thisLiveDecline) / 2
 
 			thisNewProjection = thisPlayerOriginalProjection
+			If thisPlayerLiveProjectionPMR < 30 And thisPlayerLiveProjectionPoints < thisPlayerOriginalProjection Then thisNewProjection = thisPlayerLiveProjectionPoints
 
 		Else
 
@@ -918,9 +954,15 @@ For i = 0 To UBound(arrFLFFL, 2)
 		thisPlayerLiveProjectionPMR = CDbl(objPlayerLiveProjectionPMR.item(0).text)
 		thisPlayerLiveProjectionMinutesPlayed = 60 - thisPlayerLiveProjectionPMR
 
-		If thisPlayerPosition = "DST" And thisPlayerLiveProjectionPMR > 30 Then
+		If thisPlayerPosition = "DST" Then
+
+			thisOriginalDecline = (thisPlayerOriginalProjection - 20) / 60
+			thisLiveDecline = thisOriginalDecline
+			If thisPlayerLiveProjectionMinutesPlayed > 0 Then thisLiveDecline = (thisPlayerLiveProjectionPoints - 20) / thisPlayerLiveProjectionMinutesPlayed
+			thisAdjustedDecline = (thisOriginalDecline + thisLiveDecline) / 2
 
 			thisNewProjection = thisPlayerOriginalProjection
+			If thisPlayerLiveProjectionPMR < 30 And thisPlayerLiveProjectionPoints < thisPlayerOriginalProjection Then thisNewProjection = thisPlayerLiveProjectionPoints
 
 		Else
 
@@ -949,9 +991,15 @@ For i = 0 To UBound(arrFLFFL, 2)
 		thisPlayerLiveProjectionPMR = CDbl(objPlayerLiveProjectionPMR.item(0).text)
 		thisPlayerLiveProjectionMinutesPlayed = 60 - thisPlayerLiveProjectionPMR
 
-		If thisPlayerPosition = "DST" And thisPlayerLiveProjectionPMR > 30 Then
+		If thisPlayerPosition = "DST" Then
+
+			thisOriginalDecline = (thisPlayerOriginalProjection - 20) / 60
+			thisLiveDecline = thisOriginalDecline
+			If thisPlayerLiveProjectionMinutesPlayed > 0 Then thisLiveDecline = (thisPlayerLiveProjectionPoints - 20) / thisPlayerLiveProjectionMinutesPlayed
+			thisAdjustedDecline = (thisOriginalDecline + thisLiveDecline) / 2
 
 			thisNewProjection = thisPlayerOriginalProjection
+			If thisPlayerLiveProjectionPMR < 30 And thisPlayerLiveProjectionPoints < thisPlayerOriginalProjection Then thisNewProjection = thisPlayerLiveProjectionPoints
 
 		Else
 
