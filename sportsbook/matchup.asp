@@ -5,6 +5,20 @@
 <%
 	thisSchmeckleTotal = 0
 
+	sqlGetStatus = "SELECT * FROM Switchboard WHERE SwitchboardID = 1"
+	Set rsStatus = sqlDatabase.Execute(sqlGetStatus)
+
+	If Not rsStatus.Eof Then
+
+		thisSportsbookStatus = rsStatus("Sportsbook")
+
+		If thisSportsbookStatus = False Then thisFormDisabled = "disabled"
+
+		rsStatus.Close
+		Set rsStatus = Nothing
+
+	End If
+
 	If Request.Form("inputTicketGo") = "go" Then
 
 		sqlGetSchmeckles = "SELECT SUM(TransactionTotal) AS CurrentSchmeckleTotal FROM SchmeckleTransactions WHERE AccountID = " & Session.Contents("AccountID")
