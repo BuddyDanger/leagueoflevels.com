@@ -358,7 +358,7 @@ For i = 0 To UBound(arrCup, 2)
 			thisAdjustedDecline = (thisOriginalDecline + thisLiveDecline) / 2
 
 			thisNewProjection = thisPlayerOriginalProjection
-			If thisPlayerLiveProjectionPMR < 30 And thisPlayerLiveProjectionPoints < thisPlayerOriginalProjection Then thisNewProjection = thisPlayerLiveProjectionPoints
+			If thisPlayerLiveProjectionPMR < 30 Then thisNewProjection = (thisOriginalDecline * thisPlayerLiveProjectionPMR) + thisPlayerLiveProjectionPoints
 
 		Else
 
@@ -401,7 +401,7 @@ For i = 0 To UBound(arrCup, 2)
 			thisAdjustedDecline = (thisOriginalDecline + thisLiveDecline) / 2
 
 			thisNewProjection = thisPlayerOriginalProjection
-			If thisPlayerLiveProjectionPMR < 30 And thisPlayerLiveProjectionPoints < thisPlayerOriginalProjection Then thisNewProjection = thisPlayerLiveProjectionPoints
+			If thisPlayerLiveProjectionPMR < 30 Then thisNewProjection = (thisOriginalDecline * thisPlayerLiveProjectionPMR) + thisPlayerLiveProjectionPoints
 
 		Else
 
@@ -565,7 +565,7 @@ For i = 0 To UBound(arrOmega, 2)
 			thisAdjustedDecline = (thisOriginalDecline + thisLiveDecline) / 2
 
 			thisNewProjection = thisPlayerOriginalProjection
-			If thisPlayerLiveProjectionPMR < 30 And thisPlayerLiveProjectionPoints < thisPlayerOriginalProjection Then thisNewProjection = thisPlayerLiveProjectionPoints
+			If thisPlayerLiveProjectionPMR < 30 Then thisNewProjection = (thisOriginalDecline * thisPlayerLiveProjectionPMR) + thisPlayerLiveProjectionPoints
 
 		Else
 
@@ -602,7 +602,7 @@ For i = 0 To UBound(arrOmega, 2)
 			thisAdjustedDecline = (thisOriginalDecline + thisLiveDecline) / 2
 
 			thisNewProjection = thisPlayerOriginalProjection
-			If thisPlayerLiveProjectionPMR < 30 And thisPlayerLiveProjectionPoints < thisPlayerOriginalProjection Then thisNewProjection = thisPlayerLiveProjectionPoints
+			If thisPlayerLiveProjectionPMR < 30 Then thisNewProjection = (thisOriginalDecline * thisPlayerLiveProjectionPMR) + thisPlayerLiveProjectionPoints
 
 		Else
 
@@ -764,7 +764,7 @@ For i = 0 To UBound(arrSLFFL, 2)
 			thisAdjustedDecline = (thisOriginalDecline + thisLiveDecline) / 2
 
 			thisNewProjection = thisPlayerOriginalProjection
-			If thisPlayerLiveProjectionPMR < 30 And thisPlayerLiveProjectionPoints < thisPlayerOriginalProjection Then thisNewProjection = thisPlayerLiveProjectionPoints
+			If thisPlayerLiveProjectionPMR < 30 Then thisNewProjection = (thisOriginalDecline * thisPlayerLiveProjectionPMR) + thisPlayerLiveProjectionPoints
 
 		Else
 
@@ -801,7 +801,7 @@ For i = 0 To UBound(arrSLFFL, 2)
 			thisAdjustedDecline = (thisOriginalDecline + thisLiveDecline) / 2
 
 			thisNewProjection = thisPlayerOriginalProjection
-			If thisPlayerLiveProjectionPMR < 30 And thisPlayerLiveProjectionPoints < thisPlayerOriginalProjection Then thisNewProjection = thisPlayerLiveProjectionPoints
+			If thisPlayerLiveProjectionPMR < 30 Then thisNewProjection = (thisOriginalDecline * thisPlayerLiveProjectionPMR) + thisPlayerLiveProjectionPoints
 
 		Else
 
@@ -962,7 +962,7 @@ For i = 0 To UBound(arrFLFFL, 2)
 			thisAdjustedDecline = (thisOriginalDecline + thisLiveDecline) / 2
 
 			thisNewProjection = thisPlayerOriginalProjection
-			If thisPlayerLiveProjectionPMR < 30 And thisPlayerLiveProjectionPoints < thisPlayerOriginalProjection Then thisNewProjection = thisPlayerLiveProjectionPoints
+			If thisPlayerLiveProjectionPMR < 30 Then thisNewProjection = (thisOriginalDecline * thisPlayerLiveProjectionPMR) + thisPlayerLiveProjectionPoints
 
 		Else
 
@@ -999,7 +999,7 @@ For i = 0 To UBound(arrFLFFL, 2)
 			thisAdjustedDecline = (thisOriginalDecline + thisLiveDecline) / 2
 
 			thisNewProjection = thisPlayerOriginalProjection
-			If thisPlayerLiveProjectionPMR < 30 And thisPlayerLiveProjectionPoints < thisPlayerOriginalProjection Then thisNewProjection = thisPlayerLiveProjectionPoints
+			If thisPlayerLiveProjectionPMR < 30 Then thisNewProjection = (thisOriginalDecline * thisPlayerLiveProjectionPMR) + thisPlayerLiveProjectionPoints
 
 		Else
 
