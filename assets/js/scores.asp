@@ -3,8 +3,8 @@
 	sqlGetCupTeams = "SELECT DISTINCT TeamID FROM (SELECT Distinct TeamID1 AS TeamID FROM Matchups WHERE LevelID = 0 and Year = " & Session.Contents("CurrentYear") & " AND Period = " & Session.Contents("CurrentPeriod") & " UNION ALL SELECT DISTINCT TeamID2 AS TeamID FROM Matchups WHERE LevelID = 0 and Year = " & Session.Contents("CurrentYear") & " AND Period = " & Session.Contents("CurrentPeriod") & ") AS ActiveTeams;"
 	sqlGetSLFFLTeams = "SELECT DISTINCT TeamID FROM (SELECT Distinct TeamID1 AS TeamID FROM Matchups WHERE LevelID = 2 and Year = " & Session.Contents("CurrentYear") & " AND Period = " & Session.Contents("CurrentPeriod") & " UNION ALL SELECT DISTINCT TeamID2 AS TeamID FROM Matchups WHERE LevelID = 2 and Year = " & Session.Contents("CurrentYear") & " AND Period = " & Session.Contents("CurrentPeriod") & ") AS ActiveTeams;"
 	sqlGetFLFFLTeams = "SELECT DISTINCT TeamID FROM (SELECT Distinct TeamID1 AS TeamID FROM Matchups WHERE LevelID = 3 and Year = " & Session.Contents("CurrentYear") & " AND Period = " & Session.Contents("CurrentPeriod") & " UNION ALL SELECT DISTINCT TeamID2 AS TeamID FROM Matchups WHERE LevelID = 3 and Year = " & Session.Contents("CurrentYear") & " AND Period = " & Session.Contents("CurrentPeriod") & ") AS ActiveTeams;"
-
-	Set rsTeams = sqlDatabase.Execute(sqlGetOmegaTeams & sqlGetCupTeams & sqlGetSLFFLTeams & sqlGetFLFFLTeams)
+	sqlGetLeg = "SELECT TOP 1 Leg FROM Matchups WHERE LevelID = 0 AND Year = 2020 AND Period = 3;"
+	Set rsTeams = sqlDatabase.Execute(sqlGetOmegaTeams & sqlGetCupTeams & sqlGetSLFFLTeams & sqlGetFLFFLTeams & sqlGetLeg)
 
 	OmegaTeams = ""
 	CupTeams = ""
@@ -34,6 +34,13 @@
 
 	Do While Not rsTeams.Eof
 		FLFFLTeams = FLFFLTeams & rsTeams("TeamID") & ","
+		rsTeams.MoveNext
+	Loop
+
+	Set rsTeams = rsTeams.NextRecordset
+
+	Do While Not rsTeams.Eof
+		Leg = rsTeams("Leg")
 		rsTeams.MoveNext
 	Loop
 
@@ -135,7 +142,7 @@
 		loopThroughArray(CUP_ID, function (arrayElement, loopTime) {
 
 			var thisID = arrayElement;
-			var data = {"league":"CUP", "id":thisID, "leg":"1"};
+			var data = {"league":"CUP", "id":thisID, "leg":"<%= Leg %>"};
 			data = $.param(data);
 
 			$.ajax({

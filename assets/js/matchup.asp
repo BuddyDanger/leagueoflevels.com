@@ -51,7 +51,7 @@
 		loopThroughArray(TEAM_ID1, function (arrayElement, loopTime) {
 
 			var thisID = arrayElement;
-			var data = {"league":"<%= MatchupLevel %>", "id":thisID, "leg":"2"};
+			var data = {"league":"<%= MatchupLevel %>", "id":thisID, "leg":"<%= Leg %>"};
 			data = $.param(data);
 
 			$.ajax({
@@ -80,7 +80,7 @@
 		loopThroughArray(TEAM_ID2, function (arrayElement, loopTime) {
 
 			var thisID = arrayElement;
-			var data = {"league":"<%= MatchupLevel %>", "id":thisID, "leg":"2"};
+			var data = {"league":"<%= MatchupLevel %>", "id":thisID, "leg":"<%= Leg %>"};
 			data = $.param(data);
 
 			$.ajax({
