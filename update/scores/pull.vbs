@@ -396,77 +396,114 @@ For i = 0 To UBound(arrMatchups, 2)
 		thisPlayerLiveProjectionPMR = CDbl(objPlayerLiveProjectionPMR.item(0).text)
 		thisPlayerLiveProjectionMinutesPlayed = 60 - thisPlayerLiveProjectionPMR
 
-		If thisPlayerPosition = "DST" Then
+		If thisPlayerLiveProjectionMinutesPlayed = 60 Then
 
-			thisDST1_YardsAllowed = 0 : thisDST1_PointsAllowed = 0 : thisDST1_FumblesRecovered = 0 : thisDST1_Touchdowns = 0 : thisDST1_Interceptions = 0 : thisDST1_Sacks = 0 : thisDST1_Safetys = 0 : thisDST1_BlockedFGs = 0 : thisDST1_BlockedPunts = 0 : thisDST1_2PtReturns = 0 : thisDST1_1PtSafetys = 0
-			thisPointsFromYards = 0 : thisPointsFromPoints = 0
-
-			If thisPlayerLiveProjectionPMR < 60 Then
-
-				Set statsXML = CreateObject("MSXML2.DOMDocument.3.0")
-				statsXML.loadXML(GetStats(TeamLevelName1, thisYear, thisPeriod, thisPlayerID))
-				statsXML.setProperty "SelectionLanguage", "XPath"
-
-				Set statsYDS = statsXML.selectSingleNode(".//stat[@abbr='YDS']")
-				Set statsDPA = statsXML.selectSingleNode(".//stat[@abbr='DPA']")
-				Set statsDFR = statsXML.selectSingleNode(".//stat[@abbr='DFR']")
-				Set statsDTD = statsXML.selectSingleNode(".//stat[@abbr='DTD']")
-				Set statsINT = statsXML.selectSingleNode(".//stat[@abbr='Int']")
-				Set statsSAK = statsXML.selectSingleNode(".//stat[@abbr='SACK']")
-				Set statsSTY = statsXML.selectSingleNode(".//stat[@abbr='STY']")
-				Set statsBFB = statsXML.selectSingleNode(".//stat[@abbr='BFB']")
-				Set statsBP  = statsXML.selectSingleNode(".//stat[@abbr='BP']")
-				Set stats2PT = statsXML.selectSingleNode(".//stat[@abbr='ST2PT']")
-				Set stats1PT = statsXML.selectSingleNode(".//stat[@abbr='STY1PT']")
-
-				If IsObject(statsYDS) And Len(statsYDS.text) > 0 Then thisDST1_YardsAllowed = CDbl(statsYDS.text)
-				If IsObject(statsDPA) And Len(statsDPA.text) > 0 Then thisDST1_PointsAllowed = CInt(statsDPA.text)
-				If IsObject(statsDFR) And Len(statsDFR.text) > 0 Then thisDST1_FumblesRecovered = CInt(statsDFR.text)
-				If IsObject(statsDTD) And Len(statsDTD.text) > 0 Then thisDST1_Touchdowns = CInt(statsDTD.text)
-				If IsObject(statsINT) And Len(statsINT.text) > 0 Then thisDST1_Interceptions = CInt(statsINT.text)
-				If IsObject(statsSAK) And Len(statsSAK.text) > 0 Then thisDST1_Sacks = CInt(statsSAK.text)
-				If IsObject(statsSTY) And Len(statsSTY.text) > 0 Then thisDST1_Safetys = CInt(statsSTY.text)
-				If IsObject(statsBFB) And Len(statsBFB.text) > 0 Then thisDST1_BlockedFGs = CInt(statsBFB.text)
-				If IsObject(statsBP)  And Len(statsBP.text)  > 0 Then thisDST1_BlockedPunts = CInt(statsBP.text)
-				If IsObject(stats2PT) And Len(stats2PT.text) > 0 Then thisDST1_2PtReturns = CInt(stats2PT.text)
-				If IsObject(stats1PT) And Len(stats1PT.text) > 0 Then thisDST1_1PtSafetys = CInt(stats1PT.text)
-
-				If thisDST1_YardsAllowed >= 50 And thisDST1_YardsAllowed < 100 Then thisPointsFromYards = 10
-				If thisDST1_YardsAllowed >= 100 And thisDST1_YardsAllowed < 150 Then thisPointsFromYards = 8
-				If thisDST1_YardsAllowed >= 150 And thisDST1_YardsAllowed < 200 Then thisPointsFromYards = 6
-				If thisDST1_YardsAllowed >= 200 And thisDST1_YardsAllowed < 250 Then thisPointsFromYards = 4
-				If thisDST1_YardsAllowed >= 250 And thisDST1_YardsAllowed < 300 Then thisPointsFromYards = 2
-
-				If thisDST1_PointsAllowed >= 7 And thisDST1_PointsAllowed < 14 Then thisPointsFromPoints = 6
-				If thisDST1_PointsAllowed >= 14 And thisDST1_PointsAllowed < 21 Then thisPointsFromPoints = 4
-				If thisDST1_PointsAllowed >= 21 And thisDST1_PointsAllowed < 29 Then thisPointsFromPoints = 2
-
-			End If
-
-			thisPointsToLose = thisPointsFromYards + thisPointsFromPoints
-			thisPointFloor = (thisDST1_FumblesRecovered * 2) + (thisDST1_Touchdowns * 6) + (thisDST1_Interceptions * 2) + (thisDST1_Sacks) + (thisDST1_Safetys * 2) + (thisDST1_BlockedFGs * 2) + (thisDST1_BlockedPunts * 2) + (thisDST1_2PtReturns * 2) + (thisDST1_1PtSafetys)
-			thisCurrentScore = thisPointsToLose + thisPointFloor
-
-			thisPlayerLiveProjectionPoints = thisCurrentScore
-
-			thisOriginalDecline = (thisPlayerOriginalProjection - 20) / 60
-			thisLiveDecline = thisOriginalDecline
-			If thisPlayerLiveProjectionMinutesPlayed > 0 Then thisLiveDecline = (thisPlayerLiveProjectionPoints - 20) / thisPlayerLiveProjectionMinutesPlayed
-			thisAdjustedDecline = (thisOriginalDecline + thisLiveDecline) / 2
-
-			thisNewProjection = (thisOriginalDecline * thisPlayerLiveProjectionPMR) + thisPlayerLiveProjectionPoints
-			If thisPlayerLiveProjectionPMR < 30 Then thisNewProjection = (thisAdjustedDecline * thisPlayerLiveProjectionPMR) + thisPlayerLiveProjectionPoints
-
-			If thisNewProjection < thisPointFloor Then thisNewProjection = thisPointFloor
-
-			If thisPlayerLiveProjectionPMR = 60 Then thisNewProjection = thisPlayerOriginalProjection
-
-			thisDST1_Projection = thisNewProjection
+			thisNewProjection = thisPlayerLiveProjectionPoints
 
 		Else
 
-			thisOriginalPPM = thisPlayerOriginalProjection / 60
-			thisNewProjection = ((thisPlayerOriginalProjection / 60) * thisPlayerLiveProjectionPMR) + thisPlayerLiveProjectionPoints
+			If thisPlayerPosition = "DST" Then
+
+				thisDST1_YardsAllowed = 0 : thisDST1_PointsAllowed = 0 : thisDST1_FumblesRecovered = 0 : thisDST1_Touchdowns = 0 : thisDST1_Interceptions = 0 : thisDST1_Sacks = 0 : thisDST1_Safetys = 0 : thisDST1_BlockedFGs = 0 : thisDST1_BlockedPunts = 0 : thisDST1_2PtReturns = 0 : thisDST1_1PtSafetys = 0
+				thisPointsFromYards = 0 : thisPointsFromPoints = 0
+
+				If thisPlayerLiveProjectionPMR < 60 Then
+
+					Set objPlayerLiveDST = objPlayerLiveProjection.getElementsByTagName("stats_period")
+					thisPlayerLiveDST = objPlayerLiveDST.item(0).text
+
+					Set objPlayerLiveDST_AwayScore = objPlayerLiveProjection.getElementsByTagName("away_score")
+					thisPlayerLiveDST_AwayScore = CInt(objPlayerLiveDST_AwayScore.item(0).text)
+
+					Set objPlayerLiveDST_HomeScore = objPlayerLiveProjection.getElementsByTagName("home_score")
+					thisPlayerLiveDST_HomeScore = CInt(objPlayerLiveDST_HomeScore.item(0).text)
+
+					Set objPlayerLiveDST_HomeGame = objPlayerLiveProjection.getElementsByTagName("home_game")
+					thisPlayerLiveDST_HomeGame = CInt(objPlayerLiveDST_HomeGame.item(0).text)
+
+					If thisPlayerLiveDST_HomeGame = 1 Then
+						thisDST1_PointsAllowed = thisPlayerLiveDST_AwayScore
+					Else
+						thisDST1_PointsAllowed = thisPlayerLiveDST_HomeScore
+					End If
+
+					arrDSTStats = Split(thisPlayerLiveDST, ", ")
+
+					For Each DST_Stat In arrDSTStats
+
+						If InStr(DST_Stat, " ") Then
+
+							arrThisStat = Split(DST_Stat, " ")
+							thisStatCount = arrThisStat(0)
+							thisStatAbbr  = arrThisStat(1)
+
+							If thisStatAbbr = "YDS" Then thisDST1_YardsAllowed = CInt(thisStatCount)
+							If thisStatAbbr = "Int" Then thisDST1_Interceptions = CInt(thisStatCount)
+							If thisStatAbbr = "SACK" Then thisDST1_Sacks = CInt(thisStatCount)
+							If thisStatAbbr = "DFR" Then thisDST1_FumblesRecovered = CInt(thisStatCount)
+							If thisStatAbbr = "DTD" Then thisDST1_Touchdowns = CInt(thisStatCount)
+							If thisStatAbbr = "STY" Then thisDST1_Safetys = CInt(thisStatCount)
+							If thisStatAbbr = "BFB" Then thisDST1_BlockedFGs = CInt(thisStatCount)
+							If thisStatAbbr = "BP" Then thisDST1_BlockedPunts = CInt(thisStatCount)
+							If thisStatAbbr = "ST2PT" Then thisDST1_2PtReturns = CInt(thisStatCount)
+							If thisStatAbbr = "STY1PT" Then thisDST1_1PtSafetys = CInt(thisStatCount)
+
+						Else
+
+							If DST_Stat = "Int" Then thisDST1_Interceptions = 1
+							If DST_Stat = "SACK" Then thisDST1_Sacks = 1
+							If DST_Stat = "DFR" Then thisDST1_FumblesRecovered = 1
+							If DST_Stat = "DTD" Then thisDST1_Touchdowns = 1
+							If DST_Stat = "STY" Then thisDST1_Safetys = 1
+							If DST_Stat = "BFB" Then thisDST1_BlockedFGs = 1
+							If DST_Stat = "BP" Then thisDST1_BlockedPunts = 1
+							If DST_Stat = "ST2PT" Then thisDST1_2PtReturns = 1
+							If DST_Stat = "STY1PT" Then thisDST1_1PtSafetys = 1
+
+						End If
+
+					Next
+
+					If thisDST1_YardsAllowed >= 50 And thisDST1_YardsAllowed < 100 Then thisPointsFromYards = 10
+					If thisDST1_YardsAllowed >= 100 And thisDST1_YardsAllowed < 150 Then thisPointsFromYards = 8
+					If thisDST1_YardsAllowed >= 150 And thisDST1_YardsAllowed < 200 Then thisPointsFromYards = 6
+					If thisDST1_YardsAllowed >= 200 And thisDST1_YardsAllowed < 250 Then thisPointsFromYards = 4
+					If thisDST1_YardsAllowed >= 250 And thisDST1_YardsAllowed < 300 Then thisPointsFromYards = 2
+
+					If thisDST1_PointsAllowed >= 7 And thisDST1_PointsAllowed < 14 Then thisPointsFromPoints = 6
+					If thisDST1_PointsAllowed >= 14 And thisDST1_PointsAllowed < 21 Then thisPointsFromPoints = 4
+					If thisDST1_PointsAllowed >= 21 And thisDST1_PointsAllowed < 29 Then thisPointsFromPoints = 2
+
+				End If
+
+				thisPointsToLose = thisPointsFromYards + thisPointsFromPoints
+				thisPointFloor = (thisDST1_FumblesRecovered * 2) + (thisDST1_Touchdowns * 6) + (thisDST1_Interceptions * 2) + (thisDST1_Sacks) + (thisDST1_Safetys * 2) + (thisDST1_BlockedFGs * 2) + (thisDST1_BlockedPunts * 2) + (thisDST1_2PtReturns * 2) + (thisDST1_1PtSafetys)
+				thisCurrentScore = thisPointsToLose + thisPointFloor
+
+				thisPlayerLiveProjectionPoints = thisCurrentScore
+
+				thisOriginalDecline = (thisPlayerOriginalProjection - 20) / 60
+				thisLiveDecline = thisOriginalDecline
+				If thisPlayerLiveProjectionMinutesPlayed > 0 Then thisLiveDecline = (thisPlayerLiveProjectionPoints - 20) / thisPlayerLiveProjectionMinutesPlayed
+				thisAdjustedDecline = (thisOriginalDecline + thisLiveDecline) / 2
+
+				'thisNewProjection = (thisOriginalDecline * thisPlayerLiveProjectionPMR) + thisPlayerLiveProjectionPoints
+				thisNewProjection = thisPlayerOriginalProjection
+
+				If thisPlayerLiveProjectionPMR < 30 Then thisNewProjection = (thisAdjustedDecline * thisPlayerLiveProjectionPMR) + thisPlayerLiveProjectionPoints
+
+				If thisNewProjection < thisPointFloor Then thisNewProjection = thisPointFloor
+
+				If thisPlayerLiveProjectionPMR = 60 Then thisNewProjection = thisPlayerOriginalProjection
+
+				thisDST1_Projection = thisNewProjection
+
+			Else
+
+				thisOriginalPPM = thisPlayerOriginalProjection / 60
+				thisNewProjection = ((thisPlayerOriginalProjection / 60) * thisPlayerLiveProjectionPMR) + thisPlayerLiveProjectionPoints
+
+			End If
 
 		End If
 
@@ -492,77 +529,114 @@ For i = 0 To UBound(arrMatchups, 2)
 		thisPlayerLiveProjectionPMR = CDbl(objPlayerLiveProjectionPMR.item(0).text)
 		thisPlayerLiveProjectionMinutesPlayed = 60 - thisPlayerLiveProjectionPMR
 
-		If thisPlayerPosition = "DST" Then
+		If thisPlayerLiveProjectionMinutesPlayed = 60 Then
 
-			thisDST2_YardsAllowed = 0 : thisDST2_PointsAllowed = 0 : thisDST2_FumblesRecovered = 0 : thisDST2_Touchdowns = 0 : thisDST2_Interceptions = 0 : thisDST2_Sacks = 0 : thisDST2_Safetys = 0 : thisDST2_BlockedFGs = 0 : thisDST2_BlockedPunts = 0 : thisDST2_2PtReturns = 0 : thisDST2_1PtSafetys = 0
-			thisPointsFromYards = 0 : thisPointsFromPoints = 0
-
-			If thisPlayerLiveProjectionPMR < 60 Then
-
-				Set statsXML = CreateObject("MSXML2.DOMDocument.3.0")
-				statsXML.loadXML(GetStats(TeamLevelName1, thisYear, thisPeriod, thisPlayerID))
-				statsXML.setProperty "SelectionLanguage", "XPath"
-
-				Set statsYDS = statsXML.selectSingleNode(".//stat[@abbr='YDS']")
-				Set statsDPA = statsXML.selectSingleNode(".//stat[@abbr='DPA']")
-				Set statsDFR = statsXML.selectSingleNode(".//stat[@abbr='DFR']")
-				Set statsDTD = statsXML.selectSingleNode(".//stat[@abbr='DTD']")
-				Set statsINT = statsXML.selectSingleNode(".//stat[@abbr='Int']")
-				Set statsSAK = statsXML.selectSingleNode(".//stat[@abbr='SACK']")
-				Set statsSTY = statsXML.selectSingleNode(".//stat[@abbr='STY']")
-				Set statsBFB = statsXML.selectSingleNode(".//stat[@abbr='BFB']")
-				Set statsBP  = statsXML.selectSingleNode(".//stat[@abbr='BP']")
-				Set stats2PT = statsXML.selectSingleNode(".//stat[@abbr='ST2PT']")
-				Set stats1PT = statsXML.selectSingleNode(".//stat[@abbr='STY1PT']")
-
-				If IsObject(statsYDS) And Len(statsYDS.text) > 0 Then thisDST2_YardsAllowed = CDbl(statsYDS.text)
-				If IsObject(statsDPA) And Len(statsDPA.text) > 0 Then thisDST2_PointsAllowed = CInt(statsDPA.text)
-				If IsObject(statsDFR) And Len(statsDFR.text) > 0 Then thisDST2_FumblesRecovered = CInt(statsDFR.text)
-				If IsObject(statsDTD) And Len(statsDTD.text) > 0 Then thisDST2_Touchdowns = CInt(statsDTD.text)
-				If IsObject(statsINT) And Len(statsINT.text) > 0 Then thisDST2_Interceptions = CInt(statsINT.text)
-				If IsObject(statsSAK) And Len(statsSAK.text) > 0 Then thisDST2_Sacks = CInt(statsSAK.text)
-				If IsObject(statsSTY) And Len(statsSTY.text) > 0 Then thisDST2_Safetys = CInt(statsSTY.text)
-				If IsObject(statsBFB) And Len(statsBFB.text) > 0 Then thisDST2_BlockedFGs = CInt(statsBFB.text)
-				If IsObject(statsBP)  And Len(statsBP.text)  > 0 Then thisDST2_BlockedPunts = CInt(statsBP.text)
-				If IsObject(stats2PT) And Len(stats2PT.text) > 0 Then thisDST2_2PtReturns = CInt(stats2PT.text)
-				If IsObject(stats1PT) And Len(stats1PT.text) > 0 Then thisDST2_1PtSafetys = CInt(stats1PT.text)
-
-				If thisDST2_YardsAllowed >= 50 And thisDST2_YardsAllowed < 100 Then thisPointsFromYards = 10
-				If thisDST2_YardsAllowed >= 100 And thisDST2_YardsAllowed < 150 Then thisPointsFromYards = 8
-				If thisDST2_YardsAllowed >= 150 And thisDST2_YardsAllowed < 200 Then thisPointsFromYards = 6
-				If thisDST2_YardsAllowed >= 200 And thisDST2_YardsAllowed < 250 Then thisPointsFromYards = 4
-				If thisDST2_YardsAllowed >= 250 And thisDST2_YardsAllowed < 300 Then thisPointsFromYards = 2
-
-				If thisDST2_PointsAllowed >= 7 And thisDST2_PointsAllowed < 14 Then thisPointsFromPoints = 6
-				If thisDST2_PointsAllowed >= 14 And thisDST2_PointsAllowed < 21 Then thisPointsFromPoints = 4
-				If thisDST2_PointsAllowed >= 21 And thisDST2_PointsAllowed < 29 Then thisPointsFromPoints = 2
-
-			End If
-
-			thisPointsToLose = thisPointsFromYards + thisPointsFromPoints
-			thisPointFloor = (thisDST2_FumblesRecovered * 2) + (thisDST2_Touchdowns * 6) + (thisDST2_Interceptions * 2) + (thisDST2_Sacks) + (thisDST2_Safetys * 2) + (thisDST2_BlockedFGs * 2) + (thisDST2_BlockedPunts * 2) + (thisDST2_2PtReturns * 2) + (thisDST2_1PtSafetys)
-			thisCurrentScore = thisPointsToLose + thisPointFloor
-
-			thisPlayerLiveProjectionPoints = thisCurrentScore
-
-			thisOriginalDecline = (thisPlayerOriginalProjection - 20) / 60
-			thisLiveDecline = thisOriginalDecline
-			If thisPlayerLiveProjectionMinutesPlayed > 0 Then thisLiveDecline = (thisPlayerLiveProjectionPoints - 20) / thisPlayerLiveProjectionMinutesPlayed
-			thisAdjustedDecline = (thisOriginalDecline + thisLiveDecline) / 2
-
-			thisNewProjection = (thisOriginalDecline * thisPlayerLiveProjectionPMR) + thisPlayerLiveProjectionPoints
-			If thisPlayerLiveProjectionPMR < 30 Then thisNewProjection = (thisAdjustedDecline * thisPlayerLiveProjectionPMR) + thisPlayerLiveProjectionPoints
-
-			If thisNewProjection < thisPointFloor Then thisNewProjection = thisPointFloor
-
-			If thisPlayerLiveProjectionPMR = 60 Then thisNewProjection = thisPlayerOriginalProjection
-
-			thisDST2_Projection = thisNewProjection
+			thisNewProjection = thisPlayerLiveProjectionPoints
 
 		Else
 
-			thisOriginalPPM = thisPlayerOriginalProjection / 60
-			thisNewProjection = ((thisPlayerOriginalProjection / 60) * thisPlayerLiveProjectionPMR) + thisPlayerLiveProjectionPoints
+			If thisPlayerPosition = "DST" Then
+
+				thisDST2_YardsAllowed = 0 : thisDST2_PointsAllowed = 0 : thisDST2_FumblesRecovered = 0 : thisDST2_Touchdowns = 0 : thisDST2_Interceptions = 0 : thisDST2_Sacks = 0 : thisDST2_Safetys = 0 : thisDST2_BlockedFGs = 0 : thisDST2_BlockedPunts = 0 : thisDST2_2PtReturns = 0 : thisDST2_1PtSafetys = 0
+				thisPointsFromYards = 0 : thisPointsFromPoints = 0
+
+				If thisPlayerLiveProjectionPMR < 60 Then
+
+					Set objPlayerLiveDST = objPlayerLiveProjection.getElementsByTagName("stats_period")
+					thisPlayerLiveDST = objPlayerLiveDST.item(0).text
+
+					Set objPlayerLiveDST_AwayScore = objPlayerLiveProjection.getElementsByTagName("away_score")
+					thisPlayerLiveDST_AwayScore = CInt(objPlayerLiveDST_AwayScore.item(0).text)
+
+					Set objPlayerLiveDST_HomeScore = objPlayerLiveProjection.getElementsByTagName("home_score")
+					thisPlayerLiveDST_HomeScore = CInt(objPlayerLiveDST_HomeScore.item(0).text)
+
+					Set objPlayerLiveDST_HomeGame = objPlayerLiveProjection.getElementsByTagName("home_game")
+					thisPlayerLiveDST_HomeGame = CInt(objPlayerLiveDST_HomeGame.item(0).text)
+
+					If thisPlayerLiveDST_HomeGame = 1 Then
+						thisDST2_PointsAllowed = thisPlayerLiveDST_AwayScore
+					Else
+						thisDST2_PointsAllowed = thisPlayerLiveDST_HomeScore
+					End If
+
+					arrDSTStats = Split(thisPlayerLiveDST, ", ")
+
+					For Each DST_Stat In arrDSTStats
+
+						If InStr(DST_Stat, " ") Then
+
+							arrThisStat = Split(DST_Stat, " ")
+							thisStatCount = arrThisStat(0)
+							thisStatAbbr  = arrThisStat(1)
+
+							If thisStatAbbr = "YDS" Then thisDST2_YardsAllowed = CInt(thisStatCount)
+							If thisStatAbbr = "Int" Then thisDST2_Interceptions = CInt(thisStatCount)
+							If thisStatAbbr = "SACK" Then thisDST2_Sacks = CInt(thisStatCount)
+							If thisStatAbbr = "DFR" Then thisDST2_FumblesRecovered = CInt(thisStatCount)
+							If thisStatAbbr = "DTD" Then thisDST2_Touchdowns = CInt(thisStatCount)
+							If thisStatAbbr = "STY" Then thisDST2_Safetys = CInt(thisStatCount)
+							If thisStatAbbr = "BFB" Then thisDST2_BlockedFGs = CInt(thisStatCount)
+							If thisStatAbbr = "BP" Then thisDST2_BlockedPunts = CInt(thisStatCount)
+							If thisStatAbbr = "ST2PT" Then thisDST2_2PtReturns = CInt(thisStatCount)
+							If thisStatAbbr = "STY1PT" Then thisDST2_1PtSafetys = CInt(thisStatCount)
+
+
+						Else
+
+							If DST_Stat = "Int" Then thisDST2_Interceptions = 1
+							If DST_Stat = "SACK" Then thisDST2_Sacks = 1
+							If DST_Stat = "DFR" Then thisDST2_FumblesRecovered = 1
+							If DST_Stat = "DTD" Then thisDST2_Touchdowns = 1
+							If DST_Stat = "STY" Then thisDST2_Safetys = 1
+							If DST_Stat = "BFB" Then thisDST2_BlockedFGs = 1
+							If DST_Stat = "BP" Then thisDST2_BlockedPunts = 1
+							If DST_Stat = "ST2PT" Then thisDST2_2PtReturns = 1
+							If DST_Stat = "STY1PT" Then thisDST2_1PtSafetys = 1
+
+						End If
+
+					Next
+
+					If thisDST2_YardsAllowed >= 50 And thisDST2_YardsAllowed < 100 Then thisPointsFromYards = 10
+					If thisDST2_YardsAllowed >= 100 And thisDST2_YardsAllowed < 150 Then thisPointsFromYards = 8
+					If thisDST2_YardsAllowed >= 150 And thisDST2_YardsAllowed < 200 Then thisPointsFromYards = 6
+					If thisDST2_YardsAllowed >= 200 And thisDST2_YardsAllowed < 250 Then thisPointsFromYards = 4
+					If thisDST2_YardsAllowed >= 250 And thisDST2_YardsAllowed < 300 Then thisPointsFromYards = 2
+
+					If thisDST2_PointsAllowed >= 7 And thisDST2_PointsAllowed < 14 Then thisPointsFromPoints = 6
+					If thisDST2_PointsAllowed >= 14 And thisDST2_PointsAllowed < 21 Then thisPointsFromPoints = 4
+					If thisDST2_PointsAllowed >= 21 And thisDST2_PointsAllowed < 29 Then thisPointsFromPoints = 2
+
+				End If
+
+				thisPointsToLose = thisPointsFromYards + thisPointsFromPoints
+				thisPointFloor = (thisDST2_FumblesRecovered * 2) + (thisDST2_Touchdowns * 6) + (thisDST2_Interceptions * 2) + (thisDST2_Sacks) + (thisDST2_Safetys * 2) + (thisDST2_BlockedFGs * 2) + (thisDST2_BlockedPunts * 2) + (thisDST2_2PtReturns * 2) + (thisDST2_1PtSafetys)
+				thisCurrentScore = thisPointsToLose + thisPointFloor
+
+				thisPlayerLiveProjectionPoints = thisCurrentScore
+
+				thisOriginalDecline = (thisPlayerOriginalProjection - 20) / 60
+				thisLiveDecline = thisOriginalDecline
+				If thisPlayerLiveProjectionMinutesPlayed > 0 Then thisLiveDecline = (thisPlayerLiveProjectionPoints - 20) / thisPlayerLiveProjectionMinutesPlayed
+				thisAdjustedDecline = (thisOriginalDecline + thisLiveDecline) / 2
+
+				'thisNewProjection = (thisOriginalDecline * thisPlayerLiveProjectionPMR) + thisPlayerLiveProjectionPoints
+				thisNewProjection = thisPlayerOriginalProjection
+				If thisPlayerLiveProjectionPMR < 30 Then thisNewProjection = (thisAdjustedDecline * thisPlayerLiveProjectionPMR) + thisPlayerLiveProjectionPoints
+
+				If thisNewProjection < thisPointFloor Then thisNewProjection = thisPointFloor
+
+				If thisPlayerLiveProjectionPMR = 60 Then thisNewProjection = thisPlayerOriginalProjection
+
+				thisDST2_Projection = thisNewProjection
+
+			Else
+
+				thisOriginalPPM = thisPlayerOriginalProjection / 60
+				thisNewProjection = ((thisPlayerOriginalProjection / 60) * thisPlayerLiveProjectionPMR) + thisPlayerLiveProjectionPoints
+
+			End If
 
 		End If
 
@@ -628,8 +702,8 @@ For i = 0 To UBound(arrMatchups, 2)
 	If TeamSpread2 > 0 Then TeamSpread2Display = "+" & TeamSpread2Display
 
 	WScript.Echo(vbcrlf & vbcrlf & "MATCHUP #" & MatchupID & " ----------")
-	WScript.Echo(vbcrlf & TeamName1 & " (" & TeamNewProjectedScore1 & " Proj, " & TeamSpread1Display & " Spread, " & TeamWinPercentage1 * 100 & "% Win, " & TeamMoneyline1Display & " ML, " & thisDST1_Projection & " DST Proj.)")
-	WScript.Echo(vbcrlf & TeamName2 & " (" & TeamNewProjectedScore2 & " Proj, " & TeamSpread2Display & " Spread, " & TeamWinPercentage2 * 100 & "% Win, " & TeamMoneyline2Display & " ML, " & thisDST2_Projection & " DST Proj.)")
+	WScript.Echo(vbcrlf & TeamName1 & " (" & TeamNewProjectedScore1 & " Proj, " & TeamSpread1Display & " Spread, " & TeamWinPercentage1 * 100 & "% Win, " & TeamMoneyline1Display & " ML, " & thisDST1_Projection & " DST Proj., " & thisDST1_YardsAllowed & " DST YDS, " & thisDST1_PointsAllowed & " DST PTS, " & thisDST1_Interceptions & " INT)")
+	WScript.Echo(vbcrlf & TeamName2 & " (" & TeamNewProjectedScore2 & " Proj, " & TeamSpread2Display & " Spread, " & TeamWinPercentage2 * 100 & "% Win, " & TeamMoneyline2Display & " ML, " & thisDST2_Projection & " DST Proj., " & thisDST2_YardsAllowed & " DST YDS, " & thisDST2_PointsAllowed & " DST PTS, " & thisDST2_Interceptions & " INT)")
 
 	sqlUpdate = "UPDATE Matchups SET TeamScore1 = " & TeamScore1 & ", TeamScore2 = " & TeamScore2 & ", TeamPMR1 = " & TeamPMR1 & ", TeamPMR2 = " & TeamPMR2 & ", TeamProjected1 = " &  TeamNewProjectedScore1 & ", TeamProjected2 = " &  TeamNewProjectedScore2 & ", TeamWinPercentage1 = " &  TeamWinPercentage1 & ", TeamWinPercentage2 = " &  TeamWinPercentage2 & ", TeamMoneyline1 = " &  TeamMoneyline1 & ", TeamMoneyline2 = " &  TeamMoneyline2 & ", TeamSpread1 = " &  TeamSpread1 & ", TeamSpread2 = " &  TeamSpread2 & "  WHERE MatchupID = " & MatchupID
 	Set rsUpdate = sqlDatabase.Execute(sqlUpdate)
