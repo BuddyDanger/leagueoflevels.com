@@ -254,7 +254,8 @@
 														If objPlayerName.Length > 0 Then thisPlayerName = objPlayerName.item(0).text
 
 														Set objPlayerPoints = objPlayer.getElementsByTagName("fpts")
-														If objPlayerPoints.Length > 0 Then thisPlayerPoints = FormatNumber(objPlayerPoints.item(0).text, 2)
+														If objPlayerPoints.Length > 0 Then thisPlayerPoints = objPlayerPoints.item(0).text
+														If IsNumeric(thisPlayerPoints) Then thisPlayerPoints = FormatNumber(thisPlayerPoints, 2)
 
 														Set objPlayerStatus = objPlayer.getElementsByTagName("status")
 														If objPlayerStatus.Length > 0 Then thisPlayerStatus = objPlayerStatus.item(0).text
@@ -451,7 +452,8 @@
 														If objPlayerName.Length > 0 Then thisPlayerName = objPlayerName.item(0).text
 
 														Set objPlayerPoints = objPlayer.getElementsByTagName("fpts")
-														If objPlayerPoints.Length > 0 Then thisPlayerPoints = FormatNumber(objPlayerPoints.item(0).text, 2)
+														If objPlayerPoints.Length > 0 Then thisPlayerPoints = objPlayerPoints.item(0).text
+														If IsNumeric(thisPlayerPoints) Then thisPlayerPoints = FormatNumber(thisPlayerPoints, 2)
 
 														Set objPlayerStatus = objPlayer.getElementsByTagName("status")
 														If objPlayerStatus.Length > 0 Then thisPlayerStatus = objPlayerStatus.item(0).text
