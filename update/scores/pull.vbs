@@ -650,11 +650,21 @@ For i = 0 To UBound(arrMatchups, 2)
 	TeamSpread1 = CInt(TeamNewProjectedScore2 - TeamNewProjectedScore1)
 	TeamSpread2 = CInt(TeamNewProjectedScore1 - TeamNewProjectedScore2)
 
-	MatchupWinPercentage = CalculateWinPercentage(TeamPMR1, TeamPMR2, TeamNewProjectedScore1, TeamNewProjectedScore2, TeamScore1, TeamScore2)
-	arrWinPercentages = Split(MatchupWinPercentage, "/")
+	If TeamNewProjectedScore1 > 0 And TeamNewProjectedScore2 > 0 Then
 
-	TeamWinPercentage1Display = arrWinPercentages(0)
-	TeamWinPercentage2Display = arrWinPercentages(1)
+		MatchupWinPercentage = CalculateWinPercentage(TeamPMR1, TeamPMR2, TeamNewProjectedScore1, TeamNewProjectedScore2, TeamScore1, TeamScore2)
+		arrWinPercentages = Split(MatchupWinPercentage, "/")
+
+		TeamWinPercentage1Display = arrWinPercentages(0)
+		TeamWinPercentage2Display = arrWinPercentages(1)
+
+	Else
+
+		TeamWinPercentage1Display = "0%"
+		TeamWinPercentage2Display = "0%"
+
+	End If
+
 
 	TeamWinPercentageInt1 = CInt(Replace(TeamWinPercentage1Display, "%", ""))
 	TeamWinPercentageInt2 = CInt(Replace(TeamWinPercentage2Display, "%", ""))

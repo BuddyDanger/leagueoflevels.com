@@ -327,8 +327,8 @@
 															thisBackgroundPosition = "-70px -20px"
 														End If
 
-														If thisPlayerStatus = "Reserve" And HitReserves = 0 Then StartReserves = 1
-														If thisPlayerStatus = "Reserve" Then HitReserves = 1
+														If (thisPlayerStatus = "Reserve" Or thisPlayerStatus = "Injured") And HitReserves = 0 Then StartReserves = 1
+														If thisPlayerStatus = "Reserve" Or thisPlayerStatus = "Injured" Then HitReserves = 1
 
 														If StartReserves = 1 Then Response.Write("</ul><hr style=""border-top:1px dotted #ccc;"" /><ul class=""list-group"" id=""team-1-bench"" style=""margin-bottom: 1rem;"">")
 %>
@@ -524,8 +524,8 @@
 															thisBackgroundPosition = "-70px -20px"
 														End If
 
-														If thisPlayerStatus = "Reserve" And HitReserves = 0 Then StartReserves = 1
-														If thisPlayerStatus = "Reserve" Then HitReserves = 1
+														If (thisPlayerStatus = "Reserve" Or thisPlayerStatus = "Injured") And HitReserves = 0 Then StartReserves = 1
+														If thisPlayerStatus = "Reserve" Or thisPlayerStatus = "Injured" Then HitReserves = 1
 
 														If StartReserves = 1 Then Response.Write("</ul><hr style=""border-top:1px dotted #ccc;"" /><ul class=""list-group"" id=""team-2-bench"" style=""margin-bottom: 1rem;"">")
 %>
