@@ -212,10 +212,21 @@
 													TeamScore1 = FormatNumber(CDbl(objTeamScore1.item(0).text) + BaseScore1, 2)
 													TeamPMR1 = CInt(objTeamPMR1.item(0).text)
 
-													TeamPMRColor1 = "success"
-													If TeamPMR1 < 321 Then TeamPMRColor1 = "warning"
-													If TeamPMR1 < 161 Then TeamPMRColor1 = "danger"
-													TeamPMRPercent1 = (TeamPMR1 * 100) / 420
+													If thisLevelID = 1 Then
+
+														TeamPMRColor1 = "success"
+														If TeamPMR1 < 551 Then TeamPMRColor1 = "warning"
+														If TeamPMR1 < 276 Then TeamPMRColor1 = "danger"
+														TeamPMRPercent1 = (TeamPMR1 * 100) / 720
+
+													Else
+
+														TeamPMRColor1 = "success"
+														If TeamPMR1 < 321 Then TeamPMRColor1 = "warning"
+														If TeamPMR1 < 161 Then TeamPMRColor1 = "danger"
+														TeamPMRPercent1 = (TeamPMR1 * 100) / 420
+
+													End If
 
 													If CInt(TeamID1) = 38 Then TeamName1 = "München on Bündchen"
 %>
@@ -409,6 +420,22 @@
 													TeamName2 = objTeamName2.item(0).text
 													TeamScore2 = FormatNumber(CDbl(objTeamScore2.item(0).text) + BaseScore2, 2)
 													TeamPMR2 = CInt(objTeamPMR2.item(0).text)
+
+													If thisLevelID = 1 Then
+
+														TeamPMRColor2 = "success"
+														If TeamPMR2 < 551 Then TeamPMRColor2 = "warning"
+														If TeamPMR2 < 276 Then TeamPMRColor2 = "danger"
+														TeamPMRPercent2 = (TeamPMR2 * 100) / 720
+
+													Else
+
+														TeamPMRColor2 = "success"
+														If TeamPMR2 < 321 Then TeamPMRColor2 = "warning"
+														If TeamPMR2 < 161 Then TeamPMRColor2 = "danger"
+														TeamPMRPercent2 = (TeamPMR2 * 100) / 420
+
+													End If
 
 													TeamPMRColor2 = "success"
 													If TeamPMR2 < 321 Then TeamPMRColor2 = "warning"
