@@ -57,10 +57,21 @@
 	TeamScore1 = CDbl(objTeamScore.item(0).text) + BaseScore
 	TeamPMR1 = CInt(objTeamPMR.item(0).text)
 
-	TeamPMRColor1 = "success"
-	If TeamPMR1 < 321 Then TeamPMRColor1 = "warning"
-	If TeamPMR1 < 161 Then TeamPMRColor1 = "danger"
-	TeamPMRPercent1 = (TeamPMR1 * 100) / 420
+	If thisLevelID = 1 Then
+
+		TeamPMRColor1 = "success"
+		If TeamPMR1 < 551 Then TeamPMRColor1 = "warning"
+		If TeamPMR1 < 276 Then TeamPMRColor1 = "danger"
+		TeamPMRPercent1 = (TeamPMR1 * 100) / 720
+
+	Else
+
+		TeamPMRColor1 = "success"
+		If TeamPMR1 < 321 Then TeamPMRColor1 = "warning"
+		If TeamPMR1 < 161 Then TeamPMRColor1 = "danger"
+		TeamPMRPercent1 = (TeamPMR1 * 100) / 420
+
+	End If
 
 	If CInt(teamID) = 38 Then TeamName1 = "München on Bündchen"
 

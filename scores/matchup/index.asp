@@ -437,11 +437,6 @@
 
 													End If
 
-													TeamPMRColor2 = "success"
-													If TeamPMR2 < 321 Then TeamPMRColor2 = "warning"
-													If TeamPMR2 < 161 Then TeamPMRColor2 = "danger"
-													TeamPMRPercent2 = (TeamPMR2 * 100) / 420
-
 													If CInt(TeamID2) = 38 Then TeamName2 = "München on Bündchen"
 %>
 													<li class="list-group-item team-2-box" style="padding-left: 70px; background-color: #<%= BackgroundColor %>; color: #fff; background-image: url('<%= TeamCBSLogo2 %>'); background-position: -40px -20px; background-repeat: no-repeat;">
