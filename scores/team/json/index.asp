@@ -57,7 +57,7 @@
 	TeamScore1 = CDbl(objTeamScore.item(0).text) + BaseScore
 	TeamPMR1 = CInt(objTeamPMR.item(0).text)
 
-	If thisLevelID = 1 Then
+	If leagueTitle = "OMEGA" Then
 
 		TeamPMRColor1 = "success"
 		If TeamPMR1 < 551 Then TeamPMRColor1 = "warning"

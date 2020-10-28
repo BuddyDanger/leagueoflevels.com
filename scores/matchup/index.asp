@@ -212,7 +212,7 @@
 													TeamScore1 = FormatNumber(CDbl(objTeamScore1.item(0).text) + BaseScore1, 2)
 													TeamPMR1 = CInt(objTeamPMR1.item(0).text)
 
-													If thisLevelID = 1 Then
+													If LevelID = 1 Then
 
 														TeamPMRColor1 = "success"
 														If TeamPMR1 < 551 Then TeamPMRColor1 = "warning"
@@ -421,7 +421,7 @@
 													TeamScore2 = FormatNumber(CDbl(objTeamScore2.item(0).text) + BaseScore2, 2)
 													TeamPMR2 = CInt(objTeamPMR2.item(0).text)
 
-													If thisLevelID = 1 Then
+													If LevelID = 1 Then
 
 														TeamPMRColor2 = "success"
 														If TeamPMR2 < 551 Then TeamPMRColor2 = "warning"
