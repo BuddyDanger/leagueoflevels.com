@@ -393,7 +393,8 @@ For i = 0 To UBound(arrMatchups, 2)
 		Set objPlayerLiveProjectionPoints = objPlayerLiveProjection.getElementsByTagName("fpts")
 		thisPlayerLiveProjectionPoints = CDbl(objPlayerLiveProjectionPoints.item(0).text)
 		Set objPlayerLiveProjectionPMR = objPlayerLiveProjection.getElementsByTagName("minutes_remaining")
-		thisPlayerLiveProjectionPMR = CDbl(objPlayerLiveProjectionPMR.item(0).text)
+		thisPlayerLiveProjectionPMR = 0
+		If objPlayerLiveProjectionPMR.Length > 0 Then thisPlayerLiveProjectionPMR = CDbl(objPlayerLiveProjectionPMR.item(0).text)
 		thisPlayerLiveProjectionMinutesPlayed = 60 - thisPlayerLiveProjectionPMR
 
 		If thisPlayerLiveProjectionMinutesPlayed = 60 Then
@@ -526,7 +527,8 @@ For i = 0 To UBound(arrMatchups, 2)
 		Set objPlayerLiveProjectionPoints = objPlayerLiveProjection.getElementsByTagName("fpts")
 		thisPlayerLiveProjectionPoints = CDbl(objPlayerLiveProjectionPoints.item(0).text)
 		Set objPlayerLiveProjectionPMR = objPlayerLiveProjection.getElementsByTagName("minutes_remaining")
-		thisPlayerLiveProjectionPMR = CDbl(objPlayerLiveProjectionPMR.item(0).text)
+		thisPlayerLiveProjectionPMR = 0
+		If objPlayerLiveProjectionPMR.Length > 0 Then thisPlayerLiveProjectionPMR = CDbl(objPlayerLiveProjectionPMR.item(0).text)
 		thisPlayerLiveProjectionMinutesPlayed = 60 - thisPlayerLiveProjectionPMR
 
 		If thisPlayerLiveProjectionMinutesPlayed = 60 Then
