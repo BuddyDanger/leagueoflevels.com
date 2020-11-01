@@ -291,6 +291,8 @@ For i = 0 To UBound(arrMatchups, 2)
 	TeamWinPercentage1 = 0
 	TeamWinPercentage2 = 0
 
+	WScript.Echo(vbcrlf & vbcrlf & "MATCHUP #" & MatchupID & " ----------")
+
 	'CUP MATCHUP'
 	If LevelID = 0 Then
 
@@ -385,6 +387,8 @@ For i = 0 To UBound(arrMatchups, 2)
 		thisPlayerOriginalProjection = CDbl(thisPlayer.item(0).text)
 		Set thisPlayerPosition = Player.getElementsByTagName("position")
 		thisPlayerPosition = thisPlayerPosition.item(0).text
+		Set thisPlayerName = Player.getElementsByTagName("fullname")
+		thisPlayerName = thisPlayerName.item(0).text
 
 		If CInt(TeamLevelID1) = 1 Then Set objPlayerLiveProjection = oXMLOMEGA.selectSingleNode(".//player[@id = " & thisPlayerID & "]")
 		If CInt(TeamLevelID1) = 2 Then Set objPlayerLiveProjection = oXMLSLFFL.selectSingleNode(".//player[@id = " & thisPlayerID & "]")
@@ -481,6 +485,8 @@ For i = 0 To UBound(arrMatchups, 2)
 				thisPointFloor = (thisDST1_FumblesRecovered * 2) + (thisDST1_Touchdowns * 6) + (thisDST1_Interceptions * 2) + (thisDST1_Sacks) + (thisDST1_Safetys * 2) + (thisDST1_BlockedFGs * 2) + (thisDST1_BlockedPunts * 2) + (thisDST1_2PtReturns * 2) + (thisDST1_1PtSafetys)
 				thisCurrentScore = thisPointsToLose + thisPointFloor
 
+				thisCurrentScore = thisPlayerLiveProjectionPoints
+
 				thisPlayerLiveProjectionPoints = thisCurrentScore
 
 				thisOriginalDecline = (thisPlayerOriginalProjection - 20) / 60
@@ -508,6 +514,8 @@ For i = 0 To UBound(arrMatchups, 2)
 
 		End If
 
+		'WScript.Echo(vbcrlf & thisPlayerPosition & " - " & thisPlayerName & " - " & thisNewProjection)
+
 		TeamNewProjectedScore1 = TeamNewProjectedScore1 + thisNewProjection
 
 	Next
@@ -519,6 +527,8 @@ For i = 0 To UBound(arrMatchups, 2)
 		thisPlayerOriginalProjection = CDbl(thisPlayer.item(0).text)
 		Set thisPlayerPosition = Player.getElementsByTagName("position")
 		thisPlayerPosition = thisPlayerPosition.item(0).text
+		Set thisPlayerName = Player.getElementsByTagName("fullname")
+		thisPlayerName = thisPlayerName.item(0).text
 
 		If CInt(TeamLevelID2) = 1 Then Set objPlayerLiveProjection = oXMLOMEGA.selectSingleNode(".//player[@id = " & thisPlayerID & "]")
 		If CInt(TeamLevelID2) = 2 Then Set objPlayerLiveProjection = oXMLSLFFL.selectSingleNode(".//player[@id = " & thisPlayerID & "]")
@@ -616,6 +626,8 @@ For i = 0 To UBound(arrMatchups, 2)
 				thisPointFloor = (thisDST2_FumblesRecovered * 2) + (thisDST2_Touchdowns * 6) + (thisDST2_Interceptions * 2) + (thisDST2_Sacks) + (thisDST2_Safetys * 2) + (thisDST2_BlockedFGs * 2) + (thisDST2_BlockedPunts * 2) + (thisDST2_2PtReturns * 2) + (thisDST2_1PtSafetys)
 				thisCurrentScore = thisPointsToLose + thisPointFloor
 
+				thisCurrentScore = thisPlayerLiveProjectionPoints
+
 				thisPlayerLiveProjectionPoints = thisCurrentScore
 
 				thisOriginalDecline = (thisPlayerOriginalProjection - 20) / 60
@@ -641,6 +653,8 @@ For i = 0 To UBound(arrMatchups, 2)
 			End If
 
 		End If
+
+		'WScript.Echo(vbcrlf & thisPlayerPosition & " - " & thisPlayerName & " - " & thisNewProjection)
 
 		TeamNewProjectedScore2 = TeamNewProjectedScore2 + thisNewProjection
 
@@ -713,7 +727,6 @@ For i = 0 To UBound(arrMatchups, 2)
 	TeamSpread2Display = TeamSpread2
 	If TeamSpread2 > 0 Then TeamSpread2Display = "+" & TeamSpread2Display
 
-	WScript.Echo(vbcrlf & vbcrlf & "MATCHUP #" & MatchupID & " ----------")
 	WScript.Echo(vbcrlf & TeamName1 & " (" & TeamNewProjectedScore1 & " Proj, " & TeamSpread1Display & " Spread, " & TeamWinPercentage1 * 100 & "% Win, " & TeamMoneyline1Display & " ML, " & thisDST1_Projection & " DST Proj., " & thisDST1_YardsAllowed & " DST YDS, " & thisDST1_PointsAllowed & " DST PTS, " & thisDST1_Interceptions & " INT)")
 	WScript.Echo(vbcrlf & TeamName2 & " (" & TeamNewProjectedScore2 & " Proj, " & TeamSpread2Display & " Spread, " & TeamWinPercentage2 * 100 & "% Win, " & TeamMoneyline2Display & " ML, " & thisDST2_Projection & " DST Proj., " & thisDST2_YardsAllowed & " DST YDS, " & thisDST2_PointsAllowed & " DST PTS, " & thisDST2_Interceptions & " INT)")
 
