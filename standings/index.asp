@@ -11,26 +11,26 @@
 		<meta http-equiv="x-ua-compatible" content="IE=edge,chrome=1" />
 		<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
-		<title>Schedule / League of Levels</title>
+		<title>Standings / League of Levels</title>
 
 		<meta name="description" content="" />
 
 		<meta property="og:site_name" content="LeagueOfLevels.com" />
 		<meta property="og:url" content="https://www.leagueoflevels.com/" />
-		<meta property="og:title" content="Schedule - The League of Levels" />
+		<meta property="og:title" content="Standings - The League of Levels" />
 		<meta property="og:description" content="" />
 		<meta property="og:type" content="article" />
 
 		<meta name="twitter:site" content="samelevel" />
 		<meta name="twitter:url" content="https://www.leagueoflevels.com/" />
-		<meta name="twitter:title" content="Schedule - The League of Levels" />
+		<meta name="twitter:title" content="Standings - The League of Levels" />
 		<meta name="twitter:description" content="" />
 
-		<meta name="title" content="Schedule - The League of Levels" />
+		<meta name="title" content="Standings - The League of Levels" />
 		<meta name="medium" content="article" />
 
 		<link rel="shortcut icon" href="/favicon.ico" />
-		<link rel="canonical" href="https://www.leagueoflevels.com/" />
+		<link rel="canonical" href="https://www.leagueoflevels.com/standings/" />
 
 		<link href="/assets/css/bootstrap.css" rel="stylesheet" type="text/css" />
 		<link href="/assets/css/icons.css" rel="stylesheet" type="text/css" />
