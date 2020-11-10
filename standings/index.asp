@@ -66,71 +66,23 @@
 
 								</div>
 
-								<h4 class="page-title">Schedule / <%= thisYear %> / Period <%= thisPeriod %></h4>
+								<h4 class="page-title">Standings / <%= thisYear %> / Period <%= thisPeriod %></h4>
 
 							</div>
 
 							<div class="page-content">
 
-								<div class="row">
-									<div class="col-12 col-md-3">
-
-										<select class="form-control form-control-lg mb-4">
-											<option value="">All Levels</option>
-											<option value="omegalevel">Omega Level</option>
-											<option value="samelevel">Same Level</option>
-											<option value="farmlevel">Farm Level</option>
-											<option value="nextlevel">Next Level Cup</option>
-										</select>
-
-									</div>
-
-									<div class="col-12 col-md-3">
-
-										<select class="form-control form-control-lg mb-4">
-											<option value="">All Years</option>
-											<option value="2020">Year — 2020</option>
-											<option value="2019">Year — 2019</option>
-											<option value="2018">Year — 2018</option>
-											<option value="2017">Year — 2017</option>
-											<option value="2016">Year — 2016</option>
-											<option value="2015">Year — 2015</option>
-											<option value="2014">Year — 2014</option>
-											<option value="2013">Year — 2013</option>
-											<option value="2012">Year — 2012</option>
-											<option value="2011">Year — 2011</option>
-											<option value="2010">Year — 2010</option>
-											<option value="2009">Year — 2009</option>
-											<option value="2008">Year — 2008</option>
-										</select>
-
-									</div>
-
-									<div class="col-12 col-md-3">
-
-										<select class="form-control form-control-lg mb-4">
-											<option value="">All Periods</option>
-											<option value="01">Period — 01</option>
-											<option value="02">Period — 02</option>
-											<option value="03">Period — 03</option>
-											<option value="04">Period — 04</option>
-											<option value="05">Period — 05</option>
-											<option value="06">Period — 06</option>
-											<option value="07">Period — 07</option>
-											<option value="08">Period — 08</option>
-											<option value="09">Period — 09</option>
-											<option value="10">Period — 10</option>
-											<option value="11">Period — 11</option>
-											<option value="12">Period — 12</option>
-											<option value="13">Period — 13</option>
-											<option value="14">Period — 14</option>
-											<option value="15">Period — 15</option>
-											<option value="16">Period — 16</option>
-											<option value="17">Period — 17</option>
-										</select>
-
-									</div>
-								</div>
+								<ul class="nav nav-pills">
+									<li class="nav-item">
+										<a class="nav-link" href="#">OMEGA</a>
+									</li>
+									<li class="nav-item">
+										<a class="nav-link" href="#">SLFFL</a>
+									</li>
+									<li class="nav-item">
+										<a class="nav-link" href="#">FLFFL</a>
+									</li>
+								</ul>
 
 								<div class="row">
 									<div class="col-12">

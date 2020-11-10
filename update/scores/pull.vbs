@@ -6,26 +6,31 @@ Function GetToken (League)
 	Set xmlhttpSLFFL = CreateObject("Microsoft.XMLHTTP")
 
 	If League = "SLFFL" Then
-		xmlhttpSLFFL.open "GET", "https://api.cbssports.com/general/oauth/test/access_token?user_id=naptown-&league_id=samelevel&sport=football&response_format=xml", false
+		'xmlhttpSLFFL.open "GET", "https://api.cbssports.com/general/oauth/test/access_token?user_id=naptown-&league_id=samelevel&sport=football&response_format=xml", false
+		thisToken = "U2FsdGVkX1-nLiU_Ohv2rB2SaenbXwpQylBie1tQNoBTZOnUpFFdLDV5OUgc3vmFrMKwDDYb7m3qQo9ibt3sJJBqwOc_sTeToX5k68OaIN0syDyxnNK55k6p4tHLlggE8RhkO1lg8HrIpytn-fl1iQ"
 	ElseIf League = "OMEGA" Then
-		xmlhttpSLFFL.open "GET", "https://api.cbssports.com/general/oauth/test/access_token?user_id=naptown-&league_id=omegalevel&sport=football&response_format=xml", false
+		'xmlhttpSLFFL.open "GET", "https://api.cbssports.com/general/oauth/test/access_token?user_id=naptown-&league_id=omegalevel&sport=football&response_format=xml", false
+		thisToken = "U2FsdGVkX1_qjmv9BNf7THPpaUam02iQhwXpqOpq4shkjBli6JKBx6jTkoLtjr9O-vpLxUlbrMYeG_oYthVZ-LyvmlxbYT2GM60aSUzvZ65ptKQoW5aXQLHypxM4zkS7XVfxPK1QricXvAKx03EPvg"
 	Else
-		xmlhttpSLFFL.open "GET", "https://api.cbssports.com/general/oauth/test/access_token?user_id=naptown-&league_id=farmlevel&sport=football&response_format=xml", false
+		'xmlhttpSLFFL.open "GET", "https://api.cbssports.com/general/oauth/test/access_token?user_id=naptown-&league_id=farmlevel&sport=football&response_format=xml", false
+		thisToken = "U2FsdGVkX18SKm91VpVXfO9uNx9RYniWaNBh1gqk-7NPji49ceBLJHbZO4mddgm6ooiVrhSYqxFkEIzIy9mCoE3L_ZyAGA9zPnKWUOIsfF-xSXvnaeKtrEejU-V-OZVSTnQvC9r2N_PdA3E3nE9lYw"
 	End If
-	xmlhttpSLFFL.send ""
+	'xmlhttpSLFFL.send ""
 
-	SLFFLAccessResponse = xmlhttpSLFFL.ResponseText
+	'SLFFLAccessResponse = xmlhttpSLFFL.ResponseText
 
-	Set xmlhttpSLFFL = Nothing
+	'Set xmlhttpSLFFL = Nothing
 
-	If Left(SLFFLAccessToken, 1) = " " Then SLFFLAccessToken = Right(SLFFLAccessToken, Len(SLFFLAccessToken) - 1)
+	'If Left(SLFFLAccessToken, 1) = " " Then SLFFLAccessToken = Right(SLFFLAccessToken, Len(SLFFLAccessToken) - 1)
 
-	Set xmlDoc = CreateObject("Microsoft.XMLDOM")
-	xmlDoc.async = False
-	TokenDoc = xmlDoc.loadxml(SLFFLAccessResponse)
+	'Set xmlDoc = CreateObject("Microsoft.XMLDOM")
+	'xmlDoc.async = False
+	'TokenDoc = xmlDoc.loadxml(SLFFLAccessResponse)
 
-	Set Node =  xmlDoc.documentElement.selectSingleNode("body/access_token")
-	GetToken = Node.text
+	'Set Node =  xmlDoc.documentElement.selectSingleNode("body/access_token")
+	'GetToken = Node.text
+
+	GetToken = thisToken
 
 End Function
 
@@ -514,7 +519,7 @@ For i = 0 To UBound(arrMatchups, 2)
 
 		End If
 
-		'WScript.Echo(vbcrlf & thisPlayerPosition & " - " & thisPlayerName & " - " & thisNewProjection)
+		WScript.Echo(vbcrlf & thisPlayerPosition & " - " & thisPlayerName & " - " & thisNewProjection)
 
 		TeamNewProjectedScore1 = TeamNewProjectedScore1 + thisNewProjection
 
@@ -654,7 +659,7 @@ For i = 0 To UBound(arrMatchups, 2)
 
 		End If
 
-		'WScript.Echo(vbcrlf & thisPlayerPosition & " - " & thisPlayerName & " - " & thisNewProjection)
+		WScript.Echo(vbcrlf & thisPlayerPosition & " - " & thisPlayerName & " - " & thisNewProjection)
 
 		TeamNewProjectedScore2 = TeamNewProjectedScore2 + thisNewProjection
 
