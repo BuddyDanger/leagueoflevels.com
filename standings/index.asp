@@ -66,105 +66,194 @@
 
 								</div>
 
-								<h4 class="page-title">Standings / <%= thisYear %> / Period <%= thisPeriod %></h4>
+								<h4 class="page-title">Standings</h4>
 
 							</div>
 
 							<div class="page-content">
 
-								<ul class="nav nav-pills">
-									<li class="nav-item">
-										<a class="nav-link" href="#">OMEGA</a>
-									</li>
-									<li class="nav-item">
-										<a class="nav-link" href="#">SLFFL</a>
-									</li>
-									<li class="nav-item">
-										<a class="nav-link" href="#">FLFFL</a>
-									</li>
-								</ul>
-
 								<div class="row">
 									<div class="col-12">
 
-										<div class="card">
-
-											<div class="card-body">
-
-												<table width="100%" class="table table-bordered">
-													<thead>
-														<tr>
-															<th width="5%" style="min-width: 80px;"><b>LEVEL</b></th>
-															<th><b>MATCHUP</b></th>
-															<th width="10%" style="min-width: 60px;"><b>SCORE</b></th>
-															<th width="10%" style="min-width: 60px;"><b>W/L</b></th>
-														</tr>
-													</thead>
-												</table>
 <%
-													sqlGetSchedules = "SELECT MatchupID, Matchups.LevelID, Year, Period, IsPlayoffs, TeamID1, TeamID2, Team1.TeamName AS TeamName1, Team2.TeamName AS TeamName2, TeamScore1, TeamScore2, TeamPMR1, TeamPMR2, Leg, TeamProjected1, TeamProjected2, TeamWinPercentage1, TeamWinPercentage2, TeamMoneyline1, TeamMoneyline2, TeamSpread1, TeamSpread2 FROM Matchups "
-													sqlGetSchedules = sqlGetSchedules & "INNER JOIN Teams AS Team1 ON Team1.TeamID = Matchups.TeamID1 "
-													sqlGetSchedules = sqlGetSchedules & "INNER JOIN Teams AS Team2 ON Team2.TeamID = Matchups.TeamID2 "
-													sqlGetSchedules = sqlGetSchedules & "WHERE Matchups.Year = " & Session.Contents("CurrentYear") & " AND Matchups.Period = " & Session.Contents("CurrentPeriod") & " "
-													sqlGetSchedules = sqlGetSchedules & "ORDER BY CASE WHEN Matchups.LevelID = 1 THEN '1' WHEN Matchups.LevelID = 0 THEN '2' WHEN Matchups.LevelID = 2 THEN '3' WHEN Matchups.LevelID = 3 THEN '4' ELSE Matchups.LevelID END ASC, Matchups.MatchupID DESC"
-													Set rsSchedules = sqlDatabase.Execute(sqlGetSchedules)
+										sqlGetOmega = "SELECT Levels.Title, Teams.TeamName, SUM([ActualWins]) AS WinTotal, SUM([ActualLosses]) AS LossTotal, SUM([ActualTies]) AS TieTotal, SUM([PointsScored]) AS PointsScored, SUM([PointsAgainst]) AS PointsAgainst, SUM([BreakdownWins]) AS BreakdownWins, SUM([BreakdownLosses]) AS BreakdownLosses, SUM([BreakdownTies]) AS BreakdownTies, CAST(AVG([Position]) AS DECIMAL(10,2)) AS AveragePositionYTD FROM Standings INNER JOIN Teams ON Teams.TeamID = Standings.TeamID INNER JOIN Levels ON Levels.LevelID = Standings.LevelID WHERE Levels.LevelID = 1 GROUP BY Levels.LevelID, Levels.Title, Teams.TeamName ORDER BY Levels.LevelID ASC, WinTotal DESC, PointsScored DESC; "
 
-													Do While Not rsSchedules.Eof
+										sqlGetSLFFL = "SELECT Levels.Title, Teams.TeamName, SUM([ActualWins]) AS WinTotal, SUM([ActualLosses]) AS LossTotal, SUM([ActualTies]) AS TieTotal, SUM([PointsScored]) AS PointsScored, SUM([PointsAgainst]) AS PointsAgainst, SUM([BreakdownWins]) AS BreakdownWins, SUM([BreakdownLosses]) AS BreakdownLosses, SUM([BreakdownTies]) AS BreakdownTies, CAST(AVG([Position]) AS DECIMAL(10,2)) AS AveragePositionYTD FROM Standings INNER JOIN Teams ON Teams.TeamID = Standings.TeamID INNER JOIN Levels ON Levels.LevelID = Standings.LevelID WHERE Levels.LevelID = 2 GROUP BY Levels.LevelID, Levels.Title, Teams.TeamName ORDER BY Levels.LevelID ASC, WinTotal DESC, PointsScored DESC; "
 
-														thisMatchupID = rsSchedules("MatchupID")
-														thisLevelID = rsSchedules("LevelID")
-														thisTeamName1 = rsSchedules("TeamName1")
-														thisTeamName2 = rsSchedules("TeamName2")
-														thisTeamScore1 = rsSchedules("TeamScore1")
-														thisTeamScore2 = rsSchedules("TeamScore2")
-														thisTeamPMR1 = rsSchedules("TeamPMR1")
-														thisTeamPMR2 = rsSchedules("TeamPMR2")
-														thisTeamProjected1 = rsSchedules("TeamProjected1")
-														thisTeamProjected2 = rsSchedules("TeamProjected2")
-														thisTeamWinPercentage1 = rsSchedules("TeamWinPercentage1")
-														thisTeamWinPercentage2 = rsSchedules("TeamWinPercentage2")
-														thisTeamMoneyline1 = rsSchedules("TeamMoneyline1")
-														thisTeamMoneyline2 = rsSchedules("TeamMoneyline2")
-														thisTeamSpread1 = rsSchedules("TeamSpread1")
-														thisTeamSpread2 = rsSchedules("TeamSpread2")
+										sqlGetFLFFL = "SELECT Levels.Title, Teams.TeamName, SUM([ActualWins]) AS WinTotal, SUM([ActualLosses]) AS LossTotal, SUM([ActualTies]) AS TieTotal, SUM([PointsScored]) AS PointsScored, SUM([PointsAgainst]) AS PointsAgainst, SUM([BreakdownWins]) AS BreakdownWins, SUM([BreakdownLosses]) AS BreakdownLosses, SUM([BreakdownTies]) AS BreakdownTies, CAST(AVG([Position]) AS DECIMAL(10,2)) AS AveragePositionYTD FROM Standings INNER JOIN Teams ON Teams.TeamID = Standings.TeamID INNER JOIN Levels ON Levels.LevelID = Standings.LevelID WHERE Levels.LevelID = 3 GROUP BY Levels.LevelID, Levels.Title, Teams.TeamName ORDER BY Levels.LevelID ASC, WinTotal DESC, PointsScored DESC; "
 
-														thisTeamWinPercentage1 = (thisTeamWinPercentage1 * 100) & "%"
-														thisTeamWinPercentage2 = (thisTeamWinPercentage2 * 100) & "%"
+										Set rsStandings = sqlDatabase.Execute(sqlGetOmega & sqlGetSLFFL & sqlGetFLFFL)
 
-														If CInt(thisLevelID) = 0 Then LevelCell = "CUP"
-														If CInt(thisLevelID) = 1 Then LevelCell = "OMEGA"
-														If CInt(thisLevelID) = 2 Then LevelCell = "SLFFL"
-														If CInt(thisLevelID) = 3 Then LevelCell = "FLFFL"
-	%>
+										Response.Write("<div Class=""row"">")
+
+											Response.Write("<div Class=""col-12 col-md-12 col-lg-12 col-xl-4"">")
+
+												Response.Write("<h4>OMEGA LEVEL</h4>")
+												Response.Write("<div class=""card"">")
+
+													Response.Write("<div class=""card-body"">")
+%>
+														<table class="table-borderless">
+															<tr>
+																<td><b>TEAM</b></td>
+																<td class="text-center" width="10%" style="min-width: 70px;"><b>W-L-T</b></td>
+																<td class="text-center" width="10%" style="min-width: 75px;"><b>PF</b></td>
+																<td class="text-center" width="10%" style="min-width: 75px;"><b>PA</b></td>
+															</tr>
+														</table>
+
 														<table class="table table-bordered">
 															<tbody>
-																<tr>
-																	<td rowspan="2" width="5%" style="min-width: 80px;" align="center"><%= LevelCell %></td>
-																	<td><%= thisTeamName1 %></td>
-																	<td width="10%" style="min-width: 60px;"><%= thisTeamScore1 %></td>
-																	<td width="10%" style="min-width: 40px;"></td>
-																</tr>
-																<tr>
-																	<td><%= thisTeamName2 %></td>
-																	<td width="10%" style="min-width: 60px;"><%= thisTeamScore2 %></td>
-																	<td width="10%" style="min-width: 40px;"></td>
-																</tr>
+<%
+																Do While Not rsStandings.Eof
+
+																	thisTeamName = rsStandings("TeamName")
+																	thisWinTotal = rsStandings("WinTotal")
+																	thisLossTotal = rsStandings("LossTotal")
+																	thisTieTotal = rsStandings("TieTotal")
+																	thisPointsScored = rsStandings("PointsScored")
+																	thisPointsAgainst = rsStandings("PointsAgainst")
+																	thisBreakdownWins = rsStandings("BreakdownWins")
+																	thisBreakdownLosses = rsStandings("BreakdownLosses")
+																	thisBreakdownTies = rsStandings("BreakdownTies")
+																	thisAveragePositionYTD = rsStandings("AveragePositionYTD")
+%>
+																	<tr>
+																		<td><%= thisTeamName %></td>
+																		<td class="text-center" width="10%" style="min-width: 70px;"><%= thisWinTotal %>-<%= thisLossTotal %>-<%= thisTieTotal %></td>
+																		<td class="text-center"width="10%" style="min-width: 75px;"><%= FormatNumber(thisPointsScored, 2) %></td>
+																		<td class="text-center" width="10%" style="min-width: 75px;"><%= FormatNumber(thisPointsAgainst, 2) %></td>
+																	</tr>
+<%
+																	rsStandings.MoveNext
+
+																Loop
+%>
 															</tbody>
 														</table>
-	<%
-														rsSchedules.MoveNext
+<%
+													Response.Write("</div>")
 
-													Loop
+												Response.Write("</div>")
 
-													rsSchedules.Close
-													Set rsSchedules = Nothing
+											Response.Write("</div>")
+
+											Set rsStandings = rsStandings.NextRecordset
+
+											Response.Write("<div Class=""col-12 col-md-12 col-lg-12 col-xl-4"">")
+
+												Response.Write("<h4>SAME LEVEL</h4>")
+												Response.Write("<div class=""card"">")
+
+													Response.Write("<div class=""card-body"">")
 %>
-													</tbody>
-												</table>
+														<table class="table-borderless">
+															<tr>
+																<td><b>TEAM</b></td>
+																<td class="text-center" width="10%" style="min-width: 70px;"><b>W-L-T</b></td>
+																<td class="text-center" width="10%" style="min-width: 75px;"><b>PF</b></td>
+																<td class="text-center" width="10%" style="min-width: 75px;"><b>PA</b></td>
+															</tr>
+														</table>
 
-											</div>
-										</div>
-									</div>
+														<table class="table table-bordered">
+															<tbody>
+<%
+																Do While Not rsStandings.Eof
+
+																	thisTeamName = rsStandings("TeamName")
+																	thisWinTotal = rsStandings("WinTotal")
+																	thisLossTotal = rsStandings("LossTotal")
+																	thisTieTotal = rsStandings("TieTotal")
+																	thisPointsScored = rsStandings("PointsScored")
+																	thisPointsAgainst = rsStandings("PointsAgainst")
+																	thisBreakdownWins = rsStandings("BreakdownWins")
+																	thisBreakdownLosses = rsStandings("BreakdownLosses")
+																	thisBreakdownTies = rsStandings("BreakdownTies")
+																	thisAveragePositionYTD = rsStandings("AveragePositionYTD")
+%>
+																	<tr>
+																		<td><%= thisTeamName %></td>
+																		<td class="text-center" width="10%" style="min-width: 70px;"><%= thisWinTotal %>-<%= thisLossTotal %>-<%= thisTieTotal %></td>
+																		<td class="text-center"width="10%" style="min-width: 75px;"><%= FormatNumber(thisPointsScored, 2) %></td>
+																		<td class="text-center" width="10%" style="min-width: 75px;"><%= FormatNumber(thisPointsAgainst, 2) %></td>
+																	</tr>
+<%
+																	rsStandings.MoveNext
+
+																Loop
+%>
+															</tbody>
+														</table>
+<%
+													Response.Write("</div>")
+
+												Response.Write("</div>")
+
+											Response.Write("</div>")
+
+											Set rsStandings = rsStandings.NextRecordset
+
+											Response.Write("<div Class=""col-12 col-md-12 col-lg-12 col-xl-4"">")
+
+												Response.Write("<h4>SAME LEVEL</h4>")
+												Response.Write("<div class=""card"">")
+
+													Response.Write("<div class=""card-body"">")
+%>
+														<table class="table-borderless">
+															<tr>
+																<td><b>TEAM</b></td>
+																<td class="text-center" width="10%" style="min-width: 70px;"><b>W-L-T</b></td>
+																<td class="text-center" width="10%" style="min-width: 75px;"><b>PF</b></td>
+																<td class="text-center" width="10%" style="min-width: 75px;"><b>PA</b></td>
+															</tr>
+														</table>
+
+														<table class="table table-bordered">
+															<tbody>
+<%
+																Do While Not rsStandings.Eof
+
+																	thisTeamName = rsStandings("TeamName")
+																	thisWinTotal = rsStandings("WinTotal")
+																	thisLossTotal = rsStandings("LossTotal")
+																	thisTieTotal = rsStandings("TieTotal")
+																	thisPointsScored = rsStandings("PointsScored")
+																	thisPointsAgainst = rsStandings("PointsAgainst")
+																	thisBreakdownWins = rsStandings("BreakdownWins")
+																	thisBreakdownLosses = rsStandings("BreakdownLosses")
+																	thisBreakdownTies = rsStandings("BreakdownTies")
+																	thisAveragePositionYTD = rsStandings("AveragePositionYTD")
+%>
+																	<tr>
+																		<td><%= thisTeamName %></td>
+																		<td class="text-center" width="10%" style="min-width: 70px;"><%= thisWinTotal %>-<%= thisLossTotal %>-<%= thisTieTotal %></td>
+																		<td class="text-center"width="10%" style="min-width: 75px;"><%= FormatNumber(thisPointsScored, 2) %></td>
+																		<td class="text-center" width="10%" style="min-width: 75px;"><%= FormatNumber(thisPointsAgainst, 2) %></td>
+																	</tr>
+<%
+																	rsStandings.MoveNext
+
+																Loop
+%>
+															</tbody>
+														</table>
+<%
+													Response.Write("</div>")
+
+												Response.Write("</div>")
+
+											Response.Write("</div>")
+
+										Response.Write("</div>")
+
+%>
+										</tbody>
+									</table>
+
+								</div>
+
 								</div>
 
 							</div>
