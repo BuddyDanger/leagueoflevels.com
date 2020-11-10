@@ -196,7 +196,7 @@
 
 											Response.Write("<div Class=""col-12 col-md-12 col-lg-12 col-xl-4"">")
 
-												Response.Write("<h4>SAME LEVEL</h4>")
+												Response.Write("<h4>FARM LEVEL</h4>")
 												Response.Write("<div class=""card"">")
 
 													Response.Write("<div class=""card-body"">")
