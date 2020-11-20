@@ -89,8 +89,7 @@
 										Response.Write("<div Class=""row"">")
 
 											Response.Write("<div Class=""col-12 col-md-12 col-lg-12 col-xl-6"">")
-
-												Response.Write("<h4>SAME LEVEL</h4>")
+												Response.Write("<h5 class=""card-subtitle mb-2 text-muted"">SAME LEVEL</h5>")
 												Response.Write("<div class=""card"">")
 
 													Response.Write("<div class=""card-body"">")
@@ -123,8 +122,11 @@
 
 																	thisProfileImage = rsStandings("ProfileImage")
 																	If IsNull(thisProfileImage) Then thisProfileImage = "user.jpg"
+
+																	thisBorderBottom = ""
+																	If thisPosition = 5 Then thisBorderBottom = "border-bottom: 5px solid #eaf0f7;"
 %>
-																	<tr>
+																	<tr style="<%= thisBorderBottom %>">
 																		<td><img src="https://samelevel.imgix.net/<%= thisProfileImage %>?w=40&h=40&fit=crop&crop=focalpoint" class="rounded-circle hidden d-none d-sm-none d-md-inline mr-1 pr-1"><b><%= thisPosition %>.</b> &nbsp;<%= thisTeamName %></td>
 																		<td class="text-center"><%= thisWinTotal %>-<%= thisLossTotal %>-<%= thisTieTotal %></td>
 																		<td class="text-center d-none d-lg-table-cell"><%= FormatNumber(thisPointsScored, 2) %></td>
@@ -150,7 +152,7 @@
 
 											Response.Write("<div Class=""col-12 col-md-12 col-lg-12 col-xl-6"">")
 
-												Response.Write("<h4>FARM LEVEL</h4>")
+												Response.Write("<h5 class=""card-subtitle mb-2 text-muted"">FARM LEVEL</h5>")
 												Response.Write("<div class=""card"">")
 
 													Response.Write("<div class=""card-body"">")
@@ -183,8 +185,11 @@
 
 																	thisProfileImage = rsStandings("ProfileImage")
 																	If IsNull(thisProfileImage) Then thisProfileImage = "user.jpg"
+
+																	thisBorderBottom = ""
+																	If thisPosition = 5 Then thisBorderBottom = "border-bottom: 5px solid #eaf0f7;"
 %>
-																	<tr>
+																	<tr style="<%= thisBorderBottom %>">
 																		<td><img src="https://samelevel.imgix.net/<%= thisProfileImage %>?w=40&h=40&fit=crop&crop=focalpoint" class="rounded-circle hidden d-none d-sm-none d-md-inline mr-1 pr-1"><b><%= thisPosition %>.</b> &nbsp;<%= thisTeamName %></td>
 																		<td class="text-center"><%= thisWinTotal %>-<%= thisLossTotal %>-<%= thisTieTotal %></td>
 																		<td class="text-center d-none d-lg-table-cell"><%= FormatNumber(thisPointsScored, 2) %></td>
@@ -210,7 +215,7 @@
 
 											Response.Write("<div Class=""col-12 col-md-12 col-lg-12 col-xl-6"">")
 
-												Response.Write("<h4>OMEGA LEVEL</h4>")
+												Response.Write("<h5 class=""card-subtitle mb-2 text-muted"">OMEGA LEVEL</h5>")
 												Response.Write("<div class=""card"">")
 
 													Response.Write("<div class=""card-body"">")
@@ -243,8 +248,11 @@
 
 																	thisProfileImage = rsStandings("ProfileImage")
 																	If IsNull(thisProfileImage) Then thisProfileImage = "user.jpg"
+
+																	thisBorderBottom = ""
+																	If thisPosition = 4 Then thisBorderBottom = "border-bottom: 5px solid #eaf0f7;"
 %>
-																	<tr>
+																	<tr style="<%= thisBorderBottom %>">
 																		<td><img src="https://samelevel.imgix.net/<%= thisProfileImage %>?w=40&h=40&fit=crop&crop=focalpoint" class="rounded-circle hidden d-none d-sm-none d-md-inline mr-1 pr-1"><b><%= thisPosition %>.</b> &nbsp;<%= thisTeamName %></td>
 																		<td class="text-center"><%= thisWinTotal %>-<%= thisLossTotal %>-<%= thisTieTotal %></td>
 																		<td class="text-center d-none d-lg-table-cell"><%= FormatNumber(thisPointsScored, 2) %></td>
@@ -270,7 +278,7 @@
 
 											Response.Write("<div Class=""col-12 col-md-12 col-lg-12 col-xl-6"">")
 
-												Response.Write("<h4>TOTAL POINTS</h4>")
+												Response.Write("<h5 class=""card-subtitle mb-2 text-muted"">TOTAL POINTS</h5>")
 												Response.Write("<div class=""card"">")
 
 													Response.Write("<div class=""card-body"">")
