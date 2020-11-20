@@ -80,20 +80,61 @@
 							<div class="page-content">
 
 								<div class="row">
-									<div class="col-12">
+
+									<div class="col-12 col-lg-4">
 
 										<div class="card">
 
 											<div class="card-body">
 
-												<div class="table-responsive">
-												<table class="table">
+												<table class="table table-bordered">
 													<thead>
 														<tr>
-															<th scope="col">Date</th>
-															<th scope="col">Account</th>
-															<th scope="col">Type</th>
-															<th scope="col" class="text-right">Total</th>
+															<th scope="col">TEAM</th>
+															<th class="text-center" scope="col">SCHMECKLES</th>
+														</tr>
+													</thead>
+													<tbody>
+<%
+														sqlGetLeaderboard = "SELECT Accounts.ProfileName, SUM([TransactionTotal]) AS TotalSchmeckles FROM SchmeckleTransactions INNER JOIN Accounts ON Accounts.AccountID = SchmeckleTransactions.AccountID GROUP BY Accounts.ProfileName ORDER BY TotalSchmeckles DESC"
+														Set rsLeaderboard = sqlDatabase.Execute(sqlGetLeaderboard)
+
+														Do While Not rsLeaderboard.Eof
+%>
+															<tr>
+																<td><%= rsLeaderboard("ProfileName") %></td>
+																<td class="text-center" width="40%"><%= FormatNumber(rsLeaderboard("TotalSchmeckles"), 0) %></td>
+															</tr>
+<%
+															rsLeaderboard.MoveNext
+
+														Loop
+
+														rsLeaderboard.Close
+														Set rsLeaderboard = Nothing
+%>
+													</tbody>
+												</table>
+
+											</div>
+
+										</div>
+
+									</div>
+
+									<div class="col-12 col-lg-8">
+
+										<div class="card">
+
+											<div class="card-body">
+
+												<table class="table table-bordered">
+													<thead>
+														<tr>
+															<th>DATE</th>
+															<th>TEAM</th>
+															<th>TYPE</th>
+															<th class="text-right">TOTAL</th>
 														</tr>
 													</thead>
 													<tbody>
@@ -123,9 +164,9 @@
 														arrthisTransactionDate = Split(thisTransactionDate, " ")
 %>
 														<tr>
-															<th scope="row"><div><%= arrthisTransactionDate(0) %></div><div><%= arrthisTransactionDate(1) %>&nbsp;<%= arrthisTransactionDate(2) %></div></th>
+															<th scope="row"><div><%= arrthisTransactionDate(0) %></div><div class="d-none d-lg-block"><%= arrthisTransactionDate(1) %>&nbsp;<%= arrthisTransactionDate(2) %></div></th>
 															<td><img src="https://samelevel.imgix.net/<%= thisProfileImage %>?w=40&h=40&fit=crop&crop=focalpoint" class="rounded-circle hidden d-none d-sm-none d-md-inline"> &nbsp;<%= thisProfileName %></td>
-															<td><%= thisTransactionTypeTitle %></td>
+															<td><%= thisTransactionTypeTitle %></div></td>
 															<td class="text-right"><%= FormatNumber(thisTransactionTotal, 0) %></td>
 														</tr>
 <%
@@ -138,7 +179,6 @@
 %>
 													</tbody>
 												</table>
-												</div>
 
 											</div>
 										</div>

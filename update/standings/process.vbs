@@ -21,10 +21,10 @@ If Not rsYearPeriod.Eof Then
 
 End If
 
-thisCurrentPeriod = 10
+thisCurrentPeriod = 11
 
 thisYear = thisCurrentYear
-thisPeriod = 9
+thisPeriod = 10
 
 Do While thisPeriod < thisCurrentPeriod
 
