@@ -66,7 +66,7 @@
 
 								</div>
 
-								<h4 class="page-title">Standings</h4>
+								<h4 class="page-title">Overall Standings</h4>
 
 							</div>
 
@@ -76,89 +76,38 @@
 									<div class="col-12">
 
 <%
-										sqlGetOmega = "SELECT Levels.Title, Teams.TeamName, SUM([ActualWins]) AS WinTotal, SUM([ActualLosses]) AS LossTotal, SUM([ActualTies]) AS TieTotal, SUM([PointsScored]) AS PointsScored, SUM([PointsAgainst]) AS PointsAgainst, SUM([BreakdownWins]) AS BreakdownWins, SUM([BreakdownLosses]) AS BreakdownLosses, SUM([BreakdownTies]) AS BreakdownTies, CAST(AVG([Position]) AS DECIMAL(10,2)) AS AveragePositionYTD FROM Standings INNER JOIN Teams ON Teams.TeamID = Standings.TeamID INNER JOIN Levels ON Levels.LevelID = Standings.LevelID WHERE Levels.LevelID = 1 GROUP BY Levels.LevelID, Levels.Title, Teams.TeamName ORDER BY Levels.LevelID ASC, WinTotal DESC, PointsScored DESC; "
+										sqlGetSLFFL = "SELECT Levels.Title, Teams.TeamName, SUM([ActualWins]) AS WinTotal, SUM([ActualLosses]) AS LossTotal, SUM([ActualTies]) AS TieTotal, SUM([PointsScored]) AS PointsScored, SUM([PointsAgainst]) AS PointsAgainst, SUM([BreakdownWins]) AS BreakdownWins, SUM([BreakdownLosses]) AS BreakdownLosses, SUM([BreakdownTies]) AS BreakdownTies, CAST(AVG([Position]) AS DECIMAL(10,2)) AS AveragePositionYTD, (SELECT ProfileImage FROM Accounts WHERE Accounts.AccountID IN (SELECT AccountID FROM LinkAccountsTeams WHERE LinkAccountsTeams.TeamID = Standings.TeamID)) AS ProfileImage FROM Standings INNER JOIN Teams ON Teams.TeamID = Standings.TeamID INNER JOIN Levels ON Levels.LevelID = Standings.LevelID WHERE Levels.LevelID = 2 GROUP BY Levels.LevelID, Levels.Title, Teams.TeamName, Standings.TeamID ORDER BY Levels.LevelID ASC, WinTotal DESC, PointsScored DESC; "
 
-										sqlGetSLFFL = "SELECT Levels.Title, Teams.TeamName, SUM([ActualWins]) AS WinTotal, SUM([ActualLosses]) AS LossTotal, SUM([ActualTies]) AS TieTotal, SUM([PointsScored]) AS PointsScored, SUM([PointsAgainst]) AS PointsAgainst, SUM([BreakdownWins]) AS BreakdownWins, SUM([BreakdownLosses]) AS BreakdownLosses, SUM([BreakdownTies]) AS BreakdownTies, CAST(AVG([Position]) AS DECIMAL(10,2)) AS AveragePositionYTD FROM Standings INNER JOIN Teams ON Teams.TeamID = Standings.TeamID INNER JOIN Levels ON Levels.LevelID = Standings.LevelID WHERE Levels.LevelID = 2 GROUP BY Levels.LevelID, Levels.Title, Teams.TeamName ORDER BY Levels.LevelID ASC, WinTotal DESC, PointsScored DESC; "
+										sqlGetFLFFL = "SELECT Levels.Title, Teams.TeamName, SUM([ActualWins]) AS WinTotal, SUM([ActualLosses]) AS LossTotal, SUM([ActualTies]) AS TieTotal, SUM([PointsScored]) AS PointsScored, SUM([PointsAgainst]) AS PointsAgainst, SUM([BreakdownWins]) AS BreakdownWins, SUM([BreakdownLosses]) AS BreakdownLosses, SUM([BreakdownTies]) AS BreakdownTies, CAST(AVG([Position]) AS DECIMAL(10,2)) AS AveragePositionYTD, (SELECT ProfileImage FROM Accounts WHERE Accounts.AccountID IN (SELECT AccountID FROM LinkAccountsTeams WHERE LinkAccountsTeams.TeamID = Standings.TeamID)) AS ProfileImage FROM Standings INNER JOIN Teams ON Teams.TeamID = Standings.TeamID INNER JOIN Levels ON Levels.LevelID = Standings.LevelID WHERE Levels.LevelID = 3 GROUP BY Levels.LevelID, Levels.Title, Teams.TeamName, Standings.TeamID ORDER BY Levels.LevelID ASC, WinTotal DESC, PointsScored DESC; "
 
-										sqlGetFLFFL = "SELECT Levels.Title, Teams.TeamName, SUM([ActualWins]) AS WinTotal, SUM([ActualLosses]) AS LossTotal, SUM([ActualTies]) AS TieTotal, SUM([PointsScored]) AS PointsScored, SUM([PointsAgainst]) AS PointsAgainst, SUM([BreakdownWins]) AS BreakdownWins, SUM([BreakdownLosses]) AS BreakdownLosses, SUM([BreakdownTies]) AS BreakdownTies, CAST(AVG([Position]) AS DECIMAL(10,2)) AS AveragePositionYTD FROM Standings INNER JOIN Teams ON Teams.TeamID = Standings.TeamID INNER JOIN Levels ON Levels.LevelID = Standings.LevelID WHERE Levels.LevelID = 3 GROUP BY Levels.LevelID, Levels.Title, Teams.TeamName ORDER BY Levels.LevelID ASC, WinTotal DESC, PointsScored DESC; "
+										sqlGetOmega = "SELECT Levels.Title, Teams.TeamName, SUM([ActualWins]) AS WinTotal, SUM([ActualLosses]) AS LossTotal, SUM([ActualTies]) AS TieTotal, SUM([PointsScored]) AS PointsScored, SUM([PointsAgainst]) AS PointsAgainst, SUM([BreakdownWins]) AS BreakdownWins, SUM([BreakdownLosses]) AS BreakdownLosses, SUM([BreakdownTies]) AS BreakdownTies, CAST(AVG([Position]) AS DECIMAL(10,2)) AS AveragePositionYTD, (SELECT ProfileImage FROM Accounts WHERE Accounts.AccountID IN (SELECT AccountID FROM LinkAccountsTeams WHERE LinkAccountsTeams.TeamID = Standings.TeamID)) AS ProfileImage FROM Standings INNER JOIN Teams ON Teams.TeamID = Standings.TeamID INNER JOIN Levels ON Levels.LevelID = Standings.LevelID WHERE Levels.LevelID = 1 GROUP BY Levels.LevelID, Levels.Title, Teams.TeamName, Standings.TeamID ORDER BY Levels.LevelID ASC, WinTotal DESC, PointsScored DESC; "
 
-										Set rsStandings = sqlDatabase.Execute(sqlGetOmega & sqlGetSLFFL & sqlGetFLFFL)
+										sqlGetPoints = "SELECT Levels.Title, Teams.TeamName, SUM([PointsScored]) AS PointsScored, (SELECT ProfileImage FROM Accounts WHERE Accounts.AccountID IN (SELECT AccountID FROM LinkAccountsTeams WHERE LinkAccountsTeams.TeamID = Standings.TeamID)) AS ProfileImage FROM Standings INNER JOIN Teams ON Teams.TeamID = Standings.TeamID INNER JOIN Levels ON Levels.LevelID = Standings.LevelID WHERE Levels.LevelID > 1 GROUP BY Levels.LevelID, Levels.Title, Teams.TeamName, Standings.TeamID ORDER BY PointsScored DESC; "
+
+										Set rsStandings = sqlDatabase.Execute(sqlGetSLFFL & sqlGetFLFFL & sqlGetOmega & sqlGetPoints)
 
 										Response.Write("<div Class=""row"">")
 
-											Response.Write("<div Class=""col-12 col-md-12 col-lg-12 col-xl-4"">")
-
-												Response.Write("<h4>OMEGA LEVEL</h4>")
-												Response.Write("<div class=""card"">")
-
-													Response.Write("<div class=""card-body"">")
-%>
-														<table class="table-borderless">
-															<tr>
-																<td><b>TEAM</b></td>
-																<td class="text-center" width="10%" style="min-width: 70px;"><b>W-L-T</b></td>
-																<td class="text-center" width="10%" style="min-width: 75px;"><b>PF</b></td>
-																<td class="text-center" width="10%" style="min-width: 75px;"><b>PA</b></td>
-															</tr>
-														</table>
-
-														<table class="table table-bordered">
-															<tbody>
-<%
-																Do While Not rsStandings.Eof
-
-																	thisTeamName = rsStandings("TeamName")
-																	thisWinTotal = rsStandings("WinTotal")
-																	thisLossTotal = rsStandings("LossTotal")
-																	thisTieTotal = rsStandings("TieTotal")
-																	thisPointsScored = rsStandings("PointsScored")
-																	thisPointsAgainst = rsStandings("PointsAgainst")
-																	thisBreakdownWins = rsStandings("BreakdownWins")
-																	thisBreakdownLosses = rsStandings("BreakdownLosses")
-																	thisBreakdownTies = rsStandings("BreakdownTies")
-																	thisAveragePositionYTD = rsStandings("AveragePositionYTD")
-%>
-																	<tr>
-																		<td><%= thisTeamName %></td>
-																		<td class="text-center" width="10%" style="min-width: 70px;"><%= thisWinTotal %>-<%= thisLossTotal %>-<%= thisTieTotal %></td>
-																		<td class="text-center"width="10%" style="min-width: 75px;"><%= FormatNumber(thisPointsScored, 2) %></td>
-																		<td class="text-center" width="10%" style="min-width: 75px;"><%= FormatNumber(thisPointsAgainst, 2) %></td>
-																	</tr>
-<%
-																	rsStandings.MoveNext
-
-																Loop
-%>
-															</tbody>
-														</table>
-<%
-													Response.Write("</div>")
-
-												Response.Write("</div>")
-
-											Response.Write("</div>")
-
-											Set rsStandings = rsStandings.NextRecordset
-
-											Response.Write("<div Class=""col-12 col-md-12 col-lg-12 col-xl-4"">")
+											Response.Write("<div Class=""col-12 col-md-12 col-lg-12 col-xl-6"">")
 
 												Response.Write("<h4>SAME LEVEL</h4>")
 												Response.Write("<div class=""card"">")
 
 													Response.Write("<div class=""card-body"">")
 %>
-														<table class="table-borderless">
-															<tr>
-																<td><b>TEAM</b></td>
-																<td class="text-center" width="10%" style="min-width: 70px;"><b>W-L-T</b></td>
-																<td class="text-center" width="10%" style="min-width: 75px;"><b>PF</b></td>
-																<td class="text-center" width="10%" style="min-width: 75px;"><b>PA</b></td>
-															</tr>
-														</table>
-
-														<table class="table table-bordered">
+														<table class="table table-bordered mb-1">
+															<thead>
+																<tr>
+																	<th>TEAM</th>
+																	<th class="text-center">W-L-T</th>
+																	<th class="text-center d-none d-lg-table-cell">PF</th>
+																	<th class="text-center d-none d-lg-table-cell">PA</th>
+																	<th class="text-center d-none d-lg-table-cell">BKDN</th>
+																</tr>
+															</thead>
 															<tbody>
 <%
+																thisPosition = 1
 																Do While Not rsStandings.Eof
 
 																	thisTeamName = rsStandings("TeamName")
@@ -171,14 +120,19 @@
 																	thisBreakdownLosses = rsStandings("BreakdownLosses")
 																	thisBreakdownTies = rsStandings("BreakdownTies")
 																	thisAveragePositionYTD = rsStandings("AveragePositionYTD")
+
+																	thisProfileImage = rsStandings("ProfileImage")
+																	If IsNull(thisProfileImage) Then thisProfileImage = "user.jpg"
 %>
 																	<tr>
-																		<td><%= thisTeamName %></td>
-																		<td class="text-center" width="10%" style="min-width: 70px;"><%= thisWinTotal %>-<%= thisLossTotal %>-<%= thisTieTotal %></td>
-																		<td class="text-center"width="10%" style="min-width: 75px;"><%= FormatNumber(thisPointsScored, 2) %></td>
-																		<td class="text-center" width="10%" style="min-width: 75px;"><%= FormatNumber(thisPointsAgainst, 2) %></td>
+																		<td><img src="https://samelevel.imgix.net/<%= thisProfileImage %>?w=40&h=40&fit=crop&crop=focalpoint" class="rounded-circle hidden d-none d-sm-none d-md-inline mr-1 pr-1"><b><%= thisPosition %>.</b> &nbsp;<%= thisTeamName %></td>
+																		<td class="text-center"><%= thisWinTotal %>-<%= thisLossTotal %>-<%= thisTieTotal %></td>
+																		<td class="text-center d-none d-lg-table-cell"><%= FormatNumber(thisPointsScored, 2) %></td>
+																		<td class="text-center d-none d-lg-table-cell"><%= FormatNumber(thisPointsAgainst, 2) %></td>
+																		<td class="text-center d-none d-lg-table-cell"><%= thisBreakdownWins %>-<%= thisBreakdownLosses %>-<%= thisBreakdownTies %></td>
 																	</tr>
 <%
+																	thisPosition = thisPosition + 1
 																	rsStandings.MoveNext
 
 																Loop
@@ -194,25 +148,26 @@
 
 											Set rsStandings = rsStandings.NextRecordset
 
-											Response.Write("<div Class=""col-12 col-md-12 col-lg-12 col-xl-4"">")
+											Response.Write("<div Class=""col-12 col-md-12 col-lg-12 col-xl-6"">")
 
 												Response.Write("<h4>FARM LEVEL</h4>")
 												Response.Write("<div class=""card"">")
 
 													Response.Write("<div class=""card-body"">")
 %>
-														<table class="table-borderless">
-															<tr>
-																<td><b>TEAM</b></td>
-																<td class="text-center" width="10%" style="min-width: 70px;"><b>W-L-T</b></td>
-																<td class="text-center" width="10%" style="min-width: 75px;"><b>PF</b></td>
-																<td class="text-center" width="10%" style="min-width: 75px;"><b>PA</b></td>
-															</tr>
-														</table>
-
-														<table class="table table-bordered">
+														<table class="table table-bordered mb-1">
+															<thead>
+																<tr>
+																	<th>TEAM</th>
+																	<th class="text-center">W-L-T</th>
+																	<th class="text-center d-none d-lg-table-cell">PF</th>
+																	<th class="text-center d-none d-lg-table-cell">PA</th>
+																	<th class="text-center d-none d-lg-table-cell">BKDN</th>
+																</tr>
+															</thead>
 															<tbody>
 <%
+																thisPosition = 1
 																Do While Not rsStandings.Eof
 
 																	thisTeamName = rsStandings("TeamName")
@@ -225,14 +180,125 @@
 																	thisBreakdownLosses = rsStandings("BreakdownLosses")
 																	thisBreakdownTies = rsStandings("BreakdownTies")
 																	thisAveragePositionYTD = rsStandings("AveragePositionYTD")
+
+																	thisProfileImage = rsStandings("ProfileImage")
+																	If IsNull(thisProfileImage) Then thisProfileImage = "user.jpg"
 %>
 																	<tr>
-																		<td><%= thisTeamName %></td>
-																		<td class="text-center" width="10%" style="min-width: 70px;"><%= thisWinTotal %>-<%= thisLossTotal %>-<%= thisTieTotal %></td>
-																		<td class="text-center"width="10%" style="min-width: 75px;"><%= FormatNumber(thisPointsScored, 2) %></td>
-																		<td class="text-center" width="10%" style="min-width: 75px;"><%= FormatNumber(thisPointsAgainst, 2) %></td>
+																		<td><img src="https://samelevel.imgix.net/<%= thisProfileImage %>?w=40&h=40&fit=crop&crop=focalpoint" class="rounded-circle hidden d-none d-sm-none d-md-inline mr-1 pr-1"><b><%= thisPosition %>.</b> &nbsp;<%= thisTeamName %></td>
+																		<td class="text-center"><%= thisWinTotal %>-<%= thisLossTotal %>-<%= thisTieTotal %></td>
+																		<td class="text-center d-none d-lg-table-cell"><%= FormatNumber(thisPointsScored, 2) %></td>
+																		<td class="text-center d-none d-lg-table-cell"><%= FormatNumber(thisPointsAgainst, 2) %></td>
+																		<td class="text-center d-none d-lg-table-cell"><%= thisBreakdownWins %>-<%= thisBreakdownLosses %>-<%= thisBreakdownTies %></td>
 																	</tr>
 <%
+																	thisPosition = thisPosition + 1
+																	rsStandings.MoveNext
+
+																Loop
+%>
+															</tbody>
+														</table>
+<%
+													Response.Write("</div>")
+
+												Response.Write("</div>")
+
+											Response.Write("</div>")
+
+											Set rsStandings = rsStandings.NextRecordset
+
+											Response.Write("<div Class=""col-12 col-md-12 col-lg-12 col-xl-6"">")
+
+												Response.Write("<h4>OMEGA LEVEL</h4>")
+												Response.Write("<div class=""card"">")
+
+													Response.Write("<div class=""card-body"">")
+%>
+														<table class="table table-bordered mb-1">
+															<thead>
+																<tr>
+																	<th>TEAM</th>
+																	<th class="text-center">W-L-T</th>
+																	<th class="text-center d-none d-lg-table-cell">PF</th>
+																	<th class="text-center d-none d-lg-table-cell">PA</th>
+																	<th class="text-center d-none d-lg-table-cell">BKDN</th>
+																</tr>
+															</thead>
+															<tbody>
+<%
+																thisPosition = 1
+																Do While Not rsStandings.Eof
+
+																	thisTeamName = rsStandings("TeamName")
+																	thisWinTotal = rsStandings("WinTotal")
+																	thisLossTotal = rsStandings("LossTotal")
+																	thisTieTotal = rsStandings("TieTotal")
+																	thisPointsScored = rsStandings("PointsScored")
+																	thisPointsAgainst = rsStandings("PointsAgainst")
+																	thisBreakdownWins = rsStandings("BreakdownWins")
+																	thisBreakdownLosses = rsStandings("BreakdownLosses")
+																	thisBreakdownTies = rsStandings("BreakdownTies")
+																	thisAveragePositionYTD = rsStandings("AveragePositionYTD")
+
+																	thisProfileImage = rsStandings("ProfileImage")
+																	If IsNull(thisProfileImage) Then thisProfileImage = "user.jpg"
+%>
+																	<tr>
+																		<td><img src="https://samelevel.imgix.net/<%= thisProfileImage %>?w=40&h=40&fit=crop&crop=focalpoint" class="rounded-circle hidden d-none d-sm-none d-md-inline mr-1 pr-1"><b><%= thisPosition %>.</b> &nbsp;<%= thisTeamName %></td>
+																		<td class="text-center"><%= thisWinTotal %>-<%= thisLossTotal %>-<%= thisTieTotal %></td>
+																		<td class="text-center d-none d-lg-table-cell"><%= FormatNumber(thisPointsScored, 2) %></td>
+																		<td class="text-center d-none d-lg-table-cell"><%= FormatNumber(thisPointsAgainst, 2) %></td>
+																		<td class="text-center d-none d-lg-table-cell"><%= thisBreakdownWins %>-<%= thisBreakdownLosses %>-<%= thisBreakdownTies %></td>
+																	</tr>
+<%
+																	thisPosition = thisPosition + 1
+																	rsStandings.MoveNext
+
+																Loop
+%>
+															</tbody>
+														</table>
+<%
+													Response.Write("</div>")
+
+												Response.Write("</div>")
+
+											Response.Write("</div>")
+
+											Set rsStandings = rsStandings.NextRecordset
+
+											Response.Write("<div Class=""col-12 col-md-12 col-lg-12 col-xl-6"">")
+
+												Response.Write("<h4>TOTAL POINTS</h4>")
+												Response.Write("<div class=""card"">")
+
+													Response.Write("<div class=""card-body"">")
+%>
+														<table class="table table-bordered mb-1">
+															<thead>
+																<tr>
+																	<th>TEAM</th>
+																	<th class="text-center">PF</th>
+																</tr>
+															</thead>
+															<tbody>
+<%
+																thisPosition = 1
+																Do While Not rsStandings.Eof
+
+																	thisTeamName = rsStandings("TeamName")
+																	thisPointsScored = rsStandings("PointsScored")
+
+																	thisProfileImage = rsStandings("ProfileImage")
+																	If IsNull(thisProfileImage) Then thisProfileImage = "user.jpg"
+%>
+																	<tr>
+																		<td><img src="https://samelevel.imgix.net/<%= thisProfileImage %>?w=40&h=40&fit=crop&crop=focalpoint" class="rounded-circle hidden d-none d-sm-none d-md-inline mr-1 pr-1"><b><%= thisPosition %>.</b> &nbsp;<%= thisTeamName %></td>
+																		<td class="text-center"><%= FormatNumber(thisPointsScored, 2) %></td>
+																	</tr>
+<%
+																	thisPosition = thisPosition + 1
 																	rsStandings.MoveNext
 
 																Loop
