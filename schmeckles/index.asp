@@ -3,11 +3,7 @@
 <!--#include virtual="/assets/asp/framework/session.asp" -->
 <!--#include virtual="/assets/asp/functions/master.asp"-->
 <%
-	If Len(ParseForAbsolutePath(Right(Request.ServerVariables("QUERY_STRING"), Len(Request.ServerVariables("QUERY_STRING")) - Instr(Request.ServerVariables("QUERY_STRING"),";")))) < 1 Then
-
-		Session.Contents("SITE_Schmeckles_AccountID") = ""
-
-	End If
+	If Len(ParseForAbsolutePath(Right(Request.ServerVariables("QUERY_STRING"), Len(Request.ServerVariables("QUERY_STRING")) - Instr(Request.ServerVariables("QUERY_STRING"),";")))) < 1 Then Session.Contents("SITE_Schmeckles_AccountID") = ""
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -20,24 +16,24 @@
 
 		<title>Schmeckles / League of Levels</title>
 
-		<meta name="description" content="" />
+		<meta name="description" content="Real-time Schmeckle transaction ledger and leaderboard. Schmeckles represent the league's currency system. Teams can earn Schmeckles through multiple side games and used to purchase items like draft lottery balls." />
 
-		<meta property="og:site_name" content="LeagueOfLevels.com" />
-		<meta property="og:url" content="https://www.leagueoflevels.com/" />
-		<meta property="og:title" content="Schmeckles - The League of Levels" />
-		<meta property="og:description" content="" />
+		<meta property="og:site_name" content="League of Levels" />
+		<meta property="og:url" content="https://www.leagueoflevels.com/schmeckles/" />
+		<meta property="og:title" content="Schmeckles / League of Levels" />
+		<meta property="og:description" content="Real-time Schmeckle transaction ledger and leaderboard. Schmeckles represent the league's currency system. Teams can earn Schmeckles through multiple side games and used to purchase items like draft lottery balls." />
 		<meta property="og:type" content="article" />
 
 		<meta name="twitter:site" content="samelevel" />
-		<meta name="twitter:url" content="https://www.leagueoflevels.com/" />
-		<meta name="twitter:title" content="Schmeckles - The League of Levels" />
-		<meta name="twitter:description" content="" />
+		<meta name="twitter:url" content="https://www.leagueoflevels.com/schmeckles/" />
+		<meta name="twitter:title" content="Schmeckles / League of Levels" />
+		<meta name="twitter:description" content="Real-time Schmeckle transaction ledger and leaderboard. Schmeckles represent the league's currency system. Teams can earn Schmeckles through multiple side games and used to purchase items like draft lottery balls." />
 
-		<meta name="title" content="Schmeckles - The League of Levels" />
+		<meta name="title" content="Schmeckles / League of Levels" />
 		<meta name="medium" content="article" />
 
 		<link rel="shortcut icon" href="/favicon.ico" />
-		<link rel="canonical" href="https://www.leagueoflevels.com/" />
+		<link rel="canonical" href="https://www.leagueoflevels.com/schmeckles/" />
 
 		<link href="/assets/css/bootstrap.css" rel="stylesheet" type="text/css" />
 		<link href="/assets/css/icons.css" rel="stylesheet" type="text/css" />
@@ -67,13 +63,13 @@
 								<div class="float-right">
 
 									<ol class="breadcrumb">
-										<li class="breadcrumb-item"><a href="javascript:void(0);">Main</a></li>
+										<li class="breadcrumb-item"><a href="/">Main</a></li>
 										<li class="breadcrumb-item active">Schmeckles</li>
 									</ol>
 
 								</div>
 
-								<h4 class="page-title">Schmeckles / Transaction Ledger</h4>
+								<h4 class="page-title">Schmeckles</h4>
 
 							</div>
 
@@ -83,11 +79,12 @@
 
 									<div class="col-12 col-lg-4">
 
+										<h4>LEADERBOARD</h4>
 										<div class="card">
 
 											<div class="card-body">
 
-												<table class="table table-bordered">
+												<table class="table table-bordered mb-1">
 													<thead>
 														<tr>
 															<th scope="col">TEAM</th>
@@ -96,13 +93,13 @@
 													</thead>
 													<tbody>
 <%
-														sqlGetLeaderboard = "SELECT Accounts.ProfileName, SUM([TransactionTotal]) AS TotalSchmeckles FROM SchmeckleTransactions INNER JOIN Accounts ON Accounts.AccountID = SchmeckleTransactions.AccountID GROUP BY Accounts.ProfileName ORDER BY TotalSchmeckles DESC"
+														sqlGetLeaderboard = "SELECT Accounts.ProfileName, Accounts.ProfileImage, SUM([TransactionTotal]) AS TotalSchmeckles FROM SchmeckleTransactions INNER JOIN Accounts ON Accounts.AccountID = SchmeckleTransactions.AccountID GROUP BY Accounts.ProfileName, Accounts.ProfileImage ORDER BY TotalSchmeckles DESC"
 														Set rsLeaderboard = sqlDatabase.Execute(sqlGetLeaderboard)
 
 														Do While Not rsLeaderboard.Eof
 %>
 															<tr>
-																<td><%= rsLeaderboard("ProfileName") %></td>
+																<td><img src="https://samelevel.imgix.net/<%= rsLeaderboard("ProfileImage") %>?w=40&h=40&fit=crop&crop=focalpoint" class="rounded-circle hidden d-none d-xl-inline"> &nbsp;<%= rsLeaderboard("ProfileName") %></td>
 																<td class="text-center" width="40%"><%= FormatNumber(rsLeaderboard("TotalSchmeckles"), 0) %></td>
 															</tr>
 <%
@@ -124,16 +121,17 @@
 
 									<div class="col-12 col-lg-8">
 
+										<h4>TRANSACTION LEDGER</h4>
 										<div class="card">
 
 											<div class="card-body">
 
-												<table class="table table-bordered">
+												<table class="table table-bordered mb-1">
 													<thead>
 														<tr>
 															<th>DATE</th>
 															<th>TEAM</th>
-															<th>TYPE</th>
+															<th class="d-none d-lg-table-cell">TYPE</th>
 															<th class="text-right">TOTAL</th>
 														</tr>
 													</thead>
@@ -162,12 +160,24 @@
 														thisProfileImage = rsSchmeckles("ProfileImage")
 														thisTransactionDescription = rsSchmeckles("TransactionDescription")
 														arrthisTransactionDate = Split(thisTransactionDate, " ")
+														If CInt(thisTransactionTotal) > 0 Then
+															thisTransactionDirection = "text-success"
+														Else
+															thisTransactionDirection = "text-danger"
+														End If
+
+														thisTransactionTotal = FormatNumber(thisTransactionTotal, 0)
+														If thisTransactionTotal > 0 Then thisTransactionTotal = "+" & thisTransactionTotal
+
 %>
 														<tr>
-															<th scope="row"><div><%= arrthisTransactionDate(0) %></div><div class="d-none d-lg-block"><%= arrthisTransactionDate(1) %>&nbsp;<%= arrthisTransactionDate(2) %></div></th>
+															<th scope="row">
+																<div class="d-none d-lg-table-cell"><div><%= arrthisTransactionDate(0) %></div><div><%= arrthisTransactionDate(1) %>&nbsp;<%= arrthisTransactionDate(2) %></div></div>
+																<div class="d-block d-lg-none"><%= Month(arrthisTransactionDate(0)) & "/" & Day(arrthisTransactionDate(0)) %></div></div>
+															</th>
 															<td><img src="https://samelevel.imgix.net/<%= thisProfileImage %>?w=40&h=40&fit=crop&crop=focalpoint" class="rounded-circle hidden d-none d-sm-none d-md-inline"> &nbsp;<%= thisProfileName %></td>
-															<td><%= thisTransactionTypeTitle %></div></td>
-															<td class="text-right"><%= FormatNumber(thisTransactionTotal, 0) %></td>
+															<td class="d-none d-lg-table-cell"><%= thisTransactionTypeTitle %></td>
+															<td class="text-right <%= thisTransactionDirection %>"><%= thisTransactionTotal %></td>
 														</tr>
 <%
 														rsSchmeckles.MoveNext

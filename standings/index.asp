@@ -13,24 +13,24 @@
 
 		<title>Standings / League of Levels</title>
 
-		<meta name="description" content="" />
+		<meta name="description" content="Updated standings across the League of Levels. These standings should accurately represent each individual league account. Next Level Cup matchups are not included in these aggregate numbers for wins, losses, or points." />
 
-		<meta property="og:site_name" content="LeagueOfLevels.com" />
-		<meta property="og:url" content="https://www.leagueoflevels.com/" />
-		<meta property="og:title" content="Standings - The League of Levels" />
-		<meta property="og:description" content="" />
+		<meta property="og:site_name" content="League of Levels" />
+		<meta property="og:url" content="https://www.leagueoflevels.com/standings/" />
+		<meta property="og:title" content="Standings / League of Levels" />
+		<meta property="og:description" content="Updated standings across the League of Levels. These standings should accurately represent each individual league account. Next Level Cup matchups are not included in these aggregate numbers for wins, losses, or points." />
 		<meta property="og:type" content="article" />
 
 		<meta name="twitter:site" content="samelevel" />
-		<meta name="twitter:url" content="https://www.leagueoflevels.com/" />
-		<meta name="twitter:title" content="Standings - The League of Levels" />
-		<meta name="twitter:description" content="" />
+		<meta name="twitter:url" content="https://www.leagueoflevels.com/standings/" />
+		<meta name="twitter:title" content="Standings / League of Levels" />
+		<meta name="twitter:description" content="Updated standings across the League of Levels. These standings should accurately represent each individual league account. Next Level Cup matchups are not included in these aggregate numbers for wins, losses, or points." />
 
-		<meta name="title" content="Standings - The League of Levels" />
+		<meta name="title" content="Standings / League of Levels" />
 		<meta name="medium" content="article" />
 
 		<link rel="shortcut icon" href="/favicon.ico" />
-		<link rel="canonical" href="https://www.leagueoflevels.com/standings/" />
+		<link rel="canonical" href="https://www.leagueoflevels.com/standings/standings/" />
 
 		<link href="/assets/css/bootstrap.css" rel="stylesheet" type="text/css" />
 		<link href="/assets/css/icons.css" rel="stylesheet" type="text/css" />
@@ -60,8 +60,8 @@
 								<div class="float-right">
 
 									<ol class="breadcrumb">
-										<li class="breadcrumb-item"><a href="javascript:void(0);">Main</a></li>
-										<li class="breadcrumb-item active">Schedule</li>
+										<li class="breadcrumb-item"><a href="/">Main</a></li>
+										<li class="breadcrumb-item active">Standings</li>
 									</ol>
 
 								</div>

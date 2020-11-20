@@ -13,20 +13,20 @@
 
 		<title>Sportsbook / League of Levels</title>
 
-		<meta name="description" content="" />
+		<meta name="description" content="Active matchups available for gambling. Wager options include moneyline, point spread, and over/under totals. Schmeckles are the primary currency used in the Sportsbook and matchups consist of active LOL games within the 80/20 probability window." />
 
-		<meta property="og:site_name" content="LeagueOfLevels.com" />
+		<meta property="og:site_name" content="League of Levels" />
 		<meta property="og:url" content="https://www.leagueoflevels.com/sportsbook/" />
-		<meta property="og:title" content="Sportsbook - The League of Levels" />
-		<meta property="og:description" content="" />
+		<meta property="og:title" content="Sportsbook / League of Levels" />
+		<meta property="og:description" content="Active matchups available for gambling. Wager options include moneyline, point spread, and over/under totals. Schmeckles are the primary currency used in the Sportsbook and matchups consist of active LOL games within the 80/20 probability window." />
 		<meta property="og:type" content="article" />
 
 		<meta name="twitter:site" content="samelevel" />
 		<meta name="twitter:url" content="https://www.leagueoflevels.com/sportsbook/" />
-		<meta name="twitter:title" content="Sportsbook - The League of Levels" />
-		<meta name="twitter:description" content="" />
+		<meta name="twitter:title" content="Sportsbook / League of Levels" />
+		<meta name="twitter:description" content="Active matchups available for gambling. Wager options include moneyline, point spread, and over/under totals. Schmeckles are the primary currency used in the Sportsbook and matchups consist of active LOL games within the 80/20 probability window." />
 
-		<meta name="title" content="Sportsbook - The League of Levels" />
+		<meta name="title" content="Sportsbook / League of Levels" />
 		<meta name="medium" content="article" />
 
 		<link rel="shortcut icon" href="/favicon.ico" />
@@ -60,13 +60,14 @@
 								<div class="float-right">
 
 									<ol class="breadcrumb">
-										<li class="breadcrumb-item"><a href="javascript:void(0);">Main</a></li>
+										<li class="breadcrumb-item"><a href="/">Main</a></li>
 										<li class="breadcrumb-item active">Sportsbook</li>
 									</ol>
 
 								</div>
 
-								<h4 class="page-title">Sportsbook / Active Matchups</h4>
+								<h4 class="page-title d-none d-lg-block">Sportsbook / Active Matchups</h4>
+								<h4 class="page-title d-block d-lg-none">Sportsbook</h4>
 
 							</div>
 
