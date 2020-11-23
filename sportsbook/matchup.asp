@@ -222,9 +222,11 @@
 
 	End If
 
-	sqlGetSchedules = "SELECT MatchupID, Matchups.LevelID, Year, Period, IsPlayoffs, TeamID1, TeamID2, Team1.TeamName AS TeamName1, Team2.TeamName AS TeamName2, TeamScore1, TeamScore2, TeamPMR1, TeamPMR2, Leg, TeamProjected1, TeamProjected2, TeamWinPercentage1, TeamWinPercentage2, TeamMoneyline1, TeamMoneyline2, TeamSpread1, TeamSpread2 FROM Matchups "
+	sqlGetSchedules = "SELECT MatchupID, Matchups.LevelID, Year, Period, IsPlayoffs, TeamID1, TeamID2, Team1.LevelID AS TeamLevelID1, Team2.LevelID AS TeamLevelID2, Team1.CBSID AS TeamCBSID1, Team2.CBSID AS TeamCBSID2, Team1.TeamName AS TeamName1, Team2.TeamName AS TeamName2, TeamScore1, TeamScore2, TeamPMR1, TeamPMR2, Leg, TeamProjected1, TeamProjected2, TeamWinPercentage1, TeamWinPercentage2, TeamMoneyline1, TeamMoneyline2, TeamSpread1, TeamSpread2 FROM Matchups "
 	sqlGetSchedules = sqlGetSchedules & "INNER JOIN Teams AS Team1 ON Team1.TeamID = Matchups.TeamID1 "
 	sqlGetSchedules = sqlGetSchedules & "INNER JOIN Teams AS Team2 ON Team2.TeamID = Matchups.TeamID2 "
+	sqlGetSchedules = sqlGetSchedules & "INNER JOIN Levels AS Level1 ON Level1.LevelID = Team1.LevelID "
+	sqlGetSchedules = sqlGetSchedules & "INNER JOIN Levels AS Level2 ON Level2.LevelID = Team2.LevelID "
 	sqlGetSchedules = sqlGetSchedules & "WHERE Matchups.MatchupID = " & Session.Contents("SITE_Bet_MatchupID") & " "
 	sqlGetSchedules = sqlGetSchedules & "ORDER BY CASE WHEN Matchups.LevelID = 1 THEN '1' WHEN Matchups.LevelID = 0 THEN '2' WHEN Matchups.LevelID = 2 THEN '3' WHEN Matchups.LevelID = 3 THEN '4' ELSE Matchups.LevelID END ASC, Matchups.MatchupID DESC"
 	Set rsSchedules = sqlDatabase.Execute(sqlGetSchedules)
@@ -232,11 +234,15 @@
 	If Not rsSchedules.Eof Then
 
 		thisMatchupID = rsSchedules("MatchupID")
-		thisLevelID = rsSchedules("LevelID")
+		thisMatchupLevelID = rsSchedules("LevelID")
 		thisYear = rsSchedules("Year")
 		thisPeriod = rsSchedules("Period")
 		thisTeamID1 = rsSchedules("TeamID1")
 		thisTeamID2 = rsSchedules("TeamID2")
+		thisTeamLevelID1 = rsSchedules("TeamLevelID1")
+		thisTeamLevelID2 = rsSchedules("TeamLevelID2")
+		thisTeamCBSID1 = rsSchedules("TeamCBSID1")
+		thisTeamCBSID2 = rsSchedules("TeamCBSID2")
 		thisTeamName1 = rsSchedules("TeamName1")
 		thisTeamName2 = rsSchedules("TeamName2")
 		thisTeamScore1 = rsSchedules("TeamScore1")
@@ -342,25 +348,25 @@
 									If thisTeamSpread1 > 0 Then thisTeamSpread1 = "+" & thisTeamSpread1
 									If thisTeamSpread2 > 0 Then thisTeamSpread2 = "+" & thisTeamSpread2
 
-									If CInt(thisLevelID) = 0 Then
+									If CInt(thisMatchupLevelID) = 0 Then
 										headerBGcolor = "D00000"
 										headerTextColor = "fff"
 										headerText = "CUP"
 										cardText = "520000"
 									End If
-									If CInt(thisLevelID) = 1 Then
+									If CInt(thisMatchupLevelID) = 1 Then
 										headerBGcolor = "FFBA08"
 										headerTextColor = "fff"
 										headerText = "OMEGA"
 										cardText = "805C04"
 									End If
-									If CInt(thisLevelID) = 2 Then
+									If CInt(thisMatchupLevelID) = 2 Then
 										headerBGcolor = "136F63"
 										headerTextColor = "fff"
 										headerText = "SAME LEVEL"
 										cardText = "0F574D"
 									End If
-									If CInt(thisLevelID) = 3 Then
+									If CInt(thisMatchupLevelID) = 3 Then
 										headerBGcolor = "032B43"
 										headerTextColor = "fff"
 										headerText = "FARM LEVEL"
@@ -551,6 +557,352 @@
 											</div>
 
 										</div>
+									</div>
+<%
+									If thisTeamLevelID1 = 1 Then thisTeamLevelTitle1 = "OMEGA"
+									If thisTeamLevelID1 = 2 Then thisTeamLevelTitle1 = "SLFFL"
+									If thisTeamLevelID1 = 3 Then thisTeamLevelTitle1 = "FLFFL"
+
+									Set oXML = CreateObject("MSXML2.DOMDocument.3.0")
+									oXML.loadXML(GetScores(thisTeamLevelTitle1, Session.Contents("CurrentPeriod")))
+
+									oXML.setProperty "SelectionLanguage", "XPath"
+									Set objTeam = oXML.selectSingleNode(".//team[@id = " & thisTeamCBSID1 & "]")
+
+									Set objTeamScore1 = objTeam.getElementsByTagName("pts")
+									Set objTeamPlayers1 = objTeam.getElementsByTagName("player")
+
+									TeamScore1 = FormatNumber(CDbl(objTeamScore1.item(0).text), 2)
+%>
+									<div class="col-12 col-lg-6">
+										<div class="card">
+
+											<div class="card-body">
+
+												<div style="border-bottom: 1px solid #e8ebf3;"><h4><%= thisTeamName1 %> (<%= TeamScore1 %>)</h4></div><br />
+<%
+												HitReserves = 0
+												ExtraBorder = 0
+												TeamRoster1 = ""
+												For i = 0 to (objTeamPlayers1.length - 1)
+
+													Set objPlayer = objTeamPlayers1.item(i)
+
+													thisPlayerID = objPlayer.getAttribute("id")
+
+													thisPlayerName = ""
+													thisPlayerPoints = ""
+													thisPlayerStatus = ""
+													thisPlayerGameTimestamp = ""
+													thisPlayerPMR = 0
+													thisPlayerHomeGame = 2
+													thisPlayerProTeam = ""
+													thisPlayerPosition = ""
+													thisPlayerOpponent = ""
+													thisPlayerQuarter = ""
+													thisPlayerQuarterTimeRemaining = ""
+
+													Set objPlayerName = objPlayer.getElementsByTagName("fullname")
+													If objPlayerName.Length > 0 Then thisPlayerName = objPlayerName.item(0).text
+
+													Set objPlayerPoints = objPlayer.getElementsByTagName("fpts")
+													If objPlayerPoints.Length > 0 Then thisPlayerPoints = objPlayerPoints.item(0).text
+													If IsNumeric(thisPlayerPoints) Then thisPlayerPoints = FormatNumber(thisPlayerPoints, 2)
+
+													Set objPlayerStatus = objPlayer.getElementsByTagName("status")
+													If objPlayerStatus.Length > 0 Then thisPlayerStatus = objPlayerStatus.item(0).text
+
+													Set objPlayerStats = objPlayer.getElementsByTagName("stats_period")
+													If objPlayerStats.Length > 0 Then thisPlayerStats = objPlayerStats.item(0).text
+
+													Set objPlayerGameTimestamp = objPlayer.getElementsByTagName("game_start_timestamp")
+													If objPlayerGameTimestamp.Length > 0 Then thisPlayerGameTimestamp = objPlayerGameTimestamp.item(0).text
+
+													Set objPlayerPMR = objPlayer.getElementsByTagName("minutes_remaining")
+													If objPlayerPMR.Length > 0 Then thisPlayerPMR = CInt(objPlayerPMR.item(0).text)
+
+													Set objPlayerHomeGame = objPlayer.getElementsByTagName("home_game")
+													If objPlayerHomeGame.Length > 0 Then thisPlayerHomeGame = CInt(objPlayerHomeGame.item(0).text)
+
+													Set objPlayerProTeam = objPlayer.getElementsByTagName("pro_team")
+													If objPlayerProTeam.Length > 0 Then thisPlayerProTeam = objPlayerProTeam.item(0).text
+
+													Set objPlayerPosition = objPlayer.getElementsByTagName("position")
+													If objPlayerPosition.Length > 0 Then thisPlayerPosition = objPlayerPosition.item(0).text
+
+													Set objPlayerOpponent = objPlayer.getElementsByTagName("opponent")
+													If objPlayerOpponent.Length > 0 Then thisPlayerOpponent = objPlayerOpponent.item(0).text
+
+													Set objPlayerQuarter = objPlayer.getElementsByTagName("quarter")
+													If objPlayerQuarter.Length > 0 Then thisPlayerQuarter = objPlayerQuarter.item(0).text
+
+													Set objPlayerQuarterTimeRemaining = objPlayer.getElementsByTagName("time_remaining")
+													If objPlayerQuarterTimeRemaining.Length > 0 Then thisPlayerQuarterTimeRemaining = objPlayerQuarterTimeRemaining.item(0).text
+
+													If thisPlayerHomeGame = 1 Then
+														thisGameLine = thisPlayerProTeam & " vs. " & thisPlayerOpponent
+													ElseIf thisPlayerHomeGame = 0 Then
+														thisGameLine = thisPlayerProTeam & " @ " & thisPlayerOpponent
+													Else
+														thisGameLine = ""
+													End If
+
+													If thisPlayerHomeGame < 2 Then
+
+														TeamRoster1 = TeamRoster1 & thisPlayerID & ","
+
+														thisPlayerGameTimestamp = DateAdd("s", thisPlayerGameTimestamp, DateSerial(1970,1,1))
+														thisPlayerGameTimestamp = DateAdd("h", -5, thisPlayerGameTimestamp)
+
+														thisPlayerGameDay = UCase(WeekdayName(Weekday(thisPlayerGameTimestamp),True))
+														thisPlayerHour = Hour(thisPlayerGameTimestamp)
+														thisPlayerMinute = Minute(thisPlayerGameTimestamp)
+
+														If thisPlayerHour > 12 Then
+															AMPM = "PM"
+															thisPlayerHour = thisPlayerHour - 12
+														Else
+															AMPM = "AM"
+														End If
+
+														If Len(thisPlayerMinute) = 1 Then thisPlayerMinute = "0" & thisPlayerMinute
+
+													End If
+
+													thisPlayerPMRColor = "success"
+													If thisPlayerPMR < 40 Then thisPlayerPMRColor = "warning"
+													If thisPlayerPMR < 20 Then thisPlayerPMRColor = "danger"
+													thisPlayerPMRPercent = (thisPlayerPMR * 100) / 60
+
+													If thisPlayerPosition = "DST" Then
+														thisBackgroundPosition = "-100px 50%"
+													Else
+														thisBackgroundPosition = "-70px -20px"
+													End If
+
+													If (thisPlayerStatus = "Reserve" Or thisPlayerStatus = "Injured") And HitReserves = 0 Then StartReserves = 1
+													If thisPlayerStatus = "Reserve" Or thisPlayerStatus = "Injured" Then HitReserves = 1
+
+													If StartReserves = 1 Then Exit For
+
+													If thisPlayerPMR > 0 Then
+%>
+														<li class="list-group-item team-1-player-<%= thisPlayerID %>" style="padding-left: 70px; background-image: url('https://sports.cbsimg.net/images/football/nfl/players/170x170/<%= thisPlayerID %>.png'); background-position: <%= thisBackgroundPosition %>; background-repeat: no-repeat;">
+
+															<div class="row">
+																<div class="col-xxs-9 col-xl-9" style="line-height: 1.5rem;">
+																	<div class="player-name" style="font-size: 16px;"><b><%= thisPlayerName %></b></div>
+																	<div class="d-none d-xl-block " style="line-height: 1.5rem;">
+																	<%	If thisPlayerHomeGame < 2 Then %>
+																		<span class="team-1-player-<%= thisPlayerID %>-gameline"><%= thisGameLine %> - <%= thisPlayerGameDay %>&nbsp;<%= thisPlayerHour %>:<%= thisPlayerMinute %><%= AMPM %></span> &mdash;
+																		<span class="team-1-player-<%= thisPlayerID %>-gameposition"><%= thisPlayerQuarter %>Q&nbsp;<%= thisPlayerQuarterTimeRemaining %></span>
+																	<% Else %>
+																		<span class="team-1-player-<%= thisPlayerID %>-gameline">BYE</span>
+																	<% End If %>
+																	</div>
+																</div>
+																<div class="col-xxs-3 col-xl-3 text-right" style="padding-right: 1rem; text-align: right;">
+																	<span class="team-1-player-<%= thisPlayerID %>-points player-points" style="font-size: 2em; background-color: #fff;"><%= thisPlayerPoints %></span>
+																</div>
+															</div>
+
+															<div class="row">
+																<div class="col-12 team-1-player-<%= thisPlayerID %>-stats" style="line-height: 1rem;"><%= thisPlayerStats %></div>
+															</div>
+
+															<div class="progress team-1-player-<%= thisPlayerID %>-progress" style="height: 1px; margin-top: 6px; margin-bottom: 0; padding-bottom: 0;">
+																<div class="progress-bar progress-bar-<%= thisPlayerPMRColor %>" role="progressbar" aria-valuenow="<%= thisPlayerPMRPercent %>" aria-valuemin="0" aria-valuemax="100" style="width: <%= thisPlayerPMRPercent %>%; ">
+																	<span class="sr-only team-1-progress-sr"><%= thisPlayerPMRPercent %>%</span>
+																</div>
+															</div>
+
+														</li>
+<%
+													End If
+
+													If StartReserves = 1 Then StartReserves = 0
+
+												Next
+%>
+
+											</div>
+
+										</div>
+
+									</div>
+<%
+									StartReserves = 0
+
+									If thisTeamLevelID2 = 1 Then thisTeamLevelTitle2 = "OMEGA"
+									If thisTeamLevelID2 = 2 Then thisTeamLevelTitle2 = "SLFFL"
+									If thisTeamLevelID2 = 3 Then thisTeamLevelTitle2 = "FLFFL"
+
+									Set oXML = CreateObject("MSXML2.DOMDocument.3.0")
+									oXML.loadXML(GetScores(thisTeamLevelTitle2, Session.Contents("CurrentPeriod")))
+
+									oXML.setProperty "SelectionLanguage", "XPath"
+									Set objTeam = oXML.selectSingleNode(".//team[@id = " & thisTeamCBSID2 & "]")
+
+									Set objTeamScore2 = objTeam.getElementsByTagName("pts")
+									Set objTeamPlayers2 = objTeam.getElementsByTagName("player")
+
+									TeamScore2 = FormatNumber(CDbl(objTeamScore2.item(0).text), 2)
+%>
+									<div class="col-12 col-lg-6">
+										<div class="card">
+
+											<div class="card-body">
+
+												<div style="border-bottom: 1px solid #e8ebf3;"><h4><%= thisTeamName2 %> (<%= TeamScore2 %>)</h4></div><br>
+<%
+												HitReserves = 0
+												ExtraBorder = 0
+												TeamRoster1 = ""
+												For i = 0 to (objTeamPlayers2.length - 1)
+
+													Set objPlayer = objTeamPlayers2.item(i)
+
+													thisPlayerID = objPlayer.getAttribute("id")
+
+													thisPlayerName = ""
+													thisPlayerPoints = ""
+													thisPlayerStatus = ""
+													thisPlayerGameTimestamp = ""
+													thisPlayerPMR = 0
+													thisPlayerHomeGame = 2
+													thisPlayerProTeam = ""
+													thisPlayerPosition = ""
+													thisPlayerOpponent = ""
+													thisPlayerQuarter = ""
+													thisPlayerQuarterTimeRemaining = ""
+
+													Set objPlayerName = objPlayer.getElementsByTagName("fullname")
+													If objPlayerName.Length > 0 Then thisPlayerName = objPlayerName.item(0).text
+
+													Set objPlayerPoints = objPlayer.getElementsByTagName("fpts")
+													If objPlayerPoints.Length > 0 Then thisPlayerPoints = objPlayerPoints.item(0).text
+													If IsNumeric(thisPlayerPoints) Then thisPlayerPoints = FormatNumber(thisPlayerPoints, 2)
+
+													Set objPlayerStatus = objPlayer.getElementsByTagName("status")
+													If objPlayerStatus.Length > 0 Then thisPlayerStatus = objPlayerStatus.item(0).text
+
+													Set objPlayerStats = objPlayer.getElementsByTagName("stats_period")
+													If objPlayerStats.Length > 0 Then thisPlayerStats = objPlayerStats.item(0).text
+
+													Set objPlayerGameTimestamp = objPlayer.getElementsByTagName("game_start_timestamp")
+													If objPlayerGameTimestamp.Length > 0 Then thisPlayerGameTimestamp = objPlayerGameTimestamp.item(0).text
+
+													Set objPlayerPMR = objPlayer.getElementsByTagName("minutes_remaining")
+													If objPlayerPMR.Length > 0 Then thisPlayerPMR = CInt(objPlayerPMR.item(0).text)
+
+													Set objPlayerHomeGame = objPlayer.getElementsByTagName("home_game")
+													If objPlayerHomeGame.Length > 0 Then thisPlayerHomeGame = CInt(objPlayerHomeGame.item(0).text)
+
+													Set objPlayerProTeam = objPlayer.getElementsByTagName("pro_team")
+													If objPlayerProTeam.Length > 0 Then thisPlayerProTeam = objPlayerProTeam.item(0).text
+
+													Set objPlayerPosition = objPlayer.getElementsByTagName("position")
+													If objPlayerPosition.Length > 0 Then thisPlayerPosition = objPlayerPosition.item(0).text
+
+													Set objPlayerOpponent = objPlayer.getElementsByTagName("opponent")
+													If objPlayerOpponent.Length > 0 Then thisPlayerOpponent = objPlayerOpponent.item(0).text
+
+													Set objPlayerQuarter = objPlayer.getElementsByTagName("quarter")
+													If objPlayerQuarter.Length > 0 Then thisPlayerQuarter = objPlayerQuarter.item(0).text
+
+													Set objPlayerQuarterTimeRemaining = objPlayer.getElementsByTagName("time_remaining")
+													If objPlayerQuarterTimeRemaining.Length > 0 Then thisPlayerQuarterTimeRemaining = objPlayerQuarterTimeRemaining.item(0).text
+
+													If thisPlayerHomeGame = 1 Then
+														thisGameLine = thisPlayerProTeam & " vs. " & thisPlayerOpponent
+													ElseIf thisPlayerHomeGame = 0 Then
+														thisGameLine = thisPlayerProTeam & " @ " & thisPlayerOpponent
+													Else
+														thisGameLine = ""
+													End If
+
+													If thisPlayerHomeGame < 2 Then
+
+														TeamRoster2 = TeamRoster2 & thisPlayerID & ","
+
+														thisPlayerGameTimestamp = DateAdd("s", thisPlayerGameTimestamp, DateSerial(1970,1,1))
+														thisPlayerGameTimestamp = DateAdd("h", -5, thisPlayerGameTimestamp)
+
+														thisPlayerGameDay = UCase(WeekdayName(Weekday(thisPlayerGameTimestamp),True))
+														thisPlayerHour = Hour(thisPlayerGameTimestamp)
+														thisPlayerMinute = Minute(thisPlayerGameTimestamp)
+
+														If thisPlayerHour > 12 Then
+															AMPM = "PM"
+															thisPlayerHour = thisPlayerHour - 12
+														Else
+															AMPM = "AM"
+														End If
+
+														If Len(thisPlayerMinute) = 1 Then thisPlayerMinute = "0" & thisPlayerMinute
+
+													End If
+
+													thisPlayerPMRColor = "success"
+													If thisPlayerPMR < 40 Then thisPlayerPMRColor = "warning"
+													If thisPlayerPMR < 20 Then thisPlayerPMRColor = "danger"
+													thisPlayerPMRPercent = (thisPlayerPMR * 100) / 60
+
+													If thisPlayerPosition = "DST" Then
+														thisBackgroundPosition = "-100px 50%"
+													Else
+														thisBackgroundPosition = "-70px -20px"
+													End If
+
+													If (thisPlayerStatus = "Reserve" Or thisPlayerStatus = "Injured") And HitReserves = 0 Then StartReserves = 1
+													If thisPlayerStatus = "Reserve" Or thisPlayerStatus = "Injured" Then HitReserves = 1
+
+													If StartReserves = 1 Then Exit For
+
+													If thisPlayerPMR > 0 Then
+%>
+														<li class="list-group-item team-1-player-<%= thisPlayerID %>" style="padding-left: 70px; background-image: url('https://sports.cbsimg.net/images/football/nfl/players/170x170/<%= thisPlayerID %>.png'); background-position: <%= thisBackgroundPosition %>; background-repeat: no-repeat;">
+
+															<div class="row">
+																<div class="col-xxs-9 col-xl-9" style="line-height: 1.5rem;">
+																	<div class="player-name" style="font-size: 16px;"><b><%= thisPlayerName %></b></div>
+																	<div class="d-none d-xl-block " style="line-height: 1.5rem;">
+																	<%	If thisPlayerHomeGame < 2 Then %>
+																		<span class="team-1-player-<%= thisPlayerID %>-gameline"><%= thisGameLine %> - <%= thisPlayerGameDay %>&nbsp;<%= thisPlayerHour %>:<%= thisPlayerMinute %><%= AMPM %></span> &mdash;
+																		<span class="team-1-player-<%= thisPlayerID %>-gameposition"><%= thisPlayerQuarter %>Q&nbsp;<%= thisPlayerQuarterTimeRemaining %></span>
+																	<% Else %>
+																		<span class="team-1-player-<%= thisPlayerID %>-gameline">BYE</span>
+																	<% End If %>
+																	</div>
+																</div>
+																<div class="col-xxs-3 col-xl-3 text-right" style="padding-right: 1rem; text-align: right;">
+																	<span class="team-1-player-<%= thisPlayerID %>-points player-points" style="font-size: 2em; background-color: #fff;"><%= thisPlayerPoints %></span>
+																</div>
+															</div>
+
+															<div class="row">
+																<div class="col-12 team-1-player-<%= thisPlayerID %>-stats" style="line-height: 1rem;"><%= thisPlayerStats %></div>
+															</div>
+
+															<div class="progress team-1-player-<%= thisPlayerID %>-progress" style="height: 1px; margin-top: 6px; margin-bottom: 0; padding-bottom: 0;">
+																<div class="progress-bar progress-bar-<%= thisPlayerPMRColor %>" role="progressbar" aria-valuenow="<%= thisPlayerPMRPercent %>" aria-valuemin="0" aria-valuemax="100" style="width: <%= thisPlayerPMRPercent %>%; ">
+																	<span class="sr-only team-1-progress-sr"><%= thisPlayerPMRPercent %>%</span>
+																</div>
+															</div>
+
+														</li>
+<%
+													End If
+
+													If StartReserves = 1 Then StartReserves = 0
+
+												Next
+%>
+
+											</div>
+
+										</div>
+
 									</div>
 
 								</div>
