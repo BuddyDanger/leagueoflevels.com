@@ -76,7 +76,8 @@ Set rsYearPeriod = sqlDatabase.Execute(sqlGetYearPeriod)
 If Not rsYearPeriod.Eof Then
 
 	thisCurrentYear = rsYearPeriod("Year")
-	thisCurrentPeriod = rsYearPeriod("Period")
+	'thisCurrentPeriod = rsYearPeriod("Period")
+	thisCurrentPeriod = 12
 
 	rsYearPeriod.Close
 	Set rsYearPeriod = Nothing

@@ -5,8 +5,12 @@ Set sqlDatabase = CreateObject("ADODB.Connection")
 sqlDatabase.CursorLocation = adUseServer
 sqlDatabase.Open "Driver={SQL Server Native Client 11.0};Server=tcp:samelevel.database.windows.net,1433;Database=NextLevelDB;Uid=samelevel;Pwd=TheHammer123;Encrypt=yes;Connection Timeout=60;"
 
-thisYear = 2020
-thisPeriod = 1
+WScript.Echo("CLEARING STANDINGS..." & vbcrlf)
+
+sqlClearStandings    = "DELETE FROM Standings"
+Set rsClearStandings = sqlDatabase.Execute(sqlClearStandings)
+
+WScript.Echo("SETTING CURRENT PERIOD..." & vbcrlf)
 
 sqlGetYearPeriod = "SELECT TOP 1 Year, Period FROM YearPeriods WHERE StartDate < GetDate() ORDER BY StartDate DESC"
 Set rsYearPeriod = sqlDatabase.Execute(sqlGetYearPeriod)
@@ -21,155 +25,172 @@ If Not rsYearPeriod.Eof Then
 
 End If
 
-thisCurrentPeriod = 11
+thisCurrentPeriod = 18
 
-thisYear = thisCurrentYear
-thisPeriod = 10
+thisYear = 2008
+Do While thisYear < 2020
 
-Do While thisPeriod < thisCurrentPeriod
+	thisPeriod = 1
+	Do While thisPeriod < thisCurrentPeriod
 
-	sqlGetTeams = "SELECT TeamID, LevelID, TeamName FROM Teams WHERE EndYear = 0 ORDER BY LevelID"
-	Set rsTeams = sqlDatabase.Execute(sqlGetTeams)
+		sqlGetTeams = "SELECT TeamID, LevelID, TeamName FROM Teams WHERE EndYear = 0 OR EndYear >= " & thisYear & " ORDER BY LevelID"
+		Set rsTeams = sqlDatabase.Execute(sqlGetTeams)
 
-	If Not rsTeams.Eof Then
+		If Not rsTeams.Eof Then
 
-		WScript.Echo(vbcrlf & "WEEK " & thisPeriod & " IS LOADED..." & vbcrlf & vbcrlf)
+			WScript.Echo(vbcrlf & "WEEK " & thisPeriod & " IS LOADED..." & vbcrlf & vbcrlf)
 
-		Do While Not rsTeams.Eof
+			sqlInsertTeamStandings = ""
 
-			thisLevelID = rsTeams("LevelID")
-			thisTeamID = rsTeams("TeamID")
-			thisTeamName = rsTeams("TeamName")
+			Do While Not rsTeams.Eof
 
-			sqlGetMatchups = "SELECT * FROM Matchups WHERE Year = " & thisYear & " AND Period = " & thisPeriod & " AND LevelID = " & thisLevelID & " AND (TeamID1 = " & thisTeamID & " OR TeamID2 = " & thisTeamID & ") ORDER BY Year, Period"
-			Set rsMatchups = sqlDatabase.Execute(sqlGetMatchups)
+				thisTeamID = rsTeams("TeamID")
+				thisTeamName = rsTeams("TeamName")
 
-			If Not rsMatchups.Eof Then
+				sqlGetMatchups = "SELECT * FROM Matchups WHERE Year = " & thisYear & " AND Period = " & thisPeriod & " AND (TeamID1 = " & thisTeamID & " OR TeamID2 = " & thisTeamID & ") ORDER BY Year, Period"
+				Set rsMatchups = sqlDatabase.Execute(sqlGetMatchups)
 
-				thisTeamWins = 0
-				thisTeamLosses = 0
-				thisTeamTies = 0
-				thisTeamPointsScored = 0
-				thisTeamPointsAgainst = 0
+				If Not rsMatchups.Eof Then
 
-				Do While Not rsMatchups.Eof
+					thisTeamWins = 0
+					thisTeamLosses = 0
+					thisTeamTies = 0
+					thisTeamPointsScored = 0
+					thisTeamPointsAgainst = 0
 
-					thisTeamID1 = rsMatchups("TeamID1")
-					thisTeamID2 = rsMatchups("TeamID2")
-					thisTeamScore1 = rsMatchups("TeamScore1")
-					thisTeamScore2 = rsMatchups("TeamScore2")
+					Do While Not rsMatchups.Eof
 
-					If thisTeamID = thisTeamID1	Then
+						thisTeamID1 = rsMatchups("TeamID1")
+						thisTeamID2 = rsMatchups("TeamID2")
+						thisTeamScore1 = rsMatchups("TeamScore1")
+						thisTeamScore2 = rsMatchups("TeamScore2")
+						thisLevelID = rsMatchups("LevelID")
 
-						If thisTeamScore1 > thisTeamScore2 Then thisTeamWins = thisTeamWins + 1
-						If thisTeamScore1 < thisTeamScore2 Then thisTeamLosses = thisTeamLosses + 1
-						If thisTeamScore1 = thisTeamScore2 Then thisTeamTies = thisTeamTies + 1
-						thisTeamPointsScored = thisTeamPointsScored + thisTeamScore1
-						thisTeamPointsAgainst = thisTeamPointsAgainst + thisTeamScore2
+						If thisTeamID = thisTeamID1	Then
 
-					Else
+							If thisTeamScore1 > thisTeamScore2 Then thisTeamWins = thisTeamWins + 1
+							If thisTeamScore1 < thisTeamScore2 Then thisTeamLosses = thisTeamLosses + 1
+							If thisTeamScore1 = thisTeamScore2 Then thisTeamTies = thisTeamTies + 1
+							thisTeamPointsScored = thisTeamPointsScored + thisTeamScore1
+							thisTeamPointsAgainst = thisTeamPointsAgainst + thisTeamScore2
 
-						If thisTeamScore2 > thisTeamScore1 Then thisTeamWins = thisTeamWins + 1
-						If thisTeamScore2 < thisTeamScore1 Then thisTeamLosses = thisTeamLosses + 1
-						If thisTeamScore2 = thisTeamScore1 Then thisTeamTies = thisTeamTies + 1
-						thisTeamPointsScored = thisTeamPointsScored + thisTeamScore2
-						thisTeamPointsAgainst = thisTeamPointsAgainst + thisTeamScore1
+						Else
 
-					End If
+							If thisTeamScore2 > thisTeamScore1 Then thisTeamWins = thisTeamWins + 1
+							If thisTeamScore2 < thisTeamScore1 Then thisTeamLosses = thisTeamLosses + 1
+							If thisTeamScore2 = thisTeamScore1 Then thisTeamTies = thisTeamTies + 1
+							thisTeamPointsScored = thisTeamPointsScored + thisTeamScore2
+							thisTeamPointsAgainst = thisTeamPointsAgainst + thisTeamScore1
 
-					rsMatchups.MoveNext
+						End If
 
-				Loop
+						rsMatchups.MoveNext
 
-				rsMatchups.Close
-				Set rsMatchups = Nothing
+					Loop
 
-				WScript.Echo(thisTeamWins & "-" & thisTeamLosses & "-" & thisTeamTies & " (" & thisTeamPointsScored & " / " & thisTeamPointsAgainst & ")" & vbcrlf)
+					rsMatchups.Close
+					Set rsMatchups = Nothing
 
-				sqlInsertTeamStandings = "INSERT INTO Standings (LevelID, Year, Period, TeamID, ActualWins, ActualLosses, ActualTies, PointsScored, PointsAgainst) VALUES (" & thisLevelID & ", " & thisYear & ", " & thisPeriod & ", " & thisTeamID & ", " & thisTeamWins & ", " & thisTeamLosses & ", " & thisTeamTies & ", " & thisTeamPointsScored & ", " & thisTeamPointsAgainst & ")"
-				Set rsTeamStandings = sqlDatabase.Execute(sqlInsertTeamStandings)
+					WScript.Echo(thisLevelID & ", " & thisYear & ", " & thisPeriod & ", " & thisTeamID & ", " & thisTeamWins & ", " & thisTeamLosses & ", " & thisTeamTies & ", " & thisTeamPointsScored & ", " & thisTeamPointsAgainst & vbcrlf)
 
-			End If
+					sqlInsertTeamStandings = sqlInsertTeamStandings & "INSERT INTO Standings (LevelID, Year, Period, TeamID, ActualWins, ActualLosses, ActualTies, PointsScored, PointsAgainst) VALUES (" & thisLevelID & ", " & thisYear & ", " & thisPeriod & ", " & thisTeamID & ", " & thisTeamWins & ", " & thisTeamLosses & ", " & thisTeamTies & ", " & thisTeamPointsScored & ", " & thisTeamPointsAgainst & "); "
 
-			rsTeams.MoveNext
+				End If
 
-		Loop
-
-		rsTeams.Close
-		Set rsTeams = Nothing
-
-	End If
-
-	sqlGetTeams = "SELECT TeamID, LevelID, TeamName FROM Teams WHERE EndYear = 0 ORDER BY LevelID"
-	Set rsTeams = sqlDatabase.Execute(sqlGetTeams)
-
-	If Not rsTeams.Eof Then
-
-		WScript.Echo(vbcrlf & "TEAMS ARE FUCKING LOADED AGAIN..." & vbcrlf & vbcrlf)
-
-		Do While Not rsTeams.Eof
-
-			thisLevelID = rsTeams("LevelID")
-			thisTeamID = rsTeams("TeamID")
-			thisTeamName = rsTeams("TeamName")
-			thisTeamBreakdownWins = 0
-			thisTeamBreakdownLosses = 0
-			thisTeamBreakdownTies = 0
-			thisTeamPosition = 0
-
-			sqlGetThisScore = "SELECT PointsScored FROM Standings WHERE Year = " & thisYear & " AND Period = " & thisPeriod & " AND TeamID = " & thisTeamID
-			Set rsThisScore = sqlDatabase.Execute(sqlGetThisScore)
-
-			thisTeamScore = rsThisScore("PointsScored")
-
-			rsThisScore.Close
-			Set rsThisScore = Nothing
-
-			sqlGetOpposingTeams = "SELECT * FROM Standings WHERE LevelID = " & thisLevelID & " AND Year = " & thisYear & " AND Period = " & thisPeriod & " AND TeamID <> " & thisTeamID
-			Set rsOpposingTeams = sqlDatabase.Execute(sqlGetOpposingTeams)
-
-			Do While Not rsOpposingTeams.Eof
-
-				If thisTeamScore > rsOpposingTeams("PointsScored") Then thisTeamBreakdownWins = thisTeamBreakdownWins + 1
-				If thisTeamScore < rsOpposingTeams("PointsScored") Then thisTeamBreakdownLosses = thisTeamBreakdownLosses + 1
-				If thisTeamScore = rsOpposingTeams("PointsScored") Then thisTeamBreakdownTies = thisTeamBreakdownTies + 1
-
-				rsOpposingTeams.MoveNext
+				rsTeams.MoveNext
 
 			Loop
 
-			sqlGetPositions = "SELECT TeamID, SUM(ActualWins) AS TotalWins, SUM(ActualLosses) AS TotalLosses, SUM(ActualTies) AS TotalTies, SUM(PointsScored) AS TotalPointsScored, SUM(PointsAgainst) AS TotalPointsAgainst FROM Standings WHERE LevelID = " & thisLevelID & " AND Period <= " & thisPeriod & " GROUP BY Year, TeamID ORDER BY TotalWins DESC, TotalPointsScored DESC"
-			Set rsPositions = sqlDatabase.Execute(sqlGetPositions)
+			rsTeams.Close
+			Set rsTeams = Nothing
 
-			thisPositionCheck = 1
-			Do While Not rsPositions.Eof
+			WScript.Echo("INSERTING STANDINGS..." & vbcrlf)
+			Set rsTeamStandings = sqlDatabase.Execute(sqlInsertTeamStandings)
 
-				If CInt(rsPositions("TeamID")) = CInt(thisTeamID) Then thisTeamPosition = thisPositionCheck
+		End If
 
-				thisPositionCheck = thisPositionCheck + 1
+		sqlGetTeams = "SELECT TeamID, LevelID, TeamName FROM Teams ORDER BY LevelID"
+		Set rsTeams = sqlDatabase.Execute(sqlGetTeams)
 
-				rsPositions.MoveNext
+		If Not rsTeams.Eof Then
+
+			WScript.Echo(vbcrlf & "TEAMS ARE FUCKING LOADED AGAIN..." & vbcrlf & vbcrlf)
+
+			sqlUpdateStandings = ""
+
+			Do While Not rsTeams.Eof
+
+				thisTeamID = rsTeams("TeamID")
+				thisTeamName = rsTeams("TeamName")
+				thisTeamBreakdownWins = 0
+				thisTeamBreakdownLosses = 0
+				thisTeamBreakdownTies = 0
+				thisTeamPosition = 0
+
+				sqlGetThisScore = "SELECT LevelID, PointsScored FROM Standings WHERE Year = " & thisYear & " AND Period = " & thisPeriod & " AND TeamID = " & thisTeamID
+				Set rsThisScore = sqlDatabase.Execute(sqlGetThisScore)
+
+				If Not rsThisScore.Eof Then
+
+					thisTeamScore = rsThisScore("PointsScored")
+					thisLevelID = rsThisScore("LevelID")
+
+					rsThisScore.Close
+					Set rsThisScore = Nothing
+
+					sqlGetOpposingTeams = "SELECT * FROM Standings WHERE LevelID = " & thisLevelID & " AND Year = " & thisYear & " AND Period = " & thisPeriod & " AND TeamID <> " & thisTeamID
+					Set rsOpposingTeams = sqlDatabase.Execute(sqlGetOpposingTeams)
+
+					Do While Not rsOpposingTeams.Eof
+
+						If thisTeamScore > rsOpposingTeams("PointsScored") Then thisTeamBreakdownWins = thisTeamBreakdownWins + 1
+						If thisTeamScore < rsOpposingTeams("PointsScored") Then thisTeamBreakdownLosses = thisTeamBreakdownLosses + 1
+						If thisTeamScore = rsOpposingTeams("PointsScored") Then thisTeamBreakdownTies = thisTeamBreakdownTies + 1
+
+						rsOpposingTeams.MoveNext
+
+					Loop
+
+					sqlGetPositions = "SELECT TeamID, SUM(ActualWins) AS TotalWins, SUM(ActualLosses) AS TotalLosses, SUM(ActualTies) AS TotalTies, SUM(PointsScored) AS TotalPointsScored, SUM(PointsAgainst) AS TotalPointsAgainst FROM Standings WHERE LevelID = " & thisLevelID & " AND Period <= " & thisPeriod & " GROUP BY Year, TeamID ORDER BY TotalWins DESC, TotalPointsScored DESC"
+					Set rsPositions = sqlDatabase.Execute(sqlGetPositions)
+
+					thisPositionCheck = 1
+					Do While Not rsPositions.Eof
+
+						If CInt(rsPositions("TeamID")) = CInt(thisTeamID) Then thisTeamPosition = thisPositionCheck
+
+						thisPositionCheck = thisPositionCheck + 1
+
+						rsPositions.MoveNext
+
+					Loop
+
+					rsPositions.Close
+					Set rsPositions = Nothing
+
+					sqlUpdateStandings = sqlUpdateStandings & "UPDATE Standings SET BreakdownWins = " & thisTeamBreakdownWins & ", BreakdownLosses = " & thisTeamBreakdownLosses & ", BreakdownTies = " & thisTeamBreakdownTies & ", Position = " & thisTeamPosition & " WHERE LevelID = " & thisLevelID & " AND Year = " & thisYear & " AND Period = " & thisPeriod & " AND TeamID = " & thisTeamID & "; "
+
+					WScript.Echo(thisTeamName & " POSITION AND BREAKDOWN COMPLETE" & vbcrlf)
+
+				End If
+
+				rsTeams.MoveNext
 
 			Loop
 
-			rsPositions.Close
-			Set rsPositions = Nothing
+			rsTeams.Close
+			Set rsTeams = Nothing
 
-			sqlUpdateStandings = "UPDATE Standings SET BreakdownWins = " & thisTeamBreakdownWins & ", BreakdownLosses = " & thisTeamBreakdownLosses & ", BreakdownTies = " & thisTeamBreakdownTies & ", Position = " & thisTeamPosition & " WHERE LevelID = " & thisLevelID & " AND Year = " & thisYear & " AND Period = " & thisPeriod & " AND TeamID = " & thisTeamID
+			WScript.Echo("UPDATING BREAKDOWN..." & vbcrlf)
 			Set rsUpdate = sqlDatabase.Execute(sqlUpdateStandings)
 
-			WScript.Echo(thisTeamName & " POSITION AND BREAKDOWN COMPLETE" & vbcrlf)
+		End If
 
-			rsTeams.MoveNext
+		thisPeriod = thisPeriod + 1
 
-		Loop
+	Loop
 
-		rsTeams.Close
-		Set rsTeams = Nothing
-
-	End If
-
-	thisPeriod = thisPeriod + 1
+	thisYear = thisYear + 1
 
 Loop
 
