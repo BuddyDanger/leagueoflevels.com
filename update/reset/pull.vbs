@@ -34,10 +34,10 @@ Function GetToken (League)
 
 End Function
 
-Function GetScores (League, thisPeriod)
+Function GetScores (League, thisYear, thisPeriod)
 
 	If UCase(League) = "OMEGA" Then
-		liveSLFFL = "http://api.cbssports.com/fantasy/league/scoring/live?version=3.0&response_format=xml&period=" & thisPeriod & "&league_id=omegalevel&access_token=" & GetToken("OMEGA")
+		liveSLFFL = "http://api.cbssports.com/fantasy/league/history/results?version=3.0&response_format=xml&timeframe=" & thisYear & "&period=" & thisPeriod & "&league_id=omegalevel&access_token=" & GetToken("OMEGA")
 		Set xmlhttpSLFFL = CreateObject("Microsoft.XMLHTTP")
 
 		xmlhttpSLFFL.open "GET", liveSLFFL, false
@@ -45,7 +45,7 @@ Function GetScores (League, thisPeriod)
 	End If
 
 	If UCase(League) = "SLFFL" Then
-		liveSLFFL = "http://api.cbssports.com/fantasy/league/scoring/live?version=3.0&response_format=xml&period=" & thisPeriod & "&league_id=samelevel&access_token=" & GetToken("SLFFL")
+		liveSLFFL = "http://api.cbssports.com/fantasy/league/history/results?version=3.0&response_format=xml&timeframe=" & thisYear & "&period=" & thisPeriod & "&league_id=samelevel&access_token=" & GetToken("SLFFL")
 		Set xmlhttpSLFFL = CreateObject("Microsoft.XMLHTTP")
 
 		xmlhttpSLFFL.open "GET", liveSLFFL, false
@@ -54,7 +54,7 @@ Function GetScores (League, thisPeriod)
 
 	If UCase(League) = "FLFFL" Then
 
-		liveSLFFL = "http://api.cbssports.com/fantasy/league/scoring/live?version=3.0&response_format=xml&period=" & thisPeriod & "&league_id=farmlevel&access_token=" & GetToken("FARM")
+		liveSLFFL = "http://api.cbssports.com/fantasy/league/history/results?version=3.0&response_format=xml&timeframe=" & thisYear & "&period=" & thisPeriod & "&league_id=farmlevel&access_token=" & GetToken("FARM")
 		Set xmlhttpSLFFL = CreateObject("Microsoft.XMLHTTP")
 
 		xmlhttpSLFFL.open "GET", liveSLFFL, false
@@ -84,126 +84,228 @@ If Not rsYearPeriod.Eof Then
 
 End If
 
-thisYear = thisCurrentYear
-thisPeriod = 1
+thisYear = 2019
 
-Do While thisPeriod < thisCurrentPeriod
+Do While thisYear < 2020
 
-	sqlGetMatchups = "SELECT MatchupID, LevelID, TeamID1, TeamID2, TeamScore1, TeamScore2 FROM [dbo].[Matchups] WHERE Year = " & thisYear & " AND Period = " & thisPeriod & " ORDER BY LevelID ASC;"
-	Set rsMatchups = sqlDatabase.Execute(sqlGetMatchups)
+	thisPeriod = 1
 
-	arrMatchups = rsMatchups.GetRows()
+	If thisYear < 2011 Then
+		thisCurrentPeriod = 18
+	Else
+		thisCurrentPeriod = 17
+	End If
 
-	rsMatchups.Close
-	Set rsMatchups = Nothing
+	Do While thisPeriod < thisCurrentPeriod
 
-	Set oXMLOmega = CreateObject("MSXML2.DOMDocument.3.0")
-	oXMLOmega.loadXML(GetScores("OMEGA", thisPeriod))
-	oXMLOmega.setProperty "SelectionLanguage", "XPath"
+		sqlGetMatchups = "SELECT MatchupID, LevelID, TeamID1, TeamID2, TeamScore1, TeamScore2 FROM [dbo].[Matchups] WHERE Year = " & thisYear & " AND Period = " & thisPeriod & " AND LevelID = 3 ORDER BY LevelID ASC;"
+		Set rsMatchups = sqlDatabase.Execute(sqlGetMatchups)
 
-	Set oXMLSLFFL = CreateObject("MSXML2.DOMDocument.3.0")
-	oXMLSLFFL.loadXML(GetScores("SLFFL", thisPeriod))
-	oXMLSLFFL.setProperty "SelectionLanguage", "XPath"
+		arrMatchups = rsMatchups.GetRows()
 
-	Set oXMLFLFFL = CreateObject("MSXML2.DOMDocument.3.0")
-	oXMLFLFFL.loadXML(GetScores("FLFFL", thisPeriod))
-	oXMLFLFFL.setProperty "SelectionLanguage", "XPath"
+		rsMatchups.Close
+		Set rsMatchups = Nothing
 
-	WScript.Echo(vbcrlf & "Week " & thisPeriod & " Matchups Loaded...")
+		Set oXMLOmega = CreateObject("MSXML2.DOMDocument.3.0")
+		oXMLOmega.loadXML(GetScores("OMEGA", thisYear, thisPeriod))
+		oXMLOmega.setProperty "SelectionLanguage", "XPath"
 
-	For i = 0 To UBound(arrMatchups, 2)
+		Set oXMLSLFFL = CreateObject("MSXML2.DOMDocument.3.0")
+		oXMLSLFFL.loadXML(GetScores("SLFFL", thisYear, thisPeriod))
+		oXMLSLFFL.setProperty "SelectionLanguage", "XPath"
 
-		MatchupID = arrMatchups(0, i)
-		LevelID = CInt(arrMatchups(1, i))
-		TeamID1 = arrMatchups(2, i)
-		TeamID2 = arrMatchups(3, i)
-		TeamScore1Current = arrMatchups(4, i)
-		TeamScore2Current = arrMatchups(5, i)
+		Set oXMLFLFFL = CreateObject("MSXML2.DOMDocument.3.0")
+		oXMLFLFFL.loadXML(GetScores("FLFFL", thisYear, thisPeriod))
+		oXMLFLFFL.setProperty "SelectionLanguage", "XPath"
 
-		TeamScore1 = 0
-		TeamScore2 = 0
+		WScript.Echo(vbcrlf & "CHECKING " & thisYear & " WEEK " & thisPeriod & " MATCHUPS...")
 
-		'CUP MATCHUP'
-		If LevelID = 0 Then
+		For i = 0 To UBound(arrMatchups, 2)
 
-			sqlGetTeams = "SELECT TeamName, LevelID, CBSLogo, CBSID FROM Teams WHERE TeamID = " & TeamID1 & " AND LevelID <> 1;SELECT TeamName, LevelID, CBSLogo, CBSID FROM Teams WHERE TeamID = " & TeamID2 & " AND LevelID <> 1;"
-			Set rsTeams = sqlDatabase.Execute(sqlGetTeams)
+			MatchupID = arrMatchups(0, i)
+			LevelID = CInt(arrMatchups(1, i))
+			TeamID1 = arrMatchups(2, i)
+			TeamID2 = arrMatchups(3, i)
+			TeamScore1Current = arrMatchups(4, i)
+			TeamScore2Current = arrMatchups(5, i)
 
-			TeamCBSID1 = rsTeams("CBSID")
-			TeamName1 = rsTeams("TeamName")
-			TeamLevelID1 = rsTeams("LevelID")
-			Set rsTeams = rsTeams.NextRecordset()
-			TeamCBSID2 = rsTeams("CBSID")
-			TeamName2 = rsTeams("TeamName")
-			TeamLevelID2 = rsTeams("LevelID")
+			TeamScore1 = 0
+			TeamScore2 = 0
 
-			rsTeams.Close
-			Set rsTeams = Nothing
+			'CUP MATCHUP'
+			If LevelID = 0 Then
 
-			If CInt(TeamLevelID1) = 2 Then
-				Set objTeam1 = oXMLSLFFL.selectSingleNode(".//team[@id = " & TeamCBSID1 & "]")
-				TeamLevelName1 = "SLFFL"
+				sqlGetTeams = "SELECT Teams.TeamName, LinkTeamsLevels.LevelID, LinkTeamsLevels.CBSID FROM Teams INNER JOIN LinkTeamsLevels ON LinkTeamsLevels.TeamID = Teams.TeamID WHERE Teams.TeamID = " & TeamID1 & " AND LinkTeamsLevels.Year = " & thisYear & " AND LinkTeamsLevels.LevelID <> 1; SELECT Teams.TeamName, LinkTeamsLevels.LevelID, LinkTeamsLevels.CBSID FROM Teams INNER JOIN LinkTeamsLevels ON LinkTeamsLevels.TeamID = Teams.TeamID WHERE Teams.TeamID = " & TeamID2 & " AND LinkTeamsLevels.Year = " & thisYear & " AND LinkTeamsLevels.LevelID <> 1;"
+				Set rsTeams = sqlDatabase.Execute(sqlGetTeams)
+
+				TeamCBSID1 = rsTeams("CBSID")
+				TeamName1 = rsTeams("TeamName")
+				TeamLevelID1 = rsTeams("LevelID")
+				Set rsTeams = rsTeams.NextRecordset()
+				TeamCBSID2 = rsTeams("CBSID")
+				TeamName2 = rsTeams("TeamName")
+				TeamLevelID2 = rsTeams("LevelID")
+
+				rsTeams.Close
+				Set rsTeams = Nothing
+
+				If CInt(TeamLevelID1) = 2 Then
+					TeamLevelName1 = "SLFFL"
+
+					Set objYear = oXMLSLFFL.selectSingleNode(".//year[@id = " & thisYear & "]")
+					Set objTeam1 = objYear.selectSingleNode(".//home_team[@id = " & TeamCBSID1 & "]")
+					If objTeam1 Is Nothing Then Set objTeam1 = objYear.selectSingleNode(".//away_team[@id = " & TeamCBSID1 & "]")
+
+				End If
+
+				If CInt(TeamLevelID1) = 3 Then
+					TeamLevelName1 = "FLFFL"
+
+					Set objYear = oXMLFLFFL.selectSingleNode(".//year[@id = " & thisYear & "]")
+					Set objTeam1 = objYear.selectSingleNode(".//home_team[@id = " & TeamCBSID1 & "]")
+					If objTeam1 Is Nothing Then Set objTeam1 = objYear.selectSingleNode(".//away_team[@id = " & TeamCBSID1 & "]")
+				End If
+
+				If CInt(TeamLevelID2) = 2 Then
+					TeamLevelName2 = "SLFFL"
+
+					Set objYear = oXMLSLFFL.selectSingleNode(".//year[@id = " & thisYear & "]")
+					Set objTeam2 = objYear.selectSingleNode(".//home_team[@id = " & TeamCBSID2 & "]")
+					If objTeam2 Is Nothing Then Set objTeam2 = objYear.selectSingleNode(".//away_team[@id = " & TeamCBSID2 & "]")
+				End If
+
+				If CInt(TeamLevelID2) = 3 Then
+					TeamLevelName2 = "FLFFL"
+
+					Set objYear = oXMLFLFFL.selectSingleNode(".//year[@id = " & thisYear & "]")
+					Set objTeam2 = objYear.selectSingleNode(".//home_team[@id = " & TeamCBSID2 & "]")
+					If objTeam2 Is Nothing Then Set objTeam2 = objYear.selectSingleNode(".//away_team[@id = " & TeamCBSID2 & "]")
+				End If
+
+			Else
+
+				TeamBye1 = 1
+				TeamBye2 = 1
+				TeamName1 = "BYE"
+				TeamName2 = "BYE"
+				TeamCBSID1 = 0
+				TeamCBSID2 = 0
+				TeamLevelID1 = 0
+				TeamLevelID2 = 0
+				TeamScore1 = 0
+				TeamScore2 = 0
+
+				sqlGetTeams = "SELECT Teams.TeamName, LinkTeamsLevels.LevelID, LinkTeamsLevels.CBSID FROM Teams INNER JOIN LinkTeamsLevels ON LinkTeamsLevels.TeamID = Teams.TeamID WHERE Teams.TeamID = " & TeamID1 & " AND LinkTeamsLevels.Year = " & thisYear & "; SELECT Teams.TeamName, LinkTeamsLevels.LevelID, LinkTeamsLevels.CBSID FROM Teams INNER JOIN LinkTeamsLevels ON LinkTeamsLevels.TeamID = Teams.TeamID WHERE Teams.TeamID = " & TeamID2 & " AND LinkTeamsLevels.Year = " & thisYear & ";"
+				Set rsTeams = sqlDatabase.Execute(sqlGetTeams)
+
+				If TeamID1 <> 99999 Then
+					TeamBye1 = 0
+					TeamCBSID1 = rsTeams("CBSID")
+					TeamName1 = rsTeams("TeamName")
+					TeamLevelID1 = rsTeams("LevelID")
+				End If
+				Set rsTeams = rsTeams.NextRecordset()
+				If TeamID2 <> 99999 Then
+					TeamBye2 = 0
+					TeamCBSID2 = rsTeams("CBSID")
+					TeamName2 = rsTeams("TeamName")
+					TeamLevelID2 = rsTeams("LevelID")
+				End If
+
+				rsTeams.Close
+				Set rsTeams = Nothing
+
+				If TeamBye1 = 1 Then TeamLevelID1 = TeamLevelID2
+				If TeamBye2 = 1 Then TeamLevelID2 = TeamLevelID1
+
+				Set objTeam1 = Nothing
+				Set objTeam2 = Nothing
+
+				If TeamLevelID1 = 1 Or TeamLevelID2 = 1 Then
+					TeamLevelName1 = "OMEGA" : TeamLevelName2 = "OMEGA" : TeamLevelID1 = 1 : TeamLevelID2 = 1
+
+					Set objYear = oXMLOmega.selectSingleNode(".//year[@id = " & thisYear & "]")
+
+					Set objTeam1 = objYear.selectSingleNode(".//home_team[@id = " & TeamCBSID1 & "]")
+					Set objTeam2 = objYear.selectSingleNode(".//away_team[@id = " & TeamCBSID2 & "]")
+
+					If (TeamBye1 = 0 And objTeam1 Is Nothing) Or (TeamBye2 = 0 And objTeam2 Is Nothing) Then
+
+						Set objTeam1 = objYear.selectSingleNode(".//away_team[@id = " & TeamCBSID1 & "]")
+						Set objTeam2 = objYear.selectSingleNode(".//home_team[@id = " & TeamCBSID2 & "]")
+
+					End If
+
+				End If
+
+				If TeamLevelID1 = 2 Or TeamLevelID2 = 2 Then
+					TeamLevelName1 = "SLFFL" : TeamLevelName2 = "SLFFL" : TeamLevelID1 = 2 : TeamLevelID2 = 2
+
+					Set objYear = oXMLSLFFL.selectSingleNode(".//year[@id = " & thisYear & "]")
+
+						Set objTeam1 = objYear.selectSingleNode(".//home_team[@id = " & TeamCBSID1 & "]")
+						Set objTeam2 = objYear.selectSingleNode(".//away_team[@id = " & TeamCBSID2 & "]")
+
+						If (TeamBye1 = 0 And objTeam1 Is Nothing) Or (TeamBye2 = 0 And objTeam2 Is Nothing) Then
+
+							Set objTeam1 = objYear.selectSingleNode(".//away_team[@id = " & TeamCBSID1 & "]")
+							Set objTeam2 = objYear.selectSingleNode(".//home_team[@id = " & TeamCBSID2 & "]")
+
+						End If
+
+				End If
+
+				If TeamLevelID1 = 3 Or TeamLevelID2 = 3 Then
+					TeamLevelName1 = "FLFFL" : TeamLevelName2 = "FLFFL" : TeamLevelID1 = 3 : TeamLevelID2 = 3
+
+					Set objYear = oXMLFLFFL.selectSingleNode(".//year[@id = " & thisYear & "]")
+
+					Set objTeam1 = objYear.selectSingleNode(".//home_team[@id = " & TeamCBSID1 & "]")
+					Set objTeam2 = objYear.selectSingleNode(".//away_team[@id = " & TeamCBSID2 & "]")
+
+					If (TeamBye1 = 0 And objTeam1 Is Nothing) Or (TeamBye2 = 0 And objTeam2 Is Nothing) Then
+
+						Set objTeam1 = objYear.selectSingleNode(".//away_team[@id = " & TeamCBSID1 & "]")
+						Set objTeam2 = objYear.selectSingleNode(".//home_team[@id = " & TeamCBSID2 & "]")
+
+					End If
+
+				End If
+
 			End If
 
-			If CInt(TeamLevelID1) = 3 Then
-				Set objTeam1 = oXMLFLFFL.selectSingleNode(".//team[@id = " & TeamCBSID1 & "]")
-				TeamLevelName1 = "FLFFL"
+			If TeamBye1 = 0 Then Set objTeamScore1 = objTeam1.getElementsByTagName("points")
+			If TeamBye2 = 0 Then Set objTeamScore2 = objTeam2.getElementsByTagName("points")
+
+			If TeamBye1 = 0 Then TeamScore1 = CDbl(objTeamScore1.item(0).text)
+			If TeamBye2 = 0 Then TeamScore2 = CDbl(objTeamScore2.item(0).text)
+
+			If IsNull(TeamScore1Current) Or TeamScore1Current = "NULL" Then TeamScore1Current = 0
+			If IsNull(TeamScore2Current) Or TeamScore2Current = "NULL" Then TeamScore2Current = 0
+
+			If (TeamScore1Current <> TeamScore1) Or (TeamScore2Current <> TeamScore2) Then
+
+				'WScript.Echo(vbcrlf & vbcrlf & "WEEK " & thisPeriod & " / LEVEL " & LevelID & " / MATCHUP #" & MatchupID & " ----------")
+				WScript.Echo(vbcrlf & TeamName1 & "* (" & TeamScore1 & " / " & TeamScore1Current & ") / " & TeamName2 & " (" & TeamScore2 & " / " & TeamScore2Current & ")")
+
+				sqlUpdate = "UPDATE Matchups SET TeamScore1 = " & TeamScore1 & ", TeamScore2 = " & TeamScore2 & "  WHERE MatchupID = " & MatchupID
+				Set rsUpdate = sqlDatabase.Execute(sqlUpdate)
+
+				'WScript.Echo(vbcrlf & sqlUpdate)
+			Else
+
+				'WScript.Echo(vbcrlf & vbcrlf & "WEEK " & thisPeriod & " / LEVEL " & LevelID & " / MATCHUP #" & MatchupID & " ----------")
+				'WScript.Echo(vbcrlf & TeamName1 & " (" & TeamScore1 & " / " & TeamScore1Current & ") / " & TeamName2 & " (" & TeamScore2 & " / " & TeamScore2Current & ")")
+
 			End If
 
-			If CInt(TeamLevelID2) = 2 Then
-				Set objTeam2 = oXMLSLFFL.selectSingleNode(".//team[@id = " & TeamCBSID2 & "]")
-				TeamLevelName2 = "SLFFL"
-			End If
+		Next
 
-			If CInt(TeamLevelID2) = 3 Then
-				Set objTeam2 = oXMLFLFFL.selectSingleNode(".//team[@id = " & TeamCBSID2 & "]")
-				TeamLevelName2 = "FLFFL"
-			End If
+		thisPeriod = thisPeriod + 1
 
-		Else
+	Loop
 
-			sqlGetTeams = "SELECT TeamName, CBSLogo, CBSID FROM Teams WHERE TeamID = " & TeamID1 & " AND LevelID = " & LevelID & "; SELECT TeamName, CBSLogo, CBSID FROM Teams WHERE TeamID = " & TeamID2 & " AND LevelID = " & LevelID & ";"
-			Set rsTeams = sqlDatabase.Execute(sqlGetTeams)
-
-			TeamCBSID1 = rsTeams("CBSID")
-			TeamName1 = rsTeams("TeamName")
-			Set rsTeams = rsTeams.NextRecordset()
-			TeamCBSID2 = rsTeams("CBSID")
-			TeamName2 = rsTeams("TeamName")
-
-			rsTeams.Close
-			Set rsTeams = Nothing
-
-			If LevelID = 1 Then TeamLevelName1 = "OMEGA" : TeamLevelName2 = "OMEGA" : TeamLevelID1 = 1 : TeamLevelID2 = 1 : Set objTeam1 = oXMLOmega.selectSingleNode(".//team[@id = " & TeamCBSID1 & "]") : Set objTeam2 = oXMLOmega.selectSingleNode(".//team[@id = " & TeamCBSID2 & "]")
-			If LevelID = 2 Then	TeamLevelName1 = "SLFFL" : TeamLevelName2 = "SLFFL" : TeamLevelID1 = 2 : TeamLevelID2 = 2 : Set objTeam1 = oXMLSLFFL.selectSingleNode(".//team[@id = " & TeamCBSID1 & "]") : Set objTeam2 = oXMLSLFFL.selectSingleNode(".//team[@id = " & TeamCBSID2 & "]")
-			If LevelID = 3 Then TeamLevelName1 = "FLFFL" : TeamLevelName2 = "FLFFL" : TeamLevelID1 = 3 : TeamLevelID2 = 3 : Set objTeam1 = oXMLFLFFL.selectSingleNode(".//team[@id = " & TeamCBSID1 & "]") : Set objTeam2 = oXMLFLFFL.selectSingleNode(".//team[@id = " & TeamCBSID2 & "]")
-
-		End If
-
-		Set objTeamScore1 = objTeam1.getElementsByTagName("pts")
-		Set objTeamScore2 = objTeam2.getElementsByTagName("pts")
-
-		TeamScore1 = CDbl(objTeamScore1.item(0).text)
-		TeamScore2 = CDbl(objTeamScore2.item(0).text)
-
-		If (TeamScore1Current <> TeamScore1) Or (TeamScore2Current <> TeamScore2) Then
-
-			WScript.Echo(vbcrlf & vbcrlf & "WEEK " & thisPeriod & " / LEVEL " & LevelID & " / MATCHUP #" & MatchupID & " ----------")
-			WScript.Echo(vbcrlf & TeamName1 & " (" & TeamScore1 & " / " & TeamScore1Current & ")")
-			WScript.Echo(vbcrlf & TeamName2 & " (" & TeamScore2 & " / " & TeamScore2Current & ")")
-
-			sqlUpdate = "UPDATE Matchups SET TeamScore1 = " & TeamScore1 & ", TeamScore2 = " & TeamScore2 & "  WHERE MatchupID = " & MatchupID
-			Set rsUpdate = sqlDatabase.Execute(sqlUpdate)
-
-		Else
-
-			WScript.Echo("-")
-
-		End If
-
-	Next
-
-	thisPeriod = thisPeriod + 1
+	thisYear = thisYear + 1
 
 Loop
 

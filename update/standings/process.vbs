@@ -5,10 +5,10 @@ Set sqlDatabase = CreateObject("ADODB.Connection")
 sqlDatabase.CursorLocation = adUseServer
 sqlDatabase.Open "Driver={SQL Server Native Client 11.0};Server=tcp:samelevel.database.windows.net,1433;Database=NextLevelDB;Uid=samelevel;Pwd=TheHammer123;Encrypt=yes;Connection Timeout=60;"
 
-WScript.Echo("CLEARING STANDINGS..." & vbcrlf)
+'WScript.Echo("CLEARING STANDINGS..." & vbcrlf)
 
-sqlClearStandings    = "DELETE FROM Standings"
-Set rsClearStandings = sqlDatabase.Execute(sqlClearStandings)
+'sqlClearStandings    = "DELETE FROM Standings"
+'Set rsClearStandings = sqlDatabase.Execute(sqlClearStandings)
 
 WScript.Echo("SETTING CURRENT PERIOD..." & vbcrlf)
 
@@ -18,19 +18,19 @@ Set rsYearPeriod = sqlDatabase.Execute(sqlGetYearPeriod)
 If Not rsYearPeriod.Eof Then
 
 	thisCurrentYear = rsYearPeriod("Year")
-	thisCurrentPeriod = rsYearPeriod("Period")
+	thisCurrentPeriod = 12
 
 	rsYearPeriod.Close
 	Set rsYearPeriod = Nothing
 
 End If
 
-thisCurrentPeriod = 18
+thisYear = 2020
 
-thisYear = 2008
-Do While thisYear < 2020
+Do While thisYear < 2021
 
 	thisPeriod = 1
+
 	Do While thisPeriod < thisCurrentPeriod
 
 		sqlGetTeams = "SELECT TeamID, LevelID, TeamName FROM Teams WHERE EndYear = 0 OR EndYear >= " & thisYear & " ORDER BY LevelID"
@@ -47,7 +47,7 @@ Do While thisYear < 2020
 				thisTeamID = rsTeams("TeamID")
 				thisTeamName = rsTeams("TeamName")
 
-				sqlGetMatchups = "SELECT * FROM Matchups WHERE Year = " & thisYear & " AND Period = " & thisPeriod & " AND (TeamID1 = " & thisTeamID & " OR TeamID2 = " & thisTeamID & ") ORDER BY Year, Period"
+				sqlGetMatchups = "SELECT * FROM Matchups WHERE Year = " & thisYear & " AND Period = " & thisPeriod & " AND (TeamID1 = " & thisTeamID & " OR TeamID2 = " & thisTeamID & ") AND Matchups.LevelID > 0 ORDER BY Year, Period"
 				Set rsMatchups = sqlDatabase.Execute(sqlGetMatchups)
 
 				If Not rsMatchups.Eof Then
@@ -65,6 +65,9 @@ Do While thisYear < 2020
 						thisTeamScore1 = rsMatchups("TeamScore1")
 						thisTeamScore2 = rsMatchups("TeamScore2")
 						thisLevelID = rsMatchups("LevelID")
+
+						If IsNull(thisTeamScore1) Then thisTeamScore1 = 0
+						If IsNull(thisTeamScore2) Then thisTeamScore2 = 0
 
 						If thisTeamID = thisTeamID1	Then
 
