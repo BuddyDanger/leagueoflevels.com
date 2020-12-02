@@ -2,6 +2,40 @@
 <!--#include virtual="/assets/asp/sql/connection.asp" -->
 <!--#include virtual="/assets/asp/framework/session.asp" -->
 <!--#include virtual="/assets/asp/functions/master.asp"-->
+<%
+	If Len(ParseForAbsolutePath(Right(Request.ServerVariables("QUERY_STRING"), Len(Request.ServerVariables("QUERY_STRING")) - Instr(Request.ServerVariables("QUERY_STRING"),";")))) < 1 Then
+
+		Session.Contents("SITE_Standings_LevelID") = ""
+		Session.Contents("SITE_Standings_Start_Year") = Year(Now())
+		Session.Contents("SITE_Standings_End_Year") = Year(Now())
+		Session.Contents("SITE_Standings_Start_Period") = "1"
+		Session.Contents("SITE_Standings_End_Period") = "18"
+
+	End If
+
+	If Request.Form("action") = "update" Then
+
+		thisStartYear = Request.Form("years_start")
+		thisEndYear = Request.Form("years_end")
+		thisStartPeriod = Request.Form("periods_start")
+		thisEndPeriod = Request.Form("periods_end")
+
+		If CInt(thisStartYear) = CInt(thisEndYear) Then
+			thisYearString = thisStartYear
+		Else
+			thisYearString = thisStartYear & "-" & thisEndYear
+		End If
+
+		If CInt(thisStartPeriod) = CInt(thisEndPeriod) Then
+			thisPeriodString = thisStartPeriod
+		Else
+			thisPeriodString = thisStartPeriod & "-" & thisEndPeriod
+		End If
+
+		Response.Redirect("/standings/" & thisYearString & "/" & thisPeriodString & "/")
+
+	End If
+%>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -36,6 +70,8 @@
 		<link href="/assets/css/icons.css" rel="stylesheet" type="text/css" />
 		<link href="/assets/css/metisMenu.min.css" rel="stylesheet" type="text/css" />
 		<link href="/assets/css/style.css?version=3" rel="stylesheet" type="text/css" />
+
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.3.1/css/ion.rangeSlider.min.css"/>
 
 	</head>
 
@@ -74,34 +110,124 @@
 
 								<div class="row">
 									<div class="col-12">
-
 <%
-										sqlGetSLFFL = "SELECT Levels.Title, Teams.TeamName, SUM([ActualWins]) AS WinTotal, SUM([ActualLosses]) AS LossTotal, SUM([ActualTies]) AS TieTotal, SUM([PointsScored]) AS PointsScored, SUM([PointsAgainst]) AS PointsAgainst, SUM([BreakdownWins]) AS BreakdownWins, SUM([BreakdownLosses]) AS BreakdownLosses, SUM([BreakdownTies]) AS BreakdownTies, CAST(AVG([Position]) AS DECIMAL(10,2)) AS AveragePositionYTD, (SELECT ProfileImage FROM Accounts WHERE Accounts.AccountID IN (SELECT AccountID FROM LinkAccountsTeams WHERE LinkAccountsTeams.TeamID = Standings.TeamID)) AS ProfileImage FROM Standings INNER JOIN Teams ON Teams.TeamID = Standings.TeamID INNER JOIN Levels ON Levels.LevelID = Standings.LevelID WHERE Levels.LevelID = 2 GROUP BY Levels.LevelID, Levels.Title, Teams.TeamName, Standings.TeamID ORDER BY Levels.LevelID ASC, WinTotal DESC, PointsScored DESC; "
+										sqlGetSLFFL = "SELECT Levels.Title, Teams.TeamName, SUM([ActualWins]) AS WinTotal, SUM([ActualLosses]) AS LossTotal, SUM([ActualTies]) AS TieTotal, SUM([PointsScored]) AS PointsScored, SUM([PointsAgainst]) AS PointsAgainst, SUM([BreakdownWins]) AS BreakdownWins, SUM([BreakdownLosses]) AS BreakdownLosses, SUM([BreakdownTies]) AS BreakdownTies, CAST(AVG([Position]) AS DECIMAL(10,2)) AS AveragePositionYTD, "
+										sqlGetSLFFL = sqlGetSLFFL & "(SELECT ProfileImage FROM Accounts WHERE Accounts.AccountID IN (SELECT AccountID FROM LinkAccountsTeams WHERE LinkAccountsTeams.TeamID = Standings.TeamID)) AS ProfileImage FROM Standings "
+										sqlGetSLFFL = sqlGetSLFFL & "INNER JOIN Teams ON Teams.TeamID = Standings.TeamID "
+										sqlGetSLFFL = sqlGetSLFFL & "INNER JOIN Levels ON Levels.LevelID = Standings.LevelID "
+										sqlGetSLFFL = sqlGetSLFFL & "WHERE Levels.LevelID = 2 "
+										sqlGetSLFFL = sqlGetSLFFL & "AND Standings.Year >= " & Session.Contents("SITE_Standings_Start_Year") & " "
+										sqlGetSLFFL = sqlGetSLFFL & "AND Standings.Year <= " & Session.Contents("SITE_Standings_End_Year") & " "
+										sqlGetSLFFL = sqlGetSLFFL & "AND Standings.Period >= " & Session.Contents("SITE_Standings_Start_Period") & " "
+										sqlGetSLFFL = sqlGetSLFFL & "AND Standings.Period <= " & Session.Contents("SITE_Standings_End_Period") & " "
+										sqlGetSLFFL = sqlGetSLFFL & "GROUP BY Levels.LevelID, Levels.Title, Teams.TeamName, Standings.TeamID ORDER BY Levels.LevelID ASC, WinTotal DESC, PointsScored DESC; "
 
-										sqlGetFLFFL = "SELECT Levels.Title, Teams.TeamName, SUM([ActualWins]) AS WinTotal, SUM([ActualLosses]) AS LossTotal, SUM([ActualTies]) AS TieTotal, SUM([PointsScored]) AS PointsScored, SUM([PointsAgainst]) AS PointsAgainst, SUM([BreakdownWins]) AS BreakdownWins, SUM([BreakdownLosses]) AS BreakdownLosses, SUM([BreakdownTies]) AS BreakdownTies, CAST(AVG([Position]) AS DECIMAL(10,2)) AS AveragePositionYTD, (SELECT ProfileImage FROM Accounts WHERE Accounts.AccountID IN (SELECT AccountID FROM LinkAccountsTeams WHERE LinkAccountsTeams.TeamID = Standings.TeamID)) AS ProfileImage FROM Standings INNER JOIN Teams ON Teams.TeamID = Standings.TeamID INNER JOIN Levels ON Levels.LevelID = Standings.LevelID WHERE Levels.LevelID = 3 GROUP BY Levels.LevelID, Levels.Title, Teams.TeamName, Standings.TeamID ORDER BY Levels.LevelID ASC, WinTotal DESC, PointsScored DESC; "
+										sqlGetFLFFL = "SELECT Levels.Title, Teams.TeamName, SUM([ActualWins]) AS WinTotal, SUM([ActualLosses]) AS LossTotal, SUM([ActualTies]) AS TieTotal, SUM([PointsScored]) AS PointsScored, SUM([PointsAgainst]) AS PointsAgainst, SUM([BreakdownWins]) AS BreakdownWins, SUM([BreakdownLosses]) AS BreakdownLosses, SUM([BreakdownTies]) AS BreakdownTies, CAST(AVG([Position]) AS DECIMAL(10,2)) AS AveragePositionYTD, "
+										sqlGetFLFFL = sqlGetFLFFL & "(SELECT ProfileImage FROM Accounts WHERE Accounts.AccountID IN (SELECT AccountID FROM LinkAccountsTeams WHERE LinkAccountsTeams.TeamID = Standings.TeamID)) AS ProfileImage FROM Standings "
+										sqlGetFLFFL = sqlGetFLFFL & "INNER JOIN Teams ON Teams.TeamID = Standings.TeamID "
+										sqlGetFLFFL = sqlGetFLFFL & "INNER JOIN Levels ON Levels.LevelID = Standings.LevelID "
+										sqlGetFLFFL = sqlGetFLFFL & "WHERE Levels.LevelID = 3 "
+										sqlGetFLFFL = sqlGetFLFFL & "AND Standings.Year >= " & Session.Contents("SITE_Standings_Start_Year") & " "
+										sqlGetFLFFL = sqlGetFLFFL & "AND Standings.Year <= " & Session.Contents("SITE_Standings_End_Year") & " "
+										sqlGetFLFFL = sqlGetFLFFL & "AND Standings.Period >= " & Session.Contents("SITE_Standings_Start_Period") & " "
+										sqlGetFLFFL = sqlGetFLFFL & "AND Standings.Period <= " & Session.Contents("SITE_Standings_End_Period") & " "
+										sqlGetFLFFL = sqlGetFLFFL & "GROUP BY Levels.LevelID, Levels.Title, Teams.TeamName, Standings.TeamID ORDER BY Levels.LevelID ASC, WinTotal DESC, PointsScored DESC; "
 
-										sqlGetOmega = "SELECT Levels.Title, Teams.TeamName, SUM([ActualWins]) AS WinTotal, SUM([ActualLosses]) AS LossTotal, SUM([ActualTies]) AS TieTotal, SUM([PointsScored]) AS PointsScored, SUM([PointsAgainst]) AS PointsAgainst, SUM([BreakdownWins]) AS BreakdownWins, SUM([BreakdownLosses]) AS BreakdownLosses, SUM([BreakdownTies]) AS BreakdownTies, CAST(AVG([Position]) AS DECIMAL(10,2)) AS AveragePositionYTD, (SELECT ProfileImage FROM Accounts WHERE Accounts.AccountID IN (SELECT AccountID FROM LinkAccountsTeams WHERE LinkAccountsTeams.TeamID = Standings.TeamID)) AS ProfileImage FROM Standings INNER JOIN Teams ON Teams.TeamID = Standings.TeamID INNER JOIN Levels ON Levels.LevelID = Standings.LevelID WHERE Levels.LevelID = 1 GROUP BY Levels.LevelID, Levels.Title, Teams.TeamName, Standings.TeamID ORDER BY Levels.LevelID ASC, WinTotal DESC, PointsScored DESC; "
+										sqlGetOmega = "SELECT Levels.Title, Teams.TeamName, SUM([ActualWins]) AS WinTotal, SUM([ActualLosses]) AS LossTotal, SUM([ActualTies]) AS TieTotal, SUM([PointsScored]) AS PointsScored, SUM([PointsAgainst]) AS PointsAgainst, SUM([BreakdownWins]) AS BreakdownWins, SUM([BreakdownLosses]) AS BreakdownLosses, SUM([BreakdownTies]) AS BreakdownTies, CAST(AVG([Position]) AS DECIMAL(10,2)) AS AveragePositionYTD, "
+										sqlGetOmega = sqlGetOmega & "(SELECT ProfileImage FROM Accounts WHERE Accounts.AccountID IN (SELECT AccountID FROM LinkAccountsTeams WHERE LinkAccountsTeams.TeamID = Standings.TeamID)) AS ProfileImage FROM Standings "
+										sqlGetOmega = sqlGetOmega & "INNER JOIN Teams ON Teams.TeamID = Standings.TeamID "
+										sqlGetOmega = sqlGetOmega & "INNER JOIN Levels ON Levels.LevelID = Standings.LevelID "
+										sqlGetOmega = sqlGetOmega & "WHERE Levels.LevelID = 1 "
+										sqlGetOmega = sqlGetOmega & "AND Standings.Year >= " & Session.Contents("SITE_Standings_Start_Year") & " "
+										sqlGetOmega = sqlGetOmega & "AND Standings.Year <= " & Session.Contents("SITE_Standings_End_Year") & " "
+										sqlGetOmega = sqlGetOmega & "AND Standings.Period >= " & Session.Contents("SITE_Standings_Start_Period") & " "
+										sqlGetOmega = sqlGetOmega & "AND Standings.Period <= " & Session.Contents("SITE_Standings_End_Period") & " "
+										sqlGetOmega = sqlGetOmega & "GROUP BY Levels.LevelID, Levels.Title, Teams.TeamName, Standings.TeamID ORDER BY Levels.LevelID ASC, WinTotal DESC, PointsScored DESC; "
 
-										sqlGetPoints = "SELECT Teams.TeamName, SUM([PointsScored]) AS PointsScored, (SELECT ProfileImage FROM Accounts WHERE Accounts.AccountID IN (SELECT AccountID FROM LinkAccountsTeams WHERE LinkAccountsTeams.TeamID = Standings.TeamID)) AS ProfileImage FROM Standings INNER JOIN Teams ON Teams.TeamID = Standings.TeamID INNER JOIN Levels ON Levels.LevelID = Standings.LevelID WHERE Levels.LevelID > 1 AND Teams.EndYear = 0 GROUP BY Standings.TeamID, Teams.TeamName ORDER BY PointsScored DESC; "
+										sqlGetPoints = "SELECT Teams.TeamName, SUM([PointsScored]) AS PointsScored, (SELECT ProfileImage FROM Accounts WHERE Accounts.AccountID IN (SELECT AccountID FROM LinkAccountsTeams WHERE LinkAccountsTeams.TeamID = Standings.TeamID)) AS ProfileImage FROM Standings "
+										sqlGetPoints = sqlGetPoints & "INNER JOIN Teams ON Teams.TeamID = Standings.TeamID "
+										sqlGetPoints = sqlGetPoints & "INNER JOIN Levels ON Levels.LevelID = Standings.LevelID "
+										sqlGetPoints = sqlGetPoints & "WHERE Levels.LevelID > 1 AND Teams.EndYear = 0 "
+										sqlGetPoints = sqlGetPoints & "AND Standings.Year >= " & Session.Contents("SITE_Standings_Start_Year") & " "
+										sqlGetPoints = sqlGetPoints & "AND Standings.Year <= " & Session.Contents("SITE_Standings_End_Year") & " "
+										sqlGetPoints = sqlGetPoints & "AND Standings.Period >= " & Session.Contents("SITE_Standings_Start_Period") & " "
+										sqlGetPoints = sqlGetPoints & "AND Standings.Period <= " & Session.Contents("SITE_Standings_End_Period") & " "
+										sqlGetPoints = sqlGetPoints & "GROUP BY Standings.TeamID, Teams.TeamName ORDER BY PointsScored DESC; "
 
 										Set rsStandings = sqlDatabase.Execute(sqlGetSLFFL & sqlGetFLFFL & sqlGetOmega & sqlGetPoints)
 
 										Response.Write("<div Class=""row"">")
 
-											Response.Write("<div Class=""col-12 col-md-12 col-lg-12 col-xl-6"">")
-												Response.Write("<h5 class=""card-subtitle mb-2 text-muted"">SAME LEVEL</h5>")
+											Response.Write("<div Class=""col-12 col-sm-12 col-md-6 col-md-12 col-lg-12 col-xl-12"">")
 												Response.Write("<div class=""card"">")
 
 													Response.Write("<div class=""card-body"">")
+%>
+														<form method="post" action="/standings/index.asp">
+
+															<input type="hidden" name="action" value="update" />
+															<input type="hidden" class="years_start" name="years_start" value="<%= Session.Contents("SITE_Standings_Start_Year") %>" />
+															<input type="hidden" class="years_end" name="years_end" value="<%= Session.Contents("SITE_Standings_End_Year") %>" />
+															<input type="hidden" class="periods_start" name="periods_start" value="<%= Session.Contents("SITE_Standings_Start_Period") %>" />
+															<input type="hidden" class="periods_end" name="periods_end" value="<%= Session.Contents("SITE_Standings_End_Period") %>" />
+
+															<div class="row">
+
+																<div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-5">
+
+																	<div class="form-group pb-xl-0 mb-xl-0">
+
+																		<div class="col-form-label text-left bg-info text-white pl-2 mb-0 rounded-top"><b>SELECT YEAR RANGE</b></div>
+																		<div class="bg-light p-4 mb-2 rounded-bottom">
+																			<input type="text" class="standings_year" name="years" value="" data-from="<%= Session.Contents("SITE_Standings_Start_Year") %>" data-to="<%= Session.Contents("SITE_Standings_End_Year") %>" />
+																		</div>
+
+																	</div>
+
+																</div>
+
+																<div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-5">
+
+																	<div class="form-group pb-xl-0 mb-xl-0">
+
+																		<div class="col-form-label text-left bg-info text-white pl-2 mb-0 rounded-top"><b>SELECT PERIOD RANGE</b></div>
+																		<div class="bg-light p-4 mb-2 rounded-bottom">
+																			<input type="text" class="standings_period" name="periods" value="" data-from="<%= Session.Contents("SITE_Standings_Start_Period") %>" data-to="<%= Session.Contents("SITE_Standings_End_Period") %>" />
+																		</div>
+
+																	</div>
+
+																</div>
+
+																<div class="col-12 col-xl-2">
+
+																	<button <%= thisFormDisabled %> type="submit" class="btn btn-block btn-success mb-2">UPDATE</button>
+
+																</div>
+
+															</div>
+
+														</form>
+<%
+													Response.Write("</div>")
+
+												Response.Write("</div>")
+
+											Response.Write("</div>")
+
+											Response.Write("<div Class=""col-12 col-sm-12 col-md-12 col-lg-12 col-xl-6"">")
+												Response.Write("<div class=""card"">")
+													Response.Write("<div class=""card-body"">")
+														Response.Write("<h5 class=""card-subtitle mb-2 mt-1 text-muted"">SAME LEVEL</h5>")
 %>
 														<table class="table table-bordered mb-1">
 															<thead>
 																<tr>
 																	<th>TEAM</th>
 																	<th class="text-center">W-L-T</th>
-																	<th class="text-center d-none d-lg-table-cell">PF</th>
-																	<th class="text-center d-none d-lg-table-cell">PA</th>
-																	<th class="text-center d-none d-lg-table-cell">BKDN</th>
+																	<th class="text-center d-none d-sm-table-cell">PF</th>
+																	<th class="text-center d-none d-sm-table-cell">PA</th>
+																	<th class="text-center d-none d-md-table-cell">BKDN</th>
 																</tr>
 															</thead>
 															<tbody>
@@ -129,9 +255,9 @@
 																	<tr style="<%= thisBorderBottom %>">
 																		<td><img src="https://samelevel.imgix.net/<%= thisProfileImage %>?w=40&h=40&fit=crop&crop=focalpoint" class="rounded-circle hidden d-none d-sm-none d-md-inline mr-1 pr-1"><b><%= thisPosition %>.</b> &nbsp;<%= thisTeamName %></td>
 																		<td class="text-center"><%= thisWinTotal %>-<%= thisLossTotal %>-<%= thisTieTotal %></td>
-																		<td class="text-center d-none d-lg-table-cell"><%= FormatNumber(thisPointsScored, 2) %></td>
-																		<td class="text-center d-none d-lg-table-cell"><%= FormatNumber(thisPointsAgainst, 2) %></td>
-																		<td class="text-center d-none d-lg-table-cell"><%= thisBreakdownWins %>-<%= thisBreakdownLosses %>-<%= thisBreakdownTies %></td>
+																		<td class="text-center d-none d-sm-table-cell"><%= FormatNumber(thisPointsScored, 2) %></td>
+																		<td class="text-center d-none d-sm-table-cell"><%= FormatNumber(thisPointsAgainst, 2) %></td>
+																		<td class="text-center d-none d-md-table-cell"><%= thisBreakdownWins %>-<%= thisBreakdownLosses %>-<%= thisBreakdownTies %></td>
 																	</tr>
 <%
 																	thisPosition = thisPosition + 1
@@ -150,21 +276,21 @@
 
 											Set rsStandings = rsStandings.NextRecordset
 
-											Response.Write("<div Class=""col-12 col-md-12 col-lg-12 col-xl-6"">")
+											Response.Write("<div Class=""col-12 col-sm-12 col-md-12 col-lg-12 col-xl-6"">")
 
-												Response.Write("<h5 class=""card-subtitle mb-2 text-muted"">FARM LEVEL</h5>")
 												Response.Write("<div class=""card"">")
 
 													Response.Write("<div class=""card-body"">")
+														Response.Write("<h5 class=""card-subtitle mb-2 mt-1 text-muted"">FARM LEVEL</h5>")
 %>
 														<table class="table table-bordered mb-1">
 															<thead>
 																<tr>
 																	<th>TEAM</th>
 																	<th class="text-center">W-L-T</th>
-																	<th class="text-center d-none d-lg-table-cell">PF</th>
-																	<th class="text-center d-none d-lg-table-cell">PA</th>
-																	<th class="text-center d-none d-lg-table-cell">BKDN</th>
+																	<th class="text-center d-none d-sm-table-cell">PF</th>
+																	<th class="text-center d-none d-sm-table-cell">PA</th>
+																	<th class="text-center d-none d-md-table-cell">BKDN</th>
 																</tr>
 															</thead>
 															<tbody>
@@ -192,9 +318,9 @@
 																	<tr style="<%= thisBorderBottom %>">
 																		<td><img src="https://samelevel.imgix.net/<%= thisProfileImage %>?w=40&h=40&fit=crop&crop=focalpoint" class="rounded-circle hidden d-none d-sm-none d-md-inline mr-1 pr-1"><b><%= thisPosition %>.</b> &nbsp;<%= thisTeamName %></td>
 																		<td class="text-center"><%= thisWinTotal %>-<%= thisLossTotal %>-<%= thisTieTotal %></td>
-																		<td class="text-center d-none d-lg-table-cell"><%= FormatNumber(thisPointsScored, 2) %></td>
-																		<td class="text-center d-none d-lg-table-cell"><%= FormatNumber(thisPointsAgainst, 2) %></td>
-																		<td class="text-center d-none d-lg-table-cell"><%= thisBreakdownWins %>-<%= thisBreakdownLosses %>-<%= thisBreakdownTies %></td>
+																		<td class="text-center d-none d-sm-table-cell"><%= FormatNumber(thisPointsScored, 2) %></td>
+																		<td class="text-center d-none d-sm-table-cell"><%= FormatNumber(thisPointsAgainst, 2) %></td>
+																		<td class="text-center d-none d-md-table-cell"><%= thisBreakdownWins %>-<%= thisBreakdownLosses %>-<%= thisBreakdownTies %></td>
 																	</tr>
 <%
 																	thisPosition = thisPosition + 1
@@ -213,21 +339,21 @@
 
 											Set rsStandings = rsStandings.NextRecordset
 
-											Response.Write("<div Class=""col-12 col-md-12 col-lg-12 col-xl-6"">")
+											Response.Write("<div Class=""col-12 col-sm-12 col-md-12 col-lg-12 col-xl-6"">")
 
-												Response.Write("<h5 class=""card-subtitle mb-2 text-muted"">OMEGA LEVEL</h5>")
 												Response.Write("<div class=""card"">")
 
 													Response.Write("<div class=""card-body"">")
+														Response.Write("<h5 class=""card-subtitle mb-2 mt-1 text-muted"">OMEGA LEVEL</h5>")
 %>
 														<table class="table table-bordered mb-1">
 															<thead>
 																<tr>
 																	<th>TEAM</th>
 																	<th class="text-center">W-L-T</th>
-																	<th class="text-center d-none d-lg-table-cell">PF</th>
-																	<th class="text-center d-none d-lg-table-cell">PA</th>
-																	<th class="text-center d-none d-lg-table-cell">BKDN</th>
+																	<th class="text-center d-none d-sm-table-cell">PF</th>
+																	<th class="text-center d-none d-sm-table-cell">PA</th>
+																	<th class="text-center d-none d-md-table-cell">BKDN</th>
 																</tr>
 															</thead>
 															<tbody>
@@ -255,9 +381,9 @@
 																	<tr style="<%= thisBorderBottom %>">
 																		<td><img src="https://samelevel.imgix.net/<%= thisProfileImage %>?w=40&h=40&fit=crop&crop=focalpoint" class="rounded-circle hidden d-none d-sm-none d-md-inline mr-1 pr-1"><b><%= thisPosition %>.</b> &nbsp;<%= thisTeamName %></td>
 																		<td class="text-center"><%= thisWinTotal %>-<%= thisLossTotal %>-<%= thisTieTotal %></td>
-																		<td class="text-center d-none d-lg-table-cell"><%= FormatNumber(thisPointsScored, 2) %></td>
-																		<td class="text-center d-none d-lg-table-cell"><%= FormatNumber(thisPointsAgainst, 2) %></td>
-																		<td class="text-center d-none d-lg-table-cell"><%= thisBreakdownWins %>-<%= thisBreakdownLosses %>-<%= thisBreakdownTies %></td>
+																		<td class="text-center d-none d-sm-table-cell"><%= FormatNumber(thisPointsScored, 2) %></td>
+																		<td class="text-center d-none d-sm-table-cell"><%= FormatNumber(thisPointsAgainst, 2) %></td>
+																		<td class="text-center d-none d-md-table-cell"><%= thisBreakdownWins %>-<%= thisBreakdownLosses %>-<%= thisBreakdownTies %></td>
 																	</tr>
 <%
 																	thisPosition = thisPosition + 1
@@ -276,12 +402,12 @@
 
 											Set rsStandings = rsStandings.NextRecordset
 
-											Response.Write("<div Class=""col-12 col-md-12 col-lg-12 col-xl-6"">")
+											Response.Write("<div Class=""col-12 col-sm-12 col-md-12 col-lg-12 col-xl-6"">")
 
-												Response.Write("<h5 class=""card-subtitle mb-2 text-muted"">TOTAL POINTS</h5>")
 												Response.Write("<div class=""card"">")
 
 													Response.Write("<div class=""card-body"">")
+														Response.Write("<h5 class=""card-subtitle mb-2 mt-1 text-muted"">TOTAL POINTS</h5>")
 %>
 														<table class="table table-bordered mb-1">
 															<thead>
@@ -351,6 +477,9 @@
 		<script src="/assets/js/jquery.slimscroll.min.js"></script>
 
 		<script src="/assets/js/app.js"></script>
+
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.3.1/js/ion.rangeSlider.min.js"></script>
+        <script src="/assets/js/standings.js"></script>
 
 		<!--#include virtual="/assets/asp/framework/google.asp" -->
 

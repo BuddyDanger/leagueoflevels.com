@@ -353,6 +353,104 @@
 
 	End If
 
+	'*****************************************************
+	'*** BLOG ********************************************
+	'*****************************************************
+	If Session.Contents("SITE_Level_1") = "standings" Then
+
+		Session.Contents("SITE_Standings_LevelID") = ""
+		Session.Contents("SITE_Standings_Start_Year") = Year(Now())
+		Session.Contents("SITE_Standings_End_Year") = Year(Now())
+		Session.Contents("SITE_Standings_Start_Period") = "1"
+		Session.Contents("SITE_Standings_End_Period") = "17"
+
+		arLevels = Split(LevelString, "||")
+		IsSingleTeam = 0
+		LevelCount = 1
+
+		For Each Level In arLevels
+
+			MatchFound = 0
+			StrippedLevel = Level
+			If InStr(StrippedLevel, "-") Then StrippedLevel = Replace(StrippedLevel, "-", " ")
+
+			If MatchFound = 0 Then
+
+				sqlGetLevel = "SELECT LevelID FROM Levels WHERE Title = '" & StrippedLevel & "'"
+				Set rsLevel = sqlDatabase.Execute(sqlGetLevel)
+
+				If Not rsLevel.Eof Then
+
+					Session.Contents("SITE_Standings_LevelID") = rsLevel("LevelID")
+					MatchFound = 1 : DeadPage = 0
+
+					rsTeam.Close
+					Set rsTeam = Nothing
+
+				End If
+
+			End If
+
+			If MatchFound = 0 Then
+
+				If IsNumeric(Level) Then
+
+					If CInt(Level) >= 2008 And CInt(Level) <= Year(Now()) Then
+
+						Session.Contents("SITE_Standings_Start_Year") = Level
+						Session.Contents("SITE_Standings_End_Year") = Level
+						MatchFound = 1 : DeadPage = 0
+
+					End If
+
+					If MatchFound = 0 And CInt(Level) >= 1 And CInt(Level) <= 18 Then
+
+						Session.Contents("SITE_Standings_Start_Period") = Level
+						Session.Contents("SITE_Standings_End_Period") = Level
+						MatchFound = 1 : DeadPage = 0
+
+					End If
+
+				Else
+
+					If InStr(Level, "-") Then
+
+						arrSplit = Split(Level, "-")
+
+						If IsNumeric(arrSplit(0)) And IsNumeric(arrSplit(1)) Then
+
+							If CInt(arrSplit(0)) >= 2008 And CInt(arrSplit(1)) <= Year(Now()) Then
+
+								Session.Contents("SITE_Standings_Start_Year") = arrSplit(0)
+								Session.Contents("SITE_Standings_End_Year") = arrSplit(1)
+								MatchFound = 1 : DeadPage = 0
+
+							End If
+
+							If MatchFound = 0 And CInt(arrSplit(0)) >= 1 And CInt(arrSplit(1)) <= 18 Then
+
+								Session.Contents("SITE_Standings_Start_Period") = arrSplit(0)
+								Session.Contents("SITE_Standings_End_Period") = arrSplit(1)
+								MatchFound = 1 : DeadPage = 0
+
+							End If
+
+						End If
+
+					End If
+
+				End If
+
+			End If
+
+			LevelCount = LevelCount + 1
+
+		Next
+
+		If IsSingleBlog = 0 Then sTransferURL = "index.asp"
+
+	End If
+
 	If DeadPage = 0 Then
 
 		sFinalTransfer = "/" & Session.Contents("SITE_Level_1") & "/" & sTransferURL
