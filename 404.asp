@@ -384,8 +384,8 @@
 					Session.Contents("SITE_Standings_LevelID") = rsLevel("LevelID")
 					MatchFound = 1 : DeadPage = 0
 
-					rsTeam.Close
-					Set rsTeam = Nothing
+					rsLevel.Close
+					Set rsLevel = Nothing
 
 				End If
 

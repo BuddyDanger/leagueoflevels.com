@@ -15,6 +15,7 @@
 
 	If Request.Form("action") = "update" Then
 
+		thisLevel = Request.Form("level")
 		thisStartYear = Request.Form("years_start")
 		thisEndYear = Request.Form("years_end")
 		thisStartPeriod = Request.Form("periods_start")
@@ -32,9 +33,33 @@
 			thisPeriodString = thisStartPeriod & "-" & thisEndPeriod
 		End If
 
-		Response.Redirect("/standings/" & thisYearString & "/" & thisPeriodString & "/")
+		If Len(thisLevel) > 0 Then
+
+			Response.Redirect("/standings/" & thisLevel & "/" & thisYearString & "/" & thisPeriodString & "/")
+
+		Else
+
+			Response.Redirect("/standings/" & thisYearString & "/" & thisPeriodString & "/")
+
+		End If
 
 	End If
+
+	If CStr(Session.Contents("SITE_Standings_LevelID")) = "1" Or CStr(Session.Contents("SITE_Standings_LevelID")) = "2" Or CStr(Session.Contents("SITE_Standings_LevelID")) = "3" Then
+		If CStr(Session.Contents("SITE_Standings_LevelID")) = "1" Then PageTitle = "Omega Level "
+		If CStr(Session.Contents("SITE_Standings_LevelID")) = "2" Then PageTitle = "Same Level "
+		If CStr(Session.Contents("SITE_Standings_LevelID")) = "3" Then PageTitle = "Farm Level "
+	End If
+
+	PageTitle = PageTitle & "Standings / " & Session.Contents("SITE_Standings_Start_Year")
+	If Session.Contents("SITE_Standings_End_Year") <> Session.Contents("SITE_Standings_Start_Year") Then PageTitle = PageTitle & " - " & Session.Contents("SITE_Standings_End_Year") & ", "
+	PageTitle = PageTitle & "Periods " & Session.Contents("SITE_Standings_Start_Period")
+	If Session.Contents("SITE_Standings_End_Period") <> Session.Contents("SITE_Standings_Start_Period") Then PageTitle = PageTitle & " - " & Session.Contents("SITE_Standings_End_Period") & " "
+	PageTitle = PageTitle & "/ League of Levels"
+
+	PageDescription = "Updated standings across the League of Levels. These standings should accurately represent each individual league account. Next Level Cup matchups are not included in these aggregate numbers for wins, losses, or points."
+
+
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -45,22 +70,22 @@
 		<meta http-equiv="x-ua-compatible" content="IE=edge,chrome=1" />
 		<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
-		<title>Standings / League of Levels</title>
+		<title><%= PageTitle %></title>
 
 		<meta name="description" content="Updated standings across the League of Levels. These standings should accurately represent each individual league account. Next Level Cup matchups are not included in these aggregate numbers for wins, losses, or points." />
 
 		<meta property="og:site_name" content="League of Levels" />
 		<meta property="og:url" content="https://www.leagueoflevels.com/standings/" />
-		<meta property="og:title" content="Standings / League of Levels" />
+		<meta property="og:title" content="<%= PageTitle %>" />
 		<meta property="og:description" content="Updated standings across the League of Levels. These standings should accurately represent each individual league account. Next Level Cup matchups are not included in these aggregate numbers for wins, losses, or points." />
 		<meta property="og:type" content="article" />
 
 		<meta name="twitter:site" content="samelevel" />
 		<meta name="twitter:url" content="https://www.leagueoflevels.com/standings/" />
-		<meta name="twitter:title" content="Standings / League of Levels" />
+		<meta name="twitter:title" content="<%= PageTitle %>" />
 		<meta name="twitter:description" content="Updated standings across the League of Levels. These standings should accurately represent each individual league account. Next Level Cup matchups are not included in these aggregate numbers for wins, losses, or points." />
 
-		<meta name="title" content="Standings / League of Levels" />
+		<meta name="title" content="<%= PageTitle %>" />
 		<meta name="medium" content="article" />
 
 		<link rel="shortcut icon" href="/favicon.ico" />
@@ -147,7 +172,13 @@
 										sqlGetPoints = "SELECT Teams.TeamName, SUM([PointsScored]) AS PointsScored, (SELECT ProfileImage FROM Accounts WHERE Accounts.AccountID IN (SELECT AccountID FROM LinkAccountsTeams WHERE LinkAccountsTeams.TeamID = Standings.TeamID)) AS ProfileImage FROM Standings "
 										sqlGetPoints = sqlGetPoints & "INNER JOIN Teams ON Teams.TeamID = Standings.TeamID "
 										sqlGetPoints = sqlGetPoints & "INNER JOIN Levels ON Levels.LevelID = Standings.LevelID "
-										sqlGetPoints = sqlGetPoints & "WHERE Levels.LevelID > 1 AND Teams.EndYear = 0 "
+
+										If Len(Session.Contents("SITE_Standings_LevelID")) > 0 Then
+											sqlGetPoints = sqlGetPoints & "WHERE Levels.LevelID = " & Session.Contents("SITE_Standings_LevelID") & " AND Teams.EndYear = 0 "
+										Else
+											sqlGetPoints = sqlGetPoints & "WHERE Levels.LevelID > 1 AND Teams.EndYear = 0 "
+										End If
+
 										sqlGetPoints = sqlGetPoints & "AND Standings.Year >= " & Session.Contents("SITE_Standings_Start_Year") & " "
 										sqlGetPoints = sqlGetPoints & "AND Standings.Year <= " & Session.Contents("SITE_Standings_End_Year") & " "
 										sqlGetPoints = sqlGetPoints & "AND Standings.Period >= " & Session.Contents("SITE_Standings_Start_Period") & " "
@@ -159,62 +190,66 @@
 										Response.Write("<div Class=""row"">")
 
 											Response.Write("<div Class=""col-12 col-sm-12 col-md-6 col-md-12 col-lg-12 col-xl-12"">")
-												Response.Write("<div class=""card"">")
 
-													Response.Write("<div class=""card-body"">")
 %>
-														<form method="post" action="/standings/index.asp">
+												<form method="post" action="/standings/index.asp">
 
-															<input type="hidden" name="action" value="update" />
-															<input type="hidden" class="years_start" name="years_start" value="<%= Session.Contents("SITE_Standings_Start_Year") %>" />
-															<input type="hidden" class="years_end" name="years_end" value="<%= Session.Contents("SITE_Standings_End_Year") %>" />
-															<input type="hidden" class="periods_start" name="periods_start" value="<%= Session.Contents("SITE_Standings_Start_Period") %>" />
-															<input type="hidden" class="periods_end" name="periods_end" value="<%= Session.Contents("SITE_Standings_End_Period") %>" />
+													<input type="hidden" name="action" value="update" />
+													<input type="hidden" class="years_start" name="years_start" value="<%= Session.Contents("SITE_Standings_Start_Year") %>" />
+													<input type="hidden" class="years_end" name="years_end" value="<%= Session.Contents("SITE_Standings_End_Year") %>" />
+													<input type="hidden" class="periods_start" name="periods_start" value="<%= Session.Contents("SITE_Standings_Start_Period") %>" />
+													<input type="hidden" class="periods_end" name="periods_end" value="<%= Session.Contents("SITE_Standings_End_Period") %>" />
 
-															<div class="row">
+													<div class="row">
 
-																<div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-5">
+														<div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-5">
 
-																	<div class="form-group pb-xl-0 mb-xl-0">
+															<div class="form-group pb-xl-0">
 
-																		<div class="col-form-label text-left bg-info text-white pl-2 mb-0 rounded-top"><b>SELECT YEAR RANGE</b></div>
-																		<div class="bg-light p-4 mb-2 rounded-bottom">
-																			<input type="text" class="standings_year" name="years" value="" data-from="<%= Session.Contents("SITE_Standings_Start_Year") %>" data-to="<%= Session.Contents("SITE_Standings_End_Year") %>" />
-																		</div>
-
-																	</div>
-
-																</div>
-
-																<div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-5">
-
-																	<div class="form-group pb-xl-0 mb-xl-0">
-
-																		<div class="col-form-label text-left bg-info text-white pl-2 mb-0 rounded-top"><b>SELECT PERIOD RANGE</b></div>
-																		<div class="bg-light p-4 mb-2 rounded-bottom">
-																			<input type="text" class="standings_period" name="periods" value="" data-from="<%= Session.Contents("SITE_Standings_Start_Period") %>" data-to="<%= Session.Contents("SITE_Standings_End_Period") %>" />
-																		</div>
-
-																	</div>
-
-																</div>
-
-																<div class="col-12 col-xl-2">
-
-																	<button <%= thisFormDisabled %> type="submit" class="btn btn-block btn-success mb-2">UPDATE</button>
-
+																<div class="col-form-label text-left bg-info text-white pl-2 mb-0 rounded-top"><b>SELECT YEAR RANGE</b></div>
+																<div class="bg-white pt-3 pb-3 pl-4 pr-4 mb-2 rounded-bottom">
+																	<input type="text" class="standings_year" name="years" value="" data-from="<%= Session.Contents("SITE_Standings_Start_Year") %>" data-to="<%= Session.Contents("SITE_Standings_End_Year") %>" />
 																</div>
 
 															</div>
 
-														</form>
-<%
-													Response.Write("</div>")
+														</div>
 
-												Response.Write("</div>")
+														<div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-5">
+
+															<div class="form-group pb-xl-0">
+
+																<div class="col-form-label text-left bg-info text-white pl-2 mb-0 rounded-top"><b>SELECT PERIOD RANGE</b></div>
+																<div class="bg-white pt-3 pb-3 pl-4 pr-4 mb-2 rounded-bottom">
+																	<input type="text" class="standings_period" name="periods" value="" data-from="<%= Session.Contents("SITE_Standings_Start_Period") %>" data-to="<%= Session.Contents("SITE_Standings_End_Period") %>" />
+																</div>
+
+															</div>
+
+														</div>
+
+														<div class="col-12 col-xl-2">
+
+															<select class="form-control form-control-lg form-check-input-lg mb-3" name="level" id="level">
+																<option value="">ALL LEVELS</option>
+																<option value="omega-level" <% If CStr(Session.Contents("SITE_Standings_LevelID")) = "1" Then %>selected<% End If %>>OMEGA LEVEL</option>
+																<option value="same-level" <% If CStr(Session.Contents("SITE_Standings_LevelID")) = "2" Then %>selected<% End If %>>SAME LEVEL</option>
+																<option value="farm-level" <% If CStr(Session.Contents("SITE_Standings_LevelID")) = "3" Then %>selected<% End If %>>FARM LEVEL</option>
+															</select>
+
+															<button <%= thisFormDisabled %> type="submit" class="btn btn-block btn-success mb-2">UPDATE</button>
+
+														</div>
+
+													</div>
+
+												</form>
+<%
+
 
 											Response.Write("</div>")
 
+											If Len(Session.Contents("SITE_Standings_LevelID")) = 0 Or CStr(Session.Contents("SITE_Standings_LevelID")) = "2" Then
 											Response.Write("<div Class=""col-12 col-sm-12 col-md-12 col-lg-12 col-xl-6"">")
 												Response.Write("<div class=""card"">")
 													Response.Write("<div class=""card-body"">")
@@ -273,9 +308,11 @@
 												Response.Write("</div>")
 
 											Response.Write("</div>")
+											End If
 
 											Set rsStandings = rsStandings.NextRecordset
 
+											If Len(Session.Contents("SITE_Standings_LevelID")) = 0 Or CStr(Session.Contents("SITE_Standings_LevelID")) = "3" Then
 											Response.Write("<div Class=""col-12 col-sm-12 col-md-12 col-lg-12 col-xl-6"">")
 
 												Response.Write("<div class=""card"">")
@@ -336,9 +373,11 @@
 												Response.Write("</div>")
 
 											Response.Write("</div>")
+											End If
 
 											Set rsStandings = rsStandings.NextRecordset
 
+											If Len(Session.Contents("SITE_Standings_LevelID")) = 0 Or CStr(Session.Contents("SITE_Standings_LevelID")) = "1" Then
 											Response.Write("<div Class=""col-12 col-sm-12 col-md-12 col-lg-12 col-xl-6"">")
 
 												Response.Write("<div class=""card"">")
@@ -399,6 +438,7 @@
 												Response.Write("</div>")
 
 											Response.Write("</div>")
+											End If
 
 											Set rsStandings = rsStandings.NextRecordset
 
