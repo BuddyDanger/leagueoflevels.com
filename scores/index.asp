@@ -80,8 +80,6 @@
 
 								arrOmega = rsMatchups.GetRows()
 								Set rsMatchups = rsMatchups.NextRecordset()
-								arrCup = rsMatchups.GetRows()
-								Set rsMatchups = rsMatchups.NextRecordset()
 								arrSLFFL = rsMatchups.GetRows()
 								Set rsMatchups = rsMatchups.NextRecordset()
 								arrFLFFL = rsMatchups.GetRows()
