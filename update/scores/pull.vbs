@@ -474,12 +474,12 @@ For i = 0 To UBound(arrMatchups, 2)
 				thisOriginalDecline = (thisPlayerOriginalProjection - 20) / 60
 				thisLiveDecline = thisOriginalDecline
 				If thisPlayerLiveProjectionMinutesPlayed > 0 Then thisLiveDecline = (thisPlayerLiveProjectionPoints - thisPointsToLose) / thisPlayerLiveProjectionMinutesPlayed
-				thisDST1_AdjustedDecline = (thisOriginalDecline + thisLiveDecline) / 2.5
+				thisDST1_AdjustedDecline = (thisOriginalDecline + thisLiveDecline)
 
 				'thisNewProjection = (thisOriginalDecline * thisPlayerLiveProjectionPMR) + thisPlayerLiveProjectionPoints
 				thisNewProjection = thisPlayerOriginalProjection
 
-				If thisPlayerLiveProjectionPMR < 30 Then thisNewProjection = (thisAdjustedDecline * thisPlayerLiveProjectionPMR) + thisPlayerLiveProjectionPoints
+				If thisPlayerLiveProjectionPMR < 30 Then thisNewProjection = FormatNumber((thisAdjustedDecline * thisPlayerLiveProjectionPMR) + thisPlayerLiveProjectionPoints, 2)
 
 				'If thisNewProjection < thisPointFloor Then thisNewProjection = thisPointFloor
 
@@ -490,7 +490,7 @@ For i = 0 To UBound(arrMatchups, 2)
 			Else
 
 				thisOriginalPPM = thisPlayerOriginalProjection / 60
-				thisNewProjection = ((thisPlayerOriginalProjection / 60) * thisPlayerLiveProjectionPMR) + thisPlayerLiveProjectionPoints
+				thisNewProjection = FormatNumber(((thisPlayerOriginalProjection / 60) * thisPlayerLiveProjectionPMR) + thisPlayerLiveProjectionPoints, 2)
 
 			End If
 
@@ -591,12 +591,12 @@ For i = 0 To UBound(arrMatchups, 2)
 				thisOriginalDecline = (thisPlayerOriginalProjection - 20) / 60
 				thisLiveDecline = thisOriginalDecline
 				If thisPlayerLiveProjectionMinutesPlayed > 0 Then thisLiveDecline = (thisPlayerLiveProjectionPoints - thisPointsToLose) / thisPlayerLiveProjectionMinutesPlayed
-				thisDST2_AdjustedDecline = (thisOriginalDecline + thisLiveDecline) / 2.5
+				thisDST2_AdjustedDecline = (thisOriginalDecline + thisLiveDecline)
 
 				'thisNewProjection = (thisOriginalDecline * thisPlayerLiveProjectionPMR) + thisPlayerLiveProjectionPoints
 				thisNewProjection = thisPlayerOriginalProjection
 
-				If thisPlayerLiveProjectionPMR < 30 Then thisNewProjection = (thisAdjustedDecline * thisPlayerLiveProjectionPMR) + thisPlayerLiveProjectionPoints
+				If thisPlayerLiveProjectionPMR < 30 Then thisNewProjection = FormatNumber((thisAdjustedDecline * thisPlayerLiveProjectionPMR) + thisPlayerLiveProjectionPoints, 2)
 
 				'If thisNewProjection < thisPointFloor Then thisNewProjection = thisPointFloor
 
@@ -607,7 +607,7 @@ For i = 0 To UBound(arrMatchups, 2)
 			Else
 
 				thisOriginalPPM = thisPlayerOriginalProjection / 60
-				thisNewProjection = ((thisPlayerOriginalProjection / 60) * thisPlayerLiveProjectionPMR) + thisPlayerLiveProjectionPoints
+				thisNewProjection = FormatNumber(((thisPlayerOriginalProjection / 60) * thisPlayerLiveProjectionPMR) + thisPlayerLiveProjectionPoints, 2)
 
 			End If
 
