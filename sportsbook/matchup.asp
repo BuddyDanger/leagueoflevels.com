@@ -687,7 +687,7 @@
 
 													If thisPlayerPMR > 0 Then
 %>
-														<li class="list-group-item team-1-player-<%= thisPlayerID %>" style="padding-left: 70px; background-image: url('https://sports.cbsimg.net/images/football/nfl/players/170x170/<%= thisPlayerID %>.png'); background-position: <%= thisBackgroundPosition %>; background-repeat: no-repeat;">
+														<li class="list-group-item team-1-player-<%= thisPlayerID %>">
 
 															<div class="row">
 																<div class="col-xxs-9 col-xl-9" style="line-height: 1.5rem;">
@@ -861,7 +861,7 @@
 
 													If thisPlayerPMR > 0 Then
 %>
-														<li class="list-group-item team-1-player-<%= thisPlayerID %>" style="padding-left: 70px; background-image: url('https://sports.cbsimg.net/images/football/nfl/players/170x170/<%= thisPlayerID %>.png'); background-position: <%= thisBackgroundPosition %>; background-repeat: no-repeat;">
+														<li class="list-group-item team-1-player-<%= thisPlayerID %>">
 
 															<div class="row">
 																<div class="col-xxs-9 col-xl-9" style="line-height: 1.5rem;">
