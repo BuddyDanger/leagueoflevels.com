@@ -414,7 +414,7 @@ For i = 0 To UBound(arrMatchups, 2)
 
 			If thisPlayerPosition = "DST" Then
 
-				thisDST1_YardsAllowed = 0 : thisDST1_PointsAllowed = 0 : thisDST1_FumblesRecovered = 0 : thisDST1_Touchdowns = 0 : thisDST1_Interceptions = 0 : thisDST1_Sacks = 0 : thisDST1_Safetys = 0 : thisDST1_BlockedFGs = 0 : thisDST1_BlockedPunts = 0 : thisDST1_2PtReturns = 0 : thisDST1_1PtSafetys = 0
+				thisDST1_YardsAllowed = 0 : thisDST1_PointsAllowed = 0
 				thisPointsFromYards = 0 : thisPointsFromPoints = 0
 
 				If thisPlayerLiveProjectionPMR < 60 Then
@@ -448,27 +448,7 @@ For i = 0 To UBound(arrMatchups, 2)
 							thisStatAbbr  = arrThisStat(1)
 
 							If thisStatAbbr = "YDS" Then thisDST1_YardsAllowed = CInt(thisStatCount)
-							If thisStatAbbr = "Int" Then thisDST1_Interceptions = CInt(thisStatCount)
-							If thisStatAbbr = "SACK" Then thisDST1_Sacks = CInt(thisStatCount)
-							If thisStatAbbr = "DFR" Then thisDST1_FumblesRecovered = CInt(thisStatCount)
-							If thisStatAbbr = "DTD" Then thisDST1_Touchdowns = CInt(thisStatCount)
-							If thisStatAbbr = "STY" Then thisDST1_Safetys = CInt(thisStatCount)
-							If thisStatAbbr = "BFB" Then thisDST1_BlockedFGs = CInt(thisStatCount)
-							If thisStatAbbr = "BP" Then thisDST1_BlockedPunts = CInt(thisStatCount)
-							If thisStatAbbr = "ST2PT" Then thisDST1_2PtReturns = CInt(thisStatCount)
-							If thisStatAbbr = "STY1PT" Then thisDST1_1PtSafetys = CInt(thisStatCount)
-
-						Else
-
-							If DST_Stat = "Int" Then thisDST1_Interceptions = 1
-							If DST_Stat = "SACK" Then thisDST1_Sacks = 1
-							If DST_Stat = "DFR" Then thisDST1_FumblesRecovered = 1
-							If DST_Stat = "DTD" Then thisDST1_Touchdowns = 1
-							If DST_Stat = "STY" Then thisDST1_Safetys = 1
-							If DST_Stat = "BFB" Then thisDST1_BlockedFGs = 1
-							If DST_Stat = "BP" Then thisDST1_BlockedPunts = 1
-							If DST_Stat = "ST2PT" Then thisDST1_2PtReturns = 1
-							If DST_Stat = "STY1PT" Then thisDST1_1PtSafetys = 1
+							If thisStatAbbr = "DSTPA" Then thisDST1_PointsAllowed = CInt(thisStatCount)
 
 						End If
 
@@ -487,12 +467,9 @@ For i = 0 To UBound(arrMatchups, 2)
 				End If
 
 				thisPointsToLose = thisPointsFromYards + thisPointsFromPoints
-				thisPointFloor = (thisDST1_FumblesRecovered * 2) + (thisDST1_Touchdowns * 6) + (thisDST1_Interceptions * 2) + (thisDST1_Sacks) + (thisDST1_Safetys * 2) + (thisDST1_BlockedFGs * 2) + (thisDST1_BlockedPunts * 2) + (thisDST1_2PtReturns * 2) + (thisDST1_1PtSafetys)
-				thisCurrentScore = thisPointsToLose + thisPointFloor
+				thisPointFloor = thisPlayerLiveProjectionPoints - thisPointsToLose
 
 				thisCurrentScore = thisPlayerLiveProjectionPoints
-
-				thisPlayerLiveProjectionPoints = thisCurrentScore
 
 				thisOriginalDecline = (thisPlayerOriginalProjection - 20) / 60
 				thisLiveDecline = thisOriginalDecline
@@ -554,7 +531,7 @@ For i = 0 To UBound(arrMatchups, 2)
 
 			If thisPlayerPosition = "DST" Then
 
-				thisDST2_YardsAllowed = 0 : thisDST2_PointsAllowed = 0 : thisDST2_FumblesRecovered = 0 : thisDST2_Touchdowns = 0 : thisDST2_Interceptions = 0 : thisDST2_Sacks = 0 : thisDST2_Safetys = 0 : thisDST2_BlockedFGs = 0 : thisDST2_BlockedPunts = 0 : thisDST2_2PtReturns = 0 : thisDST2_1PtSafetys = 0
+				thisDST2_YardsAllowed = 0 : thisDST2_PointsAllowed = 0
 				thisPointsFromYards = 0 : thisPointsFromPoints = 0
 
 				If thisPlayerLiveProjectionPMR < 60 Then
@@ -588,28 +565,7 @@ For i = 0 To UBound(arrMatchups, 2)
 							thisStatAbbr  = arrThisStat(1)
 
 							If thisStatAbbr = "YDS" Then thisDST2_YardsAllowed = CInt(thisStatCount)
-							If thisStatAbbr = "Int" Then thisDST2_Interceptions = CInt(thisStatCount)
-							If thisStatAbbr = "SACK" Then thisDST2_Sacks = CInt(thisStatCount)
-							If thisStatAbbr = "DFR" Then thisDST2_FumblesRecovered = CInt(thisStatCount)
-							If thisStatAbbr = "DTD" Then thisDST2_Touchdowns = CInt(thisStatCount)
-							If thisStatAbbr = "STY" Then thisDST2_Safetys = CInt(thisStatCount)
-							If thisStatAbbr = "BFB" Then thisDST2_BlockedFGs = CInt(thisStatCount)
-							If thisStatAbbr = "BP" Then thisDST2_BlockedPunts = CInt(thisStatCount)
-							If thisStatAbbr = "ST2PT" Then thisDST2_2PtReturns = CInt(thisStatCount)
-							If thisStatAbbr = "STY1PT" Then thisDST2_1PtSafetys = CInt(thisStatCount)
-
-
-						Else
-
-							If DST_Stat = "Int" Then thisDST2_Interceptions = 1
-							If DST_Stat = "SACK" Then thisDST2_Sacks = 1
-							If DST_Stat = "DFR" Then thisDST2_FumblesRecovered = 1
-							If DST_Stat = "DTD" Then thisDST2_Touchdowns = 1
-							If DST_Stat = "STY" Then thisDST2_Safetys = 1
-							If DST_Stat = "BFB" Then thisDST2_BlockedFGs = 1
-							If DST_Stat = "BP" Then thisDST2_BlockedPunts = 1
-							If DST_Stat = "ST2PT" Then thisDST2_2PtReturns = 1
-							If DST_Stat = "STY1PT" Then thisDST2_1PtSafetys = 1
+							If thisStatAbbr = "DSTPA" Then thisDST2_PointsAllowed = CInt(thisStatCount)
 
 						End If
 
@@ -628,12 +584,9 @@ For i = 0 To UBound(arrMatchups, 2)
 				End If
 
 				thisPointsToLose = thisPointsFromYards + thisPointsFromPoints
-				thisPointFloor = (thisDST2_FumblesRecovered * 2) + (thisDST2_Touchdowns * 6) + (thisDST2_Interceptions * 2) + (thisDST2_Sacks) + (thisDST2_Safetys * 2) + (thisDST2_BlockedFGs * 2) + (thisDST2_BlockedPunts * 2) + (thisDST2_2PtReturns * 2) + (thisDST2_1PtSafetys)
-				thisCurrentScore = thisPointsToLose + thisPointFloor
+				thisPointFloor = thisPlayerLiveProjectionPoints - thisPointsToLose
 
 				thisCurrentScore = thisPlayerLiveProjectionPoints
-
-				thisPlayerLiveProjectionPoints = thisCurrentScore
 
 				thisOriginalDecline = (thisPlayerOriginalProjection - 20) / 60
 				thisLiveDecline = thisOriginalDecline
@@ -642,6 +595,7 @@ For i = 0 To UBound(arrMatchups, 2)
 
 				'thisNewProjection = (thisOriginalDecline * thisPlayerLiveProjectionPMR) + thisPlayerLiveProjectionPoints
 				thisNewProjection = thisPlayerOriginalProjection
+
 				If thisPlayerLiveProjectionPMR < 30 Then thisNewProjection = (thisAdjustedDecline * thisPlayerLiveProjectionPMR) + thisPlayerLiveProjectionPoints
 
 				If thisNewProjection < thisPointFloor Then thisNewProjection = thisPointFloor
@@ -732,8 +686,8 @@ For i = 0 To UBound(arrMatchups, 2)
 	TeamSpread2Display = TeamSpread2
 	If TeamSpread2 > 0 Then TeamSpread2Display = "+" & TeamSpread2Display
 
-	WScript.Echo(vbcrlf & TeamName1 & " (" & TeamNewProjectedScore1 & " Proj, " & TeamSpread1Display & " Spread, " & TeamWinPercentage1 * 100 & "% Win, " & TeamMoneyline1Display & " ML, " & thisDST1_Projection & " DST Proj., " & thisDST1_YardsAllowed & " DST YDS, " & thisDST1_PointsAllowed & " DST PTS, " & thisDST1_Interceptions & " INT)")
-	WScript.Echo(vbcrlf & TeamName2 & " (" & TeamNewProjectedScore2 & " Proj, " & TeamSpread2Display & " Spread, " & TeamWinPercentage2 * 100 & "% Win, " & TeamMoneyline2Display & " ML, " & thisDST2_Projection & " DST Proj., " & thisDST2_YardsAllowed & " DST YDS, " & thisDST2_PointsAllowed & " DST PTS, " & thisDST2_Interceptions & " INT)")
+	WScript.Echo(vbcrlf & TeamName1 & " (" & TeamNewProjectedScore1 & " Proj, " & TeamSpread1Display & " Spread, " & TeamWinPercentage1 * 100 & "% Win, " & TeamMoneyline1Display & " ML, " & thisDST1_Projection & " DST Proj., " & thisDST1_YardsAllowed & " DST YDS, " & thisDST1_PointsAllowed & " DST PTS)")
+	WScript.Echo(vbcrlf & TeamName2 & " (" & TeamNewProjectedScore2 & " Proj, " & TeamSpread2Display & " Spread, " & TeamWinPercentage2 * 100 & "% Win, " & TeamMoneyline2Display & " ML, " & thisDST2_Projection & " DST Proj., " & thisDST2_YardsAllowed & " DST YDS, " & thisDST2_PointsAllowed & " DST PTS)")
 
 	sqlUpdate = "UPDATE Matchups SET TeamScore1 = " & TeamScore1 & ", TeamScore2 = " & TeamScore2 & ", TeamPMR1 = " & TeamPMR1 & ", TeamPMR2 = " & TeamPMR2 & ", TeamProjected1 = " &  TeamNewProjectedScore1 & ", TeamProjected2 = " &  TeamNewProjectedScore2 & ", TeamWinPercentage1 = " &  TeamWinPercentage1 & ", TeamWinPercentage2 = " &  TeamWinPercentage2 & ", TeamMoneyline1 = " &  TeamMoneyline1 & ", TeamMoneyline2 = " &  TeamMoneyline2 & ", TeamSpread1 = " &  TeamSpread1 & ", TeamSpread2 = " &  TeamSpread2 & "  WHERE MatchupID = " & MatchupID
 	Set rsUpdate = sqlDatabase.Execute(sqlUpdate)
