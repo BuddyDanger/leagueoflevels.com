@@ -473,17 +473,17 @@ For i = 0 To UBound(arrMatchups, 2)
 
 				thisOriginalDecline = (thisPlayerOriginalProjection - 20) / 60
 				thisLiveDecline = thisOriginalDecline
-				If thisPlayerLiveProjectionMinutesPlayed > 0 Then thisLiveDecline = (thisPlayerLiveProjectionPoints - 20) / thisPlayerLiveProjectionMinutesPlayed
-				thisAdjustedDecline = (thisOriginalDecline + thisLiveDecline) / 2
+				If thisPlayerLiveProjectionMinutesPlayed > 0 Then thisLiveDecline = (thisPlayerLiveProjectionPoints - thisPointsToLose) / thisPlayerLiveProjectionMinutesPlayed
+				thisDST1_AdjustedDecline = (thisOriginalDecline + thisLiveDecline) / 2.5
 
 				'thisNewProjection = (thisOriginalDecline * thisPlayerLiveProjectionPMR) + thisPlayerLiveProjectionPoints
 				thisNewProjection = thisPlayerOriginalProjection
 
 				If thisPlayerLiveProjectionPMR < 30 Then thisNewProjection = (thisAdjustedDecline * thisPlayerLiveProjectionPMR) + thisPlayerLiveProjectionPoints
 
-				If thisNewProjection < thisPointFloor Then thisNewProjection = thisPointFloor
+				'If thisNewProjection < thisPointFloor Then thisNewProjection = thisPointFloor
 
-				If thisPlayerLiveProjectionPMR = 60 Then thisNewProjection = thisPlayerOriginalProjection
+				'If thisPlayerLiveProjectionPMR = 60 Then thisNewProjection = thisPlayerOriginalProjection
 
 				thisDST1_Projection = thisNewProjection
 
@@ -590,17 +590,17 @@ For i = 0 To UBound(arrMatchups, 2)
 
 				thisOriginalDecline = (thisPlayerOriginalProjection - 20) / 60
 				thisLiveDecline = thisOriginalDecline
-				If thisPlayerLiveProjectionMinutesPlayed > 0 Then thisLiveDecline = (thisPlayerLiveProjectionPoints - 20) / thisPlayerLiveProjectionMinutesPlayed
-				thisAdjustedDecline = (thisOriginalDecline + thisLiveDecline) / 2
+				If thisPlayerLiveProjectionMinutesPlayed > 0 Then thisLiveDecline = (thisPlayerLiveProjectionPoints - thisPointsToLose) / thisPlayerLiveProjectionMinutesPlayed
+				thisDST2_AdjustedDecline = (thisOriginalDecline + thisLiveDecline) / 2.5
 
 				'thisNewProjection = (thisOriginalDecline * thisPlayerLiveProjectionPMR) + thisPlayerLiveProjectionPoints
 				thisNewProjection = thisPlayerOriginalProjection
 
 				If thisPlayerLiveProjectionPMR < 30 Then thisNewProjection = (thisAdjustedDecline * thisPlayerLiveProjectionPMR) + thisPlayerLiveProjectionPoints
 
-				If thisNewProjection < thisPointFloor Then thisNewProjection = thisPointFloor
+				'If thisNewProjection < thisPointFloor Then thisNewProjection = thisPointFloor
 
-				If thisPlayerLiveProjectionPMR = 60 Then thisNewProjection = thisPlayerOriginalProjection
+				'If thisPlayerLiveProjectionPMR = 60 Then thisNewProjection = thisPlayerOriginalProjection
 
 				thisDST2_Projection = thisNewProjection
 
@@ -686,8 +686,8 @@ For i = 0 To UBound(arrMatchups, 2)
 	TeamSpread2Display = TeamSpread2
 	If TeamSpread2 > 0 Then TeamSpread2Display = "+" & TeamSpread2Display
 
-	WScript.Echo(vbcrlf & TeamName1 & " (" & TeamNewProjectedScore1 & " Proj, " & TeamSpread1Display & " Spread, " & TeamWinPercentage1 * 100 & "% Win, " & TeamMoneyline1Display & " ML, " & thisDST1_Projection & " DST Proj., " & thisDST1_YardsAllowed & " DST YDS, " & thisDST1_PointsAllowed & " DST PTS)")
-	WScript.Echo(vbcrlf & TeamName2 & " (" & TeamNewProjectedScore2 & " Proj, " & TeamSpread2Display & " Spread, " & TeamWinPercentage2 * 100 & "% Win, " & TeamMoneyline2Display & " ML, " & thisDST2_Projection & " DST Proj., " & thisDST2_YardsAllowed & " DST YDS, " & thisDST2_PointsAllowed & " DST PTS)")
+	WScript.Echo(vbcrlf & TeamName1 & " (" & TeamNewProjectedScore1 & " Proj, " & TeamSpread1Display & " Spread, " & TeamWinPercentage1 * 100 & "% Win, " & TeamMoneyline1Display & " ML, " & thisDST1_Projection & " DST Proj., " & thisDST1_AdjustedDecline & " Adj Decline, " & thisDST1_YardsAllowed & " DST YDS, " & thisDST1_PointsAllowed & " DST PTS)")
+	WScript.Echo(vbcrlf & TeamName2 & " (" & TeamNewProjectedScore2 & " Proj, " & TeamSpread2Display & " Spread, " & TeamWinPercentage2 * 100 & "% Win, " & TeamMoneyline2Display & " ML, " & thisDST2_Projection & " DST Proj., " & thisDST2_AdjustedDecline & " Adj Decline, " & thisDST2_YardsAllowed & " DST YDS, " & thisDST2_PointsAllowed & " DST PTS)")
 
 	sqlUpdate = "UPDATE Matchups SET TeamScore1 = " & TeamScore1 & ", TeamScore2 = " & TeamScore2 & ", TeamPMR1 = " & TeamPMR1 & ", TeamPMR2 = " & TeamPMR2 & ", TeamProjected1 = " &  TeamNewProjectedScore1 & ", TeamProjected2 = " &  TeamNewProjectedScore2 & ", TeamWinPercentage1 = " &  TeamWinPercentage1 & ", TeamWinPercentage2 = " &  TeamWinPercentage2 & ", TeamMoneyline1 = " &  TeamMoneyline1 & ", TeamMoneyline2 = " &  TeamMoneyline2 & ", TeamSpread1 = " &  TeamSpread1 & ", TeamSpread2 = " &  TeamSpread2 & "  WHERE MatchupID = " & MatchupID
 	Set rsUpdate = sqlDatabase.Execute(sqlUpdate)
