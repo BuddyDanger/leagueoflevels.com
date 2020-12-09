@@ -9,7 +9,7 @@
 		Session.Contents("SITE_Standings_Start_Year") = Year(Now())
 		Session.Contents("SITE_Standings_End_Year") = Year(Now())
 		Session.Contents("SITE_Standings_Start_Period") = "1"
-		Session.Contents("SITE_Standings_End_Period") = "18"
+		Session.Contents("SITE_Standings_End_Period") = "17"
 
 	End If
 
@@ -51,10 +51,10 @@
 		If CStr(Session.Contents("SITE_Standings_LevelID")) = "3" Then PageTitle = "Farm Level "
 	End If
 
-	PageTitle = PageTitle & "Standings / " & Session.Contents("SITE_Standings_Start_Year")
-	If Session.Contents("SITE_Standings_End_Year") <> Session.Contents("SITE_Standings_Start_Year") Then PageTitle = PageTitle & " - " & Session.Contents("SITE_Standings_End_Year") & ", "
-	PageTitle = PageTitle & "Periods " & Session.Contents("SITE_Standings_Start_Period")
-	If Session.Contents("SITE_Standings_End_Period") <> Session.Contents("SITE_Standings_Start_Period") Then PageTitle = PageTitle & " - " & Session.Contents("SITE_Standings_End_Period") & " "
+	PageTitle = PageTitle & "Standings / " & Session.Contents("SITE_Standings_Start_Year") & " "
+	If Session.Contents("SITE_Standings_End_Year") <> Session.Contents("SITE_Standings_Start_Year") Then PageTitle = PageTitle & "- " & Session.Contents("SITE_Standings_End_Year") & ", "
+	PageTitle = PageTitle & "/ Periods " & Session.Contents("SITE_Standings_Start_Period") & " "
+	If Session.Contents("SITE_Standings_End_Period") <> Session.Contents("SITE_Standings_Start_Period") Then PageTitle = PageTitle & "- " & Session.Contents("SITE_Standings_End_Period") & " "
 	PageTitle = PageTitle & "/ League of Levels"
 
 	PageDescription = "Updated standings across the League of Levels. These standings should accurately represent each individual league account. Next Level Cup matchups are not included in these aggregate numbers for wins, losses, or points."
@@ -237,7 +237,7 @@
 																<option value="farm-level" <% If CStr(Session.Contents("SITE_Standings_LevelID")) = "3" Then %>selected<% End If %>>FARM LEVEL</option>
 															</select>
 
-															<button <%= thisFormDisabled %> type="submit" class="btn btn-block btn-success mb-2">UPDATE</button>
+															<button <%= thisFormDisabled %> type="submit" class="btn btn-block btn-success mb-4">UPDATE</button>
 
 														</div>
 

@@ -26,7 +26,7 @@ $(document).ready(function () {
 	$(".standings_period").ionRangeSlider({
         type: "double",
         min: 1,
-        max: 18,
+        max: 17,
         grid: true,
 		prettify_enabled: false,
 		onChange: updatePeriods
