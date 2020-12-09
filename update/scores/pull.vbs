@@ -337,35 +337,54 @@ For i = 0 To UBound(arrMatchups, 2)
 
 	Else
 
-		sqlGetTeams = "SELECT TeamName, CBSLogo, CBSID FROM Teams WHERE TeamID = " & TeamID1 & " AND LevelID = " & LevelID & "; SELECT TeamName, CBSLogo, CBSID FROM Teams WHERE TeamID = " & TeamID2 & " AND LevelID = " & LevelID & ";"
-		Set rsTeams = sqlDatabase.Execute(sqlGetTeams)
+		If CDbl(TeamID2) = 99999 Then
 
-		TeamCBSID1 = rsTeams("CBSID")
-		TeamName1 = rsTeams("TeamName")
-		Set rsTeams = rsTeams.NextRecordset()
-		TeamCBSID2 = rsTeams("CBSID")
-		TeamName2 = rsTeams("TeamName")
+			isBye = 1
 
-		rsTeams.Close
-		Set rsTeams = Nothing
+			sqlGetTeams = "SELECT TeamName, CBSLogo, CBSID FROM Teams WHERE TeamID = " & TeamID1 & " AND LevelID = " & LevelID & ";"
+			Set rsTeams = sqlDatabase.Execute(sqlGetTeams)
 
-		If LevelID = 1 Then TeamLevelName1 = "OMEGA" : TeamLevelName2 = "OMEGA" : TeamLevelID1 = 1 : TeamLevelID2 = 1 : Set objTeam1 = oXMLOmega.selectSingleNode(".//team[@id = " & TeamCBSID1 & "]") : Set objTeam2 = oXMLOmega.selectSingleNode(".//team[@id = " & TeamCBSID2 & "]")
-		If LevelID = 2 Then	TeamLevelName1 = "SLFFL" : TeamLevelName2 = "SLFFL" : TeamLevelID1 = 2 : TeamLevelID2 = 2 : Set objTeam1 = oXMLSLFFL.selectSingleNode(".//team[@id = " & TeamCBSID1 & "]") : Set objTeam2 = oXMLSLFFL.selectSingleNode(".//team[@id = " & TeamCBSID2 & "]")
-		If LevelID = 3 Then TeamLevelName1 = "FLFFL" : TeamLevelName2 = "FLFFL" : TeamLevelID1 = 3 : TeamLevelID2 = 3 : Set objTeam1 = oXMLFLFFL.selectSingleNode(".//team[@id = " & TeamCBSID1 & "]") : Set objTeam2 = oXMLFLFFL.selectSingleNode(".//team[@id = " & TeamCBSID2 & "]")
+			TeamCBSID1 = rsTeams("CBSID")
+			TeamName1 = rsTeams("TeamName")
+
+			rsTeams.Close
+			Set rsTeams = Nothing
+
+			If LevelID = 1 Then TeamLevelName1 = "OMEGA" : TeamLevelID1 = 1 : Set objTeam1 = oXMLOmega.selectSingleNode(".//team[@id = " & TeamCBSID1 & "]")
+			If LevelID = 2 Then	TeamLevelName1 = "SLFFL" : TeamLevelID1 = 2 : Set objTeam1 = oXMLSLFFL.selectSingleNode(".//team[@id = " & TeamCBSID1 & "]")
+			If LevelID = 3 Then TeamLevelName1 = "FLFFL" : TeamLevelID1 = 3 : Set objTeam1 = oXMLFLFFL.selectSingleNode(".//team[@id = " & TeamCBSID1 & "]")
+
+		Else
+
+			isBye = 0
+
+			sqlGetTeams = "SELECT TeamName, CBSLogo, CBSID FROM Teams WHERE TeamID = " & TeamID1 & " AND LevelID = " & LevelID & "; SELECT TeamName, CBSLogo, CBSID FROM Teams WHERE TeamID = " & TeamID2 & " AND LevelID = " & LevelID & ";"
+			Set rsTeams = sqlDatabase.Execute(sqlGetTeams)
+
+			TeamCBSID1 = rsTeams("CBSID")
+			TeamName1 = rsTeams("TeamName")
+			Set rsTeams = rsTeams.NextRecordset()
+			TeamCBSID2 = rsTeams("CBSID")
+			TeamName2 = rsTeams("TeamName")
+
+			rsTeams.Close
+			Set rsTeams = Nothing
+
+			If LevelID = 1 Then TeamLevelName1 = "OMEGA" : TeamLevelName2 = "OMEGA" : TeamLevelID1 = 1 : TeamLevelID2 = 1 : Set objTeam1 = oXMLOmega.selectSingleNode(".//team[@id = " & TeamCBSID1 & "]") : Set objTeam2 = oXMLOmega.selectSingleNode(".//team[@id = " & TeamCBSID2 & "]")
+			If LevelID = 2 Then	TeamLevelName1 = "SLFFL" : TeamLevelName2 = "SLFFL" : TeamLevelID1 = 2 : TeamLevelID2 = 2 : Set objTeam1 = oXMLSLFFL.selectSingleNode(".//team[@id = " & TeamCBSID1 & "]") : Set objTeam2 = oXMLSLFFL.selectSingleNode(".//team[@id = " & TeamCBSID2 & "]")
+			If LevelID = 3 Then TeamLevelName1 = "FLFFL" : TeamLevelName2 = "FLFFL" : TeamLevelID1 = 3 : TeamLevelID2 = 3 : Set objTeam1 = oXMLFLFFL.selectSingleNode(".//team[@id = " & TeamCBSID1 & "]") : Set objTeam2 = oXMLFLFFL.selectSingleNode(".//team[@id = " & TeamCBSID2 & "]")
+
+		End If
 
 	End If
+
+
 
 	Set objTeamScore1 = objTeam1.getElementsByTagName("pts")
 	Set objTeamPMR1 = objTeam1.getElementsByTagName("pmr")
 
-	Set objTeamScore2 = objTeam2.getElementsByTagName("pts")
-	Set objTeamPMR2 = objTeam2.getElementsByTagName("pmr")
-
 	TeamScore1 = CDbl(objTeamScore1.item(0).text)
 	TeamPMR1 = CInt(objTeamPMR1.item(0).text)
-
-	TeamScore2 = CDbl(objTeamScore2.item(0).text)
-	TeamPMR2 = CInt(objTeamPMR2.item(0).text)
 
 	Set projectionsXML1 = CreateObject("MSXML2.DOMDocument.3.0")
 	projectionsXML1.loadXML(GetProjections(TeamLevelName1, TeamCBSID1, thisPeriod))
@@ -373,17 +392,32 @@ For i = 0 To UBound(arrMatchups, 2)
 	Set projectionsTeam1 = projectionsXML1.selectSingleNode(".//team[@id = " & TeamCBSID1 & "]/points")
 	Set projectionsTeamPlayers1 = projectionsXML1.selectNodes(".//team[@id = " & TeamCBSID1 & "]/active_players/active_player")
 
-	Set projectionsXML2 = CreateObject("MSXML2.DOMDocument.3.0")
-	projectionsXML2.loadXML(GetProjections(TeamLevelName2, TeamCBSID2, thisPeriod))
-	projectionsXML2.setProperty "SelectionLanguage", "XPath"
-	Set projectionsTeam2 = projectionsXML2.selectSingleNode(".//team[@id = " & TeamCBSID2 & "]/points")
-	Set projectionsTeamPlayers2 = projectionsXML2.selectNodes(".//team[@id = " & TeamCBSID2 & "]/active_players/active_player")
-
 	TeamProjectedScore1 = projectionsTeam1.text
-	TeamProjectedScore2 = projectionsTeam2.text
-
 	TeamNewProjectedScore1 = 0
-	TeamNewProjectedScore2 = 0
+
+	If isBye = 0 Then
+
+		Set objTeamScore2 = objTeam2.getElementsByTagName("pts")
+		Set objTeamPMR2 = objTeam2.getElementsByTagName("pmr")
+
+		TeamScore2 = CDbl(objTeamScore2.item(0).text)
+		TeamPMR2 = CInt(objTeamPMR2.item(0).text)
+
+		Set projectionsXML2 = CreateObject("MSXML2.DOMDocument.3.0")
+		projectionsXML2.loadXML(GetProjections(TeamLevelName2, TeamCBSID2, thisPeriod))
+		projectionsXML2.setProperty "SelectionLanguage", "XPath"
+		Set projectionsTeam2 = projectionsXML2.selectSingleNode(".//team[@id = " & TeamCBSID2 & "]/points")
+		Set projectionsTeamPlayers2 = projectionsXML2.selectNodes(".//team[@id = " & TeamCBSID2 & "]/active_players/active_player")
+
+		TeamProjectedScore2 = projectionsTeam2.text
+		TeamNewProjectedScore2 = 0
+
+	Else
+
+		TeamProjectedScore2 = 0
+		TeamNewProjectedScore2 = 0
+
+	End If
 
 	For Each Player In projectionsTeamPlayers1
 
@@ -502,122 +536,126 @@ For i = 0 To UBound(arrMatchups, 2)
 
 	Next
 
-	For Each Player In projectionsTeamPlayers2
+	If isBye = 0 Then
 
-		thisPlayerID = Player.getAttribute("id")
-		Set thisPlayer = Player.getElementsByTagName("points")
-		thisPlayerOriginalProjection = CDbl(thisPlayer.item(0).text)
-		Set thisPlayerPosition = Player.getElementsByTagName("position")
-		thisPlayerPosition = thisPlayerPosition.item(0).text
-		Set thisPlayerName = Player.getElementsByTagName("fullname")
-		thisPlayerName = thisPlayerName.item(0).text
+		For Each Player In projectionsTeamPlayers2
 
-		If CInt(TeamLevelID2) = 1 Then Set objPlayerLiveProjection = oXMLOMEGA.selectSingleNode(".//player[@id = " & thisPlayerID & "]")
-		If CInt(TeamLevelID2) = 2 Then Set objPlayerLiveProjection = oXMLSLFFL.selectSingleNode(".//player[@id = " & thisPlayerID & "]")
-		If CInt(TeamLevelID2) = 3 Then Set objPlayerLiveProjection = oXMLFLFFL.selectSingleNode(".//player[@id = " & thisPlayerID & "]")
+			thisPlayerID = Player.getAttribute("id")
+			Set thisPlayer = Player.getElementsByTagName("points")
+			thisPlayerOriginalProjection = CDbl(thisPlayer.item(0).text)
+			Set thisPlayerPosition = Player.getElementsByTagName("position")
+			thisPlayerPosition = thisPlayerPosition.item(0).text
+			Set thisPlayerName = Player.getElementsByTagName("fullname")
+			thisPlayerName = thisPlayerName.item(0).text
 
-		Set objPlayerLiveProjectionPoints = objPlayerLiveProjection.getElementsByTagName("fpts")
-		thisPlayerLiveProjectionPoints = CDbl(objPlayerLiveProjectionPoints.item(0).text)
-		Set objPlayerLiveProjectionPMR = objPlayerLiveProjection.getElementsByTagName("minutes_remaining")
-		thisPlayerLiveProjectionPMR = 0
-		If objPlayerLiveProjectionPMR.Length > 0 Then thisPlayerLiveProjectionPMR = CDbl(objPlayerLiveProjectionPMR.item(0).text)
-		thisPlayerLiveProjectionMinutesPlayed = 60 - thisPlayerLiveProjectionPMR
+			If CInt(TeamLevelID2) = 1 Then Set objPlayerLiveProjection = oXMLOMEGA.selectSingleNode(".//player[@id = " & thisPlayerID & "]")
+			If CInt(TeamLevelID2) = 2 Then Set objPlayerLiveProjection = oXMLSLFFL.selectSingleNode(".//player[@id = " & thisPlayerID & "]")
+			If CInt(TeamLevelID2) = 3 Then Set objPlayerLiveProjection = oXMLFLFFL.selectSingleNode(".//player[@id = " & thisPlayerID & "]")
 
-		If thisPlayerLiveProjectionMinutesPlayed = 60 Then
+			Set objPlayerLiveProjectionPoints = objPlayerLiveProjection.getElementsByTagName("fpts")
+			thisPlayerLiveProjectionPoints = CDbl(objPlayerLiveProjectionPoints.item(0).text)
+			Set objPlayerLiveProjectionPMR = objPlayerLiveProjection.getElementsByTagName("minutes_remaining")
+			thisPlayerLiveProjectionPMR = 0
+			If objPlayerLiveProjectionPMR.Length > 0 Then thisPlayerLiveProjectionPMR = CDbl(objPlayerLiveProjectionPMR.item(0).text)
+			thisPlayerLiveProjectionMinutesPlayed = 60 - thisPlayerLiveProjectionPMR
 
-			thisNewProjection = thisPlayerLiveProjectionPoints
+			If thisPlayerLiveProjectionMinutesPlayed = 60 Then
 
-		Else
-
-			If thisPlayerPosition = "DST" Then
-
-				thisDST2_YardsAllowed = 0 : thisDST2_PointsAllowed = 0
-				thisPointsFromYards = 0 : thisPointsFromPoints = 0
-
-				If thisPlayerLiveProjectionPMR < 60 Then
-
-					Set objPlayerLiveDST = objPlayerLiveProjection.getElementsByTagName("stats_period")
-					thisPlayerLiveDST = objPlayerLiveDST.item(0).text
-
-					Set objPlayerLiveDST_AwayScore = objPlayerLiveProjection.getElementsByTagName("away_score")
-					thisPlayerLiveDST_AwayScore = CInt(objPlayerLiveDST_AwayScore.item(0).text)
-
-					Set objPlayerLiveDST_HomeScore = objPlayerLiveProjection.getElementsByTagName("home_score")
-					thisPlayerLiveDST_HomeScore = CInt(objPlayerLiveDST_HomeScore.item(0).text)
-
-					Set objPlayerLiveDST_HomeGame = objPlayerLiveProjection.getElementsByTagName("home_game")
-					thisPlayerLiveDST_HomeGame = CInt(objPlayerLiveDST_HomeGame.item(0).text)
-
-					If thisPlayerLiveDST_HomeGame = 1 Then
-						thisDST2_PointsAllowed = thisPlayerLiveDST_AwayScore
-					Else
-						thisDST2_PointsAllowed = thisPlayerLiveDST_HomeScore
-					End If
-
-					arrDSTStats = Split(thisPlayerLiveDST, ", ")
-
-					For Each DST_Stat In arrDSTStats
-
-						If InStr(DST_Stat, " ") Then
-
-							arrThisStat = Split(DST_Stat, " ")
-							thisStatCount = arrThisStat(0)
-							thisStatAbbr  = arrThisStat(1)
-
-							If thisStatAbbr = "YDS" Then thisDST2_YardsAllowed = CInt(thisStatCount)
-							If thisStatAbbr = "DSTPA" Then thisDST2_PointsAllowed = CInt(thisStatCount)
-
-						End If
-
-					Next
-
-					If thisDST2_YardsAllowed >= 50 And thisDST2_YardsAllowed < 100 Then thisPointsFromYards = 10
-					If thisDST2_YardsAllowed >= 100 And thisDST2_YardsAllowed < 150 Then thisPointsFromYards = 8
-					If thisDST2_YardsAllowed >= 150 And thisDST2_YardsAllowed < 200 Then thisPointsFromYards = 6
-					If thisDST2_YardsAllowed >= 200 And thisDST2_YardsAllowed < 250 Then thisPointsFromYards = 4
-					If thisDST2_YardsAllowed >= 250 And thisDST2_YardsAllowed < 300 Then thisPointsFromYards = 2
-
-					If thisDST2_PointsAllowed >= 7 And thisDST2_PointsAllowed < 14 Then thisPointsFromPoints = 6
-					If thisDST2_PointsAllowed >= 14 And thisDST2_PointsAllowed < 21 Then thisPointsFromPoints = 4
-					If thisDST2_PointsAllowed >= 21 And thisDST2_PointsAllowed < 29 Then thisPointsFromPoints = 2
-
-				End If
-
-				thisPointsToLose = thisPointsFromYards + thisPointsFromPoints
-				thisPointFloor = thisPlayerLiveProjectionPoints - thisPointsToLose
-
-				thisCurrentScore = thisPlayerLiveProjectionPoints
-
-				thisOriginalDecline = (thisPlayerOriginalProjection - 20) / 60
-				thisLiveDecline = thisOriginalDecline
-				If thisPlayerLiveProjectionMinutesPlayed > 0 Then thisLiveDecline = (thisPlayerLiveProjectionPoints - thisPointsToLose) / thisPlayerLiveProjectionMinutesPlayed
-				thisDST2_AdjustedDecline = (thisOriginalDecline + thisLiveDecline)
-
-				'thisNewProjection = (thisOriginalDecline * thisPlayerLiveProjectionPMR) + thisPlayerLiveProjectionPoints
-				thisNewProjection = thisPlayerOriginalProjection
-
-				If thisPlayerLiveProjectionPMR < 30 Then thisNewProjection = FormatNumber((thisAdjustedDecline * thisPlayerLiveProjectionPMR) + thisPlayerLiveProjectionPoints, 2)
-
-				'If thisNewProjection < thisPointFloor Then thisNewProjection = thisPointFloor
-
-				'If thisPlayerLiveProjectionPMR = 60 Then thisNewProjection = thisPlayerOriginalProjection
-
-				thisDST2_Projection = thisNewProjection
+				thisNewProjection = thisPlayerLiveProjectionPoints
 
 			Else
 
-				thisOriginalPPM = thisPlayerOriginalProjection / 60
-				thisNewProjection = FormatNumber(((thisPlayerOriginalProjection / 60) * thisPlayerLiveProjectionPMR) + thisPlayerLiveProjectionPoints, 2)
+				If thisPlayerPosition = "DST" Then
+
+					thisDST2_YardsAllowed = 0 : thisDST2_PointsAllowed = 0
+					thisPointsFromYards = 0 : thisPointsFromPoints = 0
+
+					If thisPlayerLiveProjectionPMR < 60 Then
+
+						Set objPlayerLiveDST = objPlayerLiveProjection.getElementsByTagName("stats_period")
+						thisPlayerLiveDST = objPlayerLiveDST.item(0).text
+
+						Set objPlayerLiveDST_AwayScore = objPlayerLiveProjection.getElementsByTagName("away_score")
+						thisPlayerLiveDST_AwayScore = CInt(objPlayerLiveDST_AwayScore.item(0).text)
+
+						Set objPlayerLiveDST_HomeScore = objPlayerLiveProjection.getElementsByTagName("home_score")
+						thisPlayerLiveDST_HomeScore = CInt(objPlayerLiveDST_HomeScore.item(0).text)
+
+						Set objPlayerLiveDST_HomeGame = objPlayerLiveProjection.getElementsByTagName("home_game")
+						thisPlayerLiveDST_HomeGame = CInt(objPlayerLiveDST_HomeGame.item(0).text)
+
+						If thisPlayerLiveDST_HomeGame = 1 Then
+							thisDST2_PointsAllowed = thisPlayerLiveDST_AwayScore
+						Else
+							thisDST2_PointsAllowed = thisPlayerLiveDST_HomeScore
+						End If
+
+						arrDSTStats = Split(thisPlayerLiveDST, ", ")
+
+						For Each DST_Stat In arrDSTStats
+
+							If InStr(DST_Stat, " ") Then
+
+								arrThisStat = Split(DST_Stat, " ")
+								thisStatCount = arrThisStat(0)
+								thisStatAbbr  = arrThisStat(1)
+
+								If thisStatAbbr = "YDS" Then thisDST2_YardsAllowed = CInt(thisStatCount)
+								If thisStatAbbr = "DSTPA" Then thisDST2_PointsAllowed = CInt(thisStatCount)
+
+							End If
+
+						Next
+
+						If thisDST2_YardsAllowed >= 50 And thisDST2_YardsAllowed < 100 Then thisPointsFromYards = 10
+						If thisDST2_YardsAllowed >= 100 And thisDST2_YardsAllowed < 150 Then thisPointsFromYards = 8
+						If thisDST2_YardsAllowed >= 150 And thisDST2_YardsAllowed < 200 Then thisPointsFromYards = 6
+						If thisDST2_YardsAllowed >= 200 And thisDST2_YardsAllowed < 250 Then thisPointsFromYards = 4
+						If thisDST2_YardsAllowed >= 250 And thisDST2_YardsAllowed < 300 Then thisPointsFromYards = 2
+
+						If thisDST2_PointsAllowed >= 7 And thisDST2_PointsAllowed < 14 Then thisPointsFromPoints = 6
+						If thisDST2_PointsAllowed >= 14 And thisDST2_PointsAllowed < 21 Then thisPointsFromPoints = 4
+						If thisDST2_PointsAllowed >= 21 And thisDST2_PointsAllowed < 29 Then thisPointsFromPoints = 2
+
+					End If
+
+					thisPointsToLose = thisPointsFromYards + thisPointsFromPoints
+					thisPointFloor = thisPlayerLiveProjectionPoints - thisPointsToLose
+
+					thisCurrentScore = thisPlayerLiveProjectionPoints
+
+					thisOriginalDecline = (thisPlayerOriginalProjection - 20) / 60
+					thisLiveDecline = thisOriginalDecline
+					If thisPlayerLiveProjectionMinutesPlayed > 0 Then thisLiveDecline = (thisPlayerLiveProjectionPoints - thisPointsToLose) / thisPlayerLiveProjectionMinutesPlayed
+					thisDST2_AdjustedDecline = (thisOriginalDecline + thisLiveDecline)
+
+					'thisNewProjection = (thisOriginalDecline * thisPlayerLiveProjectionPMR) + thisPlayerLiveProjectionPoints
+					thisNewProjection = thisPlayerOriginalProjection
+
+					If thisPlayerLiveProjectionPMR < 30 Then thisNewProjection = FormatNumber((thisAdjustedDecline * thisPlayerLiveProjectionPMR) + thisPlayerLiveProjectionPoints, 2)
+
+					'If thisNewProjection < thisPointFloor Then thisNewProjection = thisPointFloor
+
+					'If thisPlayerLiveProjectionPMR = 60 Then thisNewProjection = thisPlayerOriginalProjection
+
+					thisDST2_Projection = thisNewProjection
+
+				Else
+
+					thisOriginalPPM = thisPlayerOriginalProjection / 60
+					thisNewProjection = FormatNumber(((thisPlayerOriginalProjection / 60) * thisPlayerLiveProjectionPMR) + thisPlayerLiveProjectionPoints, 2)
+
+				End If
 
 			End If
 
-		End If
+			WScript.Echo(vbcrlf & thisPlayerPosition & " - " & thisPlayerName & " - " & thisNewProjection)
 
-		WScript.Echo(vbcrlf & thisPlayerPosition & " - " & thisPlayerName & " - " & thisNewProjection)
+			TeamNewProjectedScore2 = TeamNewProjectedScore2 + thisNewProjection
 
-		TeamNewProjectedScore2 = TeamNewProjectedScore2 + thisNewProjection
+		Next
 
-	Next
+	End If
 
 	TeamNewProjectedScore1 = FormatNumber(TeamNewProjectedScore1, 2)
 	TeamNewProjectedScore2 = FormatNumber(TeamNewProjectedScore2, 2)
