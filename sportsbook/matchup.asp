@@ -56,7 +56,7 @@
 				betMoneylineValue = thisMoneylineValue2
 			End If
 
-			If CInt(thisSchmeckleTotal) >= CInt(thisMoneylineBetAmount) Then
+			If CDbl(thisSchmeckleTotal) >= CDbl(thisMoneylineBetAmount) Then
 
 				Set rsInsert = Server.CreateObject("ADODB.RecordSet")
 				rsInsert.CursorType = adOpenKeySet
@@ -111,7 +111,7 @@
 				betSpreadValue = thisSpreadValue2
 			End If
 
-			If CInt(thisSchmeckleTotal) >= CInt(thisSpreadBetAmount) Then
+			If CDbl(thisSchmeckleTotal) >= CDbl(thisSpreadBetAmount) Then
 
 				Set rsInsert = Server.CreateObject("ADODB.RecordSet")
 				rsInsert.CursorType = adOpenKeySet
@@ -163,7 +163,7 @@
 				thisOverUnderBet = "UNDER"
 			End If
 
-			If CInt(thisSchmeckleTotal) >= CInt(thisOverUnderBetAmount) Then
+			If CDbl(thisSchmeckleTotal) >= CDbl(thisOverUnderBetAmount) Then
 
 				Set rsInsert = Server.CreateObject("ADODB.RecordSet")
 				rsInsert.CursorType = adOpenKeySet
