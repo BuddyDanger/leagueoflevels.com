@@ -84,8 +84,6 @@
 						<!-- LOGGED OUT -->
 						<!--#include virtual="/assets/asp/dashboard/login.asp" -->
 
-						<!--#include virtual="/assets/asp/dashboard/power-rankings.asp" -->
-
 					</div>
 
 					<!--#include virtual="/assets/asp/dashboard/active-tickets.asp" -->

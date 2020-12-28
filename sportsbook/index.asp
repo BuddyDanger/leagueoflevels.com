@@ -198,6 +198,65 @@
 
 											rsSchedules.Close
 											Set rsSchedules = Nothing
+
+											sqlGetNFLGames = "SELECT NFLGameID, Year, Period, DateTimeEST, AwayTeamID, HomeTeamID, A.City + ' ' + A.Name AS AwayTeam, B.City + ' ' + B.Name AS HomeTeam, AwayTeamMoneyline, HomeTeamMoneyline, AwayTeamSpread, HomeTeamSpread, OverUnderTotal FROM NFLGames "
+											sqlGetNFLGames = sqlGetNFLGames & "INNER JOIN NFLTeams A ON A.NFLTeamID = NFLGames.AwayTeamID "
+											sqlGetNFLGames = sqlGetNFLGames & "INNER JOIN NFLTeams B ON B.NFLTeamID = NFLGames.HomeTeamID "
+											sqlGetNFLGames = sqlGetNFLGames & "WHERE NFLGames.Year = " & Session.Contents("CurrentYear") & " AND NFLGames.Period = " & Session.Contents("CurrentPeriod") & " AND NFLGames.DateTimeEST > DateAdd(hour, -5, GetDate()) "
+											sqlGetNFLGames = sqlGetNFLGames & "ORDER BY NFLGames.DateTimeEST ASC"
+											Set rsSchedules = sqlDatabase.Execute(sqlGetNFLGames)
+
+											Do While Not rsSchedules.Eof
+
+												thisMatchupID = rsSchedules("NFLGameID")
+												thisDateTimeEST = rsSchedules("DateTimeEST")
+												thisTeamName1 = rsSchedules("AwayTeam")
+												thisTeamName2 = rsSchedules("HomeTeam")
+												thisTeamMoneyline1 = rsSchedules("AwayTeamMoneyline")
+												thisTeamMoneyline2 = rsSchedules("HomeTeamMoneyline")
+												thisTeamSpread1 = rsSchedules("AwayTeamSpread")
+												thisTeamSpread2 = rsSchedules("HomeTeamSpread")
+												thisOverUnderTotal = rsSchedules("OverUnderTotal")
+
+												thisTeamProjected1 = (thisOverUnderTotal / 2) + (CDbl(thisTeamSpread1) / 2)
+												thisTeamProjected2 = (thisOverUnderTotal / 2) + (CDbl(thisTeamSpread2) / 2)
+
+												If thisTeamMoneyline1 > 0 Then thisTeamMoneyline1 = "+" & thisTeamMoneyline1
+												If thisTeamMoneyline2 > 0 Then thisTeamMoneyline2 = "+" & thisTeamMoneyline2
+
+												If thisTeamSpread1 Then thisTeamProjected1 = (thisOverUnderTotal / 2) - (CDbl(thisTeamSpread1) / 2)
+												If thisTeamSpread2 Then thisTeamProjected2 = (thisOverUnderTotal / 2) - (CDbl(thisTeamSpread2) / 2)
+
+												If thisTeamSpread1 > 0 Then thisTeamSpread1 = "+" & thisTeamSpread1
+												If thisTeamSpread2 > 0 Then thisTeamSpread2 = "+" & thisTeamSpread2
+
+												headerBGcolor = "032B43"
+												headerTextColor = "fff"
+												headerText = "NFL"
+												cardText = "03324F"
+%>
+												<div class="col-xxxl-4 col-xxl-4 col-xl-4 col-lg-6 col-md-6 col-sm-12 col-xs-12 col-xxs-12">
+													<a href="/sportsbook/nfl/<%= thisMatchupID %>/" style="text-decoration: none; display: block;">
+														<ul class="list-group" style="margin-bottom: 1rem;">
+															<li class="list-group-item" style="padding-top: 0.25rem; padding-bottom: 0.25rem; font-size: 0.75rem; text-align: center; background-color: #<%= headerBGcolor %>; color: #<%= headerTextColor %>;"><strong>NFL</strong> <%= thisDateTimeEST %> (EST)</li>
+															<li class="list-group-item">
+																<div style="font-size: 13px; color: #<%= cardText %>;"><b><%= thisTeamName1 %></b></div>
+																<div style="font-size: 13px; color: #<%= cardText %>;">(<%= thisTeamSpread1 %> Spread, <%= thisTeamMoneyline1 %> ML, <%= thisOverUnderTotal %> O/U, <%= thisTeamProjected1 %> Proj.)</div>
+															</li>
+															<li class="list-group-item">
+																<div style="font-size: 13px; color: #<%= cardText %>;"><b><%= thisTeamName2 %></b></div>
+																<div style="font-size: 13px; color: #<%= cardText %>;">(<%= thisTeamSpread2 %> Spread, <%= thisTeamMoneyline2 %> ML, <%= thisOverUnderTotal %> O/U, <%= thisTeamProjected2 %> Proj.)</div>
+															</li>
+														</ul>
+													</a>
+												</div>
+<%
+												rsSchedules.MoveNext
+
+											Loop
+
+											rsSchedules.Close
+											Set rsSchedules = Nothing
 %>
 										</div>
 									</div>

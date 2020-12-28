@@ -268,6 +268,7 @@
 	If Session.Contents("SITE_Level_1") = "sportsbook" Then
 
 		Session.Contents("SITE_Bet_MatchupID") = ""
+		Session.Contents("SITE_Bet_Type") = ""
 
 		arLevels = Split(LevelString, "||")
 		RebuildURL = 0
@@ -280,8 +281,19 @@
 			StrippedLevel = Level
 			If InStr(StrippedLevel, "-") Then StrippedLevel = Replace(StrippedLevel, "-", " ")
 
+			If MatchFound = 0 And Level = "nfl" Then
+				Session.Contents("SITE_Bet_Type") = "nfl"
+				MatchFound = 1
+			End If
+
 			If MatchFound = 0 And IsNumeric(Level) Then
-				sqlGetMatchup = "SELECT MatchupID FROM Matchups WHERE MatchupID = " & Level
+
+				If Session.Contents("SITE_Bet_Type") = "nfl" Then
+					sqlGetMatchup = "SELECT NFLGameID AS MatchupID FROM NFLGames WHERE NFLGameID = " & Level
+				Else
+					sqlGetMatchup = "SELECT MatchupID FROM Matchups WHERE MatchupID = " & Level
+				End If
+
 				Set rsMatchup = sqlDatabase.Execute(sqlGetMatchup)
 				If Not rsMatchup.Eof Then
 

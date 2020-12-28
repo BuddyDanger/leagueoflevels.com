@@ -242,6 +242,6 @@ Function CalculateWinPercentage (TeamPMR1, TeamPMR2, TeamProjected1, TeamProject
 End Function
 
 
-MatchupWinPercentage = CalculateWinPercentage(420, 420, 88.35, 96.4, 0, 0)
+MatchupWinPercentage = CalculateWinPercentage(420, 420, 86, 93, 0, 0)
 
 WScript.Echo(MatchupWinPercentage)

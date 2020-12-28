@@ -18,7 +18,7 @@ Set rsYearPeriod = sqlDatabase.Execute(sqlGetYearPeriod)
 If Not rsYearPeriod.Eof Then
 
 	thisCurrentYear = rsYearPeriod("Year")
-	thisCurrentPeriod = 12
+	thisCurrentPeriod = 16
 
 	rsYearPeriod.Close
 	Set rsYearPeriod = Nothing
@@ -26,10 +26,9 @@ If Not rsYearPeriod.Eof Then
 End If
 
 thisYear = 2020
+thisPeriod = 15
 
 Do While thisYear < 2021
-
-	thisPeriod = 1
 
 	Do While thisPeriod < thisCurrentPeriod
 
