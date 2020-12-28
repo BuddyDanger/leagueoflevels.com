@@ -267,8 +267,7 @@
 		sqlGetSchedules = sqlGetSchedules & "INNER JOIN Teams AS Team2 ON Team2.TeamID = Matchups.TeamID2 "
 		sqlGetSchedules = sqlGetSchedules & "INNER JOIN Levels AS Level1 ON Level1.LevelID = Team1.LevelID "
 		sqlGetSchedules = sqlGetSchedules & "INNER JOIN Levels AS Level2 ON Level2.LevelID = Team2.LevelID "
-		sqlGetSchedules = sqlGetSchedules & "WHERE Matchups.MatchupID = " & Session.Contents("SITE_Bet_MatchupID") & " "
-		sqlGetSchedules = sqlGetSchedules & "ORDER BY CASE WHEN Matchups.LevelID = 1 THEN '1' WHEN Matchups.LevelID = 0 THEN '2' WHEN Matchups.LevelID = 2 THEN '3' WHEN Matchups.LevelID = 3 THEN '4' ELSE Matchups.LevelID END ASC, Matchups.MatchupID DESC"
+		sqlGetSchedules = sqlGetSchedules & "WHERE Matchups.MatchupID = " & Session.Contents("SITE_Bet_MatchupID")
 		Set rsSchedules = sqlDatabase.Execute(sqlGetSchedules)
 
 		If Not rsSchedules.Eof Then
@@ -649,7 +648,7 @@
 										oXML.loadXML(GetScores(thisTeamLevelTitle1, Session.Contents("CurrentPeriod")))
 
 										oXML.setProperty "SelectionLanguage", "XPath"
-										Set objTeam = oXML.selectSingleNode(".//team[@id = " & thisTeamCBSID1 & "")
+										Set objTeam = oXML.selectSingleNode(".//team[@id = " & thisTeamCBSID1 & "]")
 
 										Set objTeamScore1 = objTeam.getElementsByTagName("pts")
 										Set objTeamPlayers1 = objTeam.getElementsByTagName("player")
@@ -823,7 +822,7 @@
 										oXML.loadXML(GetScores(thisTeamLevelTitle2, Session.Contents("CurrentPeriod")))
 
 										oXML.setProperty "SelectionLanguage", "XPath"
-										Set objTeam = oXML.selectSingleNode(".//team[@id = " & thisTeamCBSID2 & "")
+										Set objTeam = oXML.selectSingleNode(".//team[@id = " & thisTeamCBSID2 & "]")
 
 										Set objTeamScore2 = objTeam.getElementsByTagName("pts")
 										Set objTeamPlayers2 = objTeam.getElementsByTagName("player")
