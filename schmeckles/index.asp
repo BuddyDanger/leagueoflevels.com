@@ -160,7 +160,7 @@
 														thisProfileImage = rsSchmeckles("ProfileImage")
 														thisTransactionDescription = rsSchmeckles("TransactionDescription")
 														arrthisTransactionDate = Split(thisTransactionDate, " ")
-														If CInt(thisTransactionTotal) > 0 Then
+														If CDbl(thisTransactionTotal) > 0 Then
 															thisTransactionDirection = "text-success"
 														Else
 															thisTransactionDirection = "text-danger"
