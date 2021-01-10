@@ -116,7 +116,7 @@
 			thisKey = Session.Contents("SITE_Level_3")
 			If InStr(thisKey, "'") Then thisKey = Replace(thisKey, "'", "")
 
-			sqlVerify = "SELECT AccountID, Email FROM Accounts WHERE Password = '" & thisKey & "'"
+			sqlVerify = "SELECT AccountID, Email FROM Accounts WHERE Password = '" & thisKey & "' AND Hash IS NULL AND VerificationDate IS NULL"
 			Set rsVerify = sqlDatabase.Execute(sqlVerify)
 
 			If Not rsVerify.Eof Then

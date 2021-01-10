@@ -6,8 +6,8 @@
 	If Len(ParseForAbsolutePath(Right(Request.ServerVariables("QUERY_STRING"), Len(Request.ServerVariables("QUERY_STRING")) - Instr(Request.ServerVariables("QUERY_STRING"),";")))) < 1 Then
 
 		Session.Contents("SITE_Standings_LevelID") = ""
-		Session.Contents("SITE_Standings_Start_Year") = Year(Now())
-		Session.Contents("SITE_Standings_End_Year") = Year(Now())
+		Session.Contents("SITE_Standings_Start_Year") = "2020"
+		Session.Contents("SITE_Standings_End_Year") = "2020"
 		Session.Contents("SITE_Standings_Start_Period") = "1"
 		Session.Contents("SITE_Standings_End_Period") = "17"
 

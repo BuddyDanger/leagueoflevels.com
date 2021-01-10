@@ -2,6 +2,7 @@
 <!--#include virtual="/assets/asp/sql/connection.asp" -->
 <!--#include virtual="/assets/asp/framework/session.asp" -->
 <!--#include virtual="/assets/asp/functions/master.asp"-->
+<!--#include virtual="/assets/asp/functions/sha256.asp"-->
 <%
 	thisSchmeckleTotal = 0
 
@@ -79,14 +80,46 @@
 
 				Set rsInsert = Nothing
 
+				thisTransactionTypeID = 1008
+				thisTransactionDateTime = Now()
+				thisTransactionTotal = thisMoneylineBetAmount * -1
+				thisAccountID = Session.Contents("AccountID")
+
+				arrTransactionDateTime = Split(thisTransactionDateTime, " ")
+				thisTransactionDate = arrTransactionDateTime(0)
+				thisTransactionTime = arrTransactionDateTime(1)
+
+				arrTransactionTimeDetails = Split(thisTransactionTime, ":")
+				thisHour = arrTransactionTimeDetails(0)
+				thisMinute = arrTransactionTimeDetails(1)
+				thisSecond = Replace(arrTransactionTimeDetails(2), ".", "")
+
+				thisTransactionHash = sha256(thisSecond & thisMinute & thisHour & thisTransactionDate & thisTransactionTotal & thisAccountID)
+
+				sqlCheckExisting = "SELECT * FROM SchmeckleTransactions WHERE TransactionHash = '" & thisTransactionHash & "'"
+				Set rsExisting = sqlDatabase.Execute(sqlCheckExisting)
+
+				If Not rsExisting.Eof Then
+
+					rsExisting.Close
+					Set rsExisting = Nothing
+
+					Randomize
+					thisRandom = CDbl((9999999-1000000+1)*Rnd+1000000)
+
+					thisTransactionHash = sha256(thisRandom & thisTransactionDate & thisTransactionTotal & thisAccountID)
+
+				End If
+
 				Set rsInsert = Server.CreateObject("ADODB.RecordSet")
 				rsInsert.CursorType = adOpenKeySet
 				rsInsert.LockType = adLockOptimistic
 				rsInsert.Open "SchmeckleTransactions", sqlDatabase, , , adCmdTable
 				rsInsert.AddNew
 
-				rsInsert("TransactionTypeID") = 1008
-				rsInsert("TransactionTotal") = thisMoneylineBetAmount * -1
+				rsInsert("TransactionTypeID") = thisTransactionTypeID
+				rsInsert("TransactionTotal") = thisTransactionTotal
+				rsInsert("TransactionHash") = thisTransactionHash
 				rsInsert("AccountID") = Session.Contents("AccountID")
 				rsInsert("TicketSlipID") = thisTicketSlipID
 
@@ -135,14 +168,46 @@
 
 				Set rsInsert = Nothing
 
+				thisTransactionTypeID = 1008
+				thisTransactionDateTime = Now()
+				thisTransactionTotal = thisSpreadBetAmount * -1
+				thisAccountID = Session.Contents("AccountID")
+
+				arrTransactionDateTime = Split(thisTransactionDateTime, " ")
+				thisTransactionDate = arrTransactionDateTime(0)
+				thisTransactionTime = arrTransactionDateTime(1)
+
+				arrTransactionTimeDetails = Split(thisTransactionTime, ":")
+				thisHour = arrTransactionTimeDetails(0)
+				thisMinute = arrTransactionTimeDetails(1)
+				thisSecond = Replace(arrTransactionTimeDetails(2), ".", "")
+
+				thisTransactionHash = sha256(thisSecond & thisMinute & thisHour & thisTransactionDate & thisTransactionTotal & thisAccountID)
+
+				sqlCheckExisting = "SELECT * FROM SchmeckleTransactions WHERE TransactionHash = '" & thisTransactionHash & "'"
+				Set rsExisting = sqlDatabase.Execute(sqlCheckExisting)
+
+				If Not rsExisting.Eof Then
+
+					rsExisting.Close
+					Set rsExisting = Nothing
+
+					Randomize
+					thisRandom = CDbl((9999999-1000000+1)*Rnd+1000000)
+
+					thisTransactionHash = sha256(thisRandom & thisTransactionDate & thisTransactionTotal & thisAccountID)
+
+				End If
+
 				Set rsInsert = Server.CreateObject("ADODB.RecordSet")
 				rsInsert.CursorType = adOpenKeySet
 				rsInsert.LockType = adLockOptimistic
 				rsInsert.Open "SchmeckleTransactions", sqlDatabase, , , adCmdTable
 				rsInsert.AddNew
 
-				rsInsert("TransactionTypeID") = 1008
-				rsInsert("TransactionTotal") = thisSpreadBetAmount * -1
+				rsInsert("TransactionTypeID") = thisTransactionTypeID
+				rsInsert("TransactionTotal") = thisTransactionTotal
+				rsInsert("TransactionHash") = thisTransactionHash
 				rsInsert("AccountID") = Session.Contents("AccountID")
 				rsInsert("TicketSlipID") = thisTicketSlipID
 
@@ -189,14 +254,46 @@
 
 				Set rsInsert = Nothing
 
+				thisTransactionTypeID = 1008
+				thisTransactionDateTime = Now()
+				thisTransactionTotal = thisOverUnderBetAmount * -1
+				thisAccountID = Session.Contents("AccountID")
+
+				arrTransactionDateTime = Split(thisTransactionDateTime, " ")
+				thisTransactionDate = arrTransactionDateTime(0)
+				thisTransactionTime = arrTransactionDateTime(1)
+
+				arrTransactionTimeDetails = Split(thisTransactionTime, ":")
+				thisHour = arrTransactionTimeDetails(0)
+				thisMinute = arrTransactionTimeDetails(1)
+				thisSecond = Replace(arrTransactionTimeDetails(2), ".", "")
+
+				thisTransactionHash = sha256(thisSecond & thisMinute & thisHour & thisTransactionDate & thisTransactionTotal & thisAccountID)
+
+				sqlCheckExisting = "SELECT * FROM SchmeckleTransactions WHERE TransactionHash = '" & thisTransactionHash & "'"
+				Set rsExisting = sqlDatabase.Execute(sqlCheckExisting)
+
+				If Not rsExisting.Eof Then
+
+					rsExisting.Close
+					Set rsExisting = Nothing
+
+					Randomize
+					thisRandom = CDbl((9999999-1000000+1)*Rnd+1000000)
+
+					thisTransactionHash = sha256(thisRandom & thisTransactionDate & thisTransactionTotal & thisAccountID)
+
+				End If
+
 				Set rsInsert = Server.CreateObject("ADODB.RecordSet")
 				rsInsert.CursorType = adOpenKeySet
 				rsInsert.LockType = adLockOptimistic
 				rsInsert.Open "SchmeckleTransactions", sqlDatabase, , , adCmdTable
 				rsInsert.AddNew
 
-				rsInsert("TransactionTypeID") = 1008
-				rsInsert("TransactionTotal") = thisOverUnderBetAmount * -1
+				rsInsert("TransactionTypeID") = thisTransactionTypeID
+				rsInsert("TransactionTotal") = thisTransactionTotal
+				rsInsert("TransactionHash") = thisTransactionHash
 				rsInsert("AccountID") = Session.Contents("AccountID")
 				rsInsert("TicketSlipID") = thisTicketSlipID
 

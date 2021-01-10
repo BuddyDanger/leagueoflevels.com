@@ -18,17 +18,18 @@ Set rsYearPeriod = sqlDatabase.Execute(sqlGetYearPeriod)
 If Not rsYearPeriod.Eof Then
 
 	thisCurrentYear = rsYearPeriod("Year")
-	thisCurrentPeriod = 16
+	thisCurrentPeriod = 17
 
 	rsYearPeriod.Close
 	Set rsYearPeriod = Nothing
 
 End If
 
-thisYear = 2020
-thisPeriod = 15
+thisYear = 2012
 
 Do While thisYear < 2021
+
+	thisPeriod = 1
 
 	Do While thisPeriod < thisCurrentPeriod
 
@@ -70,17 +71,21 @@ Do While thisYear < 2021
 
 						If thisTeamID = thisTeamID1	Then
 
-							If thisTeamScore1 > thisTeamScore2 Then thisTeamWins = thisTeamWins + 1
-							If thisTeamScore1 < thisTeamScore2 Then thisTeamLosses = thisTeamLosses + 1
-							If thisTeamScore1 = thisTeamScore2 Then thisTeamTies = thisTeamTies + 1
+							If CStr(thisTeamID2) <> "99999" Then
+								If thisTeamScore1 > thisTeamScore2 Then thisTeamWins = thisTeamWins + 1
+								If thisTeamScore1 < thisTeamScore2 Then thisTeamLosses = thisTeamLosses + 1
+								If thisTeamScore1 = thisTeamScore2 Then thisTeamTies = thisTeamTies + 1
+							End If
 							thisTeamPointsScored = thisTeamPointsScored + thisTeamScore1
 							thisTeamPointsAgainst = thisTeamPointsAgainst + thisTeamScore2
 
 						Else
 
-							If thisTeamScore2 > thisTeamScore1 Then thisTeamWins = thisTeamWins + 1
-							If thisTeamScore2 < thisTeamScore1 Then thisTeamLosses = thisTeamLosses + 1
-							If thisTeamScore2 = thisTeamScore1 Then thisTeamTies = thisTeamTies + 1
+							If CStr(thisTeamID1) <> "99999" Then
+								If thisTeamScore2 > thisTeamScore1 Then thisTeamWins = thisTeamWins + 1
+								If thisTeamScore2 < thisTeamScore1 Then thisTeamLosses = thisTeamLosses + 1
+								If thisTeamScore2 = thisTeamScore1 Then thisTeamTies = thisTeamTies + 1
+							End If
 							thisTeamPointsScored = thisTeamPointsScored + thisTeamScore2
 							thisTeamPointsAgainst = thisTeamPointsAgainst + thisTeamScore1
 

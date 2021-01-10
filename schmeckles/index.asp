@@ -137,7 +137,7 @@
 													</thead>
 													<tbody>
 <%
-													sqlGetSchmeckles = "SELECT SchmeckleTransactions.TransactionID, SchmeckleTransactions.TransactionDate, SchmeckleTransactions.TransactionTypeID, TransactionTypeTitle, SchmeckleTransactions.TransactionTotal, "
+													sqlGetSchmeckles = "SELECT SchmeckleTransactions.TransactionID, DateAdd(hour, -5, SchmeckleTransactions.TransactionDate) AS TransactionDate, SchmeckleTransactions.TransactionTypeID, TransactionTypeTitle, SchmeckleTransactions.TransactionTotal, "
 													sqlGetSchmeckles = sqlGetSchmeckles & "SchmeckleTransactions.AccountID, SchmeckleTransactions.TicketSlipID, Accounts.ProfileName, Accounts.ProfileImage, SchmeckleTransactions.TransactionDescription "
 													sqlGetSchmeckles = sqlGetSchmeckles & "FROM SchmeckleTransactions "
 													sqlGetSchmeckles = sqlGetSchmeckles & "INNER JOIN SchmeckleTransactionTypes ON SchmeckleTransactionTypes.TransactionTypeID = SchmeckleTransactions.TransactionTypeID "
@@ -172,7 +172,7 @@
 %>
 														<tr>
 															<th scope="row">
-																<div class="d-none d-lg-table-cell"><div><%= arrthisTransactionDate(0) %></div><div><%= arrthisTransactionDate(1) %>&nbsp;<%= arrthisTransactionDate(2) %></div></div>
+																<div class="d-none d-lg-table-cell"><div><%= arrthisTransactionDate(0) %></div><div><%= arrthisTransactionDate(1) %>&nbsp;<%= arrthisTransactionDate(2) %> (EST)</div></div>
 																<div class="d-block d-lg-none"><%= Month(arrthisTransactionDate(0)) & "/" & Day(arrthisTransactionDate(0)) %></div></div>
 															</th>
 															<td><img src="https://samelevel.imgix.net/<%= thisProfileImage %>?w=40&h=40&fit=crop&crop=focalpoint" class="rounded-circle hidden d-none d-sm-none d-md-inline"> &nbsp;<%= thisProfileName %></td>
