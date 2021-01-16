@@ -54,152 +54,108 @@
 
 				<div class="container-fluid">
 
-					<div class="row">
+					<div class="row mt-4">
 
-						<div class="col-sm-12">
+						<div class="col-12 col-xl-4">
 
-							<div class="page-title-box">
+							<h4 class="text-left bg-info text-white p-3 mt-0 mb-0 rounded-top"><b>SCHMECKLE LEADERBOARD</b><span class="float-right dripicons-trophy"></i></h4>
 
-								<div class="float-right">
-
-									<ol class="breadcrumb">
-										<li class="breadcrumb-item"><a href="/">Main</a></li>
-										<li class="breadcrumb-item active">Schmeckles</li>
-									</ol>
-
-								</div>
-
-								<h4 class="page-title">Schmeckles</h4>
-
-							</div>
-
-							<div class="page-content">
-
-								<div class="row">
-
-									<div class="col-12 col-lg-4">
-
-										<h4>LEADERBOARD</h4>
-										<div class="card">
-
-											<div class="card-body">
-
-												<table class="table table-bordered mb-1">
-													<thead>
-														<tr>
-															<th scope="col">TEAM</th>
-															<th class="text-center" scope="col">SCHMECKLES</th>
-														</tr>
-													</thead>
-													<tbody>
+							<ul class="list-group list-group-flush">
 <%
-														sqlGetLeaderboard = "SELECT Accounts.ProfileName, Accounts.ProfileImage, SUM([TransactionTotal]) AS TotalSchmeckles FROM SchmeckleTransactions INNER JOIN Accounts ON Accounts.AccountID = SchmeckleTransactions.AccountID GROUP BY Accounts.ProfileName, Accounts.ProfileImage ORDER BY TotalSchmeckles DESC"
-														Set rsLeaderboard = sqlDatabase.Execute(sqlGetLeaderboard)
+								sqlGetLeaderboard = "SELECT TOP 10 Accounts.ProfileName, Accounts.ProfileImage, SUM([TransactionTotal]) AS TotalSchmeckles FROM SchmeckleTransactions INNER JOIN Accounts ON Accounts.AccountID = SchmeckleTransactions.AccountID GROUP BY Accounts.ProfileName, Accounts.ProfileImage ORDER BY TotalSchmeckles DESC"
+								Set rsLeaderboard = sqlDatabase.Execute(sqlGetLeaderboard)
 
-														Do While Not rsLeaderboard.Eof
+								Do While Not rsLeaderboard.Eof
 %>
-															<tr>
-																<td><img src="https://samelevel.imgix.net/<%= rsLeaderboard("ProfileImage") %>?w=40&h=40&fit=crop&crop=focalpoint" class="rounded-circle hidden d-none d-xl-inline"> &nbsp;<%= rsLeaderboard("ProfileName") %></td>
-																<td class="text-center" width="40%"><%= FormatNumber(rsLeaderboard("TotalSchmeckles"), 0) %></td>
-															</tr>
+									<li class="list-group-item">
+										<img src="https://samelevel.imgix.net/<%= rsLeaderboard("ProfileImage") %>?w=40&h=40&fit=crop&crop=focalpoint" class="rounded-circle"> &nbsp; <b><%= rsLeaderboard("ProfileName") %></b>
+										<span class="float-right p-2 badge-warning rounded"><%= FormatNumber(rsLeaderboard("TotalSchmeckles"), 0) %></span>
+									</li>
 <%
-															rsLeaderboard.MoveNext
+									rsLeaderboard.MoveNext
 
-														Loop
+								Loop
 
-														rsLeaderboard.Close
-														Set rsLeaderboard = Nothing
+								rsLeaderboard.Close
+								Set rsLeaderboard = Nothing
 %>
-													</tbody>
-												</table>
+							</ul>
 
+							<a href="#" class="btn btn-light btn-block card-text mb-5">VIEW FULL LEADERBOARD</a>
+
+						</div>
+
+						<div class="col-12 col-xl-8">
+
+							<h4 class="text-left bg-info text-white p-3 mt-0 mb-0 rounded-top"><b>RECENT TRANSACTIONS</b><span class="float-right dripicons-list"></i></h4>
+
+							<ul class="list-group list-group-flush">
+<%
+								sqlGetSchmeckles = "SELECT TOP 10 SchmeckleTransactions.TransactionID, DateAdd(hour, -5, SchmeckleTransactions.TransactionDate) AS TransactionDate, SchmeckleTransactions.TransactionTypeID, TransactionTypeTitle, SchmeckleTransactions.TransactionTotal, "
+								sqlGetSchmeckles = sqlGetSchmeckles & "SchmeckleTransactions.TransactionHash, SchmeckleTransactions.AccountID, SchmeckleTransactions.TicketSlipID, Accounts.ProfileName, Accounts.ProfileImage, SchmeckleTransactions.TransactionDescription "
+								sqlGetSchmeckles = sqlGetSchmeckles & "FROM SchmeckleTransactions "
+								sqlGetSchmeckles = sqlGetSchmeckles & "INNER JOIN SchmeckleTransactionTypes ON SchmeckleTransactionTypes.TransactionTypeID = SchmeckleTransactions.TransactionTypeID "
+								sqlGetSchmeckles = sqlGetSchmeckles & "INNER JOIN Accounts ON Accounts.AccountID = SchmeckleTransactions.AccountID "
+								'If Len(Session.Contents("SITE_Schmeckles_AccountID")) > 0 And IsNumeric(Session.Contents("SITE_Schmeckles_AccountID")) Then sqlGetSchmeckles = sqlGetSchmeckles & "WHERE SchmeckleTransactions.AccountID = " & Session.Contents("SITE_Schmeckles_AccountID")
+								sqlGetSchmeckles = sqlGetSchmeckles & "ORDER BY TransactionDate DESC"
+
+								Set rsSchmeckles = sqlDatabase.Execute(sqlGetSchmeckles)
+
+								Do While Not rsSchmeckles.Eof
+
+									thisTransactionID = rsSchmeckles("TransactionID")
+									thisTransactionDate = rsSchmeckles("TransactionDate")
+									thisTransactionTypeID = rsSchmeckles("TransactionTypeID")
+									thisTransactionTypeTitle = rsSchmeckles("TransactionTypeTitle")
+									thisTransactionTotal = rsSchmeckles("TransactionTotal")
+									thisTransactionHash = rsSchmeckles("TransactionHash")
+									thisAccountID = rsSchmeckles("AccountID")
+									thisTicketSlipID = rsSchmeckles("TicketSlipID")
+									thisProfileName = rsSchmeckles("ProfileName")
+									thisProfileImage = rsSchmeckles("ProfileImage")
+									thisTransactionDescription = rsSchmeckles("TransactionDescription")
+									arrthisTransactionDate = Split(thisTransactionDate, " ")
+									If CDbl(thisTransactionTotal) > 0 Then
+										thisTransactionDirection = "badge-success"
+									Else
+										thisTransactionDirection = "badge-danger"
+									End If
+
+									thisTransactionTotal = FormatNumber(thisTransactionTotal, 0)
+									If thisTransactionTotal > 0 Then thisTransactionTotal = "+" & thisTransactionTotal
+%>
+									<a href="/schmeckles/transactions/<%= thisTransactionHash %>/" class="list-group-item list-group-item-action">
+										<div class="row">
+											<div class="col-8 col-lg-3 align-self-center">
+												<img src="https://samelevel.imgix.net/<%= thisProfileImage %>?w=40&h=40&fit=crop&crop=focalpoint" class="rounded-circle float-left">
+												<div class="float-left pl-2">
+													<div><b><%= thisProfileName %></b></div>
+													<div><%= Month(thisTransactionDate) %>/<%= Day(thisTransactionDate) %>&nbsp;<%= arrthisTransactionDate(1) %>&nbsp;<%= arrthisTransactionDate(2) %></div>
+												</div>
 											</div>
-
-										</div>
-
-									</div>
-
-									<div class="col-12 col-lg-8">
-
-										<h4>TRANSACTION LEDGER</h4>
-										<div class="card">
-
-											<div class="card-body">
-
-												<table class="table table-bordered mb-1">
-													<thead>
-														<tr>
-															<th>DATE</th>
-															<th>TEAM</th>
-															<th class="d-none d-lg-table-cell">TYPE</th>
-															<th class="text-right">TOTAL</th>
-														</tr>
-													</thead>
-													<tbody>
-<%
-													sqlGetSchmeckles = "SELECT SchmeckleTransactions.TransactionID, DateAdd(hour, -5, SchmeckleTransactions.TransactionDate) AS TransactionDate, SchmeckleTransactions.TransactionTypeID, TransactionTypeTitle, SchmeckleTransactions.TransactionTotal, "
-													sqlGetSchmeckles = sqlGetSchmeckles & "SchmeckleTransactions.AccountID, SchmeckleTransactions.TicketSlipID, Accounts.ProfileName, Accounts.ProfileImage, SchmeckleTransactions.TransactionDescription "
-													sqlGetSchmeckles = sqlGetSchmeckles & "FROM SchmeckleTransactions "
-													sqlGetSchmeckles = sqlGetSchmeckles & "INNER JOIN SchmeckleTransactionTypes ON SchmeckleTransactionTypes.TransactionTypeID = SchmeckleTransactions.TransactionTypeID "
-													sqlGetSchmeckles = sqlGetSchmeckles & "INNER JOIN Accounts ON Accounts.AccountID = SchmeckleTransactions.AccountID "
-													'If Len(Session.Contents("SITE_Schmeckles_AccountID")) > 0 And IsNumeric(Session.Contents("SITE_Schmeckles_AccountID")) Then sqlGetSchmeckles = sqlGetSchmeckles & "WHERE SchmeckleTransactions.AccountID = " & Session.Contents("SITE_Schmeckles_AccountID")
-													sqlGetSchmeckles = sqlGetSchmeckles & "ORDER BY TransactionDate DESC"
-
-													Set rsSchmeckles = sqlDatabase.Execute(sqlGetSchmeckles)
-
-													Do While Not rsSchmeckles.Eof
-
-														thisTransactionID = rsSchmeckles("TransactionID")
-														thisTransactionDate = rsSchmeckles("TransactionDate")
-														thisTransactionTypeID = rsSchmeckles("TransactionTypeID")
-														thisTransactionTypeTitle = rsSchmeckles("TransactionTypeTitle")
-														thisTransactionTotal = rsSchmeckles("TransactionTotal")
-														thisAccountID = rsSchmeckles("AccountID")
-														thisTicketSlipID = rsSchmeckles("TicketSlipID")
-														thisProfileName = rsSchmeckles("ProfileName")
-														thisProfileImage = rsSchmeckles("ProfileImage")
-														thisTransactionDescription = rsSchmeckles("TransactionDescription")
-														arrthisTransactionDate = Split(thisTransactionDate, " ")
-														If CDbl(thisTransactionTotal) > 0 Then
-															thisTransactionDirection = "text-success"
-														Else
-															thisTransactionDirection = "text-danger"
-														End If
-
-														thisTransactionTotal = FormatNumber(thisTransactionTotal, 0)
-														If thisTransactionTotal > 0 Then thisTransactionTotal = "+" & thisTransactionTotal
-
-%>
-														<tr>
-															<th scope="row">
-																<div class="d-none d-lg-table-cell"><div><%= arrthisTransactionDate(0) %></div><div><%= arrthisTransactionDate(1) %>&nbsp;<%= arrthisTransactionDate(2) %> (EST)</div></div>
-																<div class="d-block d-lg-none"><%= Month(arrthisTransactionDate(0)) & "/" & Day(arrthisTransactionDate(0)) %></div></div>
-															</th>
-															<td><img src="https://samelevel.imgix.net/<%= thisProfileImage %>?w=40&h=40&fit=crop&crop=focalpoint" class="rounded-circle hidden d-none d-sm-none d-md-inline"> &nbsp;<%= thisProfileName %></td>
-															<td class="d-none d-lg-table-cell"><%= thisTransactionTypeTitle %></td>
-															<td class="text-right <%= thisTransactionDirection %>"><%= thisTransactionTotal %></td>
-														</tr>
-<%
-														rsSchmeckles.MoveNext
-
-													Loop
-
-													rsSchmeckles.Close
-													Set rsSchmeckles = Nothing
-%>
-													</tbody>
-												</table>
-
+											<div class="col-lg-6 align-self-center text-left d-none d-lg-block text-truncate">
+												<div><i><%= thisTransactionHash %></i></div>
 											</div>
+											<div class="col-4 col-lg-3 align-self-center text-right"><span class="p-2 <%= thisTransactionDirection %> rounded"><%= thisTransactionTotal %></span></div>
 										</div>
-									</div>
-								</div>
+									</a>
+<%
+									rsSchmeckles.MoveNext
 
-							</div>
+								Loop
+
+								rsSchmeckles.Close
+								Set rsSchmeckles = Nothing
+%>
+							</ul>
+
+							<a href="/schmeckles/transactions/" class="btn btn-light btn-block mb-5">VIEW FULL LEDGER</a>
 
 						</div>
 
 					</div>
+
+
 
 				</div>
 

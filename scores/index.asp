@@ -51,24 +51,9 @@
 
 				<div class="container-fluid">
 
-					<div class="row">
+					<div class="row mt-4">
 
 						<div class="col-sm-12">
-
-							<div class="page-title-box">
-
-								<div class="float-right">
-
-									<ol class="breadcrumb">
-										<li class="breadcrumb-item"><a href="javascript:void(0);">Main</a></li>
-										<li class="breadcrumb-item active">Live Scoring</li>
-									</ol>
-
-								</div>
-
-								<h4 class="page-title">Live Scoring / Week <%= Session.Contents("CurrentPeriod") %></h4>
-
-							</div>
 
 							<div class="page-content">
 <%

@@ -13,6 +13,33 @@
 
 	End Function
 
+	Function SchmeckleTransaction (thisAccountID, thisTypeID, thisTicketSlipID, thisTotal, thisTransactionDescription)
+
+		Set rsLastHash = sqlDatabase.Execute("SELECT TOP 1 TransactionHash FROM SchmeckleTransactions ORDER BY TransactionID DESC")
+		thisTransactionHash = sha256(rsLastHash("TransactionHash") & thisTransactionTotal & thisAccountID)
+
+		Set rsInsert = Server.CreateObject("ADODB.RecordSet")
+		rsInsert.CursorType = adOpenKeySet
+		rsInsert.LockType = adLockOptimistic
+		rsInsert.Open "SchmeckleTransactions", sqlDatabase, , , adCmdTable
+		rsInsert.AddNew
+
+		rsInsert("TransactionTypeID") = thisTypeID
+		rsInsert("TransactionTotal") = thisTotal
+		rsInsert("TransactionHash") = thisTransactionHash
+		rsInsert("AccountID") = thisAccountID
+		If Len(thisTicketSlipID) > 0 Then rsInsert("TicketSlipID") = thisTicketSlipID
+
+		rsInsert.Update
+		Set rsInsert = Nothing
+
+		rsLastHash.Close
+		Set rsLastHash = Nothing
+
+		SchmeckleTransaction = 1
+
+	End Function
+
 	Function GetToken (League)
 
 		Set xmlhttpSLFFL = CreateObject("Microsoft.XMLHTTP")
@@ -538,29 +565,29 @@
 	End Function
 
 	Function URLDecode(sConvert)
-Dim aSplit
-Dim sOutput
-Dim I
-If IsNull(sConvert) Then
-URLDecode = ""
-Exit Function
-End If
+		Dim aSplit
+		Dim sOutput
+		Dim I
+		If IsNull(sConvert) Then
+		URLDecode = ""
+		Exit Function
+		End If
 
-' convert all pluses to spaces
-sOutput = REPLACE(sConvert, "+", " ")
+		' convert all pluses to spaces
+		sOutput = REPLACE(sConvert, "+", " ")
 
-' next convert %hexdigits to the character
-aSplit = Split(sOutput, "%")
+		' next convert %hexdigits to the character
+		aSplit = Split(sOutput, "%")
 
-If IsArray(aSplit) Then
-sOutput = aSplit(0)
-For I = 0 to UBound(aSplit) - 1
-sOutput = sOutput & _
-Chr("&H" & Left(aSplit(i + 1), 2)) &_
-Right(aSplit(i + 1), Len(aSplit(i + 1)) - 2)
-Next
-End If
+		If IsArray(aSplit) Then
+			sOutput = aSplit(0)
+			For I = 0 to UBound(aSplit) - 1
+				sOutput = sOutput & _
+				Chr("&H" & Left(aSplit(i + 1), 2)) &_
+				Right(aSplit(i + 1), Len(aSplit(i + 1)) - 2)
+			Next
+		End If
 
-URLDecode = sOutput
-End Function
+		URLDecode = sOutput
+	End Function
 %>

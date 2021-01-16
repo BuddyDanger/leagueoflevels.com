@@ -687,6 +687,33 @@ If Not rsTickets.Eof Then
 			sportsbookOUT = sportsbookOUT + (CInt(thisPayoutAmount) - CInt(thisBetAmount))
 			totalWinners = totalWinners + 1
 
+			thisTransactionDateTime = Now()
+			arrTransactionDateTime = Split(thisTransactionDateTime, " ")
+			thisTransactionDate = arrTransactionDateTime(0)
+			thisTransactionTime = arrTransactionDateTime(1)
+
+			arrTransactionTimeDetails = Split(thisTransactionTime, ":")
+			thisHour = arrTransactionTimeDetails(0)
+			thisMinute = arrTransactionTimeDetails(1)
+			thisSecond = Replace(arrTransactionTimeDetails(2), ".", "")
+
+			thisTransactionHash = sha256(thisSecond & thisMinute & thisHour & thisTransactionDate & thisPayoutAmount & thisAccountID)
+
+			sqlCheckExisting = "SELECT * FROM SchmeckleTransactions WHERE TransactionHash = '" & thisTransactionHash & "'"
+			Set rsExisting = sqlDatabase.Execute(sqlCheckExisting)
+
+			If Not rsExisting.Eof Then
+
+				rsExisting.Close
+				Set rsExisting = Nothing
+
+				Randomize
+				thisRandom = CDbl((9999999-1000000+1)*Rnd+1000000)
+
+				thisTransactionHash = sha256(thisRandom & thisTransactionDate & thisPayoutAmount & thisAccountID)
+
+			End If
+
 			sqlSchmeckleTransaction = "INSERT INTO SchmeckleTransactions (TransactionTypeID, TransactionTotal, AccountID, TicketSlipID) VALUES (1008, " & thisPayoutAmount & ", " & thisAccountID & ", " & thisTicketSlipID & ")"
 			Set rsInsertMatchup = sqlDatabase.Execute(sqlSchmeckleTransaction)
 

@@ -327,6 +327,11 @@
 	If Session.Contents("SITE_Level_1") = "schmeckles" Then
 
 		Session.Contents("SITE_Schmeckles_AccountID") = ""
+		Session.Contents("SITE_Schmeckles_TransactionHash") = ""
+		Session.Contents("SITE_Schmeckles_AccountID") = ""
+		Session.Contents("SITE_Schmeckles_AccountProfileName") = ""
+		Session.Contents("SITE_Schmeckles_TypeID") = ""
+		Session.Contents("SITE_Schmeckles_TypeTitle") = ""
 
 		arLevels = Split(LevelString, "||")
 		RebuildURL = 0
@@ -341,15 +346,59 @@
 
 			If MatchFound = 0 Then
 
-				sqlCheckProfiles = "SELECT * FROM Accounts WHERE ProfileURL = '" & Level & "'"
-				Set rsProfile = sqlDatabase.Execute(sqlCheckProfiles)
+				sqlCheckTransaction = "SELECT TransactionHash FROM SchmeckleTransactions WHERE TransactionHash = '" & Level & "'"
+				Set rsTransaction = sqlDatabase.Execute(sqlCheckTransaction)
 
-				If Not rsProfile.Eof Then
+				If Not rsTransaction.Eof Then
 
-					Session.Contents("SITE_Schmeckles_AccountID") = rsProfile("AccountID")
-					Session.Contents("SITE_Schmeckles_AccountProfileName") = rsProfile("ProfileName")
+					Session.Contents("SITE_Schmeckles_TransactionHash") = rsTransaction("TransactionHash")
 
-					 sTransferURL = "index.asp"
+					rsTransaction.Close
+					Set rsTransaction = Nothing
+
+					sTransferURL = "transactions/detail.asp"
+
+					MatchFound = 1
+
+				End If
+
+			End If
+
+			If MatchFound = 0 Then
+
+				sqlCheckAccounts = "SELECT * FROM Accounts WHERE ProfileURL = '" & Level & "'"
+				Set rsAccounts = sqlDatabase.Execute(sqlCheckAccounts)
+
+				If Not rsAccounts.Eof Then
+
+					Session.Contents("SITE_Schmeckles_AccountID") = rsAccounts("AccountID")
+					Session.Contents("SITE_Schmeckles_AccountProfileName") = rsAccounts("ProfileName")
+
+					rsAccounts.Close
+					Set rsAccounts = Nothing
+
+					sTransferURL = "transactions/index.asp"
+
+					MatchFound = 1
+
+				End If
+
+			End If
+
+			If MatchFound = 0 Then
+
+				sqlCheckTypes = "SELECT * FROM SchmeckleTransactionTypes WHERE TransactionTypeSafeTitle = '" & Level & "'"
+				Set rsTypes = sqlDatabase.Execute(sqlCheckTypes)
+
+				If Not rsTypes.Eof Then
+
+					Session.Contents("SITE_Schmeckles_TypeID") = rsTypes("TransactionTypeID")
+					Session.Contents("SITE_Schmeckles_TypeTitle") = rsTypes("TransactionTypeTitle")
+
+					rsTypes.Close
+					Set rsTypes = Nothing
+
+					sTransferURL = "transactions/index.asp"
 
 					MatchFound = 1
 
@@ -361,7 +410,7 @@
 
 		Next
 
-		If IsSingleMatchup = 0 Then sTransferURL = "index.asp"
+
 
 	End If
 
@@ -467,7 +516,7 @@
 
 		sFinalTransfer = "/" & Session.Contents("SITE_Level_1") & "/" & sTransferURL
 		Server.Transfer(sFinalTransfer)
-		'Response.Write(sqlGetBlog)
+		'Response.Write(sFinalTransfer)
 	Else
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">

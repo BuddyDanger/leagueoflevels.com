@@ -1,5 +1,6 @@
 <% If Session.Contents("LoggedIn") = "yes" Then %>
-
+<div class="col-12 col-lg-6 col-xl-8">
+<div class="row p-0">
 <%
 	sqlGetTicketSlips = "SELECT TicketSlipID, TicketTypeID, TicketSlips.AccountID, Accounts.ProfileName, TicketSlips.InsertDateTime, Matchups.TeamID1, Matchups.TeamID2, Matchups.TeamScore1, Matchups.TeamScore2, T1.TeamName AS TeamName1, T2.TeamName AS TeamName2, T3.TeamName AS BetTeamName, TicketSlips.TeamID, TicketSlips.Moneyline, TicketSlips.Spread, TicketSlips.OverUnderAmount, OverUnderBet, TicketSlips.BetAmount, TicketSlips.PayoutAmount, TicketSlips.IsWinner FROM TicketSlips "
 	sqlGetTicketSlips = sqlGetTicketSlips & "INNER JOIN Accounts ON Accounts.AccountID = TicketSlips.AccountID "
@@ -42,7 +43,7 @@
 			thisTicketDetails = thisOverUnderBet & " (" & thisOverUnderAmount & ")"
 		End If
 %>
-		<div class="col-xxxl-3 col-xxl-3 col-xl-4 col-lg-4 col-md-4 col-sm-12 col-xs-12 col-xxs-12">
+		<div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-xs-12 col-xxs-12">
 			<ul class="list-group" style="margin-bottom: 1rem;">
 				<li class="list-group-item text-center">
 					<div><b><%= thisBetTeamName %>&nbsp;<%= thisTicketDetails %></b></div>
@@ -144,7 +145,7 @@
 			thisTicketDetails = thisOverUnderBet & " (" & thisOverUnderAmount & ")"
 		End If
 %>
-		<div class="col-xxxl-3 col-xxl-3 col-xl-4 col-lg-4 col-md-4 col-sm-12 col-xs-12 col-xxs-12">
+		<div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-xs-12 col-xxs-12">
 			<ul class="list-group" style="margin-bottom: 1rem;">
 				<li class="list-group-item text-center">
 					<div><b><%= thisBetTeamName %>&nbsp;<%= thisTicketDetails %></b></div>
@@ -170,5 +171,6 @@
 
 	Loop
 %>
-
+</div>
+</div>
 <% End If %>
