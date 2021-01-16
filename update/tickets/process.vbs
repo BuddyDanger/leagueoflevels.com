@@ -357,6 +357,37 @@ Public Function SHA256(sMessage)
 
 End Function
 
+Function SchmeckleTransaction (thisAccountID, thisTypeID, thisTicketSlipID, thisTotal, thisTransactionDescription)
+
+	Set rsLastHash = sqlDatabase.Execute("SELECT TOP 1 TransactionHash FROM SchmeckleTransactions ORDER BY TransactionID DESC")
+	thisTransactionHash = sha256(rsLastHash("TransactionHash") & thisTransactionTotal & thisAccountID)
+
+	Set rsInsert = Server.CreateObject("ADODB.RecordSet")
+	rsInsert.CursorType = adOpenKeySet
+	rsInsert.LockType = adLockOptimistic
+	rsInsert.Open "SchmeckleTransactions", sqlDatabase, , , adCmdTable
+	rsInsert.AddNew
+
+	rsInsert("TransactionTypeID") = thisTypeID
+	rsInsert("TransactionTotal") = thisTotal
+	rsInsert("TransactionHash") = thisTransactionHash
+	rsInsert("TransactionLastHash") = rsLastHash("TransactionHash")
+	rsInsert("AccountID") = thisAccountID
+	If Len(thisTicketSlipID) > 0 Then rsInsert("TicketSlipID") = thisTicketSlipID
+
+	rsInsert.Update
+	Set rsInsert = Nothing
+
+	sqlUpdatePrevious = sqlProcessTransaction & "UPDATE SchmeckleTransactions SET TransactionNextHash = '" & thisTransactionHash & "' WHERE TransactionHash = '" & rsLastHash("TransactionHash") & "'"
+	Set rsUpdatePrevious = sqlDatabase.Execute(sqlUpdatePrevious)
+
+	rsLastHash.Close
+	Set rsLastHash = Nothing
+
+	SchmeckleTransaction = 1
+
+End Function
+
 Set sqlDatabase = CreateObject("ADODB.Connection")
 sqlDatabase.CursorLocation = adUseServer
 sqlDatabase.Open "Driver={SQL Server Native Client 11.0};Server=tcp:samelevel.database.windows.net,1433;Database=NextLevelDB;Uid=samelevel;Pwd=TheHammer123;Encrypt=yes;Connection Timeout=60;"
@@ -497,35 +528,9 @@ If Not rsTickets.Eof Then
 			thisTransactionTypeID = 1008
 			thisTransactionDateTime = Now()
 			thisTransactionTotal = thisPayoutAmount
+			thisTransactionDescription = ""
 
-			arrTransactionDateTime = Split(thisTransactionDateTime, " ")
-			thisTransactionDate = arrTransactionDateTime(0)
-			thisTransactionTime = arrTransactionDateTime(1)
-
-			arrTransactionTimeDetails = Split(thisTransactionTime, ":")
-			thisHour = arrTransactionTimeDetails(0)
-			thisMinute = arrTransactionTimeDetails(1)
-			thisSecond = Replace(arrTransactionTimeDetails(2), ".", "")
-
-			thisTransactionHash = sha256(thisSecond & thisMinute & thisHour & thisTransactionDate & thisTransactionTotal & thisAccountID)
-
-			sqlCheckExisting = "SELECT * FROM SchmeckleTransactions WHERE TransactionHash = '" & thisTransactionHash & "'"
-			Set rsExisting = sqlDatabase.Execute(sqlCheckExisting)
-
-			If Not rsExisting.Eof Then
-
-				rsExisting.Close
-				Set rsExisting = Nothing
-
-				Randomize
-				thisRandom = CDbl((9999999-1000000+1)*Rnd+1000000)
-
-				thisTransactionHash = sha256(thisRandom & thisTransactionDate & thisTransactionTotal & thisAccountID)
-
-			End If
-
-			sqlSchmeckleTransaction = "INSERT INTO SchmeckleTransactions (TransactionTypeID, TransactionTotal, TransactionHash, AccountID, TicketSlipID) VALUES (" & thisTransactionTypeID & ", " & thisPayoutAmount & ", '" & thisTransactionHash & "', " & thisAccountID & ", " & thisTicketSlipID & ")"
-			Set rsInsertMatchup = sqlDatabase.Execute(sqlSchmeckleTransaction)
+			thisTransactionStatus = SchmeckleTransaction (thisAccountID, thisTransactionTypeID, thisTicketSlipID, thisTransactionTotal, thisTransactionDescription)
 
 		Else
 
@@ -687,35 +692,12 @@ If Not rsTickets.Eof Then
 			sportsbookOUT = sportsbookOUT + (CInt(thisPayoutAmount) - CInt(thisBetAmount))
 			totalWinners = totalWinners + 1
 
+			thisTransactionTypeID = 1008
 			thisTransactionDateTime = Now()
-			arrTransactionDateTime = Split(thisTransactionDateTime, " ")
-			thisTransactionDate = arrTransactionDateTime(0)
-			thisTransactionTime = arrTransactionDateTime(1)
+			thisTransactionTotal = thisPayoutAmount
+			thisTransactionDescription = ""
 
-			arrTransactionTimeDetails = Split(thisTransactionTime, ":")
-			thisHour = arrTransactionTimeDetails(0)
-			thisMinute = arrTransactionTimeDetails(1)
-			thisSecond = Replace(arrTransactionTimeDetails(2), ".", "")
-
-			thisTransactionHash = sha256(thisSecond & thisMinute & thisHour & thisTransactionDate & thisPayoutAmount & thisAccountID)
-
-			sqlCheckExisting = "SELECT * FROM SchmeckleTransactions WHERE TransactionHash = '" & thisTransactionHash & "'"
-			Set rsExisting = sqlDatabase.Execute(sqlCheckExisting)
-
-			If Not rsExisting.Eof Then
-
-				rsExisting.Close
-				Set rsExisting = Nothing
-
-				Randomize
-				thisRandom = CDbl((9999999-1000000+1)*Rnd+1000000)
-
-				thisTransactionHash = sha256(thisRandom & thisTransactionDate & thisPayoutAmount & thisAccountID)
-
-			End If
-
-			sqlSchmeckleTransaction = "INSERT INTO SchmeckleTransactions (TransactionTypeID, TransactionTotal, AccountID, TicketSlipID) VALUES (1008, " & thisPayoutAmount & ", " & thisAccountID & ", " & thisTicketSlipID & ")"
-			Set rsInsertMatchup = sqlDatabase.Execute(sqlSchmeckleTransaction)
+			thisTransactionStatus = SchmeckleTransaction (thisAccountID, thisTransactionTypeID, thisTicketSlipID, thisTransactionTotal, thisTransactionDescription)
 
 		Else
 

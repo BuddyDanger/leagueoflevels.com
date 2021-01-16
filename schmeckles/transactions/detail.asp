@@ -237,7 +237,7 @@
 %>
 												<a href="#" class="list-group-item list-group-item-action rounded-bottom">
 													<div class="row">
-														<div class="col-8 col-lg-3 align-self-center">
+														<div class="col-6 col-lg-3 align-self-center">
 															<div class="float-left pl-2">
 																<div><%= thisTeamAbbr1 %> @ <%= thisTeamAbbr2 %></div>
 																<div><%= Month(thisInsertDateTime) %>/<%= Day(thisInsertDateTime) %>&nbsp;<%= arrthisTicketDate(1) %>&nbsp;<%= arrthisTicketDate(2) %></div>
@@ -246,7 +246,7 @@
 														<div class="col-lg-6 align-self-center text-center d-none d-lg-block">
 															<span class="p-2 badge-light rounded"><%= thisBetTeamName %>&nbsp;<%= thisTicketDetails %><span>
 														</div>
-														<div class="col-4 col-lg-3 align-self-center text-right"><span class="p-2 <%= thisTicketDirection %> rounded"><%= thisTicketStatus %></span></div>
+														<div class="col-6 col-lg-3 align-self-center text-right"><span class="p-2 <%= thisTicketDirection %> rounded"><%= thisTicketStatus %></span></div>
 													</div>
 												</a>
 <%
@@ -311,7 +311,7 @@
 %>
 												<a href="#" class="list-group-item list-group-item-action rounded-bottom">
 													<div class="row">
-														<div class="col-8 col-lg-3 align-self-center">
+														<div class="col-6 col-lg-3 align-self-center">
 															<div class="float-left pl-2">
 																<div><%= thisTeamName1 %> @ <%= thisTeamName2 %></div>
 																<div><%= Month(thisInsertDateTime) %>/<%= Day(thisInsertDateTime) %>&nbsp;<%= arrthisTicketDate(1) %>&nbsp;<%= arrthisTicketDate(2) %></div>
@@ -320,7 +320,7 @@
 														<div class="col-lg-6 align-self-center text-center d-none d-lg-block">
 															<span class="p-2 badge-light rounded"><%= thisBetTeamName %>&nbsp;<%= thisTicketDetails %><span>
 														</div>
-														<div class="col-4 col-lg-3 align-self-center text-right"><span class="p-2 <%= thisTicketDirection %> rounded"><%= thisTicketStatus %></span></div>
+														<div class="col-6 col-lg-3 align-self-center text-right"><span class="p-2 <%= thisTicketDirection %> rounded"><%= thisTicketStatus %></span></div>
 													</div>
 												</a>
 <%
@@ -340,7 +340,7 @@
 
 							<ul class="list-group list-group-flush mb-4">
 								<li class="list-group-item list-group-item-action rounded-top p-0">
-									<h4 class="text-left bg-info text-white p-3 mt-0 mb-0 rounded-top"><b>VERIFICATION</b><span class="float-right dripicons-list"></i></h4>
+									<h4 class="text-left bg-info text-white p-3 mt-0 mb-0 rounded-top"><b>VERIFICATION</b><span class="float-right dripicons-link"></i></h4>
 								</li>
 <%
 								If Len(thisTransactionNextHash) > 0 Then
