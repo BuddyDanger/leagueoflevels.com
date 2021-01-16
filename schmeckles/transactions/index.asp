@@ -157,7 +157,7 @@
 								sqlGetSchmeckles = sqlGetSchmeckles & "SchmeckleTransactions.TransactionHash, SchmeckleTransactions.AccountID, SchmeckleTransactions.TicketSlipID, Accounts.ProfileName, Accounts.ProfileImage, SchmeckleTransactions.TransactionDescription "
 								sqlGetSchmeckles = sqlGetSchmeckles & "FROM SchmeckleTransactions "
 								sqlGetSchmeckles = sqlGetSchmeckles & "INNER JOIN SchmeckleTransactionTypes ON SchmeckleTransactionTypes.TransactionTypeID = SchmeckleTransactions.TransactionTypeID "
-								sqlGetSchmeckles = sqlGetSchmeckles & "INNER JOIN Accounts ON Accounts.AccountID = SchmeckleTransactions.AccountID "
+								sqlGetSchmeckles = sqlGetSchmeckles & "LEFT JOIN Accounts ON Accounts.AccountID = SchmeckleTransactions.AccountID "
 								sqlGetSchmeckles = sqlGetSchmeckles & "WHERE 1 = 1 AND "
 								If Len(Session.Contents("SITE_Schmeckles_AccountID")) > 0 And IsNumeric(Session.Contents("SITE_Schmeckles_AccountID")) Then sqlGetSchmeckles = sqlGetSchmeckles & "SchmeckleTransactions.AccountID = " & Session.Contents("SITE_Schmeckles_AccountID") & " AND "
 								If Len(Session.Contents("SITE_Schmeckles_TypeID")) > 0 And IsNumeric(Session.Contents("SITE_Schmeckles_TypeID")) Then sqlGetSchmeckles = sqlGetSchmeckles & "SchmeckleTransactions.TransactionTypeID = " & Session.Contents("SITE_Schmeckles_TypeID") & " AND "
@@ -194,13 +194,20 @@
 											thisTransactionDirection = "badge-danger"
 										End If
 
+										If CInt(thisAccountID) = 0 Then
+											thisProfileName = "LOL BANK"
+											thisProfileImage = "<img src=""http://leagueoflevels/assets/images/logo-sm.png"" width=""40"" class=""rounded-circle float-left"">"
+										Else
+											thisProfileImage = "<img src=""https://samelevel.imgix.net/" & thisProfileImage & "?w=40&h=40&fit=crop&crop=focalpoint"" class=""rounded-circle float-left"">"
+										End If
+
 										thisTransactionTotal = FormatNumber(thisTransactionTotal, 0)
 										If thisTransactionTotal > 0 Then thisTransactionTotal = "+" & thisTransactionTotal
 %>
 										<a href="/schmeckles/transactions/<%= thisTransactionHash %>/" class="list-group-item list-group-item-action">
 											<div class="row">
 												<div class="col-8 col-lg-3 align-self-center">
-													<img src="https://samelevel.imgix.net/<%= thisProfileImage %>?w=40&h=40&fit=crop&crop=focalpoint" class="rounded-circle float-left">
+													<%= thisProfileImage %>
 													<div class="float-left pl-2">
 														<div><b><%= thisProfileName %></b></div>
 														<div><%= Month(thisTransactionDate) %>/<%= Day(thisTransactionDate) %>&nbsp;<%= arrthisTransactionDate(1) %>&nbsp;<%= arrthisTransactionDate(2) %></div>

@@ -341,727 +341,690 @@
 
 				<div class="container-fluid">
 
-					<div class="row">
+					<div class="row mt-4">
+<%
+						If Session.Contents("SITE_Bet_Type") = "nfl" Then
 
-						<div class="col-sm-12">
+							If thisGameTimeEST < thisCurrentTimeEST Then thisFormDisabled = "disabled"
 
-							<div class="page-title-box">
+							thisTeamProjected1 = (thisOverUnderTotal / 2) + (CDbl(thisTeamSpread1) / 2)
+							thisTeamProjected2 = (thisOverUnderTotal / 2) + (CDbl(thisTeamSpread2) / 2)
 
-								<div class="float-right">
+							If thisTeamSpread1 Then thisTeamProjected1 = (thisOverUnderTotal / 2) - (CDbl(thisTeamSpread1) / 2)
+							If thisTeamSpread2 Then thisTeamProjected2 = (thisOverUnderTotal / 2) - (CDbl(thisTeamSpread2) / 2)
 
-									<ol class="breadcrumb">
-										<li class="breadcrumb-item"><a href="/">Main</a></li>
-										<li class="breadcrumb-item active"><a href="/sportsbook/">Sportsbook</a></li>
-									</ol>
+							If thisTeamMoneyline1 > 0 Then thisTeamMoneyline1 = "+" & thisTeamMoneyline1
+							If thisTeamMoneyline2 > 0 Then thisTeamMoneyline2 = "+" & thisTeamMoneyline2
 
-								</div>
+							If thisTeamSpread1 > 0 Then thisTeamSpread1 = "+" & thisTeamSpread1
+							If thisTeamSpread2 > 0 Then thisTeamSpread2 = "+" & thisTeamSpread2
 
-								<h4 class="page-title"><a href="/sportsbook/">Sportsbook</a> / Matchup #<%= Session.Contents("SITE_Bet_MatchupID") %></h4>
+							headerBGcolor = "032B43"
+							headerTextColor = "fff"
+							headerText = "NFL"
+							cardText = "03324F"
 
-							</div>
+						Else
 
-							<div class="page-content">
+							If thisTeamWinPercentage1 < 0.2 Or thisTeamWinPercentage1 > 0.8 Then thisFormDisabled = "disabled"
 
-								<div class="row">
+							thisTeamWinPercentage1 = (thisTeamWinPercentage1 * 100) & "%"
+							thisTeamWinPercentage2 = (thisTeamWinPercentage2 * 100) & "%"
+
+							If thisTeamMoneyline1 > 0 Then thisTeamMoneyline1 = "+" & thisTeamMoneyline1
+							If thisTeamMoneyline2 > 0 Then thisTeamMoneyline2 = "+" & thisTeamMoneyline2
+
+							If thisTeamSpread1 > 0 Then thisTeamSpread1 = "+" & thisTeamSpread1
+							If thisTeamSpread2 > 0 Then thisTeamSpread2 = "+" & thisTeamSpread2
+
+							If CInt(thisMatchupLevelID) = 0 Then
+								headerBGcolor = "D00000"
+								headerTextColor = "fff"
+								headerText = "CUP"
+								cardText = "520000"
+							End If
+							If CInt(thisMatchupLevelID) = 1 Then
+								headerBGcolor = "FFBA08"
+								headerTextColor = "fff"
+								headerText = "OMEGA"
+								cardText = "805C04"
+							End If
+							If CInt(thisMatchupLevelID) = 2 Then
+								headerBGcolor = "136F63"
+								headerTextColor = "fff"
+								headerText = "SAME LEVEL"
+								cardText = "0F574D"
+							End If
+							If CInt(thisMatchupLevelID) = 3 Then
+								headerBGcolor = "032B43"
+								headerTextColor = "fff"
+								headerText = "FARM LEVEL"
+								cardText = "03324F"
+							End If
+
+						End If
+%>
+						<div class="col-12 col-xl-3">
+							<a href="<%= thisMatchupURL %>" style="text-decoration: none; display: block;">
+								<ul class="list-group mb-4">
 <%
 									If Session.Contents("SITE_Bet_Type") = "nfl" Then
-
-										If thisGameTimeEST < thisCurrentTimeEST Then thisFormDisabled = "disabled"
-
-										thisTeamProjected1 = (thisOverUnderTotal / 2) + (CDbl(thisTeamSpread1) / 2)
-										thisTeamProjected2 = (thisOverUnderTotal / 2) + (CDbl(thisTeamSpread2) / 2)
-
-										If thisTeamSpread1 Then thisTeamProjected1 = (thisOverUnderTotal / 2) - (CDbl(thisTeamSpread1) / 2)
-										If thisTeamSpread2 Then thisTeamProjected2 = (thisOverUnderTotal / 2) - (CDbl(thisTeamSpread2) / 2)
-
-										If thisTeamMoneyline1 > 0 Then thisTeamMoneyline1 = "+" & thisTeamMoneyline1
-										If thisTeamMoneyline2 > 0 Then thisTeamMoneyline2 = "+" & thisTeamMoneyline2
-
-										If thisTeamSpread1 > 0 Then thisTeamSpread1 = "+" & thisTeamSpread1
-										If thisTeamSpread2 > 0 Then thisTeamSpread2 = "+" & thisTeamSpread2
-
-										headerBGcolor = "032B43"
-										headerTextColor = "fff"
-										headerText = "NFL"
-										cardText = "03324F"
-
+%>
+										<li class="list-group-item p-0"><h4 class="text-left text-white p-3 mt-0 mb-0 rounded-top" style="background-color: #032B43;"><strong><%= headerText %></strong> <%= thisGameTimeEST %></h4></li>
+<%
 									Else
-
-										If thisTeamWinPercentage1 < 0.2 Or thisTeamWinPercentage1 > 0.8 Then thisFormDisabled = "disabled"
-
-										thisTeamWinPercentage1 = (thisTeamWinPercentage1 * 100) & "%"
-										thisTeamWinPercentage2 = (thisTeamWinPercentage2 * 100) & "%"
-
-										If thisTeamMoneyline1 > 0 Then thisTeamMoneyline1 = "+" & thisTeamMoneyline1
-										If thisTeamMoneyline2 > 0 Then thisTeamMoneyline2 = "+" & thisTeamMoneyline2
-
-										If thisTeamSpread1 > 0 Then thisTeamSpread1 = "+" & thisTeamSpread1
-										If thisTeamSpread2 > 0 Then thisTeamSpread2 = "+" & thisTeamSpread2
-
-										If CInt(thisMatchupLevelID) = 0 Then
-											headerBGcolor = "D00000"
-											headerTextColor = "fff"
-											headerText = "CUP"
-											cardText = "520000"
-										End If
-										If CInt(thisMatchupLevelID) = 1 Then
-											headerBGcolor = "FFBA08"
-											headerTextColor = "fff"
-											headerText = "OMEGA"
-											cardText = "805C04"
-										End If
-										If CInt(thisMatchupLevelID) = 2 Then
-											headerBGcolor = "136F63"
-											headerTextColor = "fff"
-											headerText = "SAME LEVEL"
-											cardText = "0F574D"
-										End If
-										If CInt(thisMatchupLevelID) = 3 Then
-											headerBGcolor = "032B43"
-											headerTextColor = "fff"
-											headerText = "FARM LEVEL"
-											cardText = "03324F"
-										End If
-
-									End If
 %>
-									<div class="col-xxxl-4 col-xxl-4 col-xl-4 col-lg-12 col-md-12 col-sm-12 col-xs-12 col-xxs-12">
-										<a href="<%= thisMatchupURL %>" style="text-decoration: none; display: block;">
-											<ul class="list-group" style="margin-bottom: 1rem;">
-<%
-												If Session.Contents("SITE_Bet_Type") = "nfl" Then
-%>
-													<li class="list-group-item" style="padding-top: 0.25rem; padding-bottom: 0.25rem; font-size: 0.75rem; text-align: center; background-color: #<%= headerBGcolor %>; color: #<%= headerTextColor %>;"><strong><%= headerText %></strong> <%= thisGameTimeEST %></li>
-<%
-												Else
-%>
-													<li class="list-group-item" style="padding-top: 0.25rem; padding-bottom: 0.25rem; font-size: 0.75rem; text-align: center; background-color: #<%= headerBGcolor %>; color: #<%= headerTextColor %>;"><strong><%= headerText %></strong> #<%= thisMatchupID %></li>
-<%
-												End If
-%>
-												<li class="list-group-item">
-													<span style="font-size: 1em; background-color: #fff; color: #<%= cardText %>; float: right;"><%= thisTeamScore1 %></span>
-													<div style="font-size: 13px; color: #<%= cardText %>;"><b><%= thisTeamName1 %></b></div>
-													<div style="font-size: 13px; color: #<%= cardText %>;"><%= thisTeamProjected1 %> Proj., <% If Session.Contents("SITE_Bet_Type") <> "nfl" Then %><%= thisTeamWinPercentage1 %> Win, <% End If %><%= thisTeamSpread1 %> Spread, <%= thisTeamMoneyline1 %> ML</div>
-												</li>
-												<li class="list-group-item">
-													<span style="font-size: 1em; background-color: #fff; color: #<%= cardText %>; float: right;"><%= thisTeamScore2 %></span>
-													<div style="font-size: 13px; color: #<%= cardText %>;"><b><%= thisTeamName2 %></b></div>
-													<div style="font-size: 13px; color: #<%= cardText %>;"><%= thisTeamProjected2 %> Proj., <% If Session.Contents("SITE_Bet_Type") <> "nfl" Then %><%= thisTeamWinPercentage2 %> Win, <% End If %><%= thisTeamSpread2 %> Spread, <%= thisTeamMoneyline2 %> ML</div>
-												</li>
-											</ul>
-										</a>
-									</div>
-
-									<div class="col-xxxl-4 col-xxl-4 col-xl-4 col-lg-6 col-md-6 col-sm-6 col-xs-6 col-xxs-6">
-										<ul class="list-group" style="margin-bottom: 1rem;">
-											<li class="list-group-item" style="padding-top: 0.25rem; padding-bottom: 0.25rem; font-size: 0.75rem; text-align: center; background-color: #<%= headerBGcolor %>; color: #<%= headerTextColor %>;"><strong>YOUR SCHMECKLE TOTAL</strong></li>
-											<li class="list-group-item text-center" style="color: #<%= cardText %>;">
-												<h1 class="mb-0 mt-2 pt-2"><%= FormatNumber(thisSchmeckleTotal, 0) %></h1>
-												<div class="mb-3 pb-1">SCHMECKLES</div>
-											</li>
-										</ul>
-									</div>
-
-									<div class="col-xxxl-4 col-xxl-4 col-xl-4 col-lg-6 col-md-6 col-sm-6 col-xs-6 col-xxs-6">
-										<ul class="list-group" style="margin-bottom: 1rem;">
-											<li class="list-group-item" style="padding-top: 0.25rem; padding-bottom: 0.25rem; font-size: 0.75rem; text-align: center; background-color: #<%= headerBGcolor %>; color: #<%= headerTextColor %>;"><strong>REFRESH COUNTDOWN</strong></li>
-											<li class="list-group-item text-center" style="color: #<%= cardText %>;">
-												<h1 class="mb-0 mt-2 pt-2" id="countdownTimer">59</h1>
-												<div class="mb-3 pb-1">SECONDS</div>
-											</li>
-										</ul>
-									</div>
-
-								</div>
-
-								<div class="row">
-
-									<div class="col-12 col-xl-4 col-lg-6">
-										<div class="card">
-
-											<div class="card-body">
-
-												<div style="border-bottom: 1px solid #e8ebf3;"><h4>Moneyline Wager</h4></div>
-
-												<form action="<%= thisMatchupURL %>" method="post">
-													<div class="form-group">
-
-														<input type="hidden" id="inputTicketGo" name="inputTicketGo" value="go" />
-														<input type="hidden" id="inputTicketType" name="inputTicketType" value="1" />
-														<input type="hidden" id="inputMatchupID" name="inputMatchupID" value="<%= thisMatchupID %>" />
-														<input type="hidden" id="inputTeamID1" name="inputTeamID1" value="<%= thisTeamID1 %>" />
-														<input type="hidden" id="inputTeamID2" name="inputTeamID2" value="<%= thisTeamID2 %>" />
-														<input type="hidden" id="inputMoneylineValue1" name="inputMoneylineValue1" value="<%= thisTeamMoneyline1 %>" />
-														<input type="hidden" id="inputMoneylineValue2" name="inputMoneylineValue2" value="<%= thisTeamMoneyline2 %>" />
-														<input type="hidden" id="inputMoneylineWin" name="inputMoneylineWin" value="" />
-														<input type="hidden" id="inputMoneylinePayout" name="inputMoneylinePayout" value="" />
-
-														<label class="form-check-label-lg mt-4" for="inputMoneylineTeam" class="col-form-label"><b>Team (ML)</b></label>
-														<select <%= thisFormDisabled %> class="form-control form-control-lg form-check-input-lg" name="inputMoneylineTeam" id="inputMoneylineTeam" onchange="calculate_moneyline_payout(document.getElementById('inputMoneylineBetAmount').value)" required>
-															<option></option>
-															<option value="1"><%= thisTeamName1 %> (<%= thisTeamMoneyline1 %> ML)</option>
-															<option value="2"><%= thisTeamName2 %> (<%= thisTeamMoneyline2 %> ML)</option>
-														</select>
-
-														<label for="inputMoneylineBetAmount" class="col-form-label mt-2"><b>Bet Amount (Schmeckles)</b></label>
-														<input <%= thisFormDisabled %> type="number" class="form-control form-control-lg" min="0" max="<%= thisSchmeckleTotal %>" id="inputMoneylineBetAmount" name="inputMoneylineBetAmount" onkeyup="calculate_moneyline_payout(this.value)" required>
-
-														<div class="row">
-															<div class="col-12 col-md-6">
-																<label class="col-form-label mt-3 mb-md-3 mb-sm-0"><b>TO WIN:</b>  <span id="winMoneyline"><span></label>
-															</div>
-															<div class="col-12 col-md-6">
-																<label class="col-form-label mt-3 mb-3"><b>PAYOUT:</b>  <span id="payoutMoneyline"><span></label>
-															</div>
-														</div>
-
-														<button <%= thisFormDisabled %> type="submit" class="btn btn-block btn-success mb-3">Place Bet</button>
-
-													</div>
-												</form>
-
-											</div>
-
-										</div>
-									</div>
-
-									<div class="col-12 col-xl-4 col-lg-6">
-										<div class="card">
-
-											<div class="card-body">
-
-												<div style="border-bottom: 1px solid #e8ebf3;"><h4>Point Spread Wager</h4></div>
-
-												<form action="<%= thisMatchupURL %>" method="post">
-													<div class="form-group">
-
-														<input type="hidden" id="inputTicketGo" name="inputTicketGo" value="go" />
-														<input type="hidden" id="inputTicketType" name="inputTicketType" value="2" />
-														<input type="hidden" id="inputMatchupID" name="inputMatchupID" value="<%= thisMatchupID %>" />
-														<input type="hidden" id="inputTeamID1" name="inputTeamID1" value="<%= thisTeamID1 %>" />
-														<input type="hidden" id="inputTeamID2" name="inputTeamID2" value="<%= thisTeamID2 %>" />
-														<input type="hidden" id="inputSpreadValue1" name="inputSpreadValue1" value="<%= thisTeamSpread1 %>" />
-														<input type="hidden" id="inputSpreadValue2" name="inputSpreadValue2" value="<%= thisTeamSpread2 %>" />
-														<input type="hidden" id="inputSpreadWin" name="inputSpreadWin" value="" />
-														<input type="hidden" id="inputSpreadPayout" name="inputSpreadPayout" value="" />
-
-														<label class="form-check-label-lg mt-4" for="inputSpreadTeam" class="col-form-label"><b>Team (Spread)</b></label>
-														<select <%= thisFormDisabled %> class="form-control form-control-lg form-check-input-lg" name="inputSpreadTeam" id="inputSpreadTeam" onchange="calculate_spread_payout('document.getElementById('inputSpreadBetAmount').value')" required>
-															<option></option>
-															<option value="1"><%= thisTeamName1 %> (<%= thisTeamSpread1 %>)</option>
-															<option value="2"><%= thisTeamName2 %> (<%= thisTeamSpread2 %>)</option>
-														</select>
-
-														<label for="inputSpreadBetAmount" class="col-form-label mt-2"><b>Bet Amount (Schmeckles)</b></label>
-														<input <%= thisFormDisabled %> type="number" class="form-control form-control-lg" min="0" max="<%= thisSchmeckleTotal %>" id="inputSpreadBetAmount" name="inputSpreadBetAmount" onkeyup="calculate_spread_payout(this.value)" required>
-
-														<div class="row">
-															<div class="col-12 col-md-6">
-																<label class="col-form-label mt-3 mb-md-3 mb-sm-0"><b>TO WIN:</b>  <span id="winSpread"><span></label>
-															</div>
-															<div class="col-12 col-md-6">
-																<label class="col-form-label mt-3 mb-3"><b>PAYOUT:</b>  <span id="payoutSpread"><span></label>
-															</div>
-														</div>
-
-														<button <%= thisFormDisabled %> type="submit" class="btn btn-block btn-success mb-3">Place Bet</button>
-
-													</div>
-												</form>
-
-											</div>
-
-										</div>
-									</div>
-
-									<div class="col-12 col-xl-4 col-lg-6">
-										<div class="card">
-
-											<div class="card-body">
-
-												<div style="border-bottom: 1px solid #e8ebf3;"><h4>Over / Under Wager</h4></div>
-
-												<form action="<%= thisMatchupURL %>" method="post">
-													<div class="form-group">
-
-														<input type="hidden" id="inputTicketGo" name="inputTicketGo" value="go" />
-														<input type="hidden" id="inputTicketType" name="inputTicketType" value="3" />
-														<input type="hidden" id="inputMatchupID" name="inputMatchupID" value="<%= thisMatchupID %>" />
-														<input type="hidden" id="inputOverUnderAmount" name="inputOverUnderAmount" value="<%= thisOverUnderTotal %>" />
-														<input type="hidden" id="inputOverUnderWin" name="inputOverUnderWin" value="" />
-														<input type="hidden" id="inputOverUnderPayout" name="inputOverUnderPayout" value="" />
-
-														<label class="form-check-label-lg mt-4" for="inputOverUnderBet" class="col-form-label"><b>Over / Under (Points)</b></label>
-														<select <%= thisFormDisabled %> class="form-control form-control-lg form-check-input-lg" name="inputOverUnderBet" id="inputOverUnderBet" onchange="calculate_ou_payout(document.getElementById('inputOverUnderBetAmount').value)">
-															<option></option>
-															<option value="1">OVER (<%= thisOverUnderTotal %>)</option>
-															<option value="2">UNDER (<%= thisOverUnderTotal %>)</option>
-														</select>
-
-														<label for="inputOverUnderBetAmount" class="col-form-label mt-2"><b>Bet Amount (Schmeckles)</b></label>
-														<input <%= thisFormDisabled %> type="number" class="form-control form-control-lg" min="0" max="<%= thisSchmeckleTotal %>" id="inputOverUnderBetAmount" name="inputOverUnderBetAmount" onkeyup="calculate_ou_payout(this.value)">
-
-														<div class="row">
-															<div class="col-12 col-md-6">
-																<label class="col-form-label mt-3 mb-md-3 mb-sm-0"><b>TO WIN:</b>  <span id="winOverUnder"><span></label>
-															</div>
-															<div class="col-12 col-md-6">
-																<label class="col-form-label mt-3 mb-3"><b>PAYOUT:</b>  <span id="payoutOverUnder"><span></label>
-															</div>
-														</div>
-
-														<button <%= thisFormDisabled %> type="submit" class="btn btn-block btn-success mb-3">Place Bet</button>
-
-													</div>
-												</form>
-
-											</div>
-
-										</div>
-									</div>
-<%
-									If Session.Contents("SITE_Bet_Type") <> "nfl" Then
-
-										If thisTeamLevelID1 = 1 Then thisTeamLevelTitle1 = "OMEGA"
-										If thisTeamLevelID1 = 2 Then thisTeamLevelTitle1 = "SLFFL"
-										If thisTeamLevelID1 = 3 Then thisTeamLevelTitle1 = "FLFFL"
-
-										Set oXML = CreateObject("MSXML2.DOMDocument.3.0")
-										oXML.loadXML(GetScores(thisTeamLevelTitle1, Session.Contents("CurrentPeriod")))
-
-										oXML.setProperty "SelectionLanguage", "XPath"
-										Set objTeam = oXML.selectSingleNode(".//team[@id = " & thisTeamCBSID1 & "]")
-
-										Set objTeamScore1 = objTeam.getElementsByTagName("pts")
-										Set objTeamPlayers1 = objTeam.getElementsByTagName("player")
-
-										TeamScore1 = FormatNumber(CDbl(objTeamScore1.item(0).text), 2)
-%>
-										<div class="col-12 col-lg-6">
-											<div class="card">
-
-												<div class="card-body">
-
-													<div style="border-bottom: 1px solid #e8ebf3;"><h4><%= thisTeamName1 %> (<%= TeamScore1 %>)</h4></div><br />
-<%
-													HitReserves = 0
-													ExtraBorder = 0
-													TeamRoster1 = ""
-													For i = 0 to (objTeamPlayers1.length - 1)
-
-														Set objPlayer = objTeamPlayers1.item(i)
-
-														thisPlayerID = objPlayer.getAttribute("id")
-
-														thisPlayerName = ""
-														thisPlayerPoints = ""
-														thisPlayerStatus = ""
-														thisPlayerGameTimestamp = ""
-														thisPlayerPMR = 0
-														thisPlayerHomeGame = 2
-														thisPlayerProTeam = ""
-														thisPlayerPosition = ""
-														thisPlayerOpponent = ""
-														thisPlayerQuarter = ""
-														thisPlayerQuarterTimeRemaining = ""
-
-														Set objPlayerName = objPlayer.getElementsByTagName("fullname")
-														If objPlayerName.Length > 0 Then thisPlayerName = objPlayerName.item(0).text
-
-														Set objPlayerPoints = objPlayer.getElementsByTagName("fpts")
-														If objPlayerPoints.Length > 0 Then thisPlayerPoints = objPlayerPoints.item(0).text
-														If IsNumeric(thisPlayerPoints) Then thisPlayerPoints = FormatNumber(thisPlayerPoints, 2)
-
-														Set objPlayerStatus = objPlayer.getElementsByTagName("status")
-														If objPlayerStatus.Length > 0 Then thisPlayerStatus = objPlayerStatus.item(0).text
-
-														Set objPlayerStats = objPlayer.getElementsByTagName("stats_period")
-														If objPlayerStats.Length > 0 Then thisPlayerStats = objPlayerStats.item(0).text
-
-														Set objPlayerGameTimestamp = objPlayer.getElementsByTagName("game_start_timestamp")
-														If objPlayerGameTimestamp.Length > 0 Then thisPlayerGameTimestamp = objPlayerGameTimestamp.item(0).text
-
-														Set objPlayerPMR = objPlayer.getElementsByTagName("minutes_remaining")
-														If objPlayerPMR.Length > 0 Then thisPlayerPMR = CInt(objPlayerPMR.item(0).text)
-
-														Set objPlayerHomeGame = objPlayer.getElementsByTagName("home_game")
-														If objPlayerHomeGame.Length > 0 Then thisPlayerHomeGame = CInt(objPlayerHomeGame.item(0).text)
-
-														Set objPlayerProTeam = objPlayer.getElementsByTagName("pro_team")
-														If objPlayerProTeam.Length > 0 Then thisPlayerProTeam = objPlayerProTeam.item(0).text
-
-														Set objPlayerPosition = objPlayer.getElementsByTagName("position")
-														If objPlayerPosition.Length > 0 Then thisPlayerPosition = objPlayerPosition.item(0).text
-
-														Set objPlayerOpponent = objPlayer.getElementsByTagName("opponent")
-														If objPlayerOpponent.Length > 0 Then thisPlayerOpponent = objPlayerOpponent.item(0).text
-
-														Set objPlayerQuarter = objPlayer.getElementsByTagName("quarter")
-														If objPlayerQuarter.Length > 0 Then thisPlayerQuarter = objPlayerQuarter.item(0).text
-
-														Set objPlayerQuarterTimeRemaining = objPlayer.getElementsByTagName("time_remaining")
-														If objPlayerQuarterTimeRemaining.Length > 0 Then thisPlayerQuarterTimeRemaining = objPlayerQuarterTimeRemaining.item(0).text
-
-														If thisPlayerHomeGame = 1 Then
-															thisGameLine = thisPlayerProTeam & " vs. " & thisPlayerOpponent
-														ElseIf thisPlayerHomeGame = 0 Then
-															thisGameLine = thisPlayerProTeam & " @ " & thisPlayerOpponent
-														Else
-															thisGameLine = ""
-														End If
-
-														If thisPlayerHomeGame < 2 Then
-
-															TeamRoster1 = TeamRoster1 & thisPlayerID & ","
-
-															thisPlayerGameTimestamp = DateAdd("s", thisPlayerGameTimestamp, DateSerial(1970,1,1))
-															thisPlayerGameTimestamp = DateAdd("h", -5, thisPlayerGameTimestamp)
-
-															thisPlayerGameDay = UCase(WeekdayName(Weekday(thisPlayerGameTimestamp),True))
-															thisPlayerHour = Hour(thisPlayerGameTimestamp)
-															thisPlayerMinute = Minute(thisPlayerGameTimestamp)
-
-															If thisPlayerHour > 12 Then
-																AMPM = "PM"
-																thisPlayerHour = thisPlayerHour - 12
-															Else
-																AMPM = "AM"
-															End If
-
-															If Len(thisPlayerMinute) = 1 Then thisPlayerMinute = "0" & thisPlayerMinute
-
-														End If
-
-														thisPlayerPMRColor = "success"
-														If thisPlayerPMR < 40 Then thisPlayerPMRColor = "warning"
-														If thisPlayerPMR < 20 Then thisPlayerPMRColor = "danger"
-														thisPlayerPMRPercent = (thisPlayerPMR * 100) / 60
-
-														If thisPlayerPosition = "DST" Then
-															thisBackgroundPosition = "-100px 50%"
-														Else
-															thisBackgroundPosition = "-70px -20px"
-														End If
-
-														If (thisPlayerStatus = "Reserve" Or thisPlayerStatus = "Injured") And HitReserves = 0 Then StartReserves = 1
-														If thisPlayerStatus = "Reserve" Or thisPlayerStatus = "Injured" Then HitReserves = 1
-
-														If StartReserves = 1 Then Exit For
-
-														If thisPlayerPMR > 0 Then
-%>
-															<li class="list-group-item team-1-player-<%= thisPlayerID %>">
-
-																<div class="row">
-																	<div class="col-xxs-9 col-xl-9" style="line-height: 1.5rem;">
-																		<div class="player-name" style="font-size: 16px;"><b><%= thisPlayerName %></b></div>
-																		<div class="d-none d-xl-block " style="line-height: 1.5rem;">
-																		<%	If thisPlayerHomeGame < 2 Then %>
-																			<span class="team-1-player-<%= thisPlayerID %>-gameline"><%= thisGameLine %> - <%= thisPlayerGameDay %>&nbsp;<%= thisPlayerHour %>:<%= thisPlayerMinute %><%= AMPM %></span> &mdash;
-																			<span class="team-1-player-<%= thisPlayerID %>-gameposition"><%= thisPlayerQuarter %>Q&nbsp;<%= thisPlayerQuarterTimeRemaining %></span>
-																		<% Else %>
-																			<span class="team-1-player-<%= thisPlayerID %>-gameline">BYE</span>
-																		<% End If %>
-																		</div>
-																	</div>
-																	<div class="col-xxs-3 col-xl-3 text-right" style="padding-right: 1rem; text-align: right;">
-																		<span class="team-1-player-<%= thisPlayerID %>-points player-points" style="font-size: 2em; background-color: #fff;"><%= thisPlayerPoints %></span>
-																	</div>
-																</div>
-
-																<div class="row">
-																	<div class="col-12 team-1-player-<%= thisPlayerID %>-stats" style="line-height: 1rem;"><%= thisPlayerStats %></div>
-																</div>
-
-																<div class="progress team-1-player-<%= thisPlayerID %>-progress" style="height: 1px; margin-top: 6px; margin-bottom: 0; padding-bottom: 0;">
-																	<div class="progress-bar progress-bar-<%= thisPlayerPMRColor %>" role="progressbar" aria-valuenow="<%= thisPlayerPMRPercent %>" aria-valuemin="0" aria-valuemax="100" style="width: <%= thisPlayerPMRPercent %>%; ">
-																		<span class="sr-only team-1-progress-sr"><%= thisPlayerPMRPercent %>%</span>
-																	</div>
-																</div>
-
-															</li>
-<%
-														End If
-
-														If StartReserves = 1 Then StartReserves = 0
-
-													Next
-%>
-
-												</div>
-
-											</div>
-
-										</div>
-<%
-										StartReserves = 0
-
-										If thisTeamLevelID2 = 1 Then thisTeamLevelTitle2 = "OMEGA"
-										If thisTeamLevelID2 = 2 Then thisTeamLevelTitle2 = "SLFFL"
-										If thisTeamLevelID2 = 3 Then thisTeamLevelTitle2 = "FLFFL"
-
-										Set oXML = CreateObject("MSXML2.DOMDocument.3.0")
-										oXML.loadXML(GetScores(thisTeamLevelTitle2, Session.Contents("CurrentPeriod")))
-
-										oXML.setProperty "SelectionLanguage", "XPath"
-										Set objTeam = oXML.selectSingleNode(".//team[@id = " & thisTeamCBSID2 & "]")
-
-										Set objTeamScore2 = objTeam.getElementsByTagName("pts")
-										Set objTeamPlayers2 = objTeam.getElementsByTagName("player")
-
-										TeamScore2 = FormatNumber(CDbl(objTeamScore2.item(0).text), 2)
-%>
-										<div class="col-12 col-lg-6">
-											<div class="card">
-
-												<div class="card-body">
-
-													<div style="border-bottom: 1px solid #e8ebf3;"><h4><%= thisTeamName2 %> (<%= TeamScore2 %>)</h4></div><br>
-<%
-													HitReserves = 0
-													ExtraBorder = 0
-													TeamRoster1 = ""
-													For i = 0 to (objTeamPlayers2.length - 1)
-
-														Set objPlayer = objTeamPlayers2.item(i)
-
-														thisPlayerID = objPlayer.getAttribute("id")
-
-														thisPlayerName = ""
-														thisPlayerPoints = ""
-														thisPlayerStatus = ""
-														thisPlayerGameTimestamp = ""
-														thisPlayerPMR = 0
-														thisPlayerHomeGame = 2
-														thisPlayerProTeam = ""
-														thisPlayerPosition = ""
-														thisPlayerOpponent = ""
-														thisPlayerQuarter = ""
-														thisPlayerQuarterTimeRemaining = ""
-
-														Set objPlayerName = objPlayer.getElementsByTagName("fullname")
-														If objPlayerName.Length > 0 Then thisPlayerName = objPlayerName.item(0).text
-
-														Set objPlayerPoints = objPlayer.getElementsByTagName("fpts")
-														If objPlayerPoints.Length > 0 Then thisPlayerPoints = objPlayerPoints.item(0).text
-														If IsNumeric(thisPlayerPoints) Then thisPlayerPoints = FormatNumber(thisPlayerPoints, 2)
-
-														Set objPlayerStatus = objPlayer.getElementsByTagName("status")
-														If objPlayerStatus.Length > 0 Then thisPlayerStatus = objPlayerStatus.item(0).text
-
-														Set objPlayerStats = objPlayer.getElementsByTagName("stats_period")
-														If objPlayerStats.Length > 0 Then thisPlayerStats = objPlayerStats.item(0).text
-
-														Set objPlayerGameTimestamp = objPlayer.getElementsByTagName("game_start_timestamp")
-														If objPlayerGameTimestamp.Length > 0 Then thisPlayerGameTimestamp = objPlayerGameTimestamp.item(0).text
-
-														Set objPlayerPMR = objPlayer.getElementsByTagName("minutes_remaining")
-														If objPlayerPMR.Length > 0 Then thisPlayerPMR = CInt(objPlayerPMR.item(0).text)
-
-														Set objPlayerHomeGame = objPlayer.getElementsByTagName("home_game")
-														If objPlayerHomeGame.Length > 0 Then thisPlayerHomeGame = CInt(objPlayerHomeGame.item(0).text)
-
-														Set objPlayerProTeam = objPlayer.getElementsByTagName("pro_team")
-														If objPlayerProTeam.Length > 0 Then thisPlayerProTeam = objPlayerProTeam.item(0).text
-
-														Set objPlayerPosition = objPlayer.getElementsByTagName("position")
-														If objPlayerPosition.Length > 0 Then thisPlayerPosition = objPlayerPosition.item(0).text
-
-														Set objPlayerOpponent = objPlayer.getElementsByTagName("opponent")
-														If objPlayerOpponent.Length > 0 Then thisPlayerOpponent = objPlayerOpponent.item(0).text
-
-														Set objPlayerQuarter = objPlayer.getElementsByTagName("quarter")
-														If objPlayerQuarter.Length > 0 Then thisPlayerQuarter = objPlayerQuarter.item(0).text
-
-														Set objPlayerQuarterTimeRemaining = objPlayer.getElementsByTagName("time_remaining")
-														If objPlayerQuarterTimeRemaining.Length > 0 Then thisPlayerQuarterTimeRemaining = objPlayerQuarterTimeRemaining.item(0).text
-
-														If thisPlayerHomeGame = 1 Then
-															thisGameLine = thisPlayerProTeam & " vs. " & thisPlayerOpponent
-														ElseIf thisPlayerHomeGame = 0 Then
-															thisGameLine = thisPlayerProTeam & " @ " & thisPlayerOpponent
-														Else
-															thisGameLine = ""
-														End If
-
-														If thisPlayerHomeGame < 2 Then
-
-															TeamRoster2 = TeamRoster2 & thisPlayerID & ","
-
-															thisPlayerGameTimestamp = DateAdd("s", thisPlayerGameTimestamp, DateSerial(1970,1,1))
-															thisPlayerGameTimestamp = DateAdd("h", -5, thisPlayerGameTimestamp)
-
-															thisPlayerGameDay = UCase(WeekdayName(Weekday(thisPlayerGameTimestamp),True))
-															thisPlayerHour = Hour(thisPlayerGameTimestamp)
-															thisPlayerMinute = Minute(thisPlayerGameTimestamp)
-
-															If thisPlayerHour > 12 Then
-																AMPM = "PM"
-																thisPlayerHour = thisPlayerHour - 12
-															Else
-																AMPM = "AM"
-															End If
-
-															If Len(thisPlayerMinute) = 1 Then thisPlayerMinute = "0" & thisPlayerMinute
-
-														End If
-
-														thisPlayerPMRColor = "success"
-														If thisPlayerPMR < 40 Then thisPlayerPMRColor = "warning"
-														If thisPlayerPMR < 20 Then thisPlayerPMRColor = "danger"
-														thisPlayerPMRPercent = (thisPlayerPMR * 100) / 60
-
-														If thisPlayerPosition = "DST" Then
-															thisBackgroundPosition = "-100px 50%"
-														Else
-															thisBackgroundPosition = "-70px -20px"
-														End If
-
-														If (thisPlayerStatus = "Reserve" Or thisPlayerStatus = "Injured") And HitReserves = 0 Then StartReserves = 1
-														If thisPlayerStatus = "Reserve" Or thisPlayerStatus = "Injured" Then HitReserves = 1
-
-														If StartReserves = 1 Then Exit For
-
-														If thisPlayerPMR > 0 Then
-%>
-															<li class="list-group-item team-1-player-<%= thisPlayerID %>">
-
-																<div class="row">
-																	<div class="col-xxs-9 col-xl-9" style="line-height: 1.5rem;">
-																		<div class="player-name" style="font-size: 16px;"><b><%= thisPlayerName %></b></div>
-																		<div class="d-none d-xl-block " style="line-height: 1.5rem;">
-																		<%	If thisPlayerHomeGame < 2 Then %>
-																			<span class="team-1-player-<%= thisPlayerID %>-gameline"><%= thisGameLine %> - <%= thisPlayerGameDay %>&nbsp;<%= thisPlayerHour %>:<%= thisPlayerMinute %><%= AMPM %></span> &mdash;
-																			<span class="team-1-player-<%= thisPlayerID %>-gameposition"><%= thisPlayerQuarter %>Q&nbsp;<%= thisPlayerQuarterTimeRemaining %></span>
-																		<% Else %>
-																			<span class="team-1-player-<%= thisPlayerID %>-gameline">BYE</span>
-																		<% End If %>
-																		</div>
-																	</div>
-																	<div class="col-xxs-3 col-xl-3 text-right" style="padding-right: 1rem; text-align: right;">
-																		<span class="team-1-player-<%= thisPlayerID %>-points player-points" style="font-size: 2em; background-color: #fff;"><%= thisPlayerPoints %></span>
-																	</div>
-																</div>
-
-																<div class="row">
-																	<div class="col-12 team-1-player-<%= thisPlayerID %>-stats" style="line-height: 1rem;"><%= thisPlayerStats %></div>
-																</div>
-
-																<div class="progress team-1-player-<%= thisPlayerID %>-progress" style="height: 1px; margin-top: 6px; margin-bottom: 0; padding-bottom: 0;">
-																	<div class="progress-bar progress-bar-<%= thisPlayerPMRColor %>" role="progressbar" aria-valuenow="<%= thisPlayerPMRPercent %>" aria-valuemin="0" aria-valuemax="100" style="width: <%= thisPlayerPMRPercent %>%; ">
-																		<span class="sr-only team-1-progress-sr"><%= thisPlayerPMRPercent %>%</span>
-																	</div>
-																</div>
-
-															</li>
-<%
-														End If
-
-														If StartReserves = 1 Then StartReserves = 0
-
-													Next
-%>
-
-												</div>
-
-											</div>
-
-										</div>
+										<li class="list-group-item p-0"><h4 class="text-left text-white p-3 mt-0 mb-0 rounded-top" style="background-color: #032B43;"><strong><%= headerText %></strong> #<%= thisMatchupID %></h4></li>
 <%
 									End If
 %>
-								</div>
+									<li class="list-group-item rounded-0">
+										<span class="float-right"><%= thisTeamScore1 %></span>
+										<div><b><%= thisTeamName1 %></b></div>
+										<div><%= thisTeamProjected1 %> Proj., <% If Session.Contents("SITE_Bet_Type") <> "nfl" Then %><%= thisTeamWinPercentage1 %> Win, <% End If %><%= thisTeamSpread1 %> Spread, <%= thisTeamMoneyline1 %> ML</div>
+									</li>
+									<li class="list-group-item">
+										<span class="float-right"><%= thisTeamScore2 %></span>
+										<div><b><%= thisTeamName2 %></b></div>
+										<div><%= thisTeamProjected2 %> Proj., <% If Session.Contents("SITE_Bet_Type") <> "nfl" Then %><%= thisTeamWinPercentage2 %> Win, <% End If %><%= thisTeamSpread2 %> Spread, <%= thisTeamMoneyline2 %> ML</div>
+									</li>
 
-								<div class="row">
-<%
-									If Session.Contents("SITE_Bet_Type") = "nfl" Then
-
-										sqlGetTicketSlips = "SELECT TicketSlipID, TicketTypeID, TicketSlips.AccountID, Accounts.ProfileName, DateAdd(hour, -5, TicketSlips.InsertDateTime) AS InsertDateTime, NFLGames.AwayTeamID AS TeamID1, NFLGames.HomeTeamID AS TeamID2, T1.City + ' ' + T1.Name AS TeamName1, T2.City + ' ' + T2.Name AS TeamName2, T3.City + ' ' + T3.Name AS BetTeamName, TicketSlips.TeamID, TicketSlips.Moneyline, TicketSlips.Spread, TicketSlips.OverUnderAmount, OverUnderBet, TicketSlips.BetAmount, TicketSlips.PayoutAmount, TicketSlips.IsWinner FROM TicketSlips "
-										sqlGetTicketSlips = sqlGetTicketSlips & "INNER JOIN Accounts ON Accounts.AccountID = TicketSlips.AccountID "
-										sqlGetTicketSlips = sqlGetTicketSlips & "INNER JOIN NFLGames ON NFLGames.NFLGameID = TicketSlips.MatchupID "
-										sqlGetTicketSlips = sqlGetTicketSlips & "LEFT JOIN NFLTeams T1 ON T1.NFLTeamID = NFLGames.AwayTeamID "
-										sqlGetTicketSlips = sqlGetTicketSlips & "LEFT JOIN NFLTeams T2 ON T2.NFLTeamID = NFLGames.HomeTeamID "
-										sqlGetTicketSlips = sqlGetTicketSlips & "LEFT JOIN NFLTeams T3 ON T3.NFLTeamID = TicketSlips.TeamID "
-										sqlGetTicketSlips = sqlGetTicketSlips & "WHERE TicketSlips.MatchupID = " & thisMatchupID & " AND IsNFL = 1"
-
-									Else
-
-										sqlGetTicketSlips = "SELECT TicketSlipID, TicketTypeID, TicketSlips.AccountID, Accounts.ProfileName, DateAdd(hour, -5, TicketSlips.InsertDateTime) AS InsertDateTime, Matchups.TeamID1, Matchups.TeamID2, T1.TeamName AS TeamName1, T2.TeamName AS TeamName2, T3.TeamName AS BetTeamName, TicketSlips.TeamID, TicketSlips.Moneyline, TicketSlips.Spread, TicketSlips.OverUnderAmount, OverUnderBet, TicketSlips.BetAmount, TicketSlips.PayoutAmount, TicketSlips.IsWinner FROM TicketSlips "
-										sqlGetTicketSlips = sqlGetTicketSlips & "INNER JOIN Accounts ON Accounts.AccountID = TicketSlips.AccountID "
-										sqlGetTicketSlips = sqlGetTicketSlips & "INNER JOIN Matchups ON Matchups.MatchupID = TicketSlips.MatchupID "
-										sqlGetTicketSlips = sqlGetTicketSlips & "LEFT JOIN Teams T1 ON T1.TeamID = Matchups.TeamID1 "
-										sqlGetTicketSlips = sqlGetTicketSlips & "LEFT JOIN Teams T2 ON T2.TeamID = Matchups.TeamID2 "
-										sqlGetTicketSlips = sqlGetTicketSlips & "LEFT JOIN Teams T3 ON T3.TeamID = TicketSlips.TeamID "
-										sqlGetTicketSlips = sqlGetTicketSlips & "WHERE TicketSlips.MatchupID = " & thisMatchupID
-
-									End If
-
-									Set rsTicketSlips = sqlDatabase.Execute(sqlGetTicketSlips)
-
-									Do While Not rsTicketSlips.Eof
-
-										thisTicketSlipID = rsTicketSlips("TicketSlipID")
-										thisTicketTypeID = rsTicketSlips("TicketTypeID")
-										thisAccountID = rsTicketSlips("AccountID")
-										thisProfileName = rsTicketSlips("ProfileName")
-										thisInsertDateTime = rsTicketSlips("InsertDateTime")
-										thisTeamName1 = rsTicketSlips("TeamName1")
-										thisTeamName2 = rsTicketSlips("TeamName2")
-										thisBetTeamName = rsTicketSlips("BetTeamName")
-										thisMoneyline = rsTicketSlips("Moneyline")
-										thisSpread = rsTicketSlips("Spread")
-										thisOverUnderAmount = rsTicketSlips("OverUnderAmount")
-										thisOverUnderBet = rsTicketSlips("OverUnderBet")
-										thisBetAmount = rsTicketSlips("BetAmount")
-										thisPayoutAmount = rsTicketSlips("PayoutAmount")
-										thisIsWinner = rsTicketSlips("IsWinner")
-
-										If CInt(thisTicketTypeID) = 1 Then
-											If thisMoneyline > 0 Then thisMoneyline = "+" & thisMoneyline
-											thisTicketDetails = thisMoneyline & " ML"
-										End If
-										If CInt(thisTicketTypeID) = 2 Then
-											If thisSpread > 0 Then thisSpread = "+" & thisSpread
-											thisTicketDetails = "(" & thisSpread & ")"
-										End If
-										If CInt(thisTicketTypeID) = 3 Then
-											thisTicketDetails = thisOverUnderBet & " (" & thisOverUnderAmount & ")"
-										End If
-%>
-										<div class="col-xxxl-3 col-xxl-3 col-xl-4 col-lg-4 col-md-4 col-sm-12 col-xs-12 col-xxs-12">
-											<ul class="list-group" style="margin-bottom: 1rem;">
-												<li class="list-group-item text-center">
-													<div><b><%= thisBetTeamName %>&nbsp;<%= thisTicketDetails %></b></div>
-													<div><i><%= thisInsertDateTime %> (EST)</i></div>
-													<div class="row pt-2">
-														<div class="col-6" style="border-right: 1px dashed #edebf1;">
-															<div><u>WAGER</u></div>
-															<div><%= FormatNumber(thisBetAmount, 0) %></div>
-														</div>
-														<div class="col-6">
-															<div><u>PAYOUT</u></div>
-															<div><%= FormatNumber(thisPayoutAmount, 0) %></div>
-														</div>
-													</div>
-												</li>
-												<li class="list-group-item text-center">
-													<div><b>Ticket Owner:</b> <%= thisProfileName %></div>
-												</li>
-											</ul>
-										</div>
-<%
-										rsTicketSlips.MoveNext
-
-									Loop
-%>
-								</div>
-
-							</div>
+								</ul>
+								<ul class="list-group mb-4">
+									<li class="list-group-item">
+										<span class="float-right"><%= FormatNumber(thisSchmeckleTotal, 0) %></span>
+										<div><b>Available Schmeckles</b></div>
+									</li>
+									<li class="list-group-item">
+										<span id="countdownTimer" class="float-right">60</span>
+										<div><b>Refresh Countdown</b></div>
+									</li>
+								</ul>
+							</a>
 
 						</div>
 
+						<div class="col-12 col-xl-3">
+							<div class="card">
+
+								<div class="card-body">
+
+									<div style="border-bottom: 1px solid #e8ebf3;"><h4>Moneyline Wager</h4></div>
+
+									<form action="<%= thisMatchupURL %>" method="post">
+										<div class="form-group">
+
+											<input type="hidden" id="inputTicketGo" name="inputTicketGo" value="go" />
+											<input type="hidden" id="inputTicketType" name="inputTicketType" value="1" />
+											<input type="hidden" id="inputMatchupID" name="inputMatchupID" value="<%= thisMatchupID %>" />
+											<input type="hidden" id="inputTeamID1" name="inputTeamID1" value="<%= thisTeamID1 %>" />
+											<input type="hidden" id="inputTeamID2" name="inputTeamID2" value="<%= thisTeamID2 %>" />
+											<input type="hidden" id="inputMoneylineValue1" name="inputMoneylineValue1" value="<%= thisTeamMoneyline1 %>" />
+											<input type="hidden" id="inputMoneylineValue2" name="inputMoneylineValue2" value="<%= thisTeamMoneyline2 %>" />
+											<input type="hidden" id="inputMoneylineWin" name="inputMoneylineWin" value="" />
+											<input type="hidden" id="inputMoneylinePayout" name="inputMoneylinePayout" value="" />
+
+											<label class="form-check-label-lg mt-4" for="inputMoneylineTeam" class="col-form-label"><b>Team (ML)</b></label>
+											<select <%= thisFormDisabled %> class="form-control form-control-lg form-check-input-lg" name="inputMoneylineTeam" id="inputMoneylineTeam" onchange="calculate_moneyline_payout(document.getElementById('inputMoneylineBetAmount').value)" required>
+												<option></option>
+												<option value="1"><%= thisTeamName1 %> (<%= thisTeamMoneyline1 %> ML)</option>
+												<option value="2"><%= thisTeamName2 %> (<%= thisTeamMoneyline2 %> ML)</option>
+											</select>
+
+											<label for="inputMoneylineBetAmount" class="col-form-label mt-2"><b>Bet Amount (Schmeckles)</b></label>
+											<input <%= thisFormDisabled %> type="number" class="form-control form-control-lg" min="0" max="<%= thisSchmeckleTotal %>" id="inputMoneylineBetAmount" name="inputMoneylineBetAmount" onkeyup="calculate_moneyline_payout(this.value)" required>
+
+											<div class="row">
+												<div class="col-12 col-md-6">
+													<label class="col-form-label mt-3 mb-md-3 mb-sm-0"><b>TO WIN:</b>  <span id="winMoneyline"><span></label>
+												</div>
+												<div class="col-12 col-md-6">
+													<label class="col-form-label mt-3 mb-3"><b>PAYOUT:</b>  <span id="payoutMoneyline"><span></label>
+												</div>
+											</div>
+
+											<button <%= thisFormDisabled %> type="submit" class="btn btn-block btn-success mb-3">Place Bet</button>
+
+										</div>
+									</form>
+
+								</div>
+
+							</div>
+						</div>
+
+						<div class="col-12 col-xl-3">
+							<div class="card">
+
+								<div class="card-body">
+
+									<div style="border-bottom: 1px solid #e8ebf3;"><h4>Point Spread Wager</h4></div>
+
+									<form action="<%= thisMatchupURL %>" method="post">
+										<div class="form-group">
+
+											<input type="hidden" id="inputTicketGo" name="inputTicketGo" value="go" />
+											<input type="hidden" id="inputTicketType" name="inputTicketType" value="2" />
+											<input type="hidden" id="inputMatchupID" name="inputMatchupID" value="<%= thisMatchupID %>" />
+											<input type="hidden" id="inputTeamID1" name="inputTeamID1" value="<%= thisTeamID1 %>" />
+											<input type="hidden" id="inputTeamID2" name="inputTeamID2" value="<%= thisTeamID2 %>" />
+											<input type="hidden" id="inputSpreadValue1" name="inputSpreadValue1" value="<%= thisTeamSpread1 %>" />
+											<input type="hidden" id="inputSpreadValue2" name="inputSpreadValue2" value="<%= thisTeamSpread2 %>" />
+											<input type="hidden" id="inputSpreadWin" name="inputSpreadWin" value="" />
+											<input type="hidden" id="inputSpreadPayout" name="inputSpreadPayout" value="" />
+
+											<label class="form-check-label-lg mt-4" for="inputSpreadTeam" class="col-form-label"><b>Team (Spread)</b></label>
+											<select <%= thisFormDisabled %> class="form-control form-control-lg form-check-input-lg" name="inputSpreadTeam" id="inputSpreadTeam" onchange="calculate_spread_payout('document.getElementById('inputSpreadBetAmount').value')" required>
+												<option></option>
+												<option value="1"><%= thisTeamName1 %> (<%= thisTeamSpread1 %>)</option>
+												<option value="2"><%= thisTeamName2 %> (<%= thisTeamSpread2 %>)</option>
+											</select>
+
+											<label for="inputSpreadBetAmount" class="col-form-label mt-2"><b>Bet Amount (Schmeckles)</b></label>
+											<input <%= thisFormDisabled %> type="number" class="form-control form-control-lg" min="0" max="<%= thisSchmeckleTotal %>" id="inputSpreadBetAmount" name="inputSpreadBetAmount" onkeyup="calculate_spread_payout(this.value)" required>
+
+											<div class="row">
+												<div class="col-12 col-md-6">
+													<label class="col-form-label mt-3 mb-md-3 mb-sm-0"><b>TO WIN:</b>  <span id="winSpread"><span></label>
+												</div>
+												<div class="col-12 col-md-6">
+													<label class="col-form-label mt-3 mb-3"><b>PAYOUT:</b>  <span id="payoutSpread"><span></label>
+												</div>
+											</div>
+
+											<button <%= thisFormDisabled %> type="submit" class="btn btn-block btn-success mb-3">Place Bet</button>
+
+										</div>
+									</form>
+
+								</div>
+
+							</div>
+						</div>
+
+						<div class="col-12 col-xl-3">
+							<div class="card">
+
+								<div class="card-body">
+
+									<div style="border-bottom: 1px solid #e8ebf3;"><h4>Over / Under Wager</h4></div>
+
+									<form action="<%= thisMatchupURL %>" method="post">
+										<div class="form-group">
+
+											<input type="hidden" id="inputTicketGo" name="inputTicketGo" value="go" />
+											<input type="hidden" id="inputTicketType" name="inputTicketType" value="3" />
+											<input type="hidden" id="inputMatchupID" name="inputMatchupID" value="<%= thisMatchupID %>" />
+											<input type="hidden" id="inputOverUnderAmount" name="inputOverUnderAmount" value="<%= thisOverUnderTotal %>" />
+											<input type="hidden" id="inputOverUnderWin" name="inputOverUnderWin" value="" />
+											<input type="hidden" id="inputOverUnderPayout" name="inputOverUnderPayout" value="" />
+
+											<label class="form-check-label-lg mt-4" for="inputOverUnderBet" class="col-form-label"><b>Over / Under (Points)</b></label>
+											<select <%= thisFormDisabled %> class="form-control form-control-lg form-check-input-lg" name="inputOverUnderBet" id="inputOverUnderBet" onchange="calculate_ou_payout(document.getElementById('inputOverUnderBetAmount').value)">
+												<option></option>
+												<option value="1">OVER (<%= thisOverUnderTotal %>)</option>
+												<option value="2">UNDER (<%= thisOverUnderTotal %>)</option>
+											</select>
+
+											<label for="inputOverUnderBetAmount" class="col-form-label mt-2"><b>Bet Amount (Schmeckles)</b></label>
+											<input <%= thisFormDisabled %> type="number" class="form-control form-control-lg" min="0" max="<%= thisSchmeckleTotal %>" id="inputOverUnderBetAmount" name="inputOverUnderBetAmount" onkeyup="calculate_ou_payout(this.value)">
+
+											<div class="row">
+												<div class="col-12 col-md-6">
+													<label class="col-form-label mt-3 mb-md-3 mb-sm-0"><b>TO WIN:</b>  <span id="winOverUnder"><span></label>
+												</div>
+												<div class="col-12 col-md-6">
+													<label class="col-form-label mt-3 mb-3"><b>PAYOUT:</b>  <span id="payoutOverUnder"><span></label>
+												</div>
+											</div>
+
+											<button <%= thisFormDisabled %> type="submit" class="btn btn-block btn-success mb-3">Place Bet</button>
+
+										</div>
+									</form>
+
+								</div>
+
+							</div>
+						</div>
+<%
+						If Session.Contents("SITE_Bet_Type") <> "nfl" Then
+
+							If thisTeamLevelID1 = 1 Then thisTeamLevelTitle1 = "OMEGA"
+							If thisTeamLevelID1 = 2 Then thisTeamLevelTitle1 = "SLFFL"
+							If thisTeamLevelID1 = 3 Then thisTeamLevelTitle1 = "FLFFL"
+
+							Set oXML = CreateObject("MSXML2.DOMDocument.3.0")
+							oXML.loadXML(GetScores(thisTeamLevelTitle1, Session.Contents("CurrentPeriod")))
+
+							oXML.setProperty "SelectionLanguage", "XPath"
+							Set objTeam = oXML.selectSingleNode(".//team[@id = " & thisTeamCBSID1 & "]")
+
+							Set objTeamScore1 = objTeam.getElementsByTagName("pts")
+							Set objTeamPlayers1 = objTeam.getElementsByTagName("player")
+
+							TeamScore1 = FormatNumber(CDbl(objTeamScore1.item(0).text), 2)
+%>
+							<div class="col-12 col-lg-6">
+								<div class="card">
+
+									<div class="card-body">
+
+										<div style="border-bottom: 1px solid #e8ebf3;"><h4><%= thisTeamName1 %> (<%= TeamScore1 %>)</h4></div><br />
+<%
+										HitReserves = 0
+										ExtraBorder = 0
+										TeamRoster1 = ""
+										For i = 0 to (objTeamPlayers1.length - 1)
+
+											Set objPlayer = objTeamPlayers1.item(i)
+
+											thisPlayerID = objPlayer.getAttribute("id")
+
+											thisPlayerName = ""
+											thisPlayerPoints = ""
+											thisPlayerStatus = ""
+											thisPlayerGameTimestamp = ""
+											thisPlayerPMR = 0
+											thisPlayerHomeGame = 2
+											thisPlayerProTeam = ""
+											thisPlayerPosition = ""
+											thisPlayerOpponent = ""
+											thisPlayerQuarter = ""
+											thisPlayerQuarterTimeRemaining = ""
+
+											Set objPlayerName = objPlayer.getElementsByTagName("fullname")
+											If objPlayerName.Length > 0 Then thisPlayerName = objPlayerName.item(0).text
+
+											Set objPlayerPoints = objPlayer.getElementsByTagName("fpts")
+											If objPlayerPoints.Length > 0 Then thisPlayerPoints = objPlayerPoints.item(0).text
+											If IsNumeric(thisPlayerPoints) Then thisPlayerPoints = FormatNumber(thisPlayerPoints, 2)
+
+											Set objPlayerStatus = objPlayer.getElementsByTagName("status")
+											If objPlayerStatus.Length > 0 Then thisPlayerStatus = objPlayerStatus.item(0).text
+
+											Set objPlayerStats = objPlayer.getElementsByTagName("stats_period")
+											If objPlayerStats.Length > 0 Then thisPlayerStats = objPlayerStats.item(0).text
+
+											Set objPlayerGameTimestamp = objPlayer.getElementsByTagName("game_start_timestamp")
+											If objPlayerGameTimestamp.Length > 0 Then thisPlayerGameTimestamp = objPlayerGameTimestamp.item(0).text
+
+											Set objPlayerPMR = objPlayer.getElementsByTagName("minutes_remaining")
+											If objPlayerPMR.Length > 0 Then thisPlayerPMR = CInt(objPlayerPMR.item(0).text)
+
+											Set objPlayerHomeGame = objPlayer.getElementsByTagName("home_game")
+											If objPlayerHomeGame.Length > 0 Then thisPlayerHomeGame = CInt(objPlayerHomeGame.item(0).text)
+
+											Set objPlayerProTeam = objPlayer.getElementsByTagName("pro_team")
+											If objPlayerProTeam.Length > 0 Then thisPlayerProTeam = objPlayerProTeam.item(0).text
+
+											Set objPlayerPosition = objPlayer.getElementsByTagName("position")
+											If objPlayerPosition.Length > 0 Then thisPlayerPosition = objPlayerPosition.item(0).text
+
+											Set objPlayerOpponent = objPlayer.getElementsByTagName("opponent")
+											If objPlayerOpponent.Length > 0 Then thisPlayerOpponent = objPlayerOpponent.item(0).text
+
+											Set objPlayerQuarter = objPlayer.getElementsByTagName("quarter")
+											If objPlayerQuarter.Length > 0 Then thisPlayerQuarter = objPlayerQuarter.item(0).text
+
+											Set objPlayerQuarterTimeRemaining = objPlayer.getElementsByTagName("time_remaining")
+											If objPlayerQuarterTimeRemaining.Length > 0 Then thisPlayerQuarterTimeRemaining = objPlayerQuarterTimeRemaining.item(0).text
+
+											If thisPlayerHomeGame = 1 Then
+												thisGameLine = thisPlayerProTeam & " vs. " & thisPlayerOpponent
+											ElseIf thisPlayerHomeGame = 0 Then
+												thisGameLine = thisPlayerProTeam & " @ " & thisPlayerOpponent
+											Else
+												thisGameLine = ""
+											End If
+
+											If thisPlayerHomeGame < 2 Then
+
+												TeamRoster1 = TeamRoster1 & thisPlayerID & ","
+
+												thisPlayerGameTimestamp = DateAdd("s", thisPlayerGameTimestamp, DateSerial(1970,1,1))
+												thisPlayerGameTimestamp = DateAdd("h", -5, thisPlayerGameTimestamp)
+
+												thisPlayerGameDay = UCase(WeekdayName(Weekday(thisPlayerGameTimestamp),True))
+												thisPlayerHour = Hour(thisPlayerGameTimestamp)
+												thisPlayerMinute = Minute(thisPlayerGameTimestamp)
+
+												If thisPlayerHour > 12 Then
+													AMPM = "PM"
+													thisPlayerHour = thisPlayerHour - 12
+												Else
+													AMPM = "AM"
+												End If
+
+												If Len(thisPlayerMinute) = 1 Then thisPlayerMinute = "0" & thisPlayerMinute
+
+											End If
+
+											thisPlayerPMRColor = "success"
+											If thisPlayerPMR < 40 Then thisPlayerPMRColor = "warning"
+											If thisPlayerPMR < 20 Then thisPlayerPMRColor = "danger"
+											thisPlayerPMRPercent = (thisPlayerPMR * 100) / 60
+
+											If thisPlayerPosition = "DST" Then
+												thisBackgroundPosition = "-100px 50%"
+											Else
+												thisBackgroundPosition = "-70px -20px"
+											End If
+
+											If (thisPlayerStatus = "Reserve" Or thisPlayerStatus = "Injured") And HitReserves = 0 Then StartReserves = 1
+											If thisPlayerStatus = "Reserve" Or thisPlayerStatus = "Injured" Then HitReserves = 1
+
+											If StartReserves = 1 Then Exit For
+
+											If thisPlayerPMR > 0 Then
+%>
+												<li class="list-group-item team-1-player-<%= thisPlayerID %>">
+
+													<div class="row">
+														<div class="col-xxs-9 col-xl-9" style="line-height: 1.5rem;">
+															<div class="player-name" style="font-size: 16px;"><b><%= thisPlayerName %></b></div>
+															<div class="d-none d-xl-block " style="line-height: 1.5rem;">
+															<%	If thisPlayerHomeGame < 2 Then %>
+																<span class="team-1-player-<%= thisPlayerID %>-gameline"><%= thisGameLine %> - <%= thisPlayerGameDay %>&nbsp;<%= thisPlayerHour %>:<%= thisPlayerMinute %><%= AMPM %></span> &mdash;
+																<span class="team-1-player-<%= thisPlayerID %>-gameposition"><%= thisPlayerQuarter %>Q&nbsp;<%= thisPlayerQuarterTimeRemaining %></span>
+															<% Else %>
+																<span class="team-1-player-<%= thisPlayerID %>-gameline">BYE</span>
+															<% End If %>
+															</div>
+														</div>
+														<div class="col-xxs-3 col-xl-3 text-right" style="padding-right: 1rem; text-align: right;">
+															<span class="team-1-player-<%= thisPlayerID %>-points player-points" style="font-size: 2em; background-color: #fff;"><%= thisPlayerPoints %></span>
+														</div>
+													</div>
+
+													<div class="row">
+														<div class="col-12 team-1-player-<%= thisPlayerID %>-stats" style="line-height: 1rem;"><%= thisPlayerStats %></div>
+													</div>
+
+													<div class="progress team-1-player-<%= thisPlayerID %>-progress" style="height: 1px; margin-top: 6px; margin-bottom: 0; padding-bottom: 0;">
+														<div class="progress-bar progress-bar-<%= thisPlayerPMRColor %>" role="progressbar" aria-valuenow="<%= thisPlayerPMRPercent %>" aria-valuemin="0" aria-valuemax="100" style="width: <%= thisPlayerPMRPercent %>%; ">
+															<span class="sr-only team-1-progress-sr"><%= thisPlayerPMRPercent %>%</span>
+														</div>
+													</div>
+
+												</li>
+<%
+											End If
+
+											If StartReserves = 1 Then StartReserves = 0
+
+										Next
+%>
+
+									</div>
+
+								</div>
+
+							</div>
+<%
+							StartReserves = 0
+
+							If thisTeamLevelID2 = 1 Then thisTeamLevelTitle2 = "OMEGA"
+							If thisTeamLevelID2 = 2 Then thisTeamLevelTitle2 = "SLFFL"
+							If thisTeamLevelID2 = 3 Then thisTeamLevelTitle2 = "FLFFL"
+
+							Set oXML = CreateObject("MSXML2.DOMDocument.3.0")
+							oXML.loadXML(GetScores(thisTeamLevelTitle2, Session.Contents("CurrentPeriod")))
+
+							oXML.setProperty "SelectionLanguage", "XPath"
+							Set objTeam = oXML.selectSingleNode(".//team[@id = " & thisTeamCBSID2 & "]")
+
+							Set objTeamScore2 = objTeam.getElementsByTagName("pts")
+							Set objTeamPlayers2 = objTeam.getElementsByTagName("player")
+
+							TeamScore2 = FormatNumber(CDbl(objTeamScore2.item(0).text), 2)
+%>
+							<div class="col-12 col-lg-6">
+								<div class="card">
+
+									<div class="card-body">
+
+										<div style="border-bottom: 1px solid #e8ebf3;"><h4><%= thisTeamName2 %> (<%= TeamScore2 %>)</h4></div><br>
+<%
+										HitReserves = 0
+										ExtraBorder = 0
+										TeamRoster1 = ""
+										For i = 0 to (objTeamPlayers2.length - 1)
+
+											Set objPlayer = objTeamPlayers2.item(i)
+
+											thisPlayerID = objPlayer.getAttribute("id")
+
+											thisPlayerName = ""
+											thisPlayerPoints = ""
+											thisPlayerStatus = ""
+											thisPlayerGameTimestamp = ""
+											thisPlayerPMR = 0
+											thisPlayerHomeGame = 2
+											thisPlayerProTeam = ""
+											thisPlayerPosition = ""
+											thisPlayerOpponent = ""
+											thisPlayerQuarter = ""
+											thisPlayerQuarterTimeRemaining = ""
+
+											Set objPlayerName = objPlayer.getElementsByTagName("fullname")
+											If objPlayerName.Length > 0 Then thisPlayerName = objPlayerName.item(0).text
+
+											Set objPlayerPoints = objPlayer.getElementsByTagName("fpts")
+											If objPlayerPoints.Length > 0 Then thisPlayerPoints = objPlayerPoints.item(0).text
+											If IsNumeric(thisPlayerPoints) Then thisPlayerPoints = FormatNumber(thisPlayerPoints, 2)
+
+											Set objPlayerStatus = objPlayer.getElementsByTagName("status")
+											If objPlayerStatus.Length > 0 Then thisPlayerStatus = objPlayerStatus.item(0).text
+
+											Set objPlayerStats = objPlayer.getElementsByTagName("stats_period")
+											If objPlayerStats.Length > 0 Then thisPlayerStats = objPlayerStats.item(0).text
+
+											Set objPlayerGameTimestamp = objPlayer.getElementsByTagName("game_start_timestamp")
+											If objPlayerGameTimestamp.Length > 0 Then thisPlayerGameTimestamp = objPlayerGameTimestamp.item(0).text
+
+											Set objPlayerPMR = objPlayer.getElementsByTagName("minutes_remaining")
+											If objPlayerPMR.Length > 0 Then thisPlayerPMR = CInt(objPlayerPMR.item(0).text)
+
+											Set objPlayerHomeGame = objPlayer.getElementsByTagName("home_game")
+											If objPlayerHomeGame.Length > 0 Then thisPlayerHomeGame = CInt(objPlayerHomeGame.item(0).text)
+
+											Set objPlayerProTeam = objPlayer.getElementsByTagName("pro_team")
+											If objPlayerProTeam.Length > 0 Then thisPlayerProTeam = objPlayerProTeam.item(0).text
+
+											Set objPlayerPosition = objPlayer.getElementsByTagName("position")
+											If objPlayerPosition.Length > 0 Then thisPlayerPosition = objPlayerPosition.item(0).text
+
+											Set objPlayerOpponent = objPlayer.getElementsByTagName("opponent")
+											If objPlayerOpponent.Length > 0 Then thisPlayerOpponent = objPlayerOpponent.item(0).text
+
+											Set objPlayerQuarter = objPlayer.getElementsByTagName("quarter")
+											If objPlayerQuarter.Length > 0 Then thisPlayerQuarter = objPlayerQuarter.item(0).text
+
+											Set objPlayerQuarterTimeRemaining = objPlayer.getElementsByTagName("time_remaining")
+											If objPlayerQuarterTimeRemaining.Length > 0 Then thisPlayerQuarterTimeRemaining = objPlayerQuarterTimeRemaining.item(0).text
+
+											If thisPlayerHomeGame = 1 Then
+												thisGameLine = thisPlayerProTeam & " vs. " & thisPlayerOpponent
+											ElseIf thisPlayerHomeGame = 0 Then
+												thisGameLine = thisPlayerProTeam & " @ " & thisPlayerOpponent
+											Else
+												thisGameLine = ""
+											End If
+
+											If thisPlayerHomeGame < 2 Then
+
+												TeamRoster2 = TeamRoster2 & thisPlayerID & ","
+
+												thisPlayerGameTimestamp = DateAdd("s", thisPlayerGameTimestamp, DateSerial(1970,1,1))
+												thisPlayerGameTimestamp = DateAdd("h", -5, thisPlayerGameTimestamp)
+
+												thisPlayerGameDay = UCase(WeekdayName(Weekday(thisPlayerGameTimestamp),True))
+												thisPlayerHour = Hour(thisPlayerGameTimestamp)
+												thisPlayerMinute = Minute(thisPlayerGameTimestamp)
+
+												If thisPlayerHour > 12 Then
+													AMPM = "PM"
+													thisPlayerHour = thisPlayerHour - 12
+												Else
+													AMPM = "AM"
+												End If
+
+												If Len(thisPlayerMinute) = 1 Then thisPlayerMinute = "0" & thisPlayerMinute
+
+											End If
+
+											thisPlayerPMRColor = "success"
+											If thisPlayerPMR < 40 Then thisPlayerPMRColor = "warning"
+											If thisPlayerPMR < 20 Then thisPlayerPMRColor = "danger"
+											thisPlayerPMRPercent = (thisPlayerPMR * 100) / 60
+
+											If thisPlayerPosition = "DST" Then
+												thisBackgroundPosition = "-100px 50%"
+											Else
+												thisBackgroundPosition = "-70px -20px"
+											End If
+
+											If (thisPlayerStatus = "Reserve" Or thisPlayerStatus = "Injured") And HitReserves = 0 Then StartReserves = 1
+											If thisPlayerStatus = "Reserve" Or thisPlayerStatus = "Injured" Then HitReserves = 1
+
+											If StartReserves = 1 Then Exit For
+
+											If thisPlayerPMR > 0 Then
+%>
+												<li class="list-group-item team-1-player-<%= thisPlayerID %>">
+
+													<div class="row">
+														<div class="col-xxs-9 col-xl-9" style="line-height: 1.5rem;">
+															<div class="player-name" style="font-size: 16px;"><b><%= thisPlayerName %></b></div>
+															<div class="d-none d-xl-block " style="line-height: 1.5rem;">
+															<%	If thisPlayerHomeGame < 2 Then %>
+																<span class="team-1-player-<%= thisPlayerID %>-gameline"><%= thisGameLine %> - <%= thisPlayerGameDay %>&nbsp;<%= thisPlayerHour %>:<%= thisPlayerMinute %><%= AMPM %></span> &mdash;
+																<span class="team-1-player-<%= thisPlayerID %>-gameposition"><%= thisPlayerQuarter %>Q&nbsp;<%= thisPlayerQuarterTimeRemaining %></span>
+															<% Else %>
+																<span class="team-1-player-<%= thisPlayerID %>-gameline">BYE</span>
+															<% End If %>
+															</div>
+														</div>
+														<div class="col-xxs-3 col-xl-3 text-right" style="padding-right: 1rem; text-align: right;">
+															<span class="team-1-player-<%= thisPlayerID %>-points player-points" style="font-size: 2em; background-color: #fff;"><%= thisPlayerPoints %></span>
+														</div>
+													</div>
+
+													<div class="row">
+														<div class="col-12 team-1-player-<%= thisPlayerID %>-stats" style="line-height: 1rem;"><%= thisPlayerStats %></div>
+													</div>
+
+													<div class="progress team-1-player-<%= thisPlayerID %>-progress" style="height: 1px; margin-top: 6px; margin-bottom: 0; padding-bottom: 0;">
+														<div class="progress-bar progress-bar-<%= thisPlayerPMRColor %>" role="progressbar" aria-valuenow="<%= thisPlayerPMRPercent %>" aria-valuemin="0" aria-valuemax="100" style="width: <%= thisPlayerPMRPercent %>%; ">
+															<span class="sr-only team-1-progress-sr"><%= thisPlayerPMRPercent %>%</span>
+														</div>
+													</div>
+
+												</li>
+<%
+											End If
+
+											If StartReserves = 1 Then StartReserves = 0
+
+										Next
+%>
+
+									</div>
+
+								</div>
+
+							</div>
+<%
+						End If
+%>
 					</div>
+
+					<div class="row">
+<%
+						If Session.Contents("SITE_Bet_Type") = "nfl" Then
+
+							sqlGetTicketSlips = "SELECT TicketSlipID, TicketTypeID, TicketSlips.AccountID, Accounts.ProfileName, DateAdd(hour, -5, TicketSlips.InsertDateTime) AS InsertDateTime, NFLGames.AwayTeamID AS TeamID1, NFLGames.HomeTeamID AS TeamID2, T1.City + ' ' + T1.Name AS TeamName1, T2.City + ' ' + T2.Name AS TeamName2, T3.City + ' ' + T3.Name AS BetTeamName, TicketSlips.TeamID, TicketSlips.Moneyline, TicketSlips.Spread, TicketSlips.OverUnderAmount, OverUnderBet, TicketSlips.BetAmount, TicketSlips.PayoutAmount, TicketSlips.IsWinner FROM TicketSlips "
+							sqlGetTicketSlips = sqlGetTicketSlips & "INNER JOIN Accounts ON Accounts.AccountID = TicketSlips.AccountID "
+							sqlGetTicketSlips = sqlGetTicketSlips & "INNER JOIN NFLGames ON NFLGames.NFLGameID = TicketSlips.MatchupID "
+							sqlGetTicketSlips = sqlGetTicketSlips & "LEFT JOIN NFLTeams T1 ON T1.NFLTeamID = NFLGames.AwayTeamID "
+							sqlGetTicketSlips = sqlGetTicketSlips & "LEFT JOIN NFLTeams T2 ON T2.NFLTeamID = NFLGames.HomeTeamID "
+							sqlGetTicketSlips = sqlGetTicketSlips & "LEFT JOIN NFLTeams T3 ON T3.NFLTeamID = TicketSlips.TeamID "
+							sqlGetTicketSlips = sqlGetTicketSlips & "WHERE TicketSlips.MatchupID = " & thisMatchupID & " AND IsNFL = 1"
+
+						Else
+
+							sqlGetTicketSlips = "SELECT TicketSlipID, TicketTypeID, TicketSlips.AccountID, Accounts.ProfileName, DateAdd(hour, -5, TicketSlips.InsertDateTime) AS InsertDateTime, Matchups.TeamID1, Matchups.TeamID2, T1.TeamName AS TeamName1, T2.TeamName AS TeamName2, T3.TeamName AS BetTeamName, TicketSlips.TeamID, TicketSlips.Moneyline, TicketSlips.Spread, TicketSlips.OverUnderAmount, OverUnderBet, TicketSlips.BetAmount, TicketSlips.PayoutAmount, TicketSlips.IsWinner FROM TicketSlips "
+							sqlGetTicketSlips = sqlGetTicketSlips & "INNER JOIN Accounts ON Accounts.AccountID = TicketSlips.AccountID "
+							sqlGetTicketSlips = sqlGetTicketSlips & "INNER JOIN Matchups ON Matchups.MatchupID = TicketSlips.MatchupID "
+							sqlGetTicketSlips = sqlGetTicketSlips & "LEFT JOIN Teams T1 ON T1.TeamID = Matchups.TeamID1 "
+							sqlGetTicketSlips = sqlGetTicketSlips & "LEFT JOIN Teams T2 ON T2.TeamID = Matchups.TeamID2 "
+							sqlGetTicketSlips = sqlGetTicketSlips & "LEFT JOIN Teams T3 ON T3.TeamID = TicketSlips.TeamID "
+							sqlGetTicketSlips = sqlGetTicketSlips & "WHERE TicketSlips.MatchupID = " & thisMatchupID
+
+						End If
+
+						Set rsTicketSlips = sqlDatabase.Execute(sqlGetTicketSlips)
+
+						Do While Not rsTicketSlips.Eof
+
+							thisTicketSlipID = rsTicketSlips("TicketSlipID")
+							thisTicketTypeID = rsTicketSlips("TicketTypeID")
+							thisAccountID = rsTicketSlips("AccountID")
+							thisProfileName = rsTicketSlips("ProfileName")
+							thisInsertDateTime = rsTicketSlips("InsertDateTime")
+							thisTeamName1 = rsTicketSlips("TeamName1")
+							thisTeamName2 = rsTicketSlips("TeamName2")
+							thisBetTeamName = rsTicketSlips("BetTeamName")
+							thisMoneyline = rsTicketSlips("Moneyline")
+							thisSpread = rsTicketSlips("Spread")
+							thisOverUnderAmount = rsTicketSlips("OverUnderAmount")
+							thisOverUnderBet = rsTicketSlips("OverUnderBet")
+							thisBetAmount = rsTicketSlips("BetAmount")
+							thisPayoutAmount = rsTicketSlips("PayoutAmount")
+							thisIsWinner = rsTicketSlips("IsWinner")
+
+							If CInt(thisTicketTypeID) = 1 Then
+								If thisMoneyline > 0 Then thisMoneyline = "+" & thisMoneyline
+								thisTicketDetails = thisMoneyline & " ML"
+							End If
+							If CInt(thisTicketTypeID) = 2 Then
+								If thisSpread > 0 Then thisSpread = "+" & thisSpread
+								thisTicketDetails = "(" & thisSpread & ")"
+							End If
+							If CInt(thisTicketTypeID) = 3 Then
+								thisTicketDetails = thisOverUnderBet & " (" & thisOverUnderAmount & ")"
+							End If
+%>
+							<div class="col-xxxl-3 col-xxl-3 col-xl-4 col-lg-4 col-md-4 col-sm-12 col-xs-12 col-xxs-12">
+								<ul class="list-group" style="margin-bottom: 1rem;">
+									<li class="list-group-item text-center">
+										<div><b><%= thisBetTeamName %>&nbsp;<%= thisTicketDetails %></b></div>
+										<div><i><%= thisInsertDateTime %> (EST)</i></div>
+										<div class="row pt-2">
+											<div class="col-6" style="border-right: 1px dashed #edebf1;">
+												<div><u>WAGER</u></div>
+												<div><%= FormatNumber(thisBetAmount, 0) %></div>
+											</div>
+											<div class="col-6">
+												<div><u>PAYOUT</u></div>
+												<div><%= FormatNumber(thisPayoutAmount, 0) %></div>
+											</div>
+										</div>
+									</li>
+									<li class="list-group-item text-center">
+										<div><b>Ticket Owner:</b> <%= thisProfileName %></div>
+									</li>
+								</ul>
+							</div>
+<%
+							rsTicketSlips.MoveNext
+
+						Loop
+%>
+					</div>
+
+
 
 				</div>
 

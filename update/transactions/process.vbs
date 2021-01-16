@@ -360,50 +360,38 @@ Set sqlDatabase = CreateObject("ADODB.Connection")
 sqlDatabase.CursorLocation = adUseServer
 sqlDatabase.Open "Driver={SQL Server Native Client 11.0};Server=tcp:samelevel.database.windows.net,1433;Database=NextLevelDB;Uid=samelevel;Pwd=TheHammer123;Encrypt=yes;Connection Timeout=60;"
 
-sqlGetTransactions = "SELECT * FROM SchmeckleTransactions WHERE TransactionHash IS NULL"
+sqlGetTransactions = "SELECT * FROM SchmeckleTransactions ORDER BY TransactionDate ASC"
 Set rsTransactions = sqlDatabase.Execute(sqlGetTransactions)
 
 If Not rsTransactions.Eof Then
 
 	WScript.Echo(vbcrlf & "TRANSACTIONS LOADED..." & vbcrlf & vbcrlf)
 
+	lastTransactionHash = ""
+
 	Do While Not rsTransactions.Eof
 
-		thisTransactionID = rsTransactions("TransactionID")
-		thisTransactionTypeID = rsTransactions("TransactionTypeID")
-		thisTransactionDateTime = rsTransactions("TransactionDate")
-		thisTransactionTotal = rsTransactions("TransactionTotal")
-		thisAccountID = rsTransactions("AccountID")
+		If Len(lastTransactionHash) = 0 Then
 
-		arrTransactionDateTime = Split(thisTransactionDateTime, " ")
-		thisTransactionDate = arrTransactionDateTime(0)
-		thisTransactionTime = arrTransactionDateTime(1)
+			lastTransactionHash = rsTransactions("TransactionHash")
 
-		arrTransactionTimeDetails = Split(thisTransactionTime, ":")
-		thisHour = arrTransactionTimeDetails(0)
-		thisMinute = arrTransactionTimeDetails(1)
-		thisSecond = Replace(arrTransactionTimeDetails(2), ".", "")
+		Else
 
-		thisTransactionHash = sha256(thisSecond & thisMinute & thisHour & thisTransactionDate & thisTransactionTotal & thisAccountID)
+			thisTransactionID = rsTransactions("TransactionID")
+			thisTransactionTotal = rsTransactions("TransactionTotal")
+			thisAccountID = rsTransactions("AccountID")
 
-		sqlCheckExisting = "SELECT * FROM SchmeckleTransactions WHERE TransactionHash = '" & thisTransactionHash & "'"
-		Set rsExisting = sqlDatabase.Execute(sqlCheckExisting)
+			thisTransactionHash = sha256(lastTransactionHash & thisTransactionTotal & thisAccountID)
 
-		If Not rsExisting.Eof Then
+			sqlProcessTransaction = "UPDATE SchmeckleTransactions SET TransactionHash = '" & thisTransactionHash & "', TransactionLastHash = '" & lastTransactionHash & "' WHERE TransactionID = " & thisTransactionID & "; "
 
-			WScript.Echo("NO GOOD. ALREADY EXISTS.")
-			rsExisting.Close
-			Set rsExisting = Nothing
+			sqlProcessTransaction = sqlProcessTransaction & "UPDATE SchmeckleTransactions SET TransactionNextHash = '" & thisTransactionHash & "' WHERE TransactionHash = '" & lastTransactionHash & "'; "
 
-			Randomize
-			thisRandom = CDbl((9999999-1000000+1)*Rnd+1000000)
+			Set rsTransactionUpdate = sqlDatabase.Execute(sqlProcessTransaction)
 
-			thisTransactionHash = sha256(thisRandom & thisTransactionDate & thisTransactionTotal & thisAccountID)
+			lastTransactionHash = thisTransactionHash
 
 		End If
-
-		sqlProcessTransaction = "UPDATE SchmeckleTransactions SET TransactionHash = '" & thisTransactionHash & "' WHERE TransactionID = " & thisTransactionID
-		Set rsTransactionUpdate = sqlDatabase.Execute(sqlProcessTransaction)
 
 		WScript.Echo(vbcrlf & thisTransactionHash & vbcrlf)
 

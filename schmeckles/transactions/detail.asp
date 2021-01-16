@@ -76,10 +76,10 @@
 							<ul class="list-group list-group-flush mb-4">
 <%
 								sqlGetSchmeckles = "SELECT SchmeckleTransactions.TransactionID, DateAdd(hour, -5, SchmeckleTransactions.TransactionDate) AS TransactionDate, SchmeckleTransactions.TransactionTypeID, TransactionTypeTitle, SchmeckleTransactions.TransactionTotal, "
-								sqlGetSchmeckles = sqlGetSchmeckles & "SchmeckleTransactions.TransactionHash, SchmeckleTransactions.AccountID, SchmeckleTransactions.TicketSlipID, Accounts.ProfileName, Accounts.ProfileImage, SchmeckleTransactions.TransactionDescription "
+								sqlGetSchmeckles = sqlGetSchmeckles & "SchmeckleTransactions.TransactionHash, TransactionLastHash, TransactionNextHash, SchmeckleTransactions.AccountID, SchmeckleTransactions.TicketSlipID, Accounts.ProfileName, Accounts.ProfileImage, SchmeckleTransactions.TransactionDescription "
 								sqlGetSchmeckles = sqlGetSchmeckles & "FROM SchmeckleTransactions "
 								sqlGetSchmeckles = sqlGetSchmeckles & "INNER JOIN SchmeckleTransactionTypes ON SchmeckleTransactionTypes.TransactionTypeID = SchmeckleTransactions.TransactionTypeID "
-								sqlGetSchmeckles = sqlGetSchmeckles & "INNER JOIN Accounts ON Accounts.AccountID = SchmeckleTransactions.AccountID "
+								sqlGetSchmeckles = sqlGetSchmeckles & "LEFT JOIN Accounts ON Accounts.AccountID = SchmeckleTransactions.AccountID "
 								If Len(Session.Contents("SITE_Schmeckles_TransactionHash")) > 0 Then sqlGetSchmeckles = sqlGetSchmeckles & "WHERE SchmeckleTransactions.TransactionHash = '" & Session.Contents("SITE_Schmeckles_TransactionHash") & "' "
 
 								Set rsSchmeckles = sqlDatabase.Execute(sqlGetSchmeckles)
@@ -92,6 +92,8 @@
 									thisTransactionTypeTitle = rsSchmeckles("TransactionTypeTitle")
 									thisTransactionTotal = rsSchmeckles("TransactionTotal")
 									thisTransactionHash = rsSchmeckles("TransactionHash")
+									thisTransactionLastHash = rsSchmeckles("TransactionLastHash")
+									thisTransactionNextHash = rsSchmeckles("TransactionNextHash")
 									thisAccountID = rsSchmeckles("AccountID")
 									thisTicketSlipID = rsSchmeckles("TicketSlipID")
 									thisProfileName = rsSchmeckles("ProfileName")
@@ -104,13 +106,20 @@
 										thisTransactionDirection = "badge-danger"
 									End If
 
+									If CInt(thisAccountID) = 0 Then
+										thisProfileName = "LOL BANK"
+										thisProfileImage = "<img src=""http://leagueoflevels/assets/images/logo-sm.png"" width=""40"" class=""rounded-circle float-left"">"
+									Else
+										thisProfileImage = "<img src=""https://samelevel.imgix.net/" & thisProfileImage & "?w=40&h=40&fit=crop&crop=focalpoint"" class=""rounded-circle float-left"">"
+									End If
+
 									thisTransactionTotal = FormatNumber(thisTransactionTotal, 0)
 									If thisTransactionTotal > 0 Then thisTransactionTotal = "+" & thisTransactionTotal
 %>
 									<li href="/schmeckles/transactions/<%= thisTransactionHash %>/" class="list-group-item list-group-item-action rounded-bottom">
 										<div class="row">
 											<div class="col-8 col-lg-3 align-self-center">
-												<img src="https://samelevel.imgix.net/<%= thisProfileImage %>?w=40&h=40&fit=crop&crop=focalpoint" class="rounded-circle float-left">
+												<%= thisProfileImage %>
 												<div class="float-left pl-2">
 													<div><b><%= thisProfileName %></b></div>
 													<div><%= Month(thisTransactionDate) %>/<%= Day(thisTransactionDate) %>&nbsp;<%= arrthisTransactionDate(1) %>&nbsp;<%= arrthisTransactionDate(2) %></div>
@@ -143,13 +152,12 @@
 
 						<div class="col-12 col-xl-2">
 
-							<h4 class="text-left bg-info text-white p-3 mt-0 mb-0 rounded-top"><b>TRANSACTION HASH</b></h4>
-							<div class="bg-white">
+							<div class="bg-white mb-4 rounded">
 								<div id="transaction_hash"></div>
 							</div>
 
 						</div>
-<!--
+
 						<div class="col-12 col-xl-10">
 
 							<ul class="list-group list-group-flush mb-4">
@@ -227,7 +235,7 @@
 													thisTicketDetails = thisOverUnderBet & " (" & thisOverUnderAmount & ")"
 												End If
 %>
-												<a href="/sportsbook/tickets/<%= thisTicketSlipID %>/" class="list-group-item list-group-item-action rounded-bottom">
+												<a href="#" class="list-group-item list-group-item-action rounded-bottom">
 													<div class="row">
 														<div class="col-8 col-lg-3 align-self-center">
 															<div class="float-left pl-2">
@@ -235,11 +243,8 @@
 																<div><%= Month(thisInsertDateTime) %>/<%= Day(thisInsertDateTime) %>&nbsp;<%= arrthisTicketDate(1) %>&nbsp;<%= arrthisTicketDate(2) %></div>
 															</div>
 														</div>
-														<div class="col-lg-3 align-self-center text-left d-none d-lg-block">
+														<div class="col-lg-6 align-self-center text-center d-none d-lg-block">
 															<span class="p-2 badge-light rounded"><%= thisBetTeamName %>&nbsp;<%= thisTicketDetails %><span>
-														</div>
-														<div class="col-lg-3 align-self-center text-left d-none d-lg-block">
-															<span class="p-2 badge-light rounded"><%= thisTicketStatus %><span>
 														</div>
 														<div class="col-4 col-lg-3 align-self-center text-right"><span class="p-2 <%= thisTicketDirection %> rounded"><%= thisTicketStatus %></span></div>
 													</div>
@@ -255,7 +260,71 @@
 											sqlGetTicketSlips = sqlGetTicketSlips & "LEFT JOIN Teams T1 ON T1.TeamID = Matchups.TeamID1 "
 											sqlGetTicketSlips = sqlGetTicketSlips & "LEFT JOIN Teams T2 ON T2.TeamID = Matchups.TeamID2 "
 											sqlGetTicketSlips = sqlGetTicketSlips & "LEFT JOIN Teams T3 ON T3.TeamID = TicketSlips.TeamID "
-											sqlGetTicketSlips = sqlGetTicketSlips & "WHERE TicketSlips.DateProcessed IS NULL AND TicketSlips.IsNFL = 0 AND TicketTypeID = " & thisTicketSlipID
+											sqlGetTicketSlips = sqlGetTicketSlips & "WHERE TicketSlipID = " & thisTicketSlipID
+
+											Set rsTicketSlips = sqlDatabase.Execute(sqlGetTicketSlips)
+											If Not rsTicketSlips.Eof Then
+
+												thisTicketSlipID = rsTicketSlips("TicketSlipID")
+												thisTicketTypeID = rsTicketSlips("TicketTypeID")
+												thisAccountID = rsTicketSlips("AccountID")
+												thisProfileName = rsTicketSlips("ProfileName")
+												thisInsertDateTime = rsTicketSlips("InsertDateTime")
+												thisTeamName1 = rsTicketSlips("TeamName1")
+												thisTeamName2 = rsTicketSlips("TeamName2")
+												thisBetTeamName = rsTicketSlips("BetTeamName")
+												thisMoneyline = rsTicketSlips("Moneyline")
+												thisSpread = rsTicketSlips("Spread")
+												thisOverUnderAmount = rsTicketSlips("OverUnderAmount")
+												thisOverUnderBet = rsTicketSlips("OverUnderBet")
+												thisBetAmount = rsTicketSlips("BetAmount")
+												thisPayoutAmount = rsTicketSlips("PayoutAmount")
+												thisIsWinner = rsTicketSlips("IsWinner")
+
+												If IsNumeric(thisIsWinner) Then
+													If thisIsWinner Then
+														thisTicketStatus = "WINNER"
+														thisTicketDirection = "bg-success text-white"
+													Else
+														thisTicketStatus = "LOSER"
+														thisTicketDirection = "bg-danger"
+													End If
+												Else
+													thisTicketStatus = "IN PROGRESS"
+													thisTicketDirection = "bg-light"
+												End If
+
+												arrthisTicketDate = Split(thisInsertDateTime, " ")
+
+												If CInt(thisTicketTypeID) = 1 Then
+													If thisMoneyline > 0 Then thisMoneyline = "+" & thisMoneyline
+													thisTicketDetails = thisMoneyline & " ML"
+												End If
+												If CInt(thisTicketTypeID) = 2 Then
+													If thisSpread > 0 Then thisSpread = "+" & thisSpread
+													thisTicketDetails = "(" & thisSpread & ")"
+												End If
+												If CInt(thisTicketTypeID) = 3 Then
+													thisBetTeamName = thisTeamAbbr1 & "@" & thisTeamAbbr2
+													thisTicketDetails = thisOverUnderBet & " (" & thisOverUnderAmount & ")"
+												End If
+%>
+												<a href="#" class="list-group-item list-group-item-action rounded-bottom">
+													<div class="row">
+														<div class="col-8 col-lg-3 align-self-center">
+															<div class="float-left pl-2">
+																<div><%= thisTeamName1 %> @ <%= thisTeamName2 %></div>
+																<div><%= Month(thisInsertDateTime) %>/<%= Day(thisInsertDateTime) %>&nbsp;<%= arrthisTicketDate(1) %>&nbsp;<%= arrthisTicketDate(2) %></div>
+															</div>
+														</div>
+														<div class="col-lg-6 align-self-center text-center d-none d-lg-block">
+															<span class="p-2 badge-light rounded"><%= thisBetTeamName %>&nbsp;<%= thisTicketDetails %><span>
+														</div>
+														<div class="col-4 col-lg-3 align-self-center text-right"><span class="p-2 <%= thisTicketDirection %> rounded"><%= thisTicketStatus %></span></div>
+													</div>
+												</a>
+<%
+											End If
 
 										End If
 
@@ -273,13 +342,23 @@
 								<li class="list-group-item list-group-item-action rounded-top p-0">
 									<h4 class="text-left bg-info text-white p-3 mt-0 mb-0 rounded-top"><b>VERIFICATION</b><span class="float-right dripicons-list"></i></h4>
 								</li>
-								<li class="list-group-item">NEXT</li>
-								<li class="list-group-item">NOW</li>
-								<li class="list-group-item">LAST</li>
+<%
+								If Len(thisTransactionNextHash) > 0 Then
+%>
+									<li class="list-group-item text-truncate"><a href="/schmeckles/transactions/<%= thisTransactionNextHash %>/"><span class="mdi mdi-check-circle-outline text-success"></span> <span class="text-info">NEXT</span> <%= thisTransactionNextHash %></a></li>
+<%
+								Else
+%>
+									<li class="list-group-item text-truncate"><span class="mdi mdi-dots-horizontal text-info"></span> <span class="text-info">N/A</span></li>
+<%
+								End If
+%>
+								<li class="list-group-item text-success text-truncate"><span class="mdi mdi-check-decagram"></span> <span class="text-success">HASH</span> <b><%= thisTransactionHash %></b></li>
+								<li class="list-group-item text-truncate"><a href="/schmeckles/transactions/<%= thisTransactionLastHash %>/"><span class="mdi mdi-check-circle-outline text-success"></span> <span class="text-info">LAST</span> <%= thisTransactionLastHash %></a></li>
 							</ul>
 
 						</div>
--->
+
 					</div>
 
 				</div>

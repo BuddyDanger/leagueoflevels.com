@@ -27,11 +27,15 @@
 		rsInsert("TransactionTypeID") = thisTypeID
 		rsInsert("TransactionTotal") = thisTotal
 		rsInsert("TransactionHash") = thisTransactionHash
+		rsInsert("TransactionLastHash") = rsLastHash("TransactionHash")
 		rsInsert("AccountID") = thisAccountID
 		If Len(thisTicketSlipID) > 0 Then rsInsert("TicketSlipID") = thisTicketSlipID
 
 		rsInsert.Update
 		Set rsInsert = Nothing
+
+		sqlUpdatePrevious = sqlProcessTransaction & "UPDATE SchmeckleTransactions SET TransactionNextHash = '" & thisTransactionHash & "' WHERE TransactionHash = '" & rsLastHash("TransactionHash") & "'"
+		Set rsUpdatePrevious = sqlDatabase.Execute(sqlUpdatePrevious)
 
 		rsLastHash.Close
 		Set rsLastHash = Nothing
