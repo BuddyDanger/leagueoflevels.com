@@ -121,13 +121,20 @@
 										thisTransactionDirection = "badge-danger"
 									End If
 
+									If CInt(thisAccountID) = 0 Then
+										thisProfileName = "LOL BANK"
+										thisProfileImage = "<img src=""/assets/images/logo-sm.png"" width=""40"" class=""rounded-circle float-left"">"
+									Else
+										thisProfileImage = "<img src=""https://samelevel.imgix.net/" & thisProfileImage & "?w=40&h=40&fit=crop&crop=focalpoint"" class=""rounded-circle float-left"">"
+									End If
+
 									thisTransactionTotal = FormatNumber(thisTransactionTotal, 0)
 									If thisTransactionTotal > 0 Then thisTransactionTotal = "+" & thisTransactionTotal
 %>
 									<a href="/schmeckles/transactions/<%= thisTransactionHash %>/" class="list-group-item list-group-item-action">
 										<div class="row">
 											<div class="col-8 col-lg-3 align-self-center">
-												<img src="https://samelevel.imgix.net/<%= thisProfileImage %>?w=40&h=40&fit=crop&crop=focalpoint" class="rounded-circle float-left">
+												<%= thisProfileImage %>
 												<div class="float-left pl-2">
 													<div><b><%= thisProfileName %></b></div>
 													<div><%= Month(thisTransactionDate) %>/<%= Day(thisTransactionDate) %>&nbsp;<%= arrthisTransactionDate(1) %>&nbsp;<%= arrthisTransactionDate(2) %></div>

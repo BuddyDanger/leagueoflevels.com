@@ -340,7 +340,7 @@
 			<div class="page-content">
 
 				<div class="container-fluid">
-
+					
 					<div class="row mt-4">
 <%
 						If Session.Contents("SITE_Bet_Type") = "nfl" Then

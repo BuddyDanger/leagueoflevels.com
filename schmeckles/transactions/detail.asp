@@ -18,6 +18,56 @@
 		Response.Redirect(thisRedirect)
 
 	End If
+
+	sqlGetSchmeckles = "SELECT SchmeckleTransactions.TransactionID, DateAdd(hour, -5, SchmeckleTransactions.TransactionDate) AS TransactionDate, SchmeckleTransactions.TransactionTypeID, TransactionTypeTitle, SchmeckleTransactions.TransactionTotal, "
+	sqlGetSchmeckles = sqlGetSchmeckles & "SchmeckleTransactions.TransactionHash, TransactionLastHash, TransactionNextHash, SchmeckleTransactions.AccountID, SchmeckleTransactions.TicketSlipID, Accounts.ProfileName, Accounts.ProfileImage, SchmeckleTransactions.TransactionDescription "
+	sqlGetSchmeckles = sqlGetSchmeckles & "FROM SchmeckleTransactions "
+	sqlGetSchmeckles = sqlGetSchmeckles & "INNER JOIN SchmeckleTransactionTypes ON SchmeckleTransactionTypes.TransactionTypeID = SchmeckleTransactions.TransactionTypeID "
+	sqlGetSchmeckles = sqlGetSchmeckles & "LEFT JOIN Accounts ON Accounts.AccountID = SchmeckleTransactions.AccountID "
+	If Len(Session.Contents("SITE_Schmeckles_TransactionHash")) > 0 Then sqlGetSchmeckles = sqlGetSchmeckles & "WHERE SchmeckleTransactions.TransactionHash = '" & Session.Contents("SITE_Schmeckles_TransactionHash") & "' "
+
+	Set rsSchmeckles = sqlDatabase.Execute(sqlGetSchmeckles)
+
+	If Not rsSchmeckles.Eof Then
+
+		thisTransactionID = rsSchmeckles("TransactionID")
+		thisTransactionDate = rsSchmeckles("TransactionDate")
+		thisTransactionTypeID = rsSchmeckles("TransactionTypeID")
+		thisTransactionTypeTitle = rsSchmeckles("TransactionTypeTitle")
+		thisTransactionTotal = rsSchmeckles("TransactionTotal")
+		thisTransactionHash = rsSchmeckles("TransactionHash")
+		thisTransactionLastHash = rsSchmeckles("TransactionLastHash")
+		thisTransactionNextHash = rsSchmeckles("TransactionNextHash")
+		thisAccountID = rsSchmeckles("AccountID")
+		thisTicketSlipID = rsSchmeckles("TicketSlipID")
+		thisProfileName = rsSchmeckles("ProfileName")
+		thisProfileImage = rsSchmeckles("ProfileImage")
+		thisTransactionDescription = rsSchmeckles("TransactionDescription")
+		arrthisTransactionDate = Split(thisTransactionDate, " ")
+		If CDbl(thisTransactionTotal) > 0 Then
+			thisTransactionDirection = "badge-success"
+		Else
+			thisTransactionDirection = "badge-danger"
+		End If
+
+		If CInt(thisAccountID) = 0 Then
+			thisProfileName = "LOL BANK"
+			thisProfileImage = "<img src=""http://leagueoflevels/assets/images/logo-sm.png"" width=""40"" class=""rounded-circle float-left"">"
+		Else
+			thisProfileImage = "<img src=""https://samelevel.imgix.net/" & thisProfileImage & "?w=40&h=40&fit=crop&crop=focalpoint"" class=""rounded-circle float-left"">"
+		End If
+
+		thisTransactionTotal = FormatNumber(thisTransactionTotal, 0)
+		If thisTransactionTotal > 0 Then thisTransactionTotal = "+" & thisTransactionTotal
+
+		thisPageTitle = "Transaction Details / " & thisProfileName & " / " & thisTransactionDate & " / League of Levels"
+		thisPageDescription = "Detailed information on the Schmeckle transaction made " & thisTransactionDate & " by " & thisProfileName & "."
+
+	Else
+
+		Response.Redirect("/schmeckles/transactions/")
+
+	End If
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -28,22 +78,22 @@
 		<meta http-equiv="x-ua-compatible" content="IE=edge,chrome=1" />
 		<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
-		<title>Transactions / Schmeckles / League of Levels</title>
+		<title><%= thisPageTitle %></title>
 
-		<meta name="description" content="Real-time Schmeckle transaction ledger. Schmeckles represent the league's currency system. Teams can earn Schmeckles through multiple side games and used to purchase items like draft lottery balls." />
+		<meta name="description" content="<%= thisPageDescription %>" />
 
 		<meta property="og:site_name" content="League of Levels" />
 		<meta property="og:url" content="https://www.leagueoflevels.com/schmeckles/" />
-		<meta property="og:title" content="Transactions / Schmeckles / League of Levels" />
-		<meta property="og:description" content="Real-time Schmeckle transaction ledger. Schmeckles represent the league's currency system. Teams can earn Schmeckles through multiple side games and used to purchase items like draft lottery balls." />
+		<meta property="og:title" content="<%= thisPageTitle %>" />
+		<meta property="og:description" content="<%= thisPageDescription %>" />
 		<meta property="og:type" content="article" />
 
 		<meta name="twitter:site" content="samelevel" />
 		<meta name="twitter:url" content="https://www.leagueoflevels.com/schmeckles/" />
-		<meta name="twitter:title" content="Schmeckles / League of Levels" />
-		<meta name="twitter:description" content="Real-time Schmeckle transaction ledger. Schmeckles represent the league's currency system. Teams can earn Schmeckles through multiple side games and used to purchase items like draft lottery balls." />
+		<meta name="twitter:title" content="<%= thisPageTitle %>" />
+		<meta name="twitter:description" content="<%= thisPageDescription %>" />
 
-		<meta name="title" content="Transactions / Schmeckles / League of Levels" />
+		<meta name="title" content="<%= thisPageTitle %>" />
 		<meta name="medium" content="article" />
 
 		<link rel="shortcut icon" href="/favicon.ico" />
@@ -84,37 +134,7 @@
 
 								Set rsSchmeckles = sqlDatabase.Execute(sqlGetSchmeckles)
 
-								Do While Not rsSchmeckles.Eof
-
-									thisTransactionID = rsSchmeckles("TransactionID")
-									thisTransactionDate = rsSchmeckles("TransactionDate")
-									thisTransactionTypeID = rsSchmeckles("TransactionTypeID")
-									thisTransactionTypeTitle = rsSchmeckles("TransactionTypeTitle")
-									thisTransactionTotal = rsSchmeckles("TransactionTotal")
-									thisTransactionHash = rsSchmeckles("TransactionHash")
-									thisTransactionLastHash = rsSchmeckles("TransactionLastHash")
-									thisTransactionNextHash = rsSchmeckles("TransactionNextHash")
-									thisAccountID = rsSchmeckles("AccountID")
-									thisTicketSlipID = rsSchmeckles("TicketSlipID")
-									thisProfileName = rsSchmeckles("ProfileName")
-									thisProfileImage = rsSchmeckles("ProfileImage")
-									thisTransactionDescription = rsSchmeckles("TransactionDescription")
-									arrthisTransactionDate = Split(thisTransactionDate, " ")
-									If CDbl(thisTransactionTotal) > 0 Then
-										thisTransactionDirection = "badge-success"
-									Else
-										thisTransactionDirection = "badge-danger"
-									End If
-
-									If CInt(thisAccountID) = 0 Then
-										thisProfileName = "LOL BANK"
-										thisProfileImage = "<img src=""http://leagueoflevels/assets/images/logo-sm.png"" width=""40"" class=""rounded-circle float-left"">"
-									Else
-										thisProfileImage = "<img src=""https://samelevel.imgix.net/" & thisProfileImage & "?w=40&h=40&fit=crop&crop=focalpoint"" class=""rounded-circle float-left"">"
-									End If
-
-									thisTransactionTotal = FormatNumber(thisTransactionTotal, 0)
-									If thisTransactionTotal > 0 Then thisTransactionTotal = "+" & thisTransactionTotal
+								If Not rsSchmeckles.Eof Then
 %>
 									<li href="/schmeckles/transactions/<%= thisTransactionHash %>/" class="list-group-item list-group-item-action rounded-bottom">
 										<div class="row">
@@ -135,12 +155,10 @@
 										</div>
 									</li>
 <%
-									rsSchmeckles.MoveNext
+									rsSchmeckles.Close
+									Set rsSchmeckles = Nothing
 
-								Loop
-
-								rsSchmeckles.Close
-								Set rsSchmeckles = Nothing
+								End If
 %>
 							</ul>
 

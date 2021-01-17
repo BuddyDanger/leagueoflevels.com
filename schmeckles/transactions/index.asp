@@ -196,7 +196,7 @@
 
 										If CInt(thisAccountID) = 0 Then
 											thisProfileName = "LOL BANK"
-											thisProfileImage = "<img src=""http://leagueoflevels/assets/images/logo-sm.png"" width=""40"" class=""rounded-circle float-left"">"
+											thisProfileImage = "<img src=""/assets/images/logo-sm.png"" width=""40"" class=""rounded-circle float-left"">"
 										Else
 											thisProfileImage = "<img src=""https://samelevel.imgix.net/" & thisProfileImage & "?w=40&h=40&fit=crop&crop=focalpoint"" class=""rounded-circle float-left"">"
 										End If

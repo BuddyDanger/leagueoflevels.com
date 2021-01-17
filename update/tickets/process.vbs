@@ -362,7 +362,7 @@ Function SchmeckleTransaction (thisAccountID, thisTypeID, thisTicketSlipID, this
 	Set rsLastHash = sqlDatabase.Execute("SELECT TOP 1 TransactionHash FROM SchmeckleTransactions ORDER BY TransactionID DESC")
 	thisTransactionHash = sha256(rsLastHash("TransactionHash") & thisTransactionTotal & thisAccountID)
 
-	Set rsInsert = Server.CreateObject("ADODB.RecordSet")
+	Set rsInsert = CreateObject("ADODB.RecordSet")
 	rsInsert.CursorType = adOpenKeySet
 	rsInsert.LockType = adLockOptimistic
 	rsInsert.Open "SchmeckleTransactions", sqlDatabase, , , adCmdTable
