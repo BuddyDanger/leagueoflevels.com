@@ -134,14 +134,16 @@
 
 							Response.Write("<div class=""pt-2 pb-2"">")
 
+								thisBetPad = "style=""padding-top: 10px; padding-bottom: 9px;"""
 								If CInt(thisTicketTypeID) = 4 Then
 									Response.Write("<div><b>" & thisPropQuestion & "</b></div>")
+									thisBetPad = ""
 								End If
 
 								If Len(thisMatchupID) > 0 Then
-									Response.Write("<div><b>" & thisLOLBetTeamName & "&nbsp;" & thisTicketDetails & "</b></div>")
+									Response.Write("<div " & thisBetPad & "><b>" & thisLOLBetTeamName & "&nbsp;" & thisTicketDetails & "</b></div>")
 								Else
-									Response.Write("<div><b>" & thisNFLBetTeamName & "&nbsp;" & thisTicketDetails & "</b></div>")
+									Response.Write("<div " & thisBetPad & "><b>" & thisNFLBetTeamName & "&nbsp;" & thisTicketDetails & "</b></div>")
 								End If
 
 							Response.Write("</div>")

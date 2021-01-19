@@ -502,6 +502,7 @@
 											<input type="hidden" id="inputTicketGo" name="inputTicketGo" value="go" />
 											<input type="hidden" id="inputTicketType" name="inputTicketType" value="1" />
 											<input type="hidden" id="inputMatchupID" name="inputMatchupID" value="<%= thisMatchupID %>" />
+											<input type="hidden" id="inputNFLGameID" name="inputNFLGameID" value="<%= thisNFLGameID %>" />
 											<input type="hidden" id="inputTeamID1" name="inputTeamID1" value="<%= thisTeamID1 %>" />
 											<input type="hidden" id="inputTeamID2" name="inputTeamID2" value="<%= thisTeamID2 %>" />
 											<input type="hidden" id="inputMoneylineValue1" name="inputMoneylineValue1" value="<%= thisTeamMoneyline1 %>" />
@@ -551,6 +552,7 @@
 											<input type="hidden" id="inputTicketGo" name="inputTicketGo" value="go" />
 											<input type="hidden" id="inputTicketType" name="inputTicketType" value="2" />
 											<input type="hidden" id="inputMatchupID" name="inputMatchupID" value="<%= thisMatchupID %>" />
+											<input type="hidden" id="inputNFLGameID" name="inputNFLGameID" value="<%= thisNFLGameID %>" />
 											<input type="hidden" id="inputTeamID1" name="inputTeamID1" value="<%= thisTeamID1 %>" />
 											<input type="hidden" id="inputTeamID2" name="inputTeamID2" value="<%= thisTeamID2 %>" />
 											<input type="hidden" id="inputSpreadValue1" name="inputSpreadValue1" value="<%= thisTeamSpread1 %>" />
@@ -600,6 +602,7 @@
 											<input type="hidden" id="inputTicketGo" name="inputTicketGo" value="go" />
 											<input type="hidden" id="inputTicketType" name="inputTicketType" value="3" />
 											<input type="hidden" id="inputMatchupID" name="inputMatchupID" value="<%= thisMatchupID %>" />
+											<input type="hidden" id="inputNFLGameID" name="inputNFLGameID" value="<%= thisNFLGameID %>" />
 											<input type="hidden" id="inputOverUnderAmount" name="inputOverUnderAmount" value="<%= thisOverUnderTotal %>" />
 											<input type="hidden" id="inputOverUnderWin" name="inputOverUnderWin" value="" />
 											<input type="hidden" id="inputOverUnderPayout" name="inputOverUnderPayout" value="" />
