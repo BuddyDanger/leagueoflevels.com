@@ -44,6 +44,135 @@
 
 	End Function
 
+	Sub TicketRow ()
+
+		Response.Write("<div class=""row"">")
+
+			sqlGetTicketSlips = "SELECT TicketSlips.TicketSlipID, TicketSlips.TicketTypeID, TicketSlips.AccountID, TicketSlips.MatchupID, TicketSlips.NFLGameID, TicketSlips.PropQuestionID, TicketSlips.PropAnswerID, Accounts.ProfileName, DATEADD(hour, - 5, TicketSlips.InsertDateTime) AS InsertDateTime, "
+			sqlGetTicketSlips = sqlGetTicketSlips & "NFLGames.AwayTeamID AS NFLTeamID1, NFLGames.HomeTeamID AS NFLTeamID2, NFLTeam1.City + ' ' + NFLTeam1.Name AS NFLTeamName1, NFLTeam2.City + ' ' + NFLTeam2.Name AS NFLTeamName2, NFLTeam3.City + ' ' + NFLTeam3.Name AS NFLBetTeamName, "
+			sqlGetTicketSlips = sqlGetTicketSlips & "Matchups.TeamID1 AS LOLTeamID1, Matchups.TeamID2 AS LOLTeamID2, LOLTeam1.TeamName AS LOLTeamName1, LOLTeam2.TeamName AS LOLTeamName2, LOLTeam3.TeamName AS LOLBetTeamName, "
+			sqlGetTicketSlips = sqlGetTicketSlips & "PQ.Question, PA.Answer, TicketSlips.TeamID, TicketSlips.Moneyline, TicketSlips.Spread, TicketSlips.OverUnderAmount, TicketSlips.OverUnderBet, TicketSlips.BetAmount, TicketSlips.PayoutAmount, TicketSlips.IsWinner FROM TicketSlips "
+			sqlGetTicketSlips = sqlGetTicketSlips & "INNER JOIN Accounts ON Accounts.AccountID = TicketSlips.AccountID "
+			sqlGetTicketSlips = sqlGetTicketSlips & "LEFT OUTER JOIN NFLGames ON NFLGames.NFLGameID = TicketSlips.NFLGameID "
+			sqlGetTicketSlips = sqlGetTicketSlips & "LEFT OUTER JOIN Matchups ON Matchups.MatchupID = TicketSlips.MatchupID "
+			sqlGetTicketSlips = sqlGetTicketSlips & "LEFT OUTER JOIN NFLTeams AS NFLTeam1 ON NFLTeam1.NFLTeamID = NFLGames.AwayTeamID "
+			sqlGetTicketSlips = sqlGetTicketSlips & "LEFT OUTER JOIN NFLTeams AS NFLTeam2 ON NFLTeam2.NFLTeamID = NFLGames.HomeTeamID "
+			sqlGetTicketSlips = sqlGetTicketSlips & "LEFT OUTER JOIN NFLTeams AS NFLTeam3 ON NFLTeam3.NFLTeamID = TicketSlips.TeamID "
+			sqlGetTicketSlips = sqlGetTicketSlips & "LEFT OUTER JOIN Teams AS LOLTeam1 ON LOLTeam1.TeamID = Matchups.TeamID1 "
+			sqlGetTicketSlips = sqlGetTicketSlips & "LEFT OUTER JOIN Teams AS LOLTeam2 ON LOLTeam2.TeamID = Matchups.TeamID2 "
+			sqlGetTicketSlips = sqlGetTicketSlips & "LEFT OUTER JOIN Teams AS LOLTeam3 ON LOLTeam3.TeamID = TicketSlips.TeamID "
+			sqlGetTicketSlips = sqlGetTicketSlips & "LEFT OUTER JOIN PropQuestions AS PQ ON PQ.PropQuestionID = TicketSlips.PropQuestionID "
+			sqlGetTicketSlips = sqlGetTicketSlips & "LEFT OUTER JOIN PropAnswers AS PA ON PA.PropAnswerID = TicketSlips.PropAnswerID "
+			sqlGetTicketSlips = sqlGetTicketSlips & "WHERE TicketSlips.IsWinner IS NULL "
+			If Len(thisNFLGameID) > 0 Then sqlGetTicketSlips = sqlGetTicketSlips & "AND TicketSlips.NFLGameID = " & thisNFLGameID & " "
+			If Len(thisMatchupID) > 0 Then sqlGetTicketSlips = sqlGetTicketSlips & "AND TicketSlips.MatchupID = " & thisMatchupID & " "
+			sqlGetTicketSlips = sqlGetTicketSlips & "ORDER BY InsertDateTime DESC"
+
+			Set rsTicketSlips = sqlDatabase.Execute(sqlGetTicketSlips)
+
+			Do While Not rsTicketSlips.Eof
+
+				thisTicketSlipID = rsTicketSlips("TicketSlipID")
+				thisTicketTypeID = rsTicketSlips("TicketTypeID")
+				thisAccountID = rsTicketSlips("AccountID")
+				thisMatchupID = rsTicketSlips("MatchupID")
+				thisNFLGameID = rsTicketSlips("NFLGameID")
+				thisPropQuestion = rsTicketSlips("Question")
+				thisPropAnswer = rsTicketSlips("Answer")
+				thisProfileName = rsTicketSlips("ProfileName")
+				thisInsertDateTime = rsTicketSlips("InsertDateTime")
+				thisNFLTeamName1 = rsTicketSlips("NFLTeamName1")
+				thisNFLTeamName2 = rsTicketSlips("NFLTeamName2")
+				thisNFLBetTeamName = rsTicketSlips("NFLBetTeamName")
+				thisLOLTeamName1 = rsTicketSlips("LOLTeamName1")
+				thisLOLTeamName2 = rsTicketSlips("LOLTeamName2")
+				thisLOLBetTeamName = rsTicketSlips("LOLBetTeamName")
+				thisMoneyline = rsTicketSlips("Moneyline")
+				thisSpread = rsTicketSlips("Spread")
+				thisOverUnderAmount = rsTicketSlips("OverUnderAmount")
+				thisOverUnderBet = rsTicketSlips("OverUnderBet")
+				thisBetAmount = rsTicketSlips("BetAmount")
+				thisPayoutAmount = rsTicketSlips("PayoutAmount")
+				thisIsWinner = rsTicketSlips("IsWinner")
+
+				If thisIsWinner Then
+					thisCurrentStatus = "WINNER"
+				Else
+					If IsNull(thisIsWinner) Then
+						thisCurrentStatus = "IN PROGRESS"
+					Else
+						thisCurrentStatus = "LOSER"
+					End If
+				End If
+
+				If CInt(thisTicketTypeID) = 1 Then
+					If thisMoneyline > 0 Then thisMoneyline = "+" & thisMoneyline
+					thisTicketDetails = thisMoneyline & " ML"
+				End If
+				If CInt(thisTicketTypeID) = 2 Then
+					If thisSpread > 0 Then thisSpread = "+" & thisSpread
+					thisTicketDetails = "(" & thisSpread & ")"
+				End If
+				If CInt(thisTicketTypeID) = 3 Then
+					thisTicketDetails = thisOverUnderBet & " (" & thisOverUnderAmount & ")"
+				End If
+				If CInt(thisTicketTypeID) = 4 Then
+					If thisMoneyline > 0 Then thisMoneyline = "+" & thisMoneyline
+					thisTicketDetails = thisPropAnswer & " (" & thisMoneyline & " ML" & ")"
+				End If
+
+				Response.Write("<div class=""col-xxxl-3 col-xxl-3 col-xl-4 col-lg-4 col-md-4 col-sm-12 col-xs-12 col-xxs-12"">")
+					Response.Write("<ul class=""list-group mb-4"">")
+						Response.Write("<li class=""list-group-item text-center p-3"">")
+
+
+							If Len(thisMatchupID) > 0 Then
+								Response.Write("<div class=""bg-light p-2 rounded text-dark"">" & thisLOLTeamName1 & " @ " & thisLOLTeamName2 & "</div>")
+							Else
+								Response.Write("<div class=""bg-light p-2 rounded text-dark"">" & thisNFLTeamName1 & " @ " & thisNFLTeamName2 & "</div>")
+							End If
+
+							Response.Write("<div class=""pt-2 pb-2"">")
+
+								If CInt(thisTicketTypeID) = 4 Then
+									Response.Write("<div><b>" & thisPropQuestion & "</b></div>")
+								End If
+
+								If Len(thisMatchupID) > 0 Then
+									Response.Write("<div><b>" & thisLOLBetTeamName & "&nbsp;" & thisTicketDetails & "</b></div>")
+								Else
+									Response.Write("<div><b>" & thisNFLBetTeamName & "&nbsp;" & thisTicketDetails & "</b></div>")
+								End If
+
+							Response.Write("</div>")
+
+							Response.Write("<div class=""row pt-2"">")
+								Response.Write("<div class=""col-6"" style=""border-right: 1px dashed #edebf1;"">")
+									Response.Write("<div><u>WAGER</u></div>")
+									Response.Write("<div>" & FormatNumber(thisBetAmount, 0) & "</div>")
+								Response.Write("</div>")
+								Response.Write("<div class=""col-6"">")
+									Response.Write("<div><u>PAYOUT</u></div>")
+									Response.Write("<div>" & FormatNumber(thisPayoutAmount, 0) & "</div>")
+								Response.Write("</div>")
+							Response.Write("</div>")
+						Response.Write("</li>")
+						Response.Write("<li class=""list-group-item p-3"">")
+							Response.Write("<div class=""float-right pt-2 mt-1""><span class=""p-2 badge-warning rounded"">" & thisCurrentStatus & "</span></div>")
+							Response.Write("<div><b>" & thisProfileName & "</b></div>")
+							Response.Write("<div><i>" & thisInsertDateTime & " (EST)</i></div>")
+						Response.Write("</li>")
+					Response.Write("</ul>")
+				Response.Write("</div>")
+
+				rsTicketSlips.MoveNext
+
+			Loop
+
+		Response.Write("</div>")
+
+	End Sub
+
 	Function GetToken (League)
 
 		Set xmlhttpSLFFL = CreateObject("Microsoft.XMLHTTP")
