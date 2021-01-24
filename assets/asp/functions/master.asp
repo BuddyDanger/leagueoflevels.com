@@ -66,6 +66,7 @@
 			sqlGetTicketSlips = sqlGetTicketSlips & "WHERE TicketSlips.IsWinner IS NULL "
 			If Len(thisNFLGameID) > 0 Then sqlGetTicketSlips = sqlGetTicketSlips & "AND TicketSlips.NFLGameID = " & thisNFLGameID & " "
 			If Len(thisMatchupID) > 0 Then sqlGetTicketSlips = sqlGetTicketSlips & "AND TicketSlips.MatchupID = " & thisMatchupID & " "
+			If Len(thisAccountID) > 0 Then sqlGetTicketSlips = sqlGetTicketSlips & "AND TicketSlips.AccountID = " & thisAccountID & " "
 			sqlGetTicketSlips = sqlGetTicketSlips & "ORDER BY InsertDateTime DESC"
 
 			Set rsTicketSlips = sqlDatabase.Execute(sqlGetTicketSlips)
