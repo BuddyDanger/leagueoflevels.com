@@ -44,7 +44,7 @@
 
 	End Function
 
-	Sub TicketRow ()
+	Sub TicketRow (ticketsNFLGameID, ticketsMatchupID, ticketsAccountID, ticketsTypeID, ticketsProcessed)
 
 		Response.Write("<div class=""row"">")
 
@@ -63,12 +63,16 @@
 			sqlGetTicketSlips = sqlGetTicketSlips & "LEFT OUTER JOIN Teams AS LOLTeam3 ON LOLTeam3.TeamID = TicketSlips.TeamID "
 			sqlGetTicketSlips = sqlGetTicketSlips & "LEFT OUTER JOIN PropQuestions AS PQ ON PQ.PropQuestionID = TicketSlips.PropQuestionID "
 			sqlGetTicketSlips = sqlGetTicketSlips & "LEFT OUTER JOIN PropAnswers AS PA ON PA.PropAnswerID = TicketSlips.PropAnswerID "
-			sqlGetTicketSlips = sqlGetTicketSlips & "WHERE TicketSlips.IsWinner IS NULL "
-			If Len(thisNFLGameID) > 0 Then sqlGetTicketSlips = sqlGetTicketSlips & "AND TicketSlips.NFLGameID = " & thisNFLGameID & " "
-			If Len(thisMatchupID) > 0 Then sqlGetTicketSlips = sqlGetTicketSlips & "AND TicketSlips.MatchupID = " & thisMatchupID & " "
-			If Len(thisAccountID) > 0 Then sqlGetTicketSlips = sqlGetTicketSlips & "AND TicketSlips.AccountID = " & thisAccountID & " "
+			sqlGetTicketSlips = sqlGetTicketSlips & "WHERE "
+			If Len(ticketsProcessed) > 0 Then sqlGetTicketSlips = sqlGetTicketSlips & "TicketSlips.IsWinner IS NULL AND "
+			If Len(ticketsNFLGameID) > 0 Then sqlGetTicketSlips = sqlGetTicketSlips & "TicketSlips.NFLGameID = " & ticketsNFLGameID & " AND "
+			If Len(ticketsMatchupID) > 0 Then sqlGetTicketSlips = sqlGetTicketSlips & "TicketSlips.MatchupID = " & ticketsMatchupID & " AND "
+			If Len(ticketsAccountID) > 0 Then sqlGetTicketSlips = sqlGetTicketSlips & "TicketSlips.AccountID = " & ticketsAccountID & " AND "
+			If Len(ticketsTypeID) > 0 Then sqlGetTicketSlips = sqlGetTicketSlips & "TicketSlips.TicketTypeID = " & ticketsTypeID & " AND "
+			If Right(sqlGetTicketSlips, 6) = "WHERE " Then sqlGetTicketSlips = Left(sqlGetTicketSlips, Len(sqlGetTicketSlips) - 6)
+			If Right(sqlGetTicketSlips, 4) = "AND " Then sqlGetTicketSlips = Left(sqlGetTicketSlips, Len(sqlGetTicketSlips) - 4)
 			sqlGetTicketSlips = sqlGetTicketSlips & "ORDER BY InsertDateTime DESC"
-
+			'Response.Write(sqlGetTicketSlips)
 			Set rsTicketSlips = sqlDatabase.Execute(sqlGetTicketSlips)
 
 			Do While Not rsTicketSlips.Eof
@@ -98,11 +102,14 @@
 
 				If thisIsWinner Then
 					thisCurrentStatus = "WINNER"
+					thisCurrentStatusBGColor = "badge-success"
 				Else
 					If IsNull(thisIsWinner) Then
 						thisCurrentStatus = "IN PROGRESS"
+						thisCurrentStatusBGColor = "badge-warning"
 					Else
 						thisCurrentStatus = "LOSER"
+						thisCurrentStatusBGColor = "badge-danger"
 					End If
 				End If
 
@@ -161,7 +168,7 @@
 							Response.Write("</div>")
 						Response.Write("</li>")
 						Response.Write("<li class=""list-group-item p-3"">")
-							Response.Write("<div class=""float-right pt-2 mt-1""><span class=""p-2 badge-warning rounded"">" & thisCurrentStatus & "</span></div>")
+							Response.Write("<div class=""float-right pt-2 mt-1""><span class=""p-2 " & thisCurrentStatusBGColor & " rounded"">" & thisCurrentStatus & "</span></div>")
 							Response.Write("<div><b>" & thisProfileName & "</b></div>")
 							Response.Write("<div><i>" & thisInsertDateTime & " (EST)</i></div>")
 						Response.Write("</li>")
@@ -726,4 +733,43 @@
 
 		URLDecode = sOutput
 	End Function
+
+	Function FriendlyLinkText (sRawText)
+
+		sFriendlyText = sRawText
+		If InStr(sFriendlyText, "&mdash;") Then sFriendlyText = Replace(sFriendlyText, "&mdash;", "")
+		If InStr(sFriendlyText, "&amp;") Then sFriendlyText = Replace(sFriendlyText, "&amp;", "")
+		If InStr(sFriendlyText, "&#146;") Then sFriendlyText = Replace(sFriendlyText, "&#146;", "")
+		If InStr(sFriendlyText, "&#174;") Then sFriendlyText = Replace(sFriendlyText, "&#174;", "")
+		If InStr(sFriendlyText, "&#39;") Then sFriendlyText = Replace(sFriendlyText, "&#39;", "")
+		If InStr(sFriendlyText, "&#34;") Then sFriendlyText = Replace(sFriendlyText, "&#34;", "")
+		If InStr(sFriendlyText, "&#45;") Then sFriendlyText = Replace(sFriendlyText, "&#45;", "")
+		If InStr(sFriendlyText, " & ") Then sFriendlyText = Replace(sFriendlyText, " & ", "-")
+		If InStr(sFriendlyText, "&") Then sFriendlyText = Replace(sFriendlyText, "&", "-")
+		If InStr(sFriendlyText, "%") Then sFriendlyText = Replace(sFriendlyText, "%", "")
+		If InStr(sFriendlyText, "'") Then sFriendlyText = Replace(sFriendlyText, "'", "")
+		If InStr(sFriendlyText, " ") Then sFriendlyText = Replace(sFriendlyText, " ", "-")
+		If InStr(sFriendlyText, ",") Then sFriendlyText = Replace(sFriendlyText, ",", "")
+		If InStr(sFriendlyText, "/") Then sFriendlyText = Replace(sFriendlyText, "/", "-")
+		If InStr(sFriendlyText, ":") Then sFriendlyText = Replace(sFriendlyText, ":", "")
+		If InStr(sFriendlyText, "(") Then sFriendlyText = Replace(sFriendlyText, "(", "")
+		If InStr(sFriendlyText, ")") Then sFriendlyText = Replace(sFriendlyText, ")", "")
+		If InStr(sFriendlyText, "<") Then sFriendlyText = Replace(sFriendlyText, "<", "")
+		If InStr(sFriendlyText, ">") Then sFriendlyText = Replace(sFriendlyText, ">", "")
+		If InStr(sFriendlyText, "*") Then sFriendlyText = Replace(sFriendlyText, "*", "")
+		If InStr(sFriendlyText, "#") Then sFriendlyText = Replace(sFriendlyText, "#", "")
+		If InStr(sFriendlyText, "|") Then sFriendlyText = Replace(sFriendlyText, "|", "")
+
+		Do While InStr(sFriendlyText, "--")
+			sFriendlyText = Replace(sFriendlyText, "--", "-")
+		Loop
+
+		If Right(sFriendlyText, 1) = "." Then sFriendlyText = Left(sFriendlyText, Len(sFriendlyText)-1)
+		If Left(sFriendlyText, 1) = "." Then sFriendlyText = Right(sFriendlyText, Len(sFriendlyText)-1)
+
+		sFriendlyText = LCase(sFriendlyText)
+		FriendlyLinkText = sFriendlyText
+
+	End Function
+
 %>

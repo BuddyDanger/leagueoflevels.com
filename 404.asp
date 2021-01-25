@@ -415,6 +415,77 @@
 	End If
 
 	'*****************************************************
+	'*** TICKETS     *************************************
+	'*****************************************************
+	If Session.Contents("SITE_Level_1") = "sportsbook" And Session.Contents("SITE_Level_2") = "tickets" Then
+
+		Session.Contents("SITE_Tickets_AccountID") = ""
+		Session.Contents("SITE_Tickets_AccountProfileName") = ""
+		Session.Contents("SITE_Tickets_TypeID") = ""
+		Session.Contents("SITE_Tickets_TypeTitle") = ""
+
+		arLevels = Split(LevelString, "||")
+		RebuildURL = 0
+		LevelCount = 1
+		DeadPage = 0
+
+		For Each Level In arLevels
+
+			MatchFound = 0
+			StrippedLevel = Level
+			If InStr(StrippedLevel, "-") Then StrippedLevel = Replace(StrippedLevel, "-", " ")
+
+			If MatchFound = 0 Then
+
+				sqlCheckAccounts = "SELECT * FROM Accounts WHERE ProfileURL = '" & Level & "'"
+				Set rsAccounts = sqlDatabase.Execute(sqlCheckAccounts)
+
+				If Not rsAccounts.Eof Then
+
+					Session.Contents("SITE_Tickets_AccountID") = rsAccounts("AccountID")
+					Session.Contents("SITE_Tickets_AccountProfileName") = rsAccounts("ProfileName")
+
+					rsAccounts.Close
+					Set rsAccounts = Nothing
+
+					sTransferURL = "tickets/index.asp"
+
+					MatchFound = 1
+
+				End If
+
+			End If
+
+			If MatchFound = 0 Then
+
+				sqlCheckTypes = "SELECT * FROM TicketTypes WHERE TypeSafeTitle = '" & Level & "'"
+				Set rsTypes = sqlDatabase.Execute(sqlCheckTypes)
+
+				If Not rsTypes.Eof Then
+
+					Session.Contents("SITE_Tickets_TypeID") = rsTypes("TicketTypeID")
+					Session.Contents("SITE_Tickets_TypeTitle") = rsTypes("TypeTitle")
+
+					rsTypes.Close
+					Set rsTypes = Nothing
+
+					sTransferURL = "tickets/index.asp"
+
+					MatchFound = 1
+
+				End If
+
+			End If
+
+			LevelCount = LevelCount + 1
+
+		Next
+
+
+
+	End If
+
+	'*****************************************************
 	'*** BLOG ********************************************
 	'*****************************************************
 	If Session.Contents("SITE_Level_1") = "standings" Then

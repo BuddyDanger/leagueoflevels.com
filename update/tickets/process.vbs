@@ -401,7 +401,7 @@ sqlGetTickets = sqlGetTickets & "INNER JOIN Accounts ON Accounts.AccountID = Tic
 sqlGetTickets = sqlGetTickets & "LEFT JOIN Teams T1 ON T1.TeamID = Matchups.TeamID1 "
 sqlGetTickets = sqlGetTickets & "LEFT JOIN Teams T2 ON T2.TeamID = Matchups.TeamID2 "
 sqlGetTickets = sqlGetTickets & "LEFT JOIN Teams T3 ON T3.TeamID = TicketSlips.TeamID "
-sqlGetTickets = sqlGetTickets & "WHERE TicketSlips.DateProcessed IS NULL AND Matchups.TeamPMR1 = 0 AND Matchups.TeamPMR2 = 0 AND TicketSlips.IsNFL = 0"
+sqlGetTickets = sqlGetTickets & "WHERE TicketSlips.DateProcessed IS NULL AND Matchups.TeamPMR1 = 0 AND Matchups.TeamPMR2 = 0 AND TicketSlips.MatchupID IS NOT NULL "
 Set rsTickets = sqlDatabase.Execute(sqlGetTickets)
 
 If Not rsTickets.Eof Then
@@ -561,16 +561,16 @@ Else
 
 End If
 
-sqlGetTickets = "SELECT TicketSlips.TicketSlipID, TicketSlips.TicketTypeID, TicketSlips.InsertDateTime, TicketSlips.AccountID, Accounts.ProfileName, TicketSlips.MatchupID, "
+sqlGetTickets = "SELECT TicketSlips.TicketSlipID, TicketSlips.TicketTypeID, TicketSlips.InsertDateTime, TicketSlips.AccountID, Accounts.ProfileName, TicketSlips.NFLGameID, "
 sqlGetTickets = sqlGetTickets & "NFLGames.AwayTeamID AS MatchupTeamID1, NFLGames.HomeTeamID AS MatchupTeamID2, T1.City + ' ' + T1.Name AS MatchupTeamName1, T2.City + ' ' + T2.Name AS MatchupTeamName2, NFLGames.AwayTeamScore AS TeamScore1, NFLGames.HomeTeamScore AS TeamScore2, (NFLGames.AwayTeamScore + NFLGames.HomeTeamScore) AS MatchupTotalScore, "
 sqlGetTickets = sqlGetTickets & "TicketSlips.BetAmount, TicketSlips.PayoutAmount, TicketSlips.TeamID AS TicketSlipTeamID, T3.City + ' ' + T3.Name AS TicketSlipTeamName, TicketSlips.Moneyline, TicketSlips.Spread, TicketSlips.OverUnderAmount, TicketSlips.OverUnderBet "
 sqlGetTickets = sqlGetTickets & "FROM TicketSlips "
-sqlGetTickets = sqlGetTickets & "INNER JOIN NFLGames ON NFLGames.NFLGameID = TicketSlips.MatchupID "
+sqlGetTickets = sqlGetTickets & "INNER JOIN NFLGames ON NFLGames.NFLGameID = TicketSlips.NFLGameID "
 sqlGetTickets = sqlGetTickets & "INNER JOIN Accounts ON Accounts.AccountID = TicketSlips.AccountID "
 sqlGetTickets = sqlGetTickets & "LEFT JOIN NFLTeams T1 ON T1.NFLTeamID = NFLGames.AwayTeamID "
 sqlGetTickets = sqlGetTickets & "LEFT JOIN NFLTeams T2 ON T2.NFLTeamID = NFLGames.HomeTeamID "
 sqlGetTickets = sqlGetTickets & "LEFT JOIN NFLTeams T3 ON T3.NFLTeamID = TicketSlips.TeamID "
-sqlGetTickets = sqlGetTickets & "WHERE TicketSlips.DateProcessed IS NULL AND TicketSlips.IsNFL = 1 AND NFLGames.IsComplete = 1"
+sqlGetTickets = sqlGetTickets & "WHERE TicketSlips.DateProcessed IS NULL AND TicketSlips.NFLGameID IS NOT NULL AND NFLGames.IsComplete = 1 AND TicketSlips.TicketTypeID < 4"
 Set rsTickets = sqlDatabase.Execute(sqlGetTickets)
 
 If Not rsTickets.Eof Then
@@ -591,7 +591,7 @@ If Not rsTickets.Eof Then
 		thisInsertDateTime = rsTickets("InsertDateTime")
 		thisAccountID = rsTickets("AccountID")
 		thisProfileName = LEFT(rsTickets("ProfileName"), 6)
-		thisMatchupID = rsTickets("MatchupID")
+		thisMatchupID = rsTickets("NFLGameID")
 		thisMatchupTeamID1 = rsTickets("MatchupTeamID1")
 		thisMatchupTeamID2 = rsTickets("MatchupTeamID2")
 		thisMatchupTeamName1 = LEFT(rsTickets("MatchupTeamName1"), 6)
@@ -684,6 +684,98 @@ If Not rsTickets.Eof Then
 					WScript.Echo("#" & thisTicketSlipID & vbTab & thisProfileName & vbTab & "LOSER" & vbTab & "#" & thisMatchupID & "  (U " & thisOverUnderAmount & ")" & vbTab & "$" & thisBetAmount & vbTab &  "$" & thisPayoutAmount & vbTab & CDbl(thisMatchupTotalScore) & " > " & thisOverUnderAmount)
 				End If
 			End If
+
+		End If
+
+		If thisIsWinner = 1 Then
+
+			sportsbookOUT = sportsbookOUT + (CInt(thisPayoutAmount) - CInt(thisBetAmount))
+			totalWinners = totalWinners + 1
+
+			thisTransactionTypeID = 1008
+			thisTransactionDateTime = Now()
+			thisTransactionTotal = thisPayoutAmount
+			thisTransactionDescription = ""
+
+			thisTransactionStatus = SchmeckleTransaction (thisAccountID, thisTransactionTypeID, thisTicketSlipID, thisTransactionTotal, thisTransactionDescription)
+
+		Else
+
+			sportsbookIN = sportsbookIN + CInt(thisBetAmount)
+			totalLosers = totalLosers + 1
+
+		End If
+
+		'PROCESS & ARCHIVE TICKET SLIP'
+		sqlProcessTicketSlip = "UPDATE TicketSlips SET IsWinner = " & thisIsWinner & ", DateProcessed = '" & Now() & "' WHERE TicketSlipID = " & thisTicketSlipID
+		Set rsTicketSlip = sqlDatabase.Execute(sqlProcessTicketSlip)
+
+		rsTickets.MoveNext
+
+	Loop
+
+	rsTickets.Close
+	Set rsTickets = Nothing
+
+	WScript.Echo(vbcrlf & "SPORTBOOK IN: " & sportsbookIN & vbcrlf)
+	WScript.Echo("TOTAL WINNERS: " & totalWinners & vbcrlf)
+	WScript.Echo("TOTAL LOSERS: " & totalLosers & vbcrlf)
+	WScript.Echo("SPORTBOOK OUT: " & sportsbookOUT & vbcrlf)
+
+Else
+
+	WScript.Echo(vbcrlf & "No Completed Tickets.")
+
+End If
+
+sqlGetTickets = "SELECT TicketSlips.TicketSlipID, TicketSlips.TicketTypeID, TicketSlips.InsertDateTime, TicketSlips.AccountID, Accounts.ProfileName, TicketSlips.NFLGameID, "
+sqlGetTickets = sqlGetTickets & "PropQuestions.Question, PropQuestions.PropCorrectAnswerID, TicketSlips.PropAnswerID, "
+sqlGetTickets = sqlGetTickets & "TicketSlips.BetAmount, TicketSlips.PayoutAmount, TicketSlips.Moneyline "
+sqlGetTickets = sqlGetTickets & "FROM TicketSlips "
+sqlGetTickets = sqlGetTickets & "INNER JOIN NFLGames ON NFLGames.NFLGameID = TicketSlips.NFLGameID "
+sqlGetTickets = sqlGetTickets & "INNER JOIN Accounts ON Accounts.AccountID = TicketSlips.AccountID "
+sqlGetTickets = sqlGetTickets & "INNER JOIN PropQuestions ON PropQuestions.PropQuestionID = TicketSlips.PropQuestionID "
+sqlGetTickets = sqlGetTickets & "WHERE TicketSlips.DateProcessed IS NULL AND TicketSlips.NFLGameID IS NOT NULL AND NFLGames.IsComplete = 1 AND TicketSlips.TicketTypeID = 4"
+Set rsTickets = sqlDatabase.Execute(sqlGetTickets)
+
+If Not rsTickets.Eof Then
+
+	sportsbookIN  = 0
+	sportsbookOUT = 0
+	totalWinners  = 0
+	totalLosers   = 0
+
+	WScript.Echo(vbcrlf & "NFL PROP TICKETS SLIPS ARE FUCKING LOADED..." & vbcrlf & vbcrlf)
+
+	WScript.Echo("SLIP" & vbTab & "BETTOR" & vbTab & "RESULT" & vbTab & "SELECTION" & vbTab & "WAGER" & vbTab & "PAYS" & vbTab & "MATH" & vbcrlf)
+
+	Do While Not rsTickets.Eof
+
+		thisTicketSlipID = rsTickets("TicketSlipID")
+		thisTicketTypeID = rsTickets("TicketTypeID")
+		thisInsertDateTime = rsTickets("InsertDateTime")
+		thisAccountID = rsTickets("AccountID")
+		thisProfileName = LEFT(rsTickets("ProfileName"), 6)
+		thisMatchupID = rsTickets("NFLGameID")
+		thisQuestion = rsTickets("Question")
+		thisPropCorrectAnswerID = rsTickets("PropCorrectAnswerID")
+		thisPropAnswerID = rsTickets("PropAnswerID")
+		thisBetAmount = rsTickets("BetAmount")
+		thisPayoutAmount = rsTickets("PayoutAmount")
+		thisMoneyline = rsTickets("Moneyline")
+
+		If thisMoneyline > 0 Then thisMoneyline = "+" & thisMoneyline
+
+		thisIsWinner = 0
+
+		If CInt(thisPropAnswerID) = CInt(thisPropCorrectAnswerID) Then
+
+			thisIsWinner = 1
+			WScript.Echo("#" & thisTicketSlipID & vbTab & thisProfileName & vbTab & "WINNER" & vbTab & thisQuestion & " (" & thisMoneyline & "ML)" & vbTab & "$" & thisBetAmount & vbTab & "$" & thisPayoutAmount)
+
+		Else
+
+			WScript.Echo("#" & thisTicketSlipID & vbTab & thisProfileName & vbTab & "LOSER" & vbTab & thisQuestion & " (" & thisMoneyline & "ML)" & vbTab & "$" & thisBetAmount & vbTab & "$0")
 
 		End If
 

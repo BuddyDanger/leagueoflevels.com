@@ -731,7 +731,16 @@
 %>
 					</div>
 <%
-					Call TicketRow ()
+					ticketsAccountID = ""
+					ticketsTypeID = ""
+					ticketsNFLGameID = ""
+					ticketsMatchupID = ""
+					ticketsProcessed = ""
+
+					If Len(thisNFLGameID) > 0 Then ticketsNFLGameID = thisNFLGameID
+					If Len(thisMatchupID) > 0 Then ticketsMatchupID = thisMatchupID
+
+					Call TicketRow (ticketsNFLGameID, ticketsMatchupID, ticketsAccountID, ticketsTypeID, ticketsProcessed)
 %>
 				</div>
 
