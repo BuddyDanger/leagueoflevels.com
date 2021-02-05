@@ -81,7 +81,7 @@
 %>
 							</ul>
 
-							<a href="#" class="btn btn-light btn-block card-text mb-5">VIEW FULL LEADERBOARD</a>
+							<a href="/schmeckles/leaderboard/" class="btn btn-light btn-block card-text mb-5">VIEW FULL LEADERBOARD</a>
 
 						</div>
 

@@ -850,7 +850,7 @@
 			var countdownTimer = new Date();
 			countdownTimer.setSeconds( countdownTimer.getSeconds() + 60 );
 
-			var x = setInterval(function() {
+			/*var x = setInterval(function() {
 
 				var now = new Date().getTime();
 
@@ -865,7 +865,7 @@
 					window.location.href = "<%= thisMatchupURL %>";
 				}
 
-			}, 1000);
+			}, 1000);*/
 
 		</script>
 
