@@ -534,7 +534,7 @@ If Not rsTickets.Eof Then
 
 		Else
 
-			sportsbookIN = sportsbookIN + CInt(thisBetAmount)
+			sportsbookIN = sportsbookIN + CDbl(thisBetAmount)
 			totalLosers = totalLosers + 1
 
 		End If
@@ -689,7 +689,7 @@ If Not rsTickets.Eof Then
 
 		If thisIsWinner = 1 Then
 
-			sportsbookOUT = sportsbookOUT + (CInt(thisPayoutAmount) - CInt(thisBetAmount))
+			sportsbookOUT = sportsbookOUT + (CDbl(thisPayoutAmount) - CDbl(thisBetAmount))
 			totalWinners = totalWinners + 1
 
 			thisTransactionTypeID = 1008
@@ -701,7 +701,7 @@ If Not rsTickets.Eof Then
 
 		Else
 
-			sportsbookIN = sportsbookIN + CInt(thisBetAmount)
+			sportsbookIN = sportsbookIN + CDbl(thisBetAmount)
 			totalLosers = totalLosers + 1
 
 		End If
@@ -781,7 +781,7 @@ If Not rsTickets.Eof Then
 
 		If thisIsWinner = 1 Then
 
-			sportsbookOUT = sportsbookOUT + (CInt(thisPayoutAmount) - CInt(thisBetAmount))
+			sportsbookOUT = sportsbookOUT + (CDbl(thisPayoutAmount) - CDbl(thisBetAmount))
 			totalWinners = totalWinners + 1
 
 			thisTransactionTypeID = 1008
@@ -793,7 +793,7 @@ If Not rsTickets.Eof Then
 
 		Else
 
-			sportsbookIN = sportsbookIN + CInt(thisBetAmount)
+			sportsbookIN = sportsbookIN + CDbl(thisBetAmount)
 			totalLosers = totalLosers + 1
 
 		End If

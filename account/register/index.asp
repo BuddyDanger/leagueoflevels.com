@@ -2,110 +2,6 @@
 <!--#include virtual="/assets/asp/sql/connection.asp" -->
 <!--#include virtual="/assets/asp/framework/session.asp" -->
 <!--#include virtual="/assets/asp/functions/sha256.asp" -->
-<%
-	thisAction = Request.Form("action")
-	blockSuccess = "d-none"
-	blockRegister = ""
-
-	If thisAction = "go" Then
-
-		thisEmail = Request.Form("accountEmail")
-		thisPassword = Request.Form("accountPassword")
-		thisName = Request.Form("accountName")
-		thisImage = "user.jpg"
-		SecretHashPassword = sha256(thisPassword)
-
-		If InStr(thisEmail, "'") Then thisEmail = Replace(thisEmail, "'", "")
-
-		errorDetails = ""
-		Set rsEmails = sqlDatabase.Execute("SELECT Email FROM Accounts WHERE Email = '" & thisEmail & "'")
-		If Not rsEmails.Eof Then
-			errorDetails = errorDetails & "The e-mail address provided is already in use.|"
-			errorEmail = 1
-			rsEmails.Close
-			Set rsEmails = Nothing
-		End If
-
-		If Len(errorDetails) = 0 Then
-
-			thisProfileURL = LCase(thisName)
-			If InStr(thisProfileURL, "'") Then thisProfileURL = Replace(thisProfileURL, "'", "")
-			If InStr(thisProfileURL, "?") Then thisProfileURL = Replace(thisProfileURL, "?", "")
-			If InStr(thisProfileURL, "&") Then thisProfileURL = Replace(thisProfileURL, "&", "")
-			If InStr(thisProfileURL, "-") Then thisProfileURL = Replace(thisProfileURL, "-", "~")
-			If InStr(thisProfileURL, " ") Then thisProfileURL = Replace(thisProfileURL, " ", "-")
-
-			'REGISTER ACCOUNT
-			Set rsInsert = Server.CreateObject("ADODB.RecordSet")
-			rsInsert.CursorType = adOpenKeySet
-			rsInsert.LockType = adLockOptimistic
-			rsInsert.Open "Accounts", sqlDatabase, , , adCmdTable
-			rsInsert.AddNew
-
-			rsInsert("ProfileName") = thisName
-			rsInsert("ProfileImage") = thisImage
-			rsInsert("ProfileURL") = thisProfileURL
-			rsInsert("Email") = thisEmail
-			rsInsert("Password") = SecretHashPassword
-
-			rsInsert.Update
-
-			thisAccountID = rsInsert("AccountID")
-
-			Set rsInsert = Nothing
-
-			blockSuccess = ""
-			blockRegister = "d-none"
-
-			sqlGetEmailTemplate = "SELECT * FROM Emails WHERE EmailID = 1"
-			Set rsEmailTemplate = sqlDatabase.Execute(sqlGetEmailTemplate)
-
-			If Not rsEmailTemplate.Eof Then
-
-				thisSubjectLine = rsEmailTemplate("EmailSubject")
-				thisEmailBody = rsEmailTemplate("EmailBody")
-				FinalEmailBody = thisEmailBody
-
-				rsEmailTemplate.Close
-				Set rsEmailTemplate = Nothing
-
-				FinalEmailBody = Replace(FinalEmailBody, "%%HASH%%", SecretHashPassword)
-				FinalEmailBody = Replace(FinalEmailBody, "%%DATE%%", Now() & " UTC")
-				FinalEmailBody = Replace(FinalEmailBody, "%%EMAIL%%", thisEmail)
-				FinalEmailBody = Replace(FinalEmailBody, "%%NAME%%", thisName)
-
-			End If
-
-			Set objMail = CreateObject("CDO.Message")
-			Set objConfig = CreateObject("CDO.Configuration")
-			objConfig.Fields.Item("http://schemas.microsoft.com/cdo/configuration/sendusing") = 2
-			objConfig.Fields.Item("http://schemas.microsoft.com/cdo/configuration/smtpserver") = "smtp.gmail.com"
-			objConfig.Fields.Item("http://schemas.microsoft.com/cdo/configuration/smtpserverport") = 465
-			objConfig.Fields.Item("http://schemas.microsoft.com/cdo/configuration/smtpconnectiontimeout") = 60
-			objConfig.Fields.Item("http://schemas.microsoft.com/cdo/configuration/smtpauthenticate") = 1
-			objConfig.Fields.Item("http://schemas.microsoft.com/cdo/configuration/sendusername") = "info@leagueoflevels.com"
-			objConfig.Fields.Item("http://schemas.microsoft.com/cdo/configuration/sendpassword") = "TheHammer123"
-			objConfig.Fields.Item("http://schemas.microsoft.com/cdo/configuration/smtpusessl") = True
-
-			objConfig.Fields.Update
-			Set objMail.Configuration = objConfig
-			objMail.To = thisEmail
-
-			objMail.From = """LOL Team"" <info@leagueoflevels.com>"
-			objMail.ReplyTo = """LOL Team"" <info@leagueoflevels.com>"
-			objMail.Subject = thisSubjectLine
-			objMail.HTMLbody = FinalEmailBody
-
-			On Error Resume Next
-			objMail.Send
-
-			Set objMail = Nothing
-			Set objConfig = Nothing
-
-		End If
-
-	End If
-%>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -185,47 +81,11 @@
 							<div class="card <%= blockRegister %>">
                                 <div class="card-body">
                                     <h4 class="mt-0 header-title">Register for the League of Levels</h4>
-                                    <p class="text-muted mb-3">In order to get the most out of the site, register your free account. If you're a current LOL member, you will be automatically attached to your team(s).</p>
-<%
-									If Len(errorDetails) > 0 Then
+                                    <p class="text-muted mb-3">In order to get the most out of the site, register your free account. If you're a current LOL member, e-mail info@leagueoflevel.com for access.</p>
 
-										arrErrors = Split(errorDetails, "|")
-
-										For i = 0 To UBound(arrErrors) - 1
-
-											Response.Write("<div class=""alert alert-danger"" role=""alert"">" & arrErrors(i) & "</div>")
-
-										Next
-
-									End If
-%>
-									<form action="/account/register/" method="post">
-										<input type="hidden" name="action" value="go" />
-										<div class="form-group">
-                                            <label for="accountEmail">Email address</label>
-                                            <input type="email" class="form-control <% If errorEmail = 1 Then %>is-invalid<% End If %>" id="accountEmail" name="accountEmail" <% If Len(thisEmail) > 0 Then %>value="<%= thisEmail %>"<% End If %> required>
-                                        </div>
-										<div class="form-group">
-                                            <label for="accountPassword">Password</label>
-                                            <input type="password" class="form-control" id="accountPassword" name="accountPassword" required>
-                                        </div>
-										<div class="form-group">
-                                            <label for="accountName">Profile Name</label>
-                                            <input type="text" class="form-control" id="accountName" name="accountName" <% If Len(thisName) > 0 Then %>value="<%= thisName %>"<% End If %>>
-                                        </div>
-										<button type="submit" class="btn btn-primary btn-sm mt-2 mr-2">Register</button>
-										<button onclick="window.location.href = '/account/reset-password/';" type="button" class="btn btn-secondary btn-sm mt-2">Reset Password</button>
-                                    </form>
                                 </div>
                             </div>
 
-							<div class="card <%= blockSuccess %>">
-                                <div class="card-body">
-                                    <h4 class="mt-0 header-title">Go Check Your Email, Scumbag</h4>
-                                    <p class="text-muted mb-3">Alright, well done, but cool your damn jets. We need you to verify the email address you just used. I also need you to wire me some cash, but we'll worry about that later. Check your email.</p>
-									<button onclick="window.location.href = '/';" type="button" class="btn btn-primary btn-sm mr-2">Back to Dashboard</button>
-                                </div>
-                            </div>
 
 
 						</div>
