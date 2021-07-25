@@ -26,6 +26,7 @@
 			thisName = rsAccount("ProfileName")
 			thisImage = rsAccount("ProfileImage")
 			thisProfileURL = rsAccount("ProfileURL")
+			thisBalls = rsAccount("Balls")
 
 			rsAccount.Close
 			Set rsAccount = Nothing
@@ -51,6 +52,7 @@
 			Session.Contents("AccountName") = thisName
 			Session.Contents("AccountImage") = thisImage
 			Session.Contents("AccountProfileURL") = thisProfileURL
+			Session.Contents("AccountBalls") = thisBalls
 
 			sqlCheckTeams = "SELECT TeamID FROM LinkAccountsTeams WHERE AccountID = " & thisAccountID
 			Set rsTeams = sqlDatabase.Execute(sqlCheckTeams)

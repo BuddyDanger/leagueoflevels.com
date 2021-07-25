@@ -65,18 +65,20 @@
 									sqlMatchups = sqlMatchups & "SELECT Matchups.MatchupID, Matchups.LevelID, Matchups.TeamID1, Teams1.TeamName AS TeamName1, Teams1.CBSLogo AS CBSLogo1, Teams1.CBSID AS CBSID1, Matchups.TeamID2, Teams2.TeamName, Teams2.CBSLogo, Teams2.CBSID, Matchups.TeamScore1, Matchups.TeamScore2, Matchups.TeamPMR1, Matchups.TeamPMR2 FROM Matchups INNER JOIN Teams AS Teams1 ON Teams1.TeamID = Matchups.TeamID1 INNER JOIN Teams AS Teams2 ON Teams2.TeamID = Matchups.TeamID2 WHERE Matchups.Year = " & Session.Contents("CurrentYear") & " AND Matchups.Period = " & Session.Contents("CurrentPeriod") & " AND Matchups.LevelID = 3;"
 									Set rsMatchups = sqlDatabase.Execute(sqlMatchups)
 
-									arrOmega = rsMatchups.GetRows()
+									If Not rsMatchups.Eof Then arrOmega = rsMatchups.GetRows()
 									Set rsMatchups = rsMatchups.NextRecordset()
-									arrSLFFL = rsMatchups.GetRows()
+									If Not rsMatchups.Eof Then arrSLFFL = rsMatchups.GetRows()
 									Set rsMatchups = rsMatchups.NextRecordset()
-									arrFLFFL = rsMatchups.GetRows()
+									If Not rsMatchups.Eof Then arrFLFFL = rsMatchups.GetRows()
 %>
 									<div class="row">
 
 										<div class="col-12">
 <%
+
 											Response.Write("<div class=""row"">")
 
+												If IsArray(arrOmega) Then
 												For i = 0 To UBound(arrOmega, 2)
 
 													MatchupID = arrOmega(0, i)
@@ -131,8 +133,10 @@
 
 <%
 												Next
+												End If
 
-												Response.Write("</div>")
+											Response.Write("</div>")
+
 %>
 										</div>
 
@@ -144,6 +148,7 @@
 
 											<div class="row">
 <%
+												If IsArray(arrSLFFL) Then
 												For i = 0 To UBound(arrSLFFL, 2)
 
 													MatchupID = arrSLFFL(0, i)
@@ -197,6 +202,7 @@
 													</div>
 <%
 												Next
+												End If
 %>
 											</div>
 
@@ -206,6 +212,7 @@
 
 											<div class="row">
 <%
+												If IsArray(arrFLFFL) Then
 												For i = 0 To UBound(arrFLFFL, 2)
 
 													MatchupID = arrFLFFL(0, i)
@@ -237,9 +244,6 @@
 
 													If TeamID1 = 36 Then TeamName1 = "Hanging With Hern"
 													If TeamID2 = 36 Then TeamName2 = "Hanging With Hern"
-
-													If TeamID1 = 44 Then TeamName1 = "Overlords"
-													If TeamID2 = 44 Then TeamName2 = "Overlords"
 %>
 													<div class="col-xxl-6 col-xl-12 col-lg-6 col-md-6 col-sm-12">
 														<a href="/scores/<%= MatchupID %>/" style="text-decoration: none; display: block;">
@@ -268,6 +272,7 @@
 													</div>
 <%
 												Next
+												End If
 %>
 											</div>
 

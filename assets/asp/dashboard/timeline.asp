@@ -1,4 +1,27 @@
 <% If Session.Contents("LoggedIn") = "yes" Then %>
+<%
+	arrTeams = Split(Session.Contents("AccountTeams"), ",")
+
+	sqlGetRecentHistory = "SELECT TOP 6 M.MatchupID, L.LevelID, L.Title, M.Year, M.Period, M.IsPlayoffs, T1.TeamName AS Team1, M.TeamScore1, T2.TeamName AS Team2, M.TeamScore2, T1.TeamID AS TeamID1, T2.TeamID AS TeamID2, M.TeamPMR1, M.TeamPMR2 FROM Matchups M "
+	sqlGetRecentHistory = sqlGetRecentHistory & "INNER JOIN Levels L ON L.LevelID = M.LevelID "
+	sqlGetRecentHistory = sqlGetRecentHistory & "INNER JOIN Teams T1 ON T1.TeamID = M.TeamID1 "
+	sqlGetRecentHistory = sqlGetRecentHistory & "INNER JOIN Teams T2 ON T2.TeamID = M.TeamID2 "
+	sqlGetRecentHistory = sqlGetRecentHistory & "WHERE ("
+
+	For i = 0 To UBound(arrTeams)
+
+		sqlGetRecentHistory = sqlGetRecentHistory & "M.TeamID1 = " & arrTeams(i) & " OR M.TeamID2 = " & arrTeams(i) & " OR "
+
+	Next
+
+	If Right(sqlGetRecentHistory, 3) = "OR " Then sqlGetRecentHistory = Left(sqlGetRecentHistory, Len(sqlGetRecentHistory) - 3)
+
+	sqlGetRecentHistory = sqlGetRecentHistory & ") AND M.Year = " & Session.Contents("CurrentYear") & " AND M.Period <= " & Session.Contents("CurrentPeriod") & " ORDER BY M.Year DESC, M.Period DESC, L.LevelID ASC"
+
+	Set rsRecentHistory = sqlDatabase.Execute(sqlGetRecentHistory)
+
+	If Not rsRecentHistory.Eof Then
+%>
 <div class="col-12 col-lg-6 col-xl-4">
 
 	<div class="card">
@@ -11,25 +34,7 @@
 
 				<div class="activity mt-4 pt-2">
 <%
-					arrTeams = Split(Session.Contents("AccountTeams"), ",")
 
-					sqlGetRecentHistory = "SELECT TOP 6 M.MatchupID, L.LevelID, L.Title, M.Year, M.Period, M.IsPlayoffs, T1.TeamName AS Team1, M.TeamScore1, T2.TeamName AS Team2, M.TeamScore2, T1.TeamID AS TeamID1, T2.TeamID AS TeamID2, M.TeamPMR1, M.TeamPMR2 FROM Matchups M "
-					sqlGetRecentHistory = sqlGetRecentHistory & "INNER JOIN Levels L ON L.LevelID = M.LevelID "
-					sqlGetRecentHistory = sqlGetRecentHistory & "INNER JOIN Teams T1 ON T1.TeamID = M.TeamID1 "
-					sqlGetRecentHistory = sqlGetRecentHistory & "INNER JOIN Teams T2 ON T2.TeamID = M.TeamID2 "
-					sqlGetRecentHistory = sqlGetRecentHistory & "WHERE ("
-
-					For i = 0 To UBound(arrTeams)
-
-						sqlGetRecentHistory = sqlGetRecentHistory & "M.TeamID1 = " & arrTeams(i) & " OR M.TeamID2 = " & arrTeams(i) & " OR "
-
-					Next
-
-					If Right(sqlGetRecentHistory, 3) = "OR " Then sqlGetRecentHistory = Left(sqlGetRecentHistory, Len(sqlGetRecentHistory) - 3)
-
-					sqlGetRecentHistory = sqlGetRecentHistory & ") AND M.Year = " & Session.Contents("CurrentYear") & " AND M.Period <= " & Session.Contents("CurrentPeriod") & " ORDER BY M.Year DESC, M.Period DESC, L.LevelID ASC"
-
-					Set rsRecentHistory = sqlDatabase.Execute(sqlGetRecentHistory)
 					Do While Not rsRecentHistory.Eof
 
 						thisYear = rsRecentHistory("Year")
@@ -100,7 +105,7 @@
 										<div class="col-12 col-xxl-9 pl-0 pr-0 mr-0">
 											<h6 class="m-0"><%= activityHeader %></h6>
 										</div>
-										<div class="col-12 col-xxl-3 col-xxl-3 pl-0 pr-0 mr-0 text-xxl-right">
+										<div class="col-12 col-xxl-3 col-xxl-3 pl-0 pr-0 mr-0 text-xl-right">
 											<span class="text-muted d-block"><%= thisYear %> / Week <%= thisPeriod %></span>
 										</div>
 										<div class="col-12 pl-0 pr-0 mr-0"><p class="text-muted mt-2"><%= activityDescription %></p></div>
@@ -130,4 +135,5 @@
 	</div>
 
 </div>
+<% End If %>
 <% End If %>

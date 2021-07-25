@@ -32,6 +32,7 @@
 %>
 								<h5 class="met-user-name"><%= Session.Contents("AccountName") %></h5>
 								<p class="mb-0 met-user-name-post"><%= FormatNumber(thisSchmeckleSackBalance, 0) %>&nbsp;Schmeckles</p>
+								<p class="mb-0 met-user-name-post"><%= FormatNumber(Session.Contents("AccountBalls"), 0) %>&nbsp;Balls</p>
 
 							</div>
 
