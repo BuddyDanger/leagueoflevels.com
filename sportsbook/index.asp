@@ -200,6 +200,12 @@
 							thisTeamProjected1 = (thisOverUnderTotal / 2) + (CDbl(thisTeamSpread1) / 2)
 							thisTeamProjected2 = (thisOverUnderTotal / 2) + (CDbl(thisTeamSpread2) / 2)
 
+							'thisCalculateWinPercentage = homeWinProbability & "/" & awayWinProbability
+							thisCalculateWinPercentage = CalculateWinPercentage(100, 100, thisTeamProjected1, thisTeamProjected2, 0, 0)
+							arrWinPercentages = Split(thisCalculateWinPercentage, "/")
+							thisTeamWinPercentage2 = arrWinPercentages(0) & "%"
+							thisTeamWinPercentage1 = arrWinPercentages(1) & "%"
+
 							If thisTeamMoneyline1 > 0 Then thisTeamMoneyline1 = "+" & thisTeamMoneyline1
 							If thisTeamMoneyline2 > 0 Then thisTeamMoneyline2 = "+" & thisTeamMoneyline2
 

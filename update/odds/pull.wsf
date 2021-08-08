@@ -1,0 +1,4 @@
+<job id="PullScores">
+   <script language="VBScript" src="ADOVBS.INC"/>
+   <script language="VBScript" src="pull.vbs"/>
+</job>

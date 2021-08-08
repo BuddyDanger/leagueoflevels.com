@@ -772,4 +772,115 @@
 
 	End Function
 
+	Function CalculateWinPercentage (TeamPMR1, TeamPMR2, TeamProjected1, TeamProjected2, TeamScore1, TeamScore2)
+
+		homePlayerMinutesRemaining = TeamPMR1
+		awayPlayerMinutesRemaining = TeamPMR2
+		homeLiveProjectedFPTS = TeamProjected1
+		awayLiveProjectedFPTS = TeamProjected2
+		homeActualScore = TeamScore1
+		awayActualScore = TeamScore2
+
+		homePointProgress = Exp(homeActualScore / homeLiveProjectedFPTS)
+		awayPointProgress = Exp(awayActualScore / awayLiveProjectedFPTS)
+
+		homeProjectedRange = Abs(homeLiveProjectedFPTS - homeActualScore) * homePointProgress * 0.5
+		awayProjectedRange = Abs(awayLiveProjectedFPTS - awayActualScore) * awayPointProgress * 0.5
+
+		homeProjectedWindowLower = homeLiveProjectedFPTS - homeProjectedRange
+		homeProjectedWindowUpper = homeLiveProjectedFPTS + homeProjectedRange
+
+		awayProjectedWindowLower = awayLiveProjectedFPTS - awayProjectedRange
+		awayProjectedWindowUpper = awayLiveProjectedFPTS + awayProjectedRange
+
+		If homeProjectedWindowLower < awayProjectedWindowLower Then
+			overallLowestLow = homeProjectedWindowLower
+		Else
+			overallLowestLow = awayProjectedWindowLower
+		End If
+
+		If homeProjectedWindowUpper > awayProjectedWindowUpper Then
+			overallHighestHigh = homeProjectedWindowUpper
+		Else
+			overallHighestHigh = awayProjectedWindowUpper
+		End If
+
+		overallSpreadLarge = overallHighestHigh - overallLowestLow
+
+		If homeProjectedWindowLower > awayProjectedWindowLower Then
+			overallHighestLow = homeProjectedWindowLower
+		Else
+			overallHighestLow = awayProjectedWindowLower
+		End If
+
+		If homeProjectedWindowUpper < awayProjectedWindowUpper Then
+			overallLowestHigh = homeProjectedWindowUpper
+		Else
+			overallLowestHigh = awayProjectedWindowUpper
+		End If
+
+		overallSpreadSmall = overallLowestHigh - overallHighestLow
+
+		tieWin = overallSpreadSmall / 2
+
+		If homeProjectedWindowLower > awayProjectedWindowLower Then
+			homeWindowDifference = homeProjectedWindowLower - awayProjectedWindowLower
+		Else
+			homeWindowDifference = 0
+		End If
+
+		If homeProjectedWindowUpper > awayProjectedWindowUpper Then homeWindowDifference = homeWindowDifference + (homeProjectedWindowUpper - awayProjectedWindowUpper)
+
+		If (homeLiveProjectedFPTS = 0 And awayLiveProjectedFPTS > 0) Then
+			homeWinProbability = 0
+			awayWinProbability = 100
+		Else
+			If (awayLiveProjectedFPTS = 0 And homeLiveProjectedFPTS > 0) Then
+				homeWinProbability = 100
+				awayWinProbability = 0
+			Else
+				If (awayPlayerMinutesRemaining = 0 And awayActualScore < homeActualScore And awayLiveProjectedFPTS < homeLiveProjectedFPTS) Then
+					awayWinProbability = 0
+					homeWinProbability = 100
+				Else
+					If (homePlayerMinutesRemaining = 0 And homeActualScore < awayActualScore And homeLiveProjectedFPTS < awayLiveProjectedFPTS) Then
+						homeWinProbability = 0
+						awayWinProbability = 100
+					Else
+						If (awayPlayerMinutesRemaining = 0 And homePlayerMinutesRemaining = 0) Then
+							If (homeLiveProjectedFPTS > awayLiveProjectedFPTS) Then
+								homeWinProbability = 100
+								awayWinProbability = 0
+							Else
+								If (awayLiveProjectedFPTS > homeLiveProjectedFPTS) Then
+									homeWinProbability = 0
+									awayWinProbability = 100
+								Else
+									homeWinProbability = 0
+									awayWinProbability = 0
+								End If
+							End If
+						Else
+							If (homeProjectedWindowUpper < awayProjectedWindowLower) Then
+								homeWinProbability = 1
+								awayWinProbability = 99
+							Else
+								If (awayProjectedWindowUpper < homeProjectedWindowLower) Then
+									homeWinProbability = 99
+									awayWinProbability = 1
+								Else
+									homeWinProbability = FormatNumber((tieWin + homeWindowDifference) / overallSpreadLarge * 100, 0)
+									awayWinProbability = 100 - homeWinProbability
+								End If
+							End If
+						End If
+					End If
+				End If
+			End If
+		End If
+
+		CalculateWinPercentage = homeWinProbability & "/" & awayWinProbability
+
+	End Function
+
 %>

@@ -16,6 +16,22 @@
 
 	End If
 
+	If Len(Session.Contents("EliminatorRound")) = 0 Then
+
+		sqlGetEliminatorRound = "SELECT TOP 1 EliminatorRoundID FROM EliminatorRounds ORDER BY StartDate DESC"
+		Set rsEliminatorRound = sqlDatabase.Execute(sqlGetEliminatorRound)
+
+		If Not rsEliminatorRound.Eof Then
+
+			Session.Contents("EliminatorRoundID") = rsEliminatorRound("EliminatorRoundID")
+
+			rsEliminatorRound.Close
+			Set rsEliminatorRound = Nothing
+
+		End If
+
+	End If
+
 	If Session.Contents("LoggedIn") <> "yes" Then
 
 		Session.Contents("LoggedIn") = "no"

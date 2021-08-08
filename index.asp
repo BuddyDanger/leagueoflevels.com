@@ -37,6 +37,49 @@
 		End If
 
 	End If
+
+	If Request.Form("action") = "pick" Then
+
+		thisNFLTeamID = Request.Form("inputNFLTeamID")
+
+		If thisNFLTeamID > 0 Then
+
+			sqlGetCurrentPick = "SELECT * FROM EliminatorPicks INNER JOIN NFLTeams ON NFLTeams.NFLTeamID = EliminatorPicks.NFLTeamID WHERE AccountID = " & Session.Contents("AccountID") & " AND EliminatorRoundID = " & Session.Contents("EliminatorRoundID")
+			Set rsCurrentPick = sqlDatabase.Execute(sqlGetCurrentPick)
+
+			If Not rsCurrentPick.Eof Then
+
+				thisEliminatorPickID = rsCurrentPick("EliminatorPickID")
+				rsCurrentPick.Close
+				Set rsCurrentPick = Nothing
+
+				sqlUpdatePick = "UPDATE EliminatorPicks SET NFLTeamID = " &  thisNFLTeamID & " WHERE EliminatorPickID = " & thisEliminatorPickID
+				Set rsUpdate  = sqlDatabase.Execute(sqlUpdatePick)
+
+			Else
+
+				Set rsInsert = Server.CreateObject("ADODB.RecordSet")
+				rsInsert.CursorType = adOpenKeySet
+				rsInsert.LockType = adLockOptimistic
+				rsInsert.Open "EliminatorPicks", sqlDatabase, , , adCmdTable
+				rsInsert.AddNew
+
+				rsInsert("EliminatorRoundID") = Session.Contents("EliminatorRoundID")
+				rsInsert("AccountID") = Session.Contents("AccountID")
+				rsInsert("NFLTeamID") = thisNFLTeamID
+				rsInsert("Year") = Session.Contents("CurrentYear")
+				rsInsert("Period") = Session.Contents("CurrentPeriod")
+
+				rsInsert.Update
+				Set rsInsert = Nothing
+
+			End If
+
+			Response.Redirect("/")
+
+		End If
+
+	End If
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -89,23 +132,39 @@
 
 					<div class="row mt-4">
 
-						<!--#include virtual="/assets/asp/dashboard/header.asp" -->
-
 						<% If Session.Contents("LoggedIn") = "yes" Then %>
-							<div class="col-12 col-xl-4 px-2">
+
+							<div class="col-12 col-lg-6 col-xl-6 col-xxl-4">
+
+								<!--#include virtual="/assets/asp/dashboard/account.asp" -->
+
+								<!--#include virtual="/assets/asp/dashboard/timeline.asp" -->
+
+							</div>
+
+							<div class="col-12 col-lg-6 col-xl-6 col-xxl-8">
 
 								<div class="row">
 
-									<div class="col-12 col-xl-12">
+									<div class="col-12 col-xxl-6">
+
+
+
 										<!--#include virtual="/assets/asp/dashboard/balls.asp" -->
+
+									</div>
+
+									<div class="col-12 col-xxl-6">
+
+										<!--#include virtual="/assets/asp/dashboard/eliminator.asp" -->
+
 									</div>
 
 								</div>
 
 							</div>
-						<% End If %>
 
-						<!--#include virtual="/assets/asp/dashboard/timeline.asp" -->
+						<% End If %>
 
 						<!-- LOGGED OUT -->
 						<!--#include virtual="/assets/asp/dashboard/login.asp" -->

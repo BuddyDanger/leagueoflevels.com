@@ -1,4 +1,3 @@
-<% If Session.Contents("LoggedIn") = "yes" Then %>
 <%
 	arrTeams = Split(Session.Contents("AccountTeams"), ",")
 
@@ -16,23 +15,23 @@
 
 	If Right(sqlGetRecentHistory, 3) = "OR " Then sqlGetRecentHistory = Left(sqlGetRecentHistory, Len(sqlGetRecentHistory) - 3)
 
-	sqlGetRecentHistory = sqlGetRecentHistory & ") AND M.Year = " & Session.Contents("CurrentYear") & " AND M.Period <= " & Session.Contents("CurrentPeriod") & " ORDER BY M.Year DESC, M.Period DESC, L.LevelID ASC"
+	sqlGetRecentHistory = sqlGetRecentHistory & ") ORDER BY M.Year DESC, M.Period DESC, L.LevelID ASC"
 
 	Set rsRecentHistory = sqlDatabase.Execute(sqlGetRecentHistory)
 
 	If Not rsRecentHistory.Eof Then
 %>
-<div class="col-12 col-lg-6 col-xl-4">
-
 	<div class="card">
 <%
 		If Len(Session.Contents("AccountTeams")) > 0 Then
 %>
-			<div class="card-body">
+			<div class="card-body pt-2 pb-0">
 
-				<h4 class="mt-0 header-title">My Recent LOL Timeline</h4>
+				<div style="border-bottom: 1px solid #e8ebf3;">
+					<h4>My LOL Timeline<span class="float-right"><i class="fas fa-heartbeat"></i></span></h4>
+				</div>
 
-				<div class="activity mt-4 pt-2">
+				<div class="activity mt-4 pt-3">
 <%
 
 					Do While Not rsRecentHistory.Eof
@@ -125,15 +124,7 @@
 
 			</div>
 <%
-		Else
-%>
-				<!--#include virtual="/assets/asp/dashboard/waiting-list.asp" -->
-<%
 		End If
 %>
-
 	</div>
-
-</div>
-<% End If %>
 <% End If %>
