@@ -138,29 +138,30 @@
 
 								<!--#include virtual="/assets/asp/dashboard/account.asp" -->
 
+								<!--#include virtual="/assets/asp/dashboard/balls.asp" -->
+
+								<!--#include virtual="/assets/asp/dashboard/eliminator.asp" -->
+
+							</div>
+
+							<div class="col-12 col-lg-6 col-xl-6 col-xxl-4">
+
 								<!--#include virtual="/assets/asp/dashboard/timeline.asp" -->
 
 							</div>
 
-							<div class="col-12 col-lg-6 col-xl-6 col-xxl-8">
+							<div class="col-12 col-lg-6 col-xl-6 col-xxl-3">
 
-								<div class="row">
+								<!--#include virtual="/assets/asp/dashboard/active-tickets.asp" -->
 
-									<div class="col-12 col-xxl-6">
+							</div>
 
+							<div class="col-12 col-xxl-1 text-center">
 
-
-										<!--#include virtual="/assets/asp/dashboard/balls.asp" -->
-
-									</div>
-
-									<div class="col-12 col-xxl-6">
-
-										<!--#include virtual="/assets/asp/dashboard/eliminator.asp" -->
-
-									</div>
-
-								</div>
+								<div class="mb-3"><a href="https://www.slffl.com" target="_blank" title="The Next Level Cup" class="btn btn-dark rounded-circle"><h1><i class="fas fa-trophy fa-fw"></i></h1></a></div>
+								<div class="mb-3"><a href="#" title="Eliminator Challenge" class="btn btn-dark rounded-circle"><h1><i class="fas fa-skull fa-fw"></i></h1></a></div>
+								<div class="mb-3"><a href="#" title="Locks" class="btn btn-dark rounded-circle"><h1><i class="fas fa-lock fa-fw"></i></h1></a></div>
+								<div class="mb-3"><a href="#" title="Schmeckles" class="btn btn-dark rounded-circle"><h1><i class="fas fa-credit-card fa-fw"></i></h1></a></div>
 
 							</div>
 

@@ -23,33 +23,41 @@
 
 			<div class="row mt-2 pb-2">
 				<div class="col-12 col-xxl-4">
-					<div class="pt-1 pb-2"><img src="https://samelevel.imgix.net/<%= Session.Contents("AccountImage") %>?w=500&h=500&fit=crop&crop=focalpoint" alt="" class="img-fluid rounded" /></div>
-					<div class="pb-2"><a href="/account/" class="btn btn-sm btn-block btn-primary">SETTINGS</a></div>
-					<div><a href="/schmeckles/<%= Session.Contents("AccountProfileURL") %>/" class="btn btn-sm btn-block btn-success">SCHMECKLES</a></div>
+
+					<div class="row">
+						<div class="col-6 col-xxl-12">
+							<div class="pt-1 pb-2"><img src="https://samelevel.imgix.net/<%= Session.Contents("AccountImage") %>?w=500&h=500&fit=crop&crop=focalpoint" alt="" class="img-fluid rounded" /></div>
+						</div>
+						<div class="col-6 col-xxl-12">
+							<div class="pt-1 pb-2"><a href="/account/" class="btn btn-sm btn-block btn-primary">SETTINGS</a></div>
+							<div><a href="/schmeckles/<%= Session.Contents("AccountProfileURL") %>/" class="btn btn-sm btn-block btn-primary">SCHMECKLES</a></div>
+						</div>
+					</div>
+
 				</div>
 				<div class="col-12 col-xxl-8 pl-1 pr-1">
 
-					<div class="row text-white">
-						<div class="col-6 text-right"><b>SCHMECKLES</b></div>
-						<div class="col-6 text-right"><%= FormatNumber(thisSchmeckleSackBalance, 0) %></div>
+					<div class="row text-white mt-2 mt-xxl-0">
+						<div class="col-6 col-xl-8 text-right text-xl-left"><b>SCHMECKLES</b></div>
+						<div class="col-6 col-xl-4 text-xl-right"><%= FormatNumber(thisSchmeckleSackBalance, 0) %></div>
 						<div class="col-12"><hr class="bg-white mt-2 mb-2"></div>
-						<div class="col-6 text-right"><b>LOTTERY BALLS</b></div>
-						<div class="col-6 text-right"><%= FormatNumber(Session.Contents("AccountBalls"), 0) %></div>
+						<div class="col-6 col-xl-8 text-right text-xl-left"><b>LOTTERY BALLS</b></div>
+						<div class="col-6 col-xl-4 text-xl-right"><%= FormatNumber(Session.Contents("AccountBalls"), 0) %></div>
 						<div class="col-12"><hr class="bg-white mt-2 mb-2"></div>
-						<div class="col-6 text-right"><b>CURRENT RECORD</b></div>
-						<div class="col-6 text-right">0-0-0</div>
+						<div class="col-6 col-xl-8 text-right text-xl-left"><b>CURRENT RECORD</b></div>
+						<div class="col-6 col-xl-4 text-xl-right">0-0-0</div>
 						<div class="col-12"><hr class="bg-white mt-2 mb-2"></div>
-						<div class="col-6 text-right"><b>POINTS SCORED</b></div>
-						<div class="col-6 text-right">0</div>
+						<div class="col-6 col-xl-8 text-right text-xl-left"><b>POINTS SCORED</b></div>
+						<div class="col-6 col-xl-4 text-xl-right">0</div>
 						<div class="col-12"><hr class="bg-white mt-2 mb-2"></div>
-						<div class="col-6 text-right"><b>CAREER BREAKDOWN</b></div>
-						<div class="col-6 text-right"></div>
+						<div class="col-6 col-xl-8 text-right text-xl-left"><b>CAREER RECORD</b></div>
+						<div class="col-6 col-xl-4 text-xl-right"></div>
 						<div class="col-12"><hr class="bg-white mt-2 mb-2"></div>
-						<div class="col-6 text-right"><b>ALL-TIME POINTS</b></div>
-						<div class="col-6 text-right"></div>
+						<div class="col-6 col-xl-8 text-right text-xl-left"><b>ALL-TIME POINTS</b></div>
+						<div class="col-6 col-xl-4 text-xl-right"></div>
 						<div class="col-12"><hr class="bg-white mt-2 mb-2"></div>
-						<div class="col-6 text-right"><b>POWER RANKING</b></div>
-						<div class="col-6 text-right">--</div>
+						<div class="col-6 col-xl-8 text-right text-xl-left"><b>POWER RANKING</b></div>
+						<div class="col-6 col-xl-4 text-xl-right">--</div>
 					</div>
 
 				</div>

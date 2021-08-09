@@ -11781,6 +11781,20 @@ button.bg-dark:hover {
 	}
 }
 
+@media (min-width:1440px) {
+	.text-xxl-left {
+		text-align: left !important
+	}
+
+	.text-xxl-right {
+		text-align: right !important
+	}
+
+	.text-xxl-center {
+		text-align: center !important
+	}
+}
+
 .text-lowercase {
 	text-transform: lowercase !important
 }

@@ -1,7 +1,7 @@
 <%
 	arrTeams = Split(Session.Contents("AccountTeams"), ",")
 
-	sqlGetRecentHistory = "SELECT TOP 6 M.MatchupID, L.LevelID, L.Title, M.Year, M.Period, M.IsPlayoffs, T1.TeamName AS Team1, M.TeamScore1, T2.TeamName AS Team2, M.TeamScore2, T1.TeamID AS TeamID1, T2.TeamID AS TeamID2, M.TeamPMR1, M.TeamPMR2 FROM Matchups M "
+	sqlGetRecentHistory = "SELECT TOP 10 M.MatchupID, L.LevelID, L.Title, M.Year, M.Period, M.IsPlayoffs, T1.TeamName AS Team1, M.TeamScore1, T2.TeamName AS Team2, M.TeamScore2, T1.TeamID AS TeamID1, T2.TeamID AS TeamID2, M.TeamPMR1, M.TeamPMR2 FROM Matchups M "
 	sqlGetRecentHistory = sqlGetRecentHistory & "INNER JOIN Levels L ON L.LevelID = M.LevelID "
 	sqlGetRecentHistory = sqlGetRecentHistory & "INNER JOIN Teams T1 ON T1.TeamID = M.TeamID1 "
 	sqlGetRecentHistory = sqlGetRecentHistory & "INNER JOIN Teams T2 ON T2.TeamID = M.TeamID2 "
@@ -104,7 +104,7 @@
 										<div class="col-12 col-xxl-9 pl-0 pr-0 mr-0">
 											<h6 class="m-0"><%= activityHeader %></h6>
 										</div>
-										<div class="col-12 col-xxl-3 col-xxl-3 pl-0 pr-0 mr-0 text-xl-right">
+										<div class="col-12 col-xxl-3 pl-0 pr-0 mr-0 text-xxl-right">
 											<span class="text-muted d-block"><%= thisYear %> / Week <%= thisPeriod %></span>
 										</div>
 										<div class="col-12 pl-0 pr-0 mr-0"><p class="text-muted mt-2"><%= activityDescription %></p></div>
