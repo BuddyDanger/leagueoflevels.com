@@ -54,7 +54,7 @@
 			Session.Contents("AccountProfileURL") = thisProfileURL
 			Session.Contents("AccountBalls") = thisBalls
 
-			sqlCheckTeams = "SELECT TeamID FROM LinkAccountsTeams WHERE AccountID = " & thisAccountID
+			sqlCheckTeams = "SELECT Teams.TeamID FROM LinkAccountsTeams INNER JOIN Teams ON Teams.TeamID = LinkAccountsTeams.TeamID WHERE LinkAccountsTeams.AccountID = " & Session.Contents("AccountID")
 			Set rsTeams = sqlDatabase.Execute(sqlCheckTeams)
 
 			If Not rsTeams.Eof Then

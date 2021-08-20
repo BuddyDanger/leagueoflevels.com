@@ -67,7 +67,7 @@
 				rsAccount.Close
 				Set rsAccount = Nothing
 
-				sqlCheckTeams = "SELECT TeamID FROM LinkAccountsTeams WHERE AccountID = " & Session.Contents("AccountID")
+				sqlCheckTeams = "SELECT Teams.TeamID FROM LinkAccountsTeams INNER JOIN Teams ON Teams.TeamID = LinkAccountsTeams.TeamID WHERE LinkAccountsTeams.AccountID = " & Session.Contents("AccountID")
 				Set rsTeams = sqlDatabase.Execute(sqlCheckTeams)
 
 				If Not rsTeams.Eof Then

@@ -392,20 +392,9 @@ Set sqlDatabase = CreateObject("ADODB.Connection")
 sqlDatabase.CursorLocation = adUseServer
 sqlDatabase.Open "Driver={SQL Server Native Client 11.0};Server=tcp:samelevel.database.windows.net,1433;Database=NextLevelDB;Uid=samelevel;Pwd=TheHammer123;Encrypt=yes;Connection Timeout=60;"
 
-thisAccountID = 1042
-thisTransactionTypeID = 1005
-thisTransactionTotal = 12500
-thisTransactionDescription = ""
-
-thisTransactionStatus = SchmeckleTransaction (thisAccountID, thisTransactionTypeID, thisTicketSlipID, thisTransactionTotal, thisTransactionDescription)
-
-WScript.Echo(vbcrlf & "ACCOUNT: " & thisAccountID & vbcrlf)
-WScript.Echo("TYPE: " & thisTransactionTypeID & vbcrlf)
-WScript.Echo("TOTAL: " & thisTransactionTotal & vbcrlf)
-
-thisAccountID = 1035
-thisTransactionTypeID = 1005
-thisTransactionTotal = 7500
+thisAccountID = 1027
+thisTransactionTypeID = 1001
+thisTransactionTotal = 45000
 thisTransactionDescription = ""
 
 thisTransactionStatus = SchmeckleTransaction (thisAccountID, thisTransactionTypeID, thisTicketSlipID, thisTransactionTotal, thisTransactionDescription)

@@ -62,7 +62,7 @@
 
 							<ul class="list-group list-group-flush">
 <%
-								sqlGetLeaderboard = "SELECT TOP 10 Accounts.ProfileName, Accounts.ProfileImage, SUM([TransactionTotal]) AS TotalSchmeckles FROM SchmeckleTransactions INNER JOIN Accounts ON Accounts.AccountID = SchmeckleTransactions.AccountID GROUP BY Accounts.ProfileName, Accounts.ProfileImage ORDER BY TotalSchmeckles DESC"
+								sqlGetLeaderboard = "SELECT TOP 10 Accounts.ProfileName, Accounts.ProfileImage, SUM([TransactionTotal]) AS TotalSchmeckles FROM SchmeckleTransactions INNER JOIN Accounts ON Accounts.AccountID = SchmeckleTransactions.AccountID WHERE Accounts.Active = 1 GROUP BY Accounts.ProfileName, Accounts.ProfileImage ORDER BY TotalSchmeckles DESC"
 								Set rsLeaderboard = sqlDatabase.Execute(sqlGetLeaderboard)
 
 								Do While Not rsLeaderboard.Eof

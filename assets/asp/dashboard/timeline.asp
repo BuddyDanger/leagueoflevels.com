@@ -15,7 +15,7 @@
 
 	If Right(sqlGetRecentHistory, 3) = "OR " Then sqlGetRecentHistory = Left(sqlGetRecentHistory, Len(sqlGetRecentHistory) - 3)
 
-	sqlGetRecentHistory = sqlGetRecentHistory & ") ORDER BY M.Year DESC, M.Period DESC, L.LevelID ASC"
+	sqlGetRecentHistory = sqlGetRecentHistory & ") AND ((Year = " & Session.Contents("CurrentYear") & " AND Period <= " & Session.Contents("CurrentPeriod") & ") OR (Year = " & Session.Contents("CurrentYear") - 1 & "))  ORDER BY M.Year DESC, M.Period DESC, L.LevelID ASC"
 
 	Set rsRecentHistory = sqlDatabase.Execute(sqlGetRecentHistory)
 

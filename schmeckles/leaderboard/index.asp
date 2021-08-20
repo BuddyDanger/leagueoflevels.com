@@ -25,16 +25,9 @@
 
 	End If
 
-	thisPageTitle = "Schmeckles / Leaderboard / "
-	If Len(Session.Contents("SITE_Schmeckles_AccountProfileName")) > 0 Then thisPageTitle = thisPageTitle & Session.Contents("SITE_Schmeckles_AccountProfileName") & " / "
-	If Len(Session.Contents("SITE_Schmeckles_TypeTitle")) > 0 Then thisPageTitle = thisPageTitle & Session.Contents("SITE_Schmeckles_TypeTitle") & " / "
-	thisPageTitle = thisPageTitle & "League of Levels"
+	thisPageTitle = "Schmeckles / Leaderboard / League of Levels"
 
-	thisPageDescription = "Schmeckle leaderboard "
-	If Len(Session.Contents("SITE_Schmeckles_AccountProfileName")) > 0 Then thisPageDescription = thisPageDescription & " for " & Session.Contents("SITE_Schmeckles_AccountProfileName")
-	If Len(Session.Contents("SITE_Schmeckles_TypeTitle")) > 0 Then thisPageDescription = thisPageDescription & " across all '" & Session.Contents("SITE_Schmeckles_TypeTitle") & "' transaction types"
-	If Len(Session.Contents("SITE_Schmeckles_AccountProfileName")) = 0 And Len(Session.Contents("SITE_Schmeckles_TypeTitle")) = 0 Then thisPageDescription = thisPageDescription & " tracking all users and transaction types"
-	thisPageDescription = thisPageDescription & "."
+	thisPageDescription = "Schmeckle leaderboard across all levels. This does not include inactive team accounts."
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -93,7 +86,7 @@
 
 							<ul class="list-group list-group-flush mb-4">
 <%
-								sqlGetLeaderboard = "SELECT Accounts.ProfileName, Accounts.ProfileImage, SUM([TransactionTotal]) AS TotalSchmeckles FROM SchmeckleTransactions INNER JOIN Accounts ON Accounts.AccountID = SchmeckleTransactions.AccountID GROUP BY Accounts.ProfileName, Accounts.ProfileImage ORDER BY TotalSchmeckles DESC"
+								sqlGetLeaderboard = "SELECT Accounts.ProfileName, Accounts.ProfileImage, SUM([TransactionTotal]) AS TotalSchmeckles FROM SchmeckleTransactions INNER JOIN Accounts ON Accounts.AccountID = SchmeckleTransactions.AccountID WHERE Accounts.Active = 1 GROUP BY Accounts.ProfileName, Accounts.ProfileImage ORDER BY TotalSchmeckles DESC"
 								Set rsLeaderboard = sqlDatabase.Execute(sqlGetLeaderboard)
 
 								Do While Not rsLeaderboard.Eof

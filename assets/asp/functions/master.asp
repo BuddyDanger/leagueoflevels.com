@@ -247,7 +247,7 @@
 
 		If UCase(League) = "OMEGA" Then
 			liveSLFFL = "http://api.cbssports.com/fantasy/league/scoring/live?version=3.0&response_format=xml&league_id=omegalevel&period=" & Period & "&access_token=" & GetToken("OMEGA")
-			Set xmlhttpSLFFL = Server.CreateObject("Microsoft.XMLHTTP")
+			Set xmlhttpSLFFL = Server.CreateObject("MSXML2.ServerXMLHTTP.6.0")
 
 			xmlhttpSLFFL.open "GET", liveSLFFL, false
 			xmlhttpSLFFL.send ""
@@ -255,7 +255,7 @@
 
 		If UCase(League) = "SLFFL" Then
 			liveSLFFL = "http://api.cbssports.com/fantasy/league/scoring/live?version=3.0&response_format=xml&league_id=samelevel&period=" & Period & "&access_token=" & GetToken("SLFFL")
-			Set xmlhttpSLFFL = Server.CreateObject("Microsoft.XMLHTTP")
+			Set xmlhttpSLFFL = Server.CreateObject("MSXML2.ServerXMLHTTP.6.0")
 
 			xmlhttpSLFFL.open "GET", liveSLFFL, false
 			xmlhttpSLFFL.send ""
@@ -264,7 +264,7 @@
 		If UCase(League) = "FLFFL" Then
 
 			liveSLFFL = "http://api.cbssports.com/fantasy/league/scoring/live?version=3.0&response_format=xml&league_id=farmlevel&period=" & Period & "&access_token=" & GetToken("FARM")
-			Set xmlhttpSLFFL = Server.CreateObject("Microsoft.XMLHTTP")
+			Set xmlhttpSLFFL = Server.CreateObject("MSXML2.ServerXMLHTTP.6.0")
 
 			xmlhttpSLFFL.open "GET", liveSLFFL, false
 			xmlhttpSLFFL.send ""
