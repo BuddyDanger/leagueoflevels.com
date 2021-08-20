@@ -138,8 +138,6 @@
 
 								<!--#include virtual="/assets/asp/dashboard/account.asp" -->
 
-								<!--#include virtual="/assets/asp/dashboard/balls.asp" -->
-
 								<!--#include virtual="/assets/asp/dashboard/eliminator.asp" -->
 
 							</div>
