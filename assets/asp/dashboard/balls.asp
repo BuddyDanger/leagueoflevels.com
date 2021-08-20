@@ -25,10 +25,16 @@
 
 		End If
 
-		sqlGetTotalLevelBalls = "SELECT SUM(Balls) AS LevelTotal FROM Accounts WHERE AccountID IN ( SELECT AccountID FROM LinkAccountsTeams WHERE TeamID IN ( SELECT TeamID FROM Teams WHERE LevelID IN ( SELECT LevelID FROM Teams WHERE TeamID IN (" & Session.Contents("AccountTeams") & ") AND LevelID <> 1 ) ) )"
-		Set rsTotalLevelBalls = sqlDatabase.Execute(sqlGetTotalLevelBalls)
+		thisLevelTotal = 0
+		
+		If Len(Session.Contents("AccountTeams")) > 0 Then
 
-		thisLevelTotal = rsTotalLevelBalls("LevelTotal")
+			sqlGetTotalLevelBalls = "SELECT SUM(Balls) AS LevelTotal FROM Accounts WHERE AccountID IN ( SELECT AccountID FROM LinkAccountsTeams WHERE TeamID IN ( SELECT TeamID FROM Teams WHERE LevelID IN ( SELECT LevelID FROM Teams WHERE TeamID IN (" & Session.Contents("AccountTeams") & ") AND LevelID <> 1 ) ) )"
+			Set rsTotalLevelBalls = sqlDatabase.Execute(sqlGetTotalLevelBalls)
+
+			thisLevelTotal = rsTotalLevelBalls("LevelTotal")
+
+		End If
 
 		If Session.Contents("AccountBalls") > 0 And thisLevelTotal > 0 Then
 			thisWinChance = FormatNumber(100 * (Session.Contents("AccountBalls") / thisLevelTotal), 2)
