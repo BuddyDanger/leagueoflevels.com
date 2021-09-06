@@ -156,7 +156,7 @@
 						If Len(Session.Contents("SITE_Tickets_MatchupID")) > 0 Then ticketsMatchupID = Session.Contents("SITE_Tickets_MatchupID")
 						If Len(Session.Contents("SITE_Tickets_Processed")) > 0 Then ticketsProcessed = Session.Contents("SITE_Tickets_Processed")
 
-						Call TicketRow (ticketsNFLGameID, ticketsMatchupID, ticketsAccountID, ticketsTypeID, ticketsProcessed)
+						Call TicketRow (ticketsNFLGameID, ticketsMatchupID, ticketsAccountID, ticketsTypeID, ticketsProcessed, 0)
 %>
 					</div>
 
