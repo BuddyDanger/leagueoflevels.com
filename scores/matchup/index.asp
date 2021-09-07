@@ -215,16 +215,16 @@
 													If LevelID = 1 Then
 
 														TeamPMRColor1 = "success"
-														If TeamPMR1 < 551 Then TeamPMRColor1 = "warning"
-														If TeamPMR1 < 276 Then TeamPMRColor1 = "danger"
-														TeamPMRPercent1 = (TeamPMR1 * 100) / 720
+														If TeamPMR1 < 396 Then TeamPMRColor1 = "warning"
+														If TeamPMR1 < 198 Then TeamPMRColor1 = "danger"
+														TeamPMRPercent1 = (TeamPMR1 * 100) / 600
 
 													Else
 
 														TeamPMRColor1 = "success"
-														If TeamPMR1 < 321 Then TeamPMRColor1 = "warning"
-														If TeamPMR1 < 161 Then TeamPMRColor1 = "danger"
-														TeamPMRPercent1 = (TeamPMR1 * 100) / 420
+														If TeamPMR1 < 396 Then TeamPMRColor1 = "warning"
+														If TeamPMR1 < 198 Then TeamPMRColor1 = "danger"
+														TeamPMRPercent1 = (TeamPMR1 * 100) / 600
 
 													End If
 
@@ -424,9 +424,9 @@
 													If LevelID = 1 Then
 
 														TeamPMRColor2 = "success"
-														If TeamPMR2 < 551 Then TeamPMRColor2 = "warning"
-														If TeamPMR2 < 276 Then TeamPMRColor2 = "danger"
-														TeamPMRPercent2 = (TeamPMR2 * 100) / 720
+														If TeamPMR2 < 396 Then TeamPMRColor2 = "warning"
+														If TeamPMR2 < 198 Then TeamPMRColor2 = "danger"
+														TeamPMRPercent2 = (TeamPMR2 * 100) / 600
 
 													Else
 

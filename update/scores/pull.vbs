@@ -15,20 +15,6 @@ Function GetToken (League)
 		'xmlhttpSLFFL.open "GET", "https://api.cbssports.com/general/oauth/test/access_token?user_id=naptown-&league_id=farmlevel&sport=football&response_format=xml", false
 		thisToken = "U2FsdGVkX18SKm91VpVXfO9uNx9RYniWaNBh1gqk-7NPji49ceBLJHbZO4mddgm6ooiVrhSYqxFkEIzIy9mCoE3L_ZyAGA9zPnKWUOIsfF-xSXvnaeKtrEejU-V-OZVSTnQvC9r2N_PdA3E3nE9lYw"
 	End If
-	'xmlhttpSLFFL.send ""
-
-	'SLFFLAccessResponse = xmlhttpSLFFL.ResponseText
-
-	'Set xmlhttpSLFFL = Nothing
-
-	'If Left(SLFFLAccessToken, 1) = " " Then SLFFLAccessToken = Right(SLFFLAccessToken, Len(SLFFLAccessToken) - 1)
-
-	'Set xmlDoc = CreateObject("Microsoft.XMLDOM")
-	'xmlDoc.async = False
-	'TokenDoc = xmlDoc.loadxml(SLFFLAccessResponse)
-
-	'Set Node =  xmlDoc.documentElement.selectSingleNode("body/access_token")
-	'GetToken = Node.text
 
 	GetToken = thisToken
 

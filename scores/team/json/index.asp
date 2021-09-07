@@ -60,9 +60,9 @@
 	If leagueTitle = "OMEGA" Then
 
 		TeamPMRColor1 = "success"
-		If TeamPMR1 < 551 Then TeamPMRColor1 = "warning"
-		If TeamPMR1 < 276 Then TeamPMRColor1 = "danger"
-		TeamPMRPercent1 = (TeamPMR1 * 100) / 720
+		If TeamPMR1 < 396 Then TeamPMRColor1 = "warning"
+		If TeamPMR1 < 198 Then TeamPMRColor1 = "danger"
+		TeamPMRPercent1 = (TeamPMR1 * 100) / 600
 
 	Else
 
