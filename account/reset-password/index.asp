@@ -99,7 +99,8 @@
 
 			'UPDATE ACCOUNT
 			encryptPassword = sha256(thisPassword1)
-			sqlModAccount = "UPDATE Accounts SET Password = '" & encryptPassword & "' WHERE AccountID = " & Session.Contents("AccountID")
+			encryptEmail = sha256(Session.Contents("AccountEmail"))
+			sqlModAccount = "UPDATE Accounts SET Password = '" & encryptPassword & "', Hash = '" & encryptEmail & "' WHERE AccountID = " & Session.Contents("AccountID")
 			Set rsAccount = sqlDatabase.Execute(sqlModAccount)
 
 			Set rsAccount = sqlDatabase.Execute("SELECT * FROM Accounts WHERE AccountID = " & Session.Contents("AccountID"))

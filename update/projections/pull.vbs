@@ -37,7 +37,7 @@ End Function
 Function GetScores (League, thisPeriod)
 
 	If UCase(League) = "OMEGA" Then
-		liveSLFFL = "http://api.cbssports.com/fantasy/league/scoring/live?version=3.0&response_format=xml&period=" & thisPeriod & "&league_id=omegalevel&access_token=" & GetToken("OMEGA")
+		liveSLFFL = "https://api.cbssports.com/fantasy/league/scoring/live?version=3.0&response_format=xml&period=" & thisPeriod & "&league_id=omegalevel&access_token=" & GetToken("OMEGA")
 		Set xmlhttpSLFFL = CreateObject("Microsoft.XMLHTTP")
 
 		xmlhttpSLFFL.open "GET", liveSLFFL, false
@@ -45,7 +45,7 @@ Function GetScores (League, thisPeriod)
 	End If
 
 	If UCase(League) = "SLFFL" Then
-		liveSLFFL = "http://api.cbssports.com/fantasy/league/scoring/live?version=3.0&response_format=xml&period=" & thisPeriod & "&league_id=samelevel&access_token=" & GetToken("SLFFL")
+		liveSLFFL = "https://api.cbssports.com/fantasy/league/scoring/live?version=3.0&response_format=xml&period=" & thisPeriod & "&league_id=samelevel&access_token=" & GetToken("SLFFL")
 		Set xmlhttpSLFFL = CreateObject("Microsoft.XMLHTTP")
 
 		xmlhttpSLFFL.open "GET", liveSLFFL, false
@@ -54,7 +54,7 @@ Function GetScores (League, thisPeriod)
 
 	If UCase(League) = "FLFFL" Then
 
-		liveSLFFL = "http://api.cbssports.com/fantasy/league/scoring/live?version=3.0&response_format=xml&period=" & thisPeriod & "&league_id=farmlevel&access_token=" & GetToken("FARM")
+		liveSLFFL = "https://api.cbssports.com/fantasy/league/scoring/live?version=3.0&response_format=xml&period=" & thisPeriod & "&league_id=farmlevel&access_token=" & GetToken("FARM")
 		Set xmlhttpSLFFL = CreateObject("Microsoft.XMLHTTP")
 
 		xmlhttpSLFFL.open "GET", liveSLFFL, false
@@ -69,7 +69,7 @@ End Function
 Function GetProjections (League, CBSID, thisPeriod)
 
 	If UCase(League) = "OMEGA" Then
-		liveSLFFL = "http://api.cbssports.com/fantasy/league/scoring/preview?version=3.0&response_format=xml&period=" & thisPeriod & "&team_id=" & CBSID & "&league_id=omegalevel&access_token=" & GetToken("OMEGA")
+		liveSLFFL = "https://api.cbssports.com/fantasy/league/scoring/preview?version=3.0&response_format=xml&period=" & thisPeriod & "&team_id=" & CBSID & "&league_id=omegalevel&access_token=" & GetToken("OMEGA")
 		Set xmlhttpSLFFL = CreateObject("Microsoft.XMLHTTP")
 
 		xmlhttpSLFFL.open "GET", liveSLFFL, false
@@ -77,7 +77,7 @@ Function GetProjections (League, CBSID, thisPeriod)
 	End If
 
 	If UCase(League) = "SLFFL" Then
-		liveSLFFL = "http://api.cbssports.com/fantasy/league/scoring/preview?version=3.0&response_format=xml&period=" & thisPeriod & "&team_id=" & CBSID & "&league_id=samelevel&access_token=" & GetToken("SLFFL")
+		liveSLFFL = "https://api.cbssports.com/fantasy/league/scoring/preview?version=3.0&response_format=xml&period=" & thisPeriod & "&team_id=" & CBSID & "&league_id=samelevel&access_token=" & GetToken("SLFFL")
 		Set xmlhttpSLFFL = CreateObject("Microsoft.XMLHTTP")
 
 		xmlhttpSLFFL.open "GET", liveSLFFL, false
@@ -86,7 +86,7 @@ Function GetProjections (League, CBSID, thisPeriod)
 
 	If UCase(League) = "FLFFL" Then
 
-		liveSLFFL = "http://api.cbssports.com/fantasy/league/scoring/preview?version=3.0&response_format=xml&period=" & thisPeriod & "&team_id=" & CBSID & "&league_id=farmlevel&access_token=" & GetToken("FARM")
+		liveSLFFL = "https://api.cbssports.com/fantasy/league/scoring/preview?version=3.0&response_format=xml&period=" & thisPeriod & "&team_id=" & CBSID & "&league_id=farmlevel&access_token=" & GetToken("FARM")
 		Set xmlhttpSLFFL = CreateObject("Microsoft.XMLHTTP")
 
 		xmlhttpSLFFL.open "GET", liveSLFFL, false
@@ -101,7 +101,7 @@ End Function
 Function GetStats (League, thisYear, thisPeriod, thisPlayerID)
 
 	If UCase(League) = "OMEGA" Then
-		liveSLFFL = "http://api.cbssports.com/fantasy/stats?version=3.0&response_format=xml&period=" & thisPeriod & "&timeframe=" & thisYear & "&player_id=" & thisPlayerID & "&league_id=omegalevel&access_token=" & GetToken("OMEGA")
+		liveSLFFL = "https://api.cbssports.com/fantasy/stats?version=3.0&response_format=xml&period=" & thisPeriod & "&timeframe=" & thisYear & "&player_id=" & thisPlayerID & "&league_id=omegalevel&access_token=" & GetToken("OMEGA")
 		Set xmlhttpSLFFL = CreateObject("Microsoft.XMLHTTP")
 
 		xmlhttpSLFFL.open "GET", liveSLFFL, false
@@ -109,7 +109,7 @@ Function GetStats (League, thisYear, thisPeriod, thisPlayerID)
 	End If
 
 	If UCase(League) = "SLFFL" Then
-		liveSLFFL = "http://api.cbssports.com/fantasy/stats?version=3.0&response_format=xml&period=" & thisPeriod & "&timeframe=" & thisYear & "&player_id=" & thisPlayerID & "&league_id=samelevel&access_token=" & GetToken("SLFFL")
+		liveSLFFL = "https://api.cbssports.com/fantasy/stats?version=3.0&response_format=xml&period=" & thisPeriod & "&timeframe=" & thisYear & "&player_id=" & thisPlayerID & "&league_id=samelevel&access_token=" & GetToken("SLFFL")
 		Set xmlhttpSLFFL = CreateObject("Microsoft.XMLHTTP")
 
 		xmlhttpSLFFL.open "GET", liveSLFFL, false
@@ -118,7 +118,7 @@ Function GetStats (League, thisYear, thisPeriod, thisPlayerID)
 
 	If UCase(League) = "FLFFL" Then
 
-		liveSLFFL = "http://api.cbssports.com/fantasy/stats?version=3.0&response_format=xml&period=" & thisPeriod & "&timeframe=" & thisYear & "&player_id=" & thisPlayerID & "&league_id=farmlevel&access_token=" & GetToken("FARM")
+		liveSLFFL = "https://api.cbssports.com/fantasy/stats?version=3.0&response_format=xml&period=" & thisPeriod & "&timeframe=" & thisYear & "&player_id=" & thisPlayerID & "&league_id=farmlevel&access_token=" & GetToken("FARM")
 		Set xmlhttpSLFFL = CreateObject("Microsoft.XMLHTTP")
 
 		xmlhttpSLFFL.open "GET", liveSLFFL, false

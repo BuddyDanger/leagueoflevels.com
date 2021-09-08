@@ -358,7 +358,7 @@ End Function
 
 Set sqlDatabase = CreateObject("ADODB.Connection")
 sqlDatabase.CursorLocation = adUseServer
-sqlDatabase.Open "Driver={SQL Server Native Client 11.0};Server=tcp:samelevel.database.windows.net,1433;Database=NextLevelDB;Uid=samelevel;Pwd=TheHammer123;Encrypt=yes;Connection Timeout=60;"
+sqlDatabase.Open "Driver={SQL Server Native Client 11.0};Server=tcp:loldb.database.windows.net,1433;Database=leagueoflevels;Uid=commissioner;Pwd=TheHammer123;Encrypt=yes;Connection Timeout=60;"
 
 sqlGetTransactions = "SELECT * FROM SchmeckleTransactions ORDER BY TransactionDate ASC"
 Set rsTransactions = sqlDatabase.Execute(sqlGetTransactions)

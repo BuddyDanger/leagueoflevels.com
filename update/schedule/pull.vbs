@@ -32,7 +32,7 @@ End Function
 Function GetSchedule (League)
 
 	If UCase(League) = "OMEGA" Then
-		liveSLFFL = "http://api.cbssports.com/fantasy/league/schedules/?version=3.0&response_format=xml&period=all&league_id=omegalevel&access_token=" & GetToken("OMEGA")
+		liveSLFFL = "https://api.cbssports.com/fantasy/league/schedules/?version=3.0&response_format=xml&period=all&league_id=omegalevel&access_token=" & GetToken("OMEGA")
 		Set xmlhttpSLFFL = CreateObject("Microsoft.XMLHTTP")
 
 		xmlhttpSLFFL.open "GET", liveSLFFL, false
@@ -40,7 +40,7 @@ Function GetSchedule (League)
 	End If
 
 	If UCase(League) = "SLFFL" Then
-		liveSLFFL = "http://api.cbssports.com/fantasy/league/schedules/?version=3.0&response_format=xml&period=all&league_id=samelevel&access_token=" & GetToken("SLFFL")
+		liveSLFFL = "https://api.cbssports.com/fantasy/league/schedules/?version=3.0&response_format=xml&period=all&league_id=samelevel&access_token=" & GetToken("SLFFL")
 		Set xmlhttpSLFFL = CreateObject("Microsoft.XMLHTTP")
 
 		xmlhttpSLFFL.open "GET", liveSLFFL, false
@@ -49,7 +49,7 @@ Function GetSchedule (League)
 
 	If UCase(League) = "FLFFL" Then
 
-		liveSLFFL = "http://api.cbssports.com/fantasy/league/schedules/?version=3.0&response_format=xml&period=all&league_id=farmlevel&access_token=" & GetToken("FARM")
+		liveSLFFL = "https://api.cbssports.com/fantasy/league/schedules/?version=3.0&response_format=xml&period=all&league_id=farmlevel&access_token=" & GetToken("FARM")
 		Set xmlhttpSLFFL = CreateObject("Microsoft.XMLHTTP")
 
 		xmlhttpSLFFL.open "GET", liveSLFFL, false
@@ -63,7 +63,7 @@ End Function
 
 Set sqlDatabase = CreateObject("ADODB.Connection")
 sqlDatabase.CursorLocation = adUseServer
-sqlDatabase.Open "Driver={SQL Server Native Client 11.0};Server=tcp:samelevel.database.windows.net,1433;Database=NextLevelDB;Uid=samelevel;Pwd=TheHammer123;Encrypt=yes;Connection Timeout=60;"
+sqlDatabase.Open "Driver={SQL Server Native Client 11.0};Server=tcp:loldb.database.windows.net,1433;Database=leagueoflevels;Uid=commissioner;Pwd=TheHammer123;Encrypt=yes;Connection Timeout=60;"
 
 Set oXML = CreateObject("MSXML2.DOMDocument.3.0")
 oXML.loadXML(GetSchedule("FLFFL"))

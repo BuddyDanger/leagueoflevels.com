@@ -390,7 +390,7 @@ End Function
 
 Set sqlDatabase = CreateObject("ADODB.Connection")
 sqlDatabase.CursorLocation = adUseServer
-sqlDatabase.Open "Driver={SQL Server Native Client 11.0};Server=tcp:samelevel.database.windows.net,1433;Database=NextLevelDB;Uid=samelevel;Pwd=TheHammer123;Encrypt=yes;Connection Timeout=60;"
+sqlDatabase.Open "Driver={SQL Server Native Client 11.0};Server=tcp:loldb.database.windows.net,1433;Database=leagueoflevels;Uid=commissioner;Pwd=TheHammer123;Encrypt=yes;Connection Timeout=60;"
 
 sqlGetTickets = "SELECT TicketSlips.TicketSlipID, TicketSlips.TicketTypeID, TicketSlips.InsertDateTime, TicketSlips.AccountID, Accounts.ProfileName, TicketSlips.MatchupID, "
 sqlGetTickets = sqlGetTickets & "Matchups.TeamID1 AS MatchupTeamID1, Matchups.TeamID2 AS MatchupTeamID2, T1.TeamName AS MatchupTeamName1, T2.TeamName AS MatchupTeamName2, Matchups.TeamScore1, Matchups.TeamScore2, (Matchups.TeamScore1 + Matchups.TeamScore2) AS MatchupTotalScore, Matchups.TeamPMR1, Matchups.TeamPMR2, "
