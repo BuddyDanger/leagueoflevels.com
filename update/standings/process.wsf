@@ -1,4 +1,0 @@
-<job id="ProcessTickets">
-   <script language="VBScript" src="ADOVBS.INC"/>
-   <script language="VBScript" src="process.vbs"/>
-</job>
