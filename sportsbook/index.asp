@@ -70,7 +70,7 @@
 								<a href="/sportsbook/tickets/" style="text-decoration: none; display: block;">
 									<ul class="list-group mb-4">
 										<li class="list-group-item p-0">
-											<h4 class="text-left bg-primary text-white p-3 mt-0 mb-0 rounded-top"><b>ACTIVE BOOK STATS</b><span class="float-right dripicons-graph-pie"></i></h4>
+											<h4 class="text-left bg-dark text-white p-3 mt-0 mb-0 rounded-top"><b>ACTIVE BOOK STATS</b><span class="float-right dripicons-graph-pie"></i></h4>
 										</li>
 										<li class="list-group-item rounded-0">
 											<span class="float-right"><%= FormatNumber(thisTotalActiveBetAmount, 0) %></span>
@@ -90,6 +90,80 @@
 							Set rsSportsbookData = Nothing
 
 						End If
+%>
+<!--
+						<div class="col-xxxl-4 col-xxl-4 col-xl-4 col-lg-6 col-md-6 col-sm-12 col-xs-12 col-xxs-12">
+							<a href="/sportsbook/tickets/" style="text-decoration: none; display: block;">
+								<ul class="list-group mb-4">
+									<li class="list-group-item p-0">
+										<h4 class="text-left bg-dark text-white p-3 mt-0 mb-0 rounded-top"><b>LEVEL VERSUS LEVEL</b><span class="float-right dripicons-graph-pie"></i></h4>
+									</li>
+									<li class="list-group-item rounded-0">
+										<span class="float-right"><%= FormatNumber(thisTotalActiveBetAmount, 0) %></span>
+										<div><b>SAME LEVEL TOTAL POINTS</b></div>
+										<div>Across <%= thisTotalActiveTickets %> Individual Active Ticket Slips</div>
+									</li>
+									<li class="list-group-item">
+										<span class="float-right"><%= FormatNumber(thisTotalPotentialPayout, 0) %></span>
+										<div><b>FARM LEVEL TOTAL POINTS</b></div>
+										<div>Across <%= thisTotalBettingUsers %> LOL Owner Accounts</div>
+									</li>
+								</ul>
+							</a>
+						</div>
+
+						<div class="col-xxxl-4 col-xxl-4 col-xl-4 col-lg-6 col-md-6 col-sm-12 col-xs-12 col-xxs-12">
+
+							<form action="/sportsbook/" method="post">
+								<input type="hidden" name="action" value="go" />
+								<div class="form-check form-check-inline">
+									<div class="btn btn-dark mb-3">
+										<div class="custom-control custom-switch">
+											<input type="checkbox" class="custom-control-input" id="customSwitch1">
+											<label class="custom-control-label text-white" for="customSwitch1">NFL LEVEL</label>
+										</div>
+									</div>
+								</div>
+								<div class="form-check form-check-inline">
+									<div class="btn btn-dark">
+										<div class="custom-control custom-switch">
+											<input type="checkbox" class="custom-control-input" id="customSwitch2">
+											<label class="custom-control-label text-white" for="customSwitch2">OMEGA LEVEL</label>
+										</div>
+									</div>
+								</div>
+								<div class="form-check form-check-inline">
+									<div class="btn btn-dark">
+										<div class="custom-control custom-switch">
+											<input type="checkbox" class="custom-control-input" id="customSwitch3">
+											<label class="custom-control-label text-white" for="customSwitch3">SAME LEVEL</label>
+										</div>
+									</div>
+								</div>
+								<div class="form-check form-check-inline">
+									<div class="btn btn-dark">
+										<div class="custom-control custom-switch">
+											<input type="checkbox" class="custom-control-input" id="customSwitch4">
+											<label class="custom-control-label text-white" for="customSwitch4">FARM LEVEL</label>
+										</div>
+									</div>
+								</div>
+								<div class="form-check form-check-inline">
+									<div class="btn btn-dark">
+										<div class="custom-control custom-switch">
+											<input type="checkbox" class="custom-control-input" id="customSwitch5">
+											<label class="custom-control-label text-white" for="customSwitch5">NEXT LEVEL CUP</label>
+										</div>
+									</div>
+								</div>
+                            </form>
+
+						</div>
+-->
+					</div>
+
+<%
+						currentLevel = -1
 
 						sqlGetSchedules = "SELECT MatchupID, Matchups.LevelID, Year, Period, IsPlayoffs, TeamID1, TeamID2, Team1.TeamName AS TeamName1, Team2.TeamName AS TeamName2, TeamScore1, TeamScore2, TeamPMR1, TeamPMR2, Leg, TeamProjected1, TeamProjected2, TeamWinPercentage1, TeamWinPercentage2, TeamMoneyline1, TeamMoneyline2, TeamSpread1, TeamSpread2 FROM Matchups "
 						sqlGetSchedules = sqlGetSchedules & "INNER JOIN Teams AS Team1 ON Team1.TeamID = Matchups.TeamID1 "
@@ -126,38 +200,53 @@
 							If thisTeamSpread1 > 0 Then thisTeamSpread1 = "+" & thisTeamSpread1
 							If thisTeamSpread2 > 0 Then thisTeamSpread2 = "+" & thisTeamSpread2
 
-							If CInt(thisLevelID) = 0 Then
-								headerBGcolor = "D00000"
-								headerTextColor = "fff"
-								headerText = "CUP"
-								cardText = "520000"
-							End If
-							If CInt(thisLevelID) = 1 Then
-								headerBGcolor = "FFBA08"
-								headerTextColor = "fff"
-								headerText = "OMEGA"
-								cardText = "805C04"
-							End If
-							If CInt(thisLevelID) = 2 Then
-								headerBGcolor = "136F63"
-								headerTextColor = "fff"
-								headerText = "SAME LEVEL"
-								cardText = "0F574D"
-							End If
-							If CInt(thisLevelID) = 3 Then
-								headerBGcolor = "032B43"
-								headerTextColor = "fff"
-								headerText = "FARM LEVEL"
-								cardText = "03324F"
-							End If
+							If CInt(thisLevelID) <> currentLevel Then
+
+								If currentLevel <> -1 Then Response.Write("</div>")
+								Response.Write("<div class=""row mb-4"">")
+								currentLevel = thisLevelID
+
+								If CInt(thisLevelID) = 0 Then
+									headerBGcolor = "D00000"
+									headerTextColor = "fff"
+									headerText = "NEXT LEVEL CUP"
+									cardText = "520000"
+								End If
+								If CInt(thisLevelID) = 1 Then
+									headerBGcolor = "FFBA08"
+									headerTextColor = "fff"
+									headerText = "OMEGA LEVEL"
+									cardText = "805C04"
+								End If
+								If CInt(thisLevelID) = 2 Then
+									headerBGcolor = "136F63"
+									headerTextColor = "fff"
+									headerText = "SAME LEVEL"
+									cardText = "0F574D"
+								End If
+								If CInt(thisLevelID) = 3 Then
+									headerBGcolor = "032B43"
+									headerTextColor = "fff"
+									headerText = "FARM LEVEL"
+									cardText = "03324F"
+								End If
 %>
-							<div class="col-xxxl-4 col-xxl-4 col-xl-4 col-lg-6 col-md-6 col-sm-12 col-xs-12 col-xxs-12">
-								<a href="/sportsbook/<%= thisMatchupID %>/" style="text-decoration: none; display: block;">
-									<ul class="list-group mb-4">
+								<div class="col-12">
+									<ul class="list-group mb-2">
 										<li class="list-group-item p-0">
-											<h4 class="text-left text-white p-3 mt-0 mb-0 rounded-top" style="background-color: #<%= headerBGcolor %>;"><b><%= headerText %></b> #<%= thisMatchupID %></h4>
+											<h4 class="text-left text-white p-3 mt-0 mb-0 rounded" style="background-color: #<%= headerBGcolor %>;"><b><%= headerText %></b></h4>
 										</li>
-										<li class="list-group-item rounded-0">
+									</ul>
+								</div>
+<%
+							End If
+
+
+%>
+							<div class="col-xxxl-3 col-xxl-4 col-xl-4 col-lg-6 col-md-6 col-sm-12 col-xs-12 col-xxs-12">
+								<a href="/sportsbook/<%= thisMatchupID %>/" style="text-decoration: none; display: block;">
+									<ul class="list-group mb-2">
+										<li class="list-group-item">
 											<span class="float-right"><%= thisTeamScore1 %></span>
 											<div><b><%= thisTeamName1 %></b></div>
 											<div><%= thisTeamProjected1 %> Proj., <%= thisTeamWinPercentage1 %> Win, <%= thisTeamSpread1 %> Spread, <%= thisTeamMoneyline1 %> ML</div>
@@ -181,7 +270,7 @@
 						sqlGetNFLGames = "SELECT NFLGameID, Year, Period, DateTimeEST, AwayTeamID, HomeTeamID, A.City + ' ' + A.Name AS AwayTeam, B.City + ' ' + B.Name AS HomeTeam, AwayTeamMoneyline, HomeTeamMoneyline, AwayTeamSpread, HomeTeamSpread, OverUnderTotal FROM NFLGames "
 						sqlGetNFLGames = sqlGetNFLGames & "INNER JOIN NFLTeams A ON A.NFLTeamID = NFLGames.AwayTeamID "
 						sqlGetNFLGames = sqlGetNFLGames & "INNER JOIN NFLTeams B ON B.NFLTeamID = NFLGames.HomeTeamID "
-						sqlGetNFLGames = sqlGetNFLGames & "WHERE NFLGames.Year = " & Session.Contents("CurrentYear") & " AND NFLGames.Period = " & Session.Contents("CurrentPeriod") & " AND NFLGames.DateTimeEST > DateAdd(hour, -5, GetDate()) "
+						sqlGetNFLGames = sqlGetNFLGames & "WHERE NFLGames.Year = " & Session.Contents("CurrentYear") & " AND NFLGames.Period = " & Session.Contents("CurrentPeriod") & " AND NFLGames.DateTimeEST > DateAdd(hour, -4, GetDate()) "
 						sqlGetNFLGames = sqlGetNFLGames & "ORDER BY NFLGames.DateTimeEST ASC"
 						Set rsSchedules = sqlDatabase.Execute(sqlGetNFLGames)
 

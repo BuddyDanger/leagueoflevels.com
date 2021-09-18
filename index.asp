@@ -44,7 +44,7 @@
 
 		If thisNFLTeamID > 0 Then
 
-			sqlGetCurrentPick = "SELECT * FROM EliminatorPicks INNER JOIN NFLTeams ON NFLTeams.NFLTeamID = EliminatorPicks.NFLTeamID WHERE AccountID = " & Session.Contents("AccountID") & " AND EliminatorRoundID = " & Session.Contents("EliminatorRoundID")
+			sqlGetCurrentPick = "SELECT * FROM EliminatorPicks INNER JOIN NFLTeams ON NFLTeams.NFLTeamID = EliminatorPicks.NFLTeamID WHERE AccountID = " & Session.Contents("AccountID") & " AND Period = " & Session.Contents("CurrentPeriod") & " AND EliminatorRoundID = " & Session.Contents("EliminatorRoundID")
 			Set rsCurrentPick = sqlDatabase.Execute(sqlGetCurrentPick)
 
 			If Not rsCurrentPick.Eof Then
