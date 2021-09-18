@@ -92,25 +92,6 @@
 						End If
 %>
 <!--
-						<div class="col-xxxl-4 col-xxl-4 col-xl-4 col-lg-6 col-md-6 col-sm-12 col-xs-12 col-xxs-12">
-							<a href="/sportsbook/tickets/" style="text-decoration: none; display: block;">
-								<ul class="list-group mb-4">
-									<li class="list-group-item p-0">
-										<h4 class="text-left bg-dark text-white p-3 mt-0 mb-0 rounded-top"><b>LEVEL VERSUS LEVEL</b><span class="float-right dripicons-graph-pie"></i></h4>
-									</li>
-									<li class="list-group-item rounded-0">
-										<span class="float-right"><%= FormatNumber(thisTotalActiveBetAmount, 0) %></span>
-										<div><b>SAME LEVEL TOTAL POINTS</b></div>
-										<div>Across <%= thisTotalActiveTickets %> Individual Active Ticket Slips</div>
-									</li>
-									<li class="list-group-item">
-										<span class="float-right"><%= FormatNumber(thisTotalPotentialPayout, 0) %></span>
-										<div><b>FARM LEVEL TOTAL POINTS</b></div>
-										<div>Across <%= thisTotalBettingUsers %> LOL Owner Accounts</div>
-									</li>
-								</ul>
-							</a>
-						</div>
 
 						<div class="col-xxxl-4 col-xxl-4 col-xl-4 col-lg-6 col-md-6 col-sm-12 col-xs-12 col-xxs-12">
 
@@ -273,7 +254,15 @@
 						sqlGetNFLGames = sqlGetNFLGames & "WHERE NFLGames.Year = " & Session.Contents("CurrentYear") & " AND NFLGames.Period = " & Session.Contents("CurrentPeriod") & " AND NFLGames.DateTimeEST > DateAdd(hour, -4, GetDate()) "
 						sqlGetNFLGames = sqlGetNFLGames & "ORDER BY NFLGames.DateTimeEST ASC"
 						Set rsSchedules = sqlDatabase.Execute(sqlGetNFLGames)
-
+%>
+						<div class="col-12">
+							<ul class="list-group mb-2 mt-4">
+								<li class="list-group-item p-0">
+									<h4 class="text-left bg-dark text-white p-3 mt-0 mb-0 rounded"><b>NFL Games</b></h4>
+								</li>
+							</ul>
+						</div>
+<%
 						Do While Not rsSchedules.Eof
 
 							thisMatchupID = rsSchedules("NFLGameID")
@@ -340,15 +329,13 @@
 
 									<ul class="list-group mb-4">
 										<li class="list-group-item p-0">
-											<h4 class="text-left text-white p-3 mt-0 mb-0 rounded-top" style="background-color: #<%= headerBGcolor %>;"><%= thisWeekday %>,&nbsp;<%= thisMonthName %>&nbsp;<%= thisDay & thisDayExt %> @ <%= thisHour %>:<%= thisMinute %>&nbsp;<%= thisAMPM %></h4>
+											<div class="text-left p-2 pl-3 mt-0 mb-0 rounded-top"><b><%= thisWeekday %>,&nbsp;<%= thisMonthName %>&nbsp;<%= thisDay & thisDayExt %> @ <%= thisHour %>:<%= thisMinute %>&nbsp;<%= thisAMPM %></b></div>
 										</li>
 										<li class="list-group-item rounded-0">
-											<span class="float-right"><%= thisTeamScore1 %></span>
 											<div><b><%= thisTeamName1 %></b></div>
 											<div><%= thisTeamProjected1 %> Proj., <%= thisTeamWinPercentage1 %> Win, <%= thisTeamSpread1 %> Spread, <%= thisTeamMoneyline1 %> ML</div>
 										</li>
 										<li class="list-group-item">
-											<span class="float-right"><%= thisTeamScore2 %></span>
 											<div><b><%= thisTeamName2 %></b></div>
 											<div><%= thisTeamProjected2 %> Proj., <%= thisTeamWinPercentage2 %> Win, <%= thisTeamSpread2 %> Spread, <%= thisTeamMoneyline2 %> ML</div>
 										</li>
