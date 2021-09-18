@@ -59,6 +59,15 @@
 			selectPlaceholder = "Browse " & thisAvailableOptionCount & " Available Options"
 
 		End If
+<<<<<<< HEAD
+=======
+
+		sqlGetCurrentGames = "SELECT Team.[NFLTeamID] AS thisNFLTeamID, Team.[City] AS thisCity, Team.[Name] AS thisName, Team.[Abbreviation] AS thisAbbr, thisHome = 0, H.[City] AS opponentCity, H.[Name] AS opponentName, H.[Abbreviation] AS opponentAbbr FROM [dbo].[NFLTeams] Team INNER JOIN NFLGames A ON A.AwayTeamID = Team.NFLTeamID INNER JOIN NFLTeams H ON H.NFLTeamID = A.HomeTeamID "
+		sqlGetCurrentGames = sqlGetCurrentGames & "WHERE ( A.Year = " & Session.Contents("CurrentYear") & " AND A.Period = " & Session.Contents("CurrentPeriod") & " AND A.DateTimeEST > '" & Now() & "') UNION ALL "
+		sqlGetCurrentGames = sqlGetCurrentGames & "SELECT Team.[NFLTeamID] AS thisNFLTeamID, Team.[City] AS thisCity, Team.[Name] AS thisName, Team.[Abbreviation] AS thisAbbr, thisHome = 1, H.[City] AS opponentCity, H.[Name] AS opponentName, H.[Abbreviation] AS opponentAbbr FROM [dbo].[NFLTeams] Team INNER JOIN NFLGames A ON A.HomeTeamID = Team.NFLTeamID INNER JOIN NFLTeams H ON H.NFLTeamID = A.AwayTeamID "
+		sqlGetCurrentGames = sqlGetCurrentGames & "WHERE ( A.Year = " & Session.Contents("CurrentYear") & " AND A.Period = " & Session.Contents("CurrentPeriod") & " AND A.DateTimeEST > DATEADD(hour, -4,'" & Now() & "')) ORDER BY thisCity"
+		Set rsCurrentGames = sqlDatabase.Execute(sqlGetCurrentGames)
+>>>>>>> 6c6faa0487893f9bb3f65706332c46416724297c
 %>
 		<div class="card-body pt-2 pb-2">
 
