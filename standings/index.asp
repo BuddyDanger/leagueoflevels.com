@@ -221,7 +221,6 @@
 %>
 							<div Class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-6">
 
-								<h4 class="text-left bg-info text-white p-3 mt-0 mb-0 rounded-top"><b>SAME LEVEL</b><span class="float-right dripicons-trophy"></i></h4>
 								<div class="card">
 
 									<div class="card-body p-0">
@@ -229,7 +228,7 @@
 										<table class="table mb-1">
 											<thead>
 												<tr>
-													<th class="pl-3">TEAM</th>
+													<th class="pl-3"><b>SAME LEVEL</b></th>
 													<th class="text-center">W-L-T</th>
 													<th class="text-center d-none d-sm-table-cell">PF</th>
 													<th class="text-center d-none d-sm-table-cell">PA</th>
@@ -288,7 +287,6 @@
 %>
 							<div Class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-6">
 
-								<h4 class="text-left bg-info text-white p-3 mt-0 mb-0 rounded-top"><b>FARM LEVEL</b><span class="float-right dripicons-trophy"></i></h4>
 								<div class="card">
 
 									<div class="card-body p-0">
@@ -296,7 +294,7 @@
 										<table class="table mb-1">
 											<thead>
 												<tr>
-													<th>TEAM</th>
+													<th><b>FARM LEVEL</b></th>
 													<th class="text-center">W-L-T</th>
 													<th class="text-center d-none d-sm-table-cell">PF</th>
 													<th class="text-center d-none d-sm-table-cell">PA</th>
@@ -355,7 +353,6 @@
 %>
 							<div Class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-6">
 
-								<h4 class="text-left bg-info text-white p-3 mt-0 mb-0 rounded-top"><b>OMEGA LEVEL</b><span class="float-right dripicons-trophy"></i></h4>
 								<div class="card">
 
 									<div class="card-body p-0">
@@ -363,7 +360,7 @@
 										<table class="table mb-1">
 											<thead>
 												<tr>
-													<th>TEAM</th>
+													<th><b>OMEGA LEVEL</b></th>
 													<th class="text-center">W-L-T</th>
 													<th class="text-center d-none d-sm-table-cell">PF</th>
 													<th class="text-center d-none d-sm-table-cell">PA</th>
@@ -420,7 +417,6 @@
 %>
 						<div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-6">
 
-							<h4 class="text-left bg-info text-white p-3 mt-0 mb-0 rounded-top"><b>TOTAL POINTS</b><span class="float-right dripicons-trophy"></i></h4>
 							<div class="card">
 
 								<div class="card-body p-0">
@@ -428,7 +424,7 @@
 									<table class="table mb-1">
 										<thead>
 											<tr>
-												<th>TEAM</th>
+												<th><b>TOTAL POINTS</b></th>
 												<th class="text-center">PF</th>
 											</tr>
 										</thead>

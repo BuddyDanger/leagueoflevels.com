@@ -369,7 +369,7 @@
 								<div class="col-xxxl-4 col-xxl-4 col-xl-4 col-lg-6 col-md-6 col-sm-12 col-xs-12 col-xxs-12">
 									<a href="/sportsbook/nfl/<%= thisMatchupID %>/" style="text-decoration: none; display: block;">
 
-										<ul class="list-group mb-4">
+										<ul class="list-group mb-3">
 											<li class="list-group-item p-0">
 												<div class="text-left p-2 pl-3 mt-0 mb-0 rounded-top"><b><%= thisWeekday %>,&nbsp;<%= thisMonthName %>&nbsp;<%= thisDay & thisDayExt %> @ <%= thisHour %>:<%= thisMinute %>&nbsp;<%= thisAMPM %></b></div>
 											</li>

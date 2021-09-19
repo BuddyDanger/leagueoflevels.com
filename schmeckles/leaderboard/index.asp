@@ -82,7 +82,7 @@
 
 						<div class="col-12 col-xl-4">
 
-							<h4 class="text-left bg-info text-white p-3 mt-0 mb-0 rounded-top"><b>SCHMECKLE LEADERBOARD</b><span class="float-right dripicons-trophy"></i></h4>
+							<h4 class="text-left bg-dark text-white p-3 mt-0 mb-0 rounded-top"><b>SCHMECKLE LEADERBOARD</b><span class="float-right dripicons-trophy"></i></h4>
 
 							<ul class="list-group list-group-flush mb-4">
 <%
