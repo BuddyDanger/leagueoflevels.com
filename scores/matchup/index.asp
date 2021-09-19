@@ -5,13 +5,16 @@
 <%
 	MatchupID = Session.Contents("Scores_Matchup_ID")
 
-	sqlGetMatchup = "SELECT Matchups.MatchupID, Matchups.LevelID, Levels.Title, Matchups.Year, Matchups.Period, Matchups.IsPlayoffs, Matchups.IsCup, Matchups.TeamID1, Matchups.TeamID2, Teams1.CBSID AS TeamCBSID1,Teams2.CBSID AS TeamCBSID2, Teams1.CBSLogo AS TeamCBSLogo1, Teams2.CBSLogo AS TeamCBSLogo2, Teams1.TeamName AS TeamName1, Teams2.TeamName AS TeamName2, Matchups.TeamScore1, Matchups.TeamScore2, Matchups.Leg "
+	sqlGetMatchup = "SELECT Matchups.MatchupID, Matchups.LevelID, Levels.Title, Matchups.Year, Matchups.Period, Matchups.IsPlayoffs, Matchups.IsCup, Matchups.TeamID1, Matchups.TeamID2, Teams1.CBSID AS TeamCBSID1,Teams2.CBSID AS TeamCBSID2, Accounts1.ProfileImage AS TeamCBSLogo1, Accounts2.ProfileImage AS TeamCBSLogo2, Teams1.TeamName AS TeamName1, Teams2.TeamName AS TeamName2, Matchups.TeamScore1, Matchups.TeamScore2, Matchups.Leg "
 	sqlGetMatchup = sqlGetMatchup & "FROM Matchups "
 	sqlGetMatchup = sqlGetMatchup & "LEFT JOIN Levels ON Levels.LevelID = Matchups.LevelID "
 	sqlGetMatchup = sqlGetMatchup & "INNER JOIN Teams AS Teams1 ON Teams1.TeamID = Matchups.TeamID1 "
 	sqlGetMatchup = sqlGetMatchup & "INNER JOIN Teams AS Teams2 ON Teams2.TeamID = Matchups.TeamID2 "
+	sqlGetMatchup = sqlGetMatchup & "INNER JOIN LinkAccountsTeams AS Link1 ON Link1.TeamID = Teams1.TeamID "
+	sqlGetMatchup = sqlGetMatchup & "INNER JOIN LinkAccountsTeams AS Link2 ON Link2.TeamID = Teams2.TeamID "
+	sqlGetMatchup = sqlGetMatchup & "INNER JOIN Accounts AS Accounts1 ON Accounts1.AccountID = Link1.AccountID "
+	sqlGetMatchup = sqlGetMatchup & "INNER JOIN Accounts AS Accounts2 ON Accounts2.AccountID = Link2.AccountID "
 	sqlGetMatchup = sqlGetMatchup & "WHERE MatchupID = " & MatchupID
-
 	Set rsMatchup = sqlDatabase.Execute(sqlGetMatchup)
 
 	If rsMatchup.Eof Then
@@ -31,8 +34,8 @@
 		TeamID2 = rsMatchup("TeamID2")
 		TeamCBSID1 = rsMatchup("TeamCBSID1")
 		TeamCBSID2 = rsMatchup("TeamCBSID2")
-		TeamCBSLogo1 = rsMatchup("TeamCBSLogo1")
-		TeamCBSLogo2 = rsMatchup("TeamCBSLogo2")
+		TeamCBSLogo1 = "https://samelevel.imgix.net/" & rsMatchup("TeamCBSLogo1") & "?w=100&h=100&fit=crop&crop=focalpoint"
+		TeamCBSLogo2 = "https://samelevel.imgix.net/" & rsMatchup("TeamCBSLogo2") & "?w=100&h=100&fit=crop&crop=focalpoint"
 		TeamName1 = rsMatchup("TeamName1")
 		TeamName2 = rsMatchup("TeamName2")
 		TeamScore1 = rsMatchup("TeamScore1")
@@ -230,7 +233,7 @@
 
 													If CInt(TeamID1) = 38 Then TeamName1 = "München on Bündchen"
 %>
-													<li class="list-group-item team-1-box" style="padding-left: 70px; background-color: #<%= BackgroundColor %>; color: #fff; background-image: url('<%= TeamCBSLogo1 %>'); background-position: -40px -20px; background-repeat: no-repeat;">
+													<li class="list-group-item team-1-box" style="padding-left: 70px; background-color: #<%= BackgroundColor %>; color: #fff; background-image: url('<%= TeamCBSLogo1 %>'); background-position: -40px -10px; background-repeat: no-repeat;">
 														<span class="team-1-name" style="font-size: 26px"><b><%= TeamName1 %></b></span>
 														<span class="badge team-1-score" style="font-size: 32px; color: #fff; float: right; padding-top: 0.75rem;"><%= TeamScore1 %></span>
 														<div class="progress team-1-progress" style="height: 1px; margin-top: 6px; margin-bottom: 0; padding-bottom: 0;">
@@ -439,7 +442,7 @@
 
 													If CInt(TeamID2) = 38 Then TeamName2 = "München on Bündchen"
 %>
-													<li class="list-group-item team-2-box" style="padding-left: 70px; background-color: #<%= BackgroundColor %>; color: #fff; background-image: url('<%= TeamCBSLogo2 %>'); background-position: -40px -20px; background-repeat: no-repeat;">
+													<li class="list-group-item team-2-box" style="padding-left: 70px; background-color: #<%= BackgroundColor %>; color: #fff; background-image: url('<%= TeamCBSLogo2 %>'); background-position: -40px -10px; background-repeat: no-repeat;">
 														<span class="team-2-name" style="font-size: 26px"><b><%= TeamName2 %></b></span>
 														<span class="badge team-2-score" style="font-size: 32px; color: #fff; float: right; padding-top: 0.75rem;"><%= TeamScore2 %></span>
 														<div class="progress team-2-progress" style="height: 1px; margin-top: 6px; margin-bottom: 0; padding-bottom: 0;">
