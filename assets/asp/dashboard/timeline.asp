@@ -2,7 +2,7 @@
 	arrTeams = Split(Session.Contents("AccountTeams"), ",")
 
 	sqlGetRecentHistory = "SELECT TOP 10 M.MatchupID, L.LevelID, L.Title, M.Year, M.Period, M.IsPlayoffs, T1.TeamName AS Team1, M.TeamScore1, T2.TeamName AS Team2, M.TeamScore2, T1.TeamID AS TeamID1, T2.TeamID AS TeamID2, M.TeamPMR1, M.TeamPMR2 FROM Matchups M "
-	sqlGetRecentHistory = sqlGetRecentHistory & "INNER JOIN Levels L ON L.LevelID = M.LevelID "
+	sqlGetRecentHistory = sqlGetRecentHistory & "LEFT OUTER JOIN Levels L ON L.LevelID = M.LevelID "
 	sqlGetRecentHistory = sqlGetRecentHistory & "INNER JOIN Teams T1 ON T1.TeamID = M.TeamID1 "
 	sqlGetRecentHistory = sqlGetRecentHistory & "INNER JOIN Teams T2 ON T2.TeamID = M.TeamID2 "
 	sqlGetRecentHistory = sqlGetRecentHistory & "WHERE ("
@@ -16,7 +16,6 @@
 	If Right(sqlGetRecentHistory, 3) = "OR " Then sqlGetRecentHistory = Left(sqlGetRecentHistory, Len(sqlGetRecentHistory) - 3)
 
 	sqlGetRecentHistory = sqlGetRecentHistory & ") AND ((Year = " & Session.Contents("CurrentYear") & " AND Period <= " & Session.Contents("CurrentPeriod") & ") OR (Year = " & Session.Contents("CurrentYear") - 1 & "))  ORDER BY M.Year DESC, M.Period DESC, L.LevelID ASC"
-
 	Set rsRecentHistory = sqlDatabase.Execute(sqlGetRecentHistory)
 
 	If Not rsRecentHistory.Eof Then
@@ -47,6 +46,8 @@
 						thisTeamScore2 = rsRecentHistory("TeamScore2")
 						thisTeamPMR1 = CInt(rsRecentHistory("TeamPMR1"))
 						thisTeamPMR2 = CInt(rsRecentHistory("TeamPMR2"))
+
+						If IsNull(thisLevel) Then thisLevel = "Next Level Cup"
 
 						thisTotalPMR = thisTeamPMR1 + thisTeamPMR2
 
