@@ -185,20 +185,20 @@
 <%
 								If IsNumeric(thisTicketSlipID) Then
 
-									sqlCheckType = "SELECT IsNFL FROM TicketSlips WHERE TicketSlipID = " & thisTicketSlipID
+									sqlCheckType = "SELECT NFLGameID FROM TicketSlips WHERE TicketSlipID = " & thisTicketSlipID
 									Set rsTicketType = sqlDatabase.Execute(sqlCheckType)
 
 									If Not rsTicketType.Eof Then
 
-										thisTicketType = rsTicketType("IsNFL")
+										thisTicketType = rsTicketType("NFLGameID")
 										rsTicketType.Close
 										Set rsTicketType = Nothing
-
-										If thisTicketType Then
+										
+										If Not IsNull(thisTicketType) Then
 
 											sqlGetTicketSlips = "SELECT TicketSlipID, TicketTypeID, TicketSlips.AccountID, Accounts.ProfileName, DateAdd(hour, -4, TicketSlips.InsertDateTime) AS InsertDateTime, T1.Abbreviation AS AwayAbbr, T2.Abbreviation AS HomeAbbr, NFLGames.AwayTeamID AS TeamID1, NFLGames.HomeTeamID AS TeamID2, T1.City + ' ' + T1.Name AS TeamName1, T2.City + ' ' + T2.Name AS TeamName2, T3.City + ' ' + T3.Name AS BetTeamName, TicketSlips.TeamID, TicketSlips.Moneyline, TicketSlips.Spread, TicketSlips.OverUnderAmount, OverUnderBet, TicketSlips.BetAmount, TicketSlips.PayoutAmount, TicketSlips.IsWinner FROM TicketSlips "
 											sqlGetTicketSlips = sqlGetTicketSlips & "INNER JOIN Accounts ON Accounts.AccountID = TicketSlips.AccountID "
-											sqlGetTicketSlips = sqlGetTicketSlips & "INNER JOIN NFLGames ON NFLGames.NFLGameID = TicketSlips.MatchupID "
+											sqlGetTicketSlips = sqlGetTicketSlips & "INNER JOIN NFLGames ON NFLGames.NFLGameID = TicketSlips.NFLGameID "
 											sqlGetTicketSlips = sqlGetTicketSlips & "LEFT JOIN NFLTeams T1 ON T1.NFLTeamID = NFLGames.AwayTeamID "
 											sqlGetTicketSlips = sqlGetTicketSlips & "LEFT JOIN NFLTeams T2 ON T2.NFLTeamID = NFLGames.HomeTeamID "
 											sqlGetTicketSlips = sqlGetTicketSlips & "LEFT JOIN NFLTeams T3 ON T3.NFLTeamID = TicketSlips.TeamID "

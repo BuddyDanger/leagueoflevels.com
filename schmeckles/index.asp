@@ -62,7 +62,7 @@
 
 							<ul class="list-group list-group-flush">
 <%
-								sqlGetLeaderboard = "SELECT TOP 10 Accounts.ProfileName, Accounts.ProfileImage, SUM([TransactionTotal]) AS TotalSchmeckles FROM SchmeckleTransactions INNER JOIN Accounts ON Accounts.AccountID = SchmeckleTransactions.AccountID WHERE Accounts.Active = 1 GROUP BY Accounts.ProfileName, Accounts.ProfileImage ORDER BY TotalSchmeckles DESC"
+								sqlGetLeaderboard = "SELECT TOP 5 Accounts.ProfileName, Accounts.ProfileImage, SUM([TransactionTotal]) AS TotalSchmeckles FROM SchmeckleTransactions INNER JOIN Accounts ON Accounts.AccountID = SchmeckleTransactions.AccountID WHERE Accounts.Active = 1 GROUP BY Accounts.ProfileName, Accounts.ProfileImage ORDER BY TotalSchmeckles DESC"
 								Set rsLeaderboard = sqlDatabase.Execute(sqlGetLeaderboard)
 
 								Do While Not rsLeaderboard.Eof
@@ -81,17 +81,125 @@
 %>
 							</ul>
 
-							<a href="/schmeckles/leaderboard/" class="btn btn-light btn-block card-text mb-5">VIEW FULL LEADERBOARD</a>
+							<a href="/schmeckles/leaderboard/" class="btn btn-light btn-block card-text mb-4">VIEW FULL LEADERBOARD</a>
+
+							<h4 class="text-left bg-dark text-white p-3 mt-0 mb-0 rounded-top"><b>TOP 2021 PAYOUTS</b><span class="float-right dripicons-trophy"></i></h4>
+
+							<ul class="list-group list-group-flush">
+<%
+								sqlGetLargest = "SELECT TOP (5) TransactionDate, TransactionTotal, TransactionHash, Accounts.ProfileName, Accounts.ProfileImage FROM SchmeckleTransactions INNER JOIN Accounts ON Accounts.AccountID = SchmeckleTransactions.AccountID WHERE TransactionDate >= '9/1/2021' AND TransactionTypeID = 1008 ORDER BY TransactionTotal DESC"
+								Set rsLargest = sqlDatabase.Execute(sqlGetLargest)
+
+								Do While Not rsLargest.Eof
+
+									thisTransactionDate = rsLargest("TransactionDate")
+									thisTransactionTotal = rsLargest("TransactionTotal")
+									thisTransactionHash = rsLargest("TransactionHash")
+									thisProfileName = rsLargest("ProfileName")
+									thisProfileImage = rsLargest("ProfileImage")
+									arrthisTransactionDate = Split(thisTransactionDate, " ")
+									If CDbl(thisTransactionTotal) > 0 Then
+										thisTransactionDirection = "badge-success"
+									Else
+										thisTransactionDirection = "badge-danger"
+									End If
+
+									thisProfileImage = "<img src=""https://samelevel.imgix.net/" & thisProfileImage & "?w=40&h=40&fit=crop&crop=focalpoint"" class=""rounded-circle float-left"">"
+
+									thisTransactionTotal = FormatNumber(thisTransactionTotal, 0)
+									If thisTransactionTotal > 0 Then thisTransactionTotal = "+" & thisTransactionTotal
+%>
+									<a href="/schmeckles/transactions/<%= thisTransactionHash %>/" class="list-group-item list-group-item-action">
+										<div class="row">
+											<div class="col-8 align-self-center">
+												<%= thisProfileImage %>
+												<div class="float-left pl-2">
+													<div><b><%= thisProfileName %></b></div>
+													<div><%= Month(thisTransactionDate) %>/<%= Day(thisTransactionDate) %>&nbsp;<%= arrthisTransactionDate(1) %>&nbsp;<%= arrthisTransactionDate(2) %></div>
+												</div>
+											</div>
+											<div class="col-4 align-self-center text-right"><span class="p-2 <%= thisTransactionDirection %> rounded"><%= thisTransactionTotal %></span></div>
+										</div>
+									</a>
+<%
+									rsLargest.MoveNext
+
+								Loop
+
+								rsLargest.Close
+								Set rsLargest = Nothing
+%>
+							</ul>
+
+							<a href="#" class="btn btn-light btn-block card-text mb-5">VIEW ALL-TIME PAYOUTS</a>
 
 						</div>
 
 						<div class="col-12 col-xl-8">
 
-							<h4 class="text-left bg-dark text-white p-3 mt-0 mb-0 rounded-top"><b>RECENT TRANSACTIONS</b><span class="float-right dripicons-list"></i></h4>
+							<form method="post" action="/schmeckles/transactions/index.asp">
 
-							<ul class="list-group list-group-flush">
+								<input type="hidden" name="action" value="update" />
+
+								<div class="row m-0 p-0 mb-2">
+
+									<div class="col-6 col-sm-6 col-md-6 col-lg-6 col-xl-5 p-0 pr-3">
+
+										<select class="form-control form-control-lg form-check-input-lg mb-3" name="account" id="account">
+											<option value="">ALL TEAMS</option>
+		<%
+											sqlGetAccountProfiles = "SELECT AccountID, ProfileName, ProfileURL FROM Accounts WHERE VerificationDate IS NOT NULL ORDER BY ProfileName ASC"
+											Set rsAccountProfiles = sqlDatabase.Execute(sqlGetAccountProfiles)
+
+											Do While Not rsAccountProfiles.Eof
+		%>
+												<option value="<%= rsAccountProfiles("ProfileURL") %>" <% If Session.Contents("SITE_Schmeckles_AccountID") = rsAccountProfiles("AccountID") Then %>selected<% End If %>><%= rsAccountProfiles("ProfileName") %></option>
+		<%
+												rsAccountProfiles.MoveNext
+
+											Loop
+
+											rsAccountProfiles.Close
+		%>
+										</select>
+
+									</div>
+
+									<div class="col-6 col-sm-6 col-md-6 col-lg-6 col-xl-5 p-0 pr-3">
+
+										<select class="form-control form-control-lg form-check-input-lg mb-3" name="type" id="type">
+											<option value="">ALL TYPES</option>
+		<%
+											sqlGetTypes = "SELECT * FROM SchmeckleTransactionTypes ORDER BY TransactionTypeTitle ASC"
+											Set rsTypes = sqlDatabase.Execute(sqlGetTypes)
+
+											Do While Not rsTypes.Eof
+		%>
+												<option value="<%= rsTypes("TransactionTypeSafeTitle") %>" <% If Session.Contents("SITE_Schmeckles_TypeID") = rsTypes("TransactionTypeID") Then %>selected<% End If %>><%= rsTypes("TransactionTypeTitle") %></option>
+		<%
+												rsTypes.MoveNext
+
+											Loop
+
+											rsTypes.Close
+		%>
+										</select>
+
+									</div>
+
+									<div class="col-12 col-xl-2 p-0">
+
+										<button <%= thisFormDisabled %> type="submit" class="btn btn-block btn-success mb-3">UPDATE</button>
+
+									</div>
+
+								</div>
+
+							</form>
+
+							<ul class="list-group">
 <%
-								sqlGetSchmeckles = "SELECT TOP 10 SchmeckleTransactions.TransactionID, DateAdd(hour, -4, SchmeckleTransactions.TransactionDate) AS TransactionDate, SchmeckleTransactions.TransactionTypeID, TransactionTypeTitle, SchmeckleTransactions.TransactionTotal, "
+								sqlGetSchmeckles = "SELECT TOP 15 SchmeckleTransactions.TransactionID, DateAdd(hour, -4, SchmeckleTransactions.TransactionDate) AS TransactionDate, SchmeckleTransactions.TransactionTypeID, TransactionTypeTitle, SchmeckleTransactions.TransactionTotal, "
 								sqlGetSchmeckles = sqlGetSchmeckles & "SchmeckleTransactions.TransactionHash, SchmeckleTransactions.AccountID, SchmeckleTransactions.TicketSlipID, Accounts.ProfileName, Accounts.ProfileImage, SchmeckleTransactions.TransactionDescription "
 								sqlGetSchmeckles = sqlGetSchmeckles & "FROM SchmeckleTransactions "
 								sqlGetSchmeckles = sqlGetSchmeckles & "INNER JOIN SchmeckleTransactionTypes ON SchmeckleTransactionTypes.TransactionTypeID = SchmeckleTransactions.TransactionTypeID "
