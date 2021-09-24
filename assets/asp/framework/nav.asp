@@ -40,7 +40,7 @@
 					<li class="nav-item"><a class="nav-link" href="/standings/"><i class="dripicons-view-list"></i>Standings</a></li>
 					<li class="nav-item"><a class="nav-link" href="/sportsbook/"><i class="dripicons-jewel"></i>Sportsbook</a></li>
 					<li class="nav-item"><a class="nav-link" href="/schmeckles/"><i class="dripicons-card"></i>Schmeckles</a></li>
-					<!--<li class="nav-item <% If Session.Contents("LoggedIn") = "yes" Then %>d-block<% Else %>d-none<% End If %>"><a class="nav-link" href="/eliminator/"><i class="dripicons-crosshair"></i>Eliminator</a></li>-->
+					<li class="nav-item"><a class="nav-link" href="/eliminator/"><i class="dripicons-warning"></i>Eliminator</a></li>
 					<!--<li class="nav-item"><a class="nav-link" href="#"><i class="dripicons-list"></i>Standings</a></li>-->
 					<!--<li class="nav-item"><a class="nav-link" href="/schedule/"><i class="dripicons-calendar"></i>Schedule</a></li>-->
 

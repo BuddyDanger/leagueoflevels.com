@@ -158,7 +158,7 @@
 
 								<div class="mb-3"><a href="https://www.slffl.com" target="_blank" title="The Next Level Cup" class="btn btn-dark rounded-circle"><h1><i class="fas fa-trophy fa-fw"></i></h1></a></div>
 								<div class="mb-3"><a href="/schmeckles/<%= Session.Contents("AccountProfileURL") %>/" title="Schmeckles" class="btn btn-dark rounded-circle"><h1><i class="fas fa-credit-card fa-fw"></i></h1></a></div>
-								<div class="mb-3"><a href="#" title="Eliminator Challenge" class="btn btn-dark rounded-circle"><h1><i class="fas fa-skull fa-fw" style="opacity: 0.5;"></i></h1></a></div>
+								<div class="mb-3"><a href="/eliminator/" title="Eliminator Challenge" class="btn btn-dark rounded-circle"><h1><i class="fas fa-skull fa-fw"></i></h1></a></div>
 								<div class="mb-3"><a href="#" title="Locks" class="btn btn-dark rounded-circle"><h1><i class="fas fa-lock fa-fw" style="opacity: 0.5;"></i></h1></a></div>
 
 							</div>

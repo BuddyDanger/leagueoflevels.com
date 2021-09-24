@@ -3,8 +3,8 @@
 	<div class="topbar-left">
 
 		<a href="/" class="logo">
-			<span><img src="/assets/images/logo-sm.png" alt="logo-small" class="logo-sm"></span>
-			<span><img src="/assets/images/logo-dark.png" alt="logo-large" class="logo-lg"></span>
+			<span><img src="/assets/images/logo-sm.png" width="51" alt="logo-small" class="logo-sm"></span>
+			<span><img src="/assets/images/logo-dark.png" width="125" alt="logo-large" class="logo-lg"></span>
 		</a>
 
 	</div>
@@ -34,7 +34,7 @@
 				<li class="dropdown">
 
 					<a class="nav-link dropdown-toggle waves-effect waves-light nav-user" data-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
-						<img src="https://samelevel.imgix.net/<%= Session.Contents("AccountImage") %>?w=128&h=128&fit=crop&crop=focalpoint" alt="profile-user" class="rounded-circle" />
+						<img src="https://samelevel.imgix.net/<%= Session.Contents("AccountImage") %>?w=40&h=40&fit=crop&crop=focalpoint" width="40" alt="profile-user" class="rounded-circle" />
 						<span class="ml-1 nav-user-name hidden-sm"><%= Session.Contents("AccountName") %> <i class="mdi mdi-chevron-down"></i> </span>
 					</a>
 
