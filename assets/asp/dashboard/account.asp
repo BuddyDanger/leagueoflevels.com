@@ -14,6 +14,56 @@
 			Set rsCurrentSchmeckleSack = Nothing
 
 		End If
+
+		sqlGetCurrentRecord = "SELECT TeamID, SUM(ActualWins) AS Wins, SUM(ActualLosses) AS Losses, SUM(ActualTies) AS Ties, SUM(PointsScored) AS Points FROM Standings WHERE (LevelID = 2 OR LevelID = 3) AND Year = " & Session.Contents("CurrentYear") & " AND TeamID IN (" & Session.Contents("AccountTeams") & ") GROUP BY TeamID"
+		Set rsCurrentRecord = sqlDatabase.Execute(sqlGetCurrentRecord)
+
+		If Not rsCurrentRecord.Eof Then
+
+			thisCurrentWins = rsCurrentRecord("Wins")
+			thisCurrentLosses = rsCurrentRecord("Losses")
+			thisCurrentTies = rsCurrentRecord("Ties")
+			thisCurrentPoints = rsCurrentRecord("Points")
+			rsCurrentRecord.Close
+			Set rsCurrentRecord = Nothing
+
+		End If
+
+		sqlGetAllTimeRecord = "SELECT TeamID, SUM(ActualWins) AS Wins, SUM(ActualLosses) AS Losses, SUM(ActualTies) AS Ties, SUM(PointsScored) AS Points FROM Standings WHERE (LevelID = 2 OR LevelID = 3) AND TeamID IN (" & Session.Contents("AccountTeams") & ") GROUP BY TeamID"
+		Set rsAllTimeRecord = sqlDatabase.Execute(sqlGetAllTimeRecord)
+
+		If Not rsAllTimeRecord.Eof Then
+
+			thisAllTimeWins = rsAllTimeRecord("Wins")
+			thisAllTimeLosses = rsAllTimeRecord("Losses")
+			thisAllTimeTies = rsAllTimeRecord("Ties")
+			thisAllTimePoints = rsAllTimeRecord("Points")
+			rsAllTimeRecord.Close
+			Set rsAllTimeRecord = Nothing
+
+		End If
+
+		sqlGetPowerRanking = "SELECT * FROM PowerRankings WHERE TeamID IN (" & Session.Contents("AccountTeams") & ")"
+		Set rsPowerRanking = sqlDatabase.Execute(sqlGetPowerRanking)
+
+		If Not rsPowerRanking.Eof Then
+
+			thisCurrentPowerRanking = rsPowerRanking("PowerRanking")
+			thisPowerRankPoints = rsPowerRanking("PowerRankPoints")
+			Select Case CInt(thisCurrentPowerRanking)
+				Case 1,21
+				ordsuffix = "st"
+				Case 2,22
+				ordsuffix = "nd"
+				Case 3,23
+				ordsuffix = "rd"
+				Case else
+				ordsuffix = "th"
+			End select
+			rsPowerRanking.Close
+			Set rsPowerRanking = Nothing
+
+		End If
 %>
 		<div class="card-body rounded bg-dark pt-2 pb-2">
 
@@ -30,7 +80,6 @@
 						</div>
 						<div class="col-6 col-xxl-12">
 							<div class="pt-1 pb-2"><a href="/account/" class="btn btn-sm btn-block btn-primary">SETTINGS</a></div>
-							<div><a href="/schmeckles/<%= Session.Contents("AccountProfileURL") %>/" class="btn btn-sm btn-block btn-primary">SCHMECKLES</a></div>
 						</div>
 					</div>
 
@@ -41,23 +90,20 @@
 						<div class="col-6 col-xl-8 text-right text-xl-left"><b>SCHMECKLES</b></div>
 						<div class="col-6 col-xl-4 text-xl-right"><%= FormatNumber(thisSchmeckleSackBalance, 0) %></div>
 						<div class="col-12"><hr class="bg-white mt-2 mb-2"></div>
-						<div class="col-6 col-xl-8 text-right text-xl-left"><b>LOTTERY BALLS</b></div>
-						<div class="col-6 col-xl-4 text-xl-right"><%= FormatNumber(Session.Contents("AccountBalls"), 0) %></div>
-						<div class="col-12"><hr class="bg-white mt-2 mb-2"></div>
 						<div class="col-6 col-xl-8 text-right text-xl-left"><b>CURRENT RECORD</b></div>
-						<div class="col-6 col-xl-4 text-xl-right">0-0-0</div>
+						<div class="col-6 col-xl-4 text-xl-right"><%= thisCurrentWins %>-<%= thisCurrentLosses %>-<%= thisCurrentTies %></div>
 						<div class="col-12"><hr class="bg-white mt-2 mb-2"></div>
 						<div class="col-6 col-xl-8 text-right text-xl-left"><b>POINTS SCORED</b></div>
-						<div class="col-6 col-xl-4 text-xl-right">0</div>
+						<div class="col-6 col-xl-4 text-xl-right"><%= FormatNumber(thisCurrentPoints, 2) %></div>
 						<div class="col-12"><hr class="bg-white mt-2 mb-2"></div>
 						<div class="col-6 col-xl-8 text-right text-xl-left"><b>CAREER RECORD</b></div>
-						<div class="col-6 col-xl-4 text-xl-right"></div>
+						<div class="col-6 col-xl-4 text-xl-right"><%= thisAllTimeWins %>-<%= thisAllTimeLosses %>-<%= thisAllTimeTies %></div>
 						<div class="col-12"><hr class="bg-white mt-2 mb-2"></div>
 						<div class="col-6 col-xl-8 text-right text-xl-left"><b>ALL-TIME POINTS</b></div>
-						<div class="col-6 col-xl-4 text-xl-right"></div>
+						<div class="col-6 col-xl-4 text-xl-right"><%= FormatNumber(thisAllTimePoints, 2) %></div>
 						<div class="col-12"><hr class="bg-white mt-2 mb-2"></div>
-						<div class="col-6 col-xl-8 text-right text-xl-left"><b>POWER RANKING</b></div>
-						<div class="col-6 col-xl-4 text-xl-right">--</div>
+						<div class="col-6 col-xl-7 text-right text-xl-left"><b>POWER RANKING</b></div>
+						<div class="col-6 col-xl-5 text-xl-right"><%= thisCurrentPowerRanking & ordsuffix %> (<%= thisPowerRankPoints %>/72)</div>
 					</div>
 
 				</div>
