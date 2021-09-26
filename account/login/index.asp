@@ -27,6 +27,7 @@
 			thisImage = rsAccount("ProfileImage")
 			thisProfileURL = rsAccount("ProfileURL")
 			thisBalls = rsAccount("Balls")
+			thisLocks = rsAccount("Locks")
 
 			rsAccount.Close
 			Set rsAccount = Nothing
@@ -53,6 +54,7 @@
 			Session.Contents("AccountImage") = thisImage
 			Session.Contents("AccountProfileURL") = thisProfileURL
 			Session.Contents("AccountBalls") = thisBalls
+			Session.Contents("AccountLocks") = thisLocks
 
 			sqlCheckTeams = "SELECT Teams.TeamID FROM LinkAccountsTeams INNER JOIN Teams ON Teams.TeamID = LinkAccountsTeams.TeamID WHERE LinkAccountsTeams.AccountID = " & Session.Contents("AccountID")
 			Set rsTeams = sqlDatabase.Execute(sqlCheckTeams)

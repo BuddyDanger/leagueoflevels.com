@@ -134,6 +134,10 @@
 					If thisMoneyline > 0 Then thisMoneyline = "+" & thisMoneyline
 					thisTicketDetails = thisPropAnswer & " (" & thisMoneyline & " ML" & ")"
 				End If
+				If CInt(thisTicketTypeID) = 5 Then
+					If thisMoneyline > 0 Then thisMoneyline = "+" & thisMoneyline
+					thisTicketDetails = thisMoneyline & " ML (LOCK)"
+				End If
 
 				If ticketsDashboard Then
 					Response.Write("<div class=""col-12 p-0"">")

@@ -4,6 +4,72 @@
 <!--#include virtual="/assets/asp/functions/master.asp" -->
 <!--#include virtual="/assets/asp/functions/sha256.asp"-->
 <%
+	If Request.Form("action") = "lock" Then
+
+		thisMatchupID = Request.Form("inputMatchupID")
+
+		If CInt(Session.Contents("AccountLocks")) > 0 Then
+
+			thisTicketType = 5
+			thisMatchupID = Request.Form("inputMatchupID")
+
+			sqlGetMatchup = "SELECT * FROM Matchups WHERE MatchupID = " & thisMatchupID
+			Set rsMatchup = sqlDatabase.Execute(sqlGetMatchup)
+
+			If Not rsMatchup.Eof Then
+
+				thisTeamID1 = rsMatchup("TeamID1")
+				thisTeamID2 = rsMatchup("TeamID2")
+				thisBetTeamID = 0
+				myTeams = Session.Contents("AccountTeams")
+
+				If InStr(myTeams, ",") Then
+
+					arrTeams = Split(myTeams, ",")
+					If CInt(arrTeams(0)) = CInt(thisTeamID1) Then thisBetTeamID = thisTeamID1
+					If CInt(arrTeams(1)) = CInt(thisTeamID2) Then thisBetTeamID = thisTeamID2
+
+				Else
+
+					If CInt(myTeams) = CInt(thisTeamID1) Then thisBetTeamID = thisTeamID1
+					If CInt(myTeams) = CInt(thisTeamID2) Then thisBetTeamID = thisTeamID2
+
+				End If
+
+				If thisBetTeamID <> 0 Then
+
+					Set rsInsert = Server.CreateObject("ADODB.RecordSet")
+					rsInsert.CursorType = adOpenKeySet
+					rsInsert.LockType = adLockOptimistic
+					rsInsert.Open "TicketSlips", sqlDatabase, , , adCmdTable
+					rsInsert.AddNew
+
+					rsInsert("TicketTypeID") = 5
+					rsInsert("AccountID") = Session.Contents("AccountID")
+					rsInsert("MatchupID") = thisMatchupID
+					rsInsert("TeamID") = thisBetTeamID
+					rsInsert("Moneyline") = 100
+					rsInsert("BetAmount") = 2500
+					rsInsert("PayoutAmount") = 5000
+
+					rsInsert.Update
+					Set rsInsert = Nothing
+
+					sqlUpdateLockCount = "UPDATE Accounts SET Locks = " & Session.Contents("AccountLocks") - 1 & " WHERE AccountID = " & Session.Contents("AccountID")
+					Set rsUpdateLocks  = sqlDatabase.Execute(sqlUpdateLockCount)
+
+					Session.Contents("AccountLocks") = Session.Contents("AccountLocks") - 1
+
+				End If
+
+			End If
+
+			Response.Redirect("/")
+
+		End If
+
+	End If
+
 	If Request.Form("action") = "buy" Then
 
 		thisBallPurchase = Request.Form("inputBallPurchase")
@@ -139,6 +205,8 @@
 								<!--#include virtual="/assets/asp/dashboard/account.asp" -->
 
 								<!--#include virtual="/assets/asp/dashboard/eliminator.asp" -->
+
+								<!--#include virtual="/assets/asp/dashboard/locks.asp" -->
 
 							</div>
 

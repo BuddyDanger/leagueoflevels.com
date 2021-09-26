@@ -69,6 +69,7 @@
 				Session.Contents("AccountImage") = rsAccount("ProfileImage")
 				Session.Contents("AccountEmail") = rsAccount("Email")
 				Session.Contents("AccountBalls") = rsAccount("Balls")
+				Session.Contents("AccountLocks") = rsAccount("Locks")
 
 				rsAccount.Close
 				Set rsAccount = Nothing
