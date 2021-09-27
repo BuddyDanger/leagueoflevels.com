@@ -41,6 +41,7 @@
 
 				'ALREADY PICKED'
 				alreadyPicked = 1
+				alreadyPlayed = 0
 				thisEliminatorPickID = rsCurrentPick("EliminatorPickID")
 				thisNFLTeamID = rsCurrentPick("NFLTeamID")
 				thisNFLTeamAbbr = rsCurrentPick("Abbreviation")
@@ -48,6 +49,18 @@
 				thisNFLTeamName = rsCurrentPick("Name")
 				thisNFLCurrentPick = thisNFLTeamAbbr
 				selectPlaceholder = "Change Your Selection"
+
+				sqlGetGametime = "SELECT DateTimeEST FROM NFLGames WHERE Year = " & Session.Contents("CurrentYear") & " AND Period = " & Session.Contents("CurrentPeriod") & " AND (AwayTeamID = " & thisNFLTeamID & " OR HomeTeamID = " & thisNFLTeamID & ")"
+				Set rsGametime = sqlDatabase.Execute(sqlGetGametime)
+
+				thisGameTimeEST = DateAdd("h", -4, rsGametime("DateTimeEST"))
+				If thisGameTimeEST < Now() Then
+					alreadyPlayed = 1
+					selectPlaceholder = "Selection Locked"
+				End If
+
+				rsGametime.Close
+				Set rsGametime = Nothing
 
 				rsCurrentPick.Close
 				Set rsCurrentPick = Nothing
@@ -109,7 +122,7 @@
 
 						<div class="form-group">
 
-							<select class="form-control form-control-lg" id="inputNFLTeamID" name="inputNFLTeamID">
+							<select class="form-control form-control-lg" id="inputNFLTeamID" name="inputNFLTeamID" <% If alreadyPlayed Then %>disabled<% End If %>>
 								<option><%= selectPlaceholder %></option>
 <%
 								For i = 0 to UBound(arrCurrentGames, 2)
@@ -135,7 +148,7 @@
 %>
 							</select>
 
-							<button type="submit" class="btn btn-block btn-primary mt-3">Submit Eliminator Pick</button>
+							<% If alreadyPlayed <> 1 Then %><button type="submit" class="btn btn-block btn-primary mt-3">Submit Eliminator Pick</button><% End If %>
 
 						</div>
 
