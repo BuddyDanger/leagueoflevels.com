@@ -78,13 +78,16 @@
 	sqlGetOmega = sqlGetOmega & "AND Standings.Period <= " & Session.Contents("SITE_Standings_End_Period") & " "
 	sqlGetOmega = sqlGetOmega & "GROUP BY Levels.LevelID, Levels.Title, Teams.TeamName, Standings.TeamID ORDER BY Levels.LevelID ASC, WinTotal DESC, PointsScored DESC; "
 
-	sqlGetPoints = "SELECT PowerRankings.TeamID, PowerRanking, Teams.TeamName, Teams.CBSLogo, PowerRankPoints FROM PowerRankings "
-	sqlGetPoints = sqlGetPoints & "INNER JOIN Teams ON Teams.TeamID = PowerRankings.TeamID "
+	sqlGetPoints = "SELECT Levels.Title, Teams.TeamName, SUM([ActualWins]) AS WinTotal, SUM([ActualLosses]) AS LossTotal, SUM([ActualTies]) AS TieTotal, SUM([PointsScored]) AS PointsScored, SUM([PointsAgainst]) AS PointsAgainst, SUM([BreakdownWins]) AS BreakdownWins, SUM([BreakdownLosses]) AS BreakdownLosses, SUM([BreakdownTies]) AS BreakdownTies, CAST(AVG([Position]) AS DECIMAL(10,2)) AS AveragePositionYTD, "
+	sqlGetPoints = sqlGetPoints & "(SELECT ProfileImage FROM Accounts WHERE Accounts.AccountID IN (SELECT AccountID FROM LinkAccountsTeams WHERE LinkAccountsTeams.TeamID = Standings.TeamID)) AS ProfileImage FROM Standings "
+	sqlGetPoints = sqlGetPoints & "INNER JOIN Teams ON Teams.TeamID = Standings.TeamID "
+	sqlGetPoints = sqlGetPoints & "INNER JOIN Levels ON Levels.LevelID = Standings.LevelID "
+	sqlGetPoints = sqlGetPoints & "WHERE Levels.LevelID <> 1 "
 	sqlGetPoints = sqlGetPoints & "AND Standings.Year >= " & Session.Contents("SITE_Standings_Start_Year") & " "
 	sqlGetPoints = sqlGetPoints & "AND Standings.Year <= " & Session.Contents("SITE_Standings_End_Year") & " "
 	sqlGetPoints = sqlGetPoints & "AND Standings.Period >= " & Session.Contents("SITE_Standings_Start_Period") & " "
 	sqlGetPoints = sqlGetPoints & "AND Standings.Period <= " & Session.Contents("SITE_Standings_End_Period") & " "
-	sqlGetPoints = sqlGetPoints & "GROUP BY Standings.TeamID, Teams.TeamName ORDER BY PointsScored DESC; "
+	sqlGetPoints = sqlGetPoints & "GROUP BY Levels.LevelID, Levels.Title, Teams.TeamName, Standings.TeamID ORDER BY PointsScored DESC; "
 
 	Set rsStandings = sqlDatabase.Execute(sqlGetSLFFL & sqlGetFLFFL & sqlGetOmega & sqlGetPoints)
 
