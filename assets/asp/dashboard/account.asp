@@ -43,13 +43,13 @@
 
 		End If
 
-		sqlGetPowerRanking = "SELECT * FROM PowerRankings WHERE TeamID IN (" & Session.Contents("AccountTeams") & ")"
+		sqlGetPowerRanking = "SELECT * FROM PowerRankings WHERE AccountID = " & Session.Contents("AccountID")
 		Set rsPowerRanking = sqlDatabase.Execute(sqlGetPowerRanking)
 
 		If Not rsPowerRanking.Eof Then
 
 			thisCurrentPowerRanking = rsPowerRanking("PowerRanking")
-			thisPowerRankPoints = rsPowerRanking("PowerRankPoints")
+			thisPowerRankPoints = rsPowerRanking("PowerPoints_Total")
 			Select Case CInt(thisCurrentPowerRanking)
 				Case 1,21
 				ordsuffix = "st"

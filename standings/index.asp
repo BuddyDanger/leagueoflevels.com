@@ -78,16 +78,8 @@
 	sqlGetOmega = sqlGetOmega & "AND Standings.Period <= " & Session.Contents("SITE_Standings_End_Period") & " "
 	sqlGetOmega = sqlGetOmega & "GROUP BY Levels.LevelID, Levels.Title, Teams.TeamName, Standings.TeamID ORDER BY Levels.LevelID ASC, WinTotal DESC, PointsScored DESC; "
 
-	sqlGetPoints = "SELECT Teams.TeamName, SUM([PointsScored]) AS PointsScored, (SELECT ProfileImage FROM Accounts WHERE Accounts.AccountID IN (SELECT AccountID FROM LinkAccountsTeams WHERE LinkAccountsTeams.TeamID = Standings.TeamID)) AS ProfileImage FROM Standings "
-	sqlGetPoints = sqlGetPoints & "INNER JOIN Teams ON Teams.TeamID = Standings.TeamID "
-	sqlGetPoints = sqlGetPoints & "INNER JOIN Levels ON Levels.LevelID = Standings.LevelID "
-
-	If Len(Session.Contents("SITE_Standings_LevelID")) > 0 Then
-		sqlGetPoints = sqlGetPoints & "WHERE Levels.LevelID = " & Session.Contents("SITE_Standings_LevelID") & " AND Teams.EndYear = 0 "
-	Else
-		sqlGetPoints = sqlGetPoints & "WHERE Levels.LevelID > 1 AND Teams.EndYear = 0 "
-	End If
-
+	sqlGetPoints = "SELECT PowerRankings.TeamID, PowerRanking, Teams.TeamName, Teams.CBSLogo, PowerRankPoints FROM PowerRankings "
+	sqlGetPoints = sqlGetPoints & "INNER JOIN Teams ON Teams.TeamID = PowerRankings.TeamID "
 	sqlGetPoints = sqlGetPoints & "AND Standings.Year >= " & Session.Contents("SITE_Standings_Start_Year") & " "
 	sqlGetPoints = sqlGetPoints & "AND Standings.Year <= " & Session.Contents("SITE_Standings_End_Year") & " "
 	sqlGetPoints = sqlGetPoints & "AND Standings.Period >= " & Session.Contents("SITE_Standings_Start_Period") & " "
