@@ -76,7 +76,7 @@
 
 			<div class="page-content">
 
-				<div class="container-fluid">
+				<div class="container-fluid pl-0 pl-lg-2 pr-0 pr-lg-2">
 
 					<div class="row mt-4">
 
@@ -84,17 +84,21 @@
 
 							<h4 class="text-left bg-dark text-white p-3 mt-0 mb-0 rounded-top"><b>SCHMECKLE LEADERBOARD</b><span class="float-right dripicons-trophy"></i></h4>
 
-							<ul class="list-group list-group-flush mb-4">
+							<ul class="list-group list-group-flush">
 <%
 								sqlGetLeaderboard = "SELECT Accounts.ProfileName, Accounts.ProfileImage, SUM([TransactionTotal]) AS TotalSchmeckles FROM SchmeckleTransactions INNER JOIN Accounts ON Accounts.AccountID = SchmeckleTransactions.AccountID WHERE Accounts.Active = 1 GROUP BY Accounts.ProfileName, Accounts.ProfileImage ORDER BY TotalSchmeckles DESC"
 								Set rsLeaderboard = sqlDatabase.Execute(sqlGetLeaderboard)
 
 								Do While Not rsLeaderboard.Eof
 %>
-									<li class="list-group-item">
-										<img src="https://samelevel.imgix.net/<%= rsLeaderboard("ProfileImage") %>?w=40&h=40&fit=crop&crop=focalpoint" class="rounded-circle"> &nbsp; <b><%= rsLeaderboard("ProfileName") %></b>
-										<span class="float-right p-2 badge-warning rounded"><%= FormatNumber(rsLeaderboard("TotalSchmeckles"), 0) %></span>
-									</li>
+									<a class="list-group-item list-group-item-action pl-2 pr-2">
+										<div class="row">
+											<div class="col-12">
+												<img src="https://samelevel.imgix.net/<%= rsLeaderboard("ProfileImage") %>?w=40&h=40&fit=crop&crop=focalpoint" class="rounded-circle"> &nbsp; <b><%= rsLeaderboard("ProfileName") %></b>
+												<span class="float-right p-2 badge-warning rounded"><%= FormatNumber(rsLeaderboard("TotalSchmeckles"), 0) %></span>
+											</div>
+										</div>
+									</a>
 <%
 									rsLeaderboard.MoveNext
 

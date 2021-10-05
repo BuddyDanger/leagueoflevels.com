@@ -54,7 +54,7 @@
 
 			<div class="page-content">
 
-				<div class="container-fluid">
+				<div class="container-fluid pl-0 pl-lg-2 pr-0 pr-lg-2">
 
 					<div class="row mt-4">
 

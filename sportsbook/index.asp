@@ -49,9 +49,9 @@
 
 			<div class="page-content">
 
-				<div class="container-fluid">
+				<div class="container-fluid pl-0 pl-lg-2 pr-0 pr-lg-2">
 
-					<div class="row mt-4">
+					<div class="row mt-3">
 <%
 						sqlGetSportsbookData = "SELECT SUM(BetAmount) AS TotalActiveBetAmount, SUM(PayoutAmount) AS TotalPotentialPayout, COUNT(TicketSlipID) AS TotalActiveTickets, COUNT(DISTINCT AccountID) AS TotalBettingUsers FROM TicketSlips WHERE IsWinner IS NULL"
 						Set rsSportsbookData = sqlDatabase.Execute(sqlGetSportsbookData)
@@ -162,7 +162,7 @@
 
 						</div>
 
-					</div>
+
 
 <%
 					currentLevel = -1

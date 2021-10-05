@@ -52,7 +52,7 @@
 
 			<div class="page-content">
 
-				<div class="container-fluid">
+				<div class="container-fluid pl-0 pl-lg-2 pr-0 pr-lg-2">
 
 					<div class="row mt-4">
 
@@ -67,10 +67,14 @@
 
 								Do While Not rsLeaderboard.Eof
 %>
-									<li class="list-group-item">
-										<img src="https://samelevel.imgix.net/<%= rsLeaderboard("ProfileImage") %>?w=40&h=40&fit=crop&crop=focalpoint" class="rounded-circle"> &nbsp; <b><%= rsLeaderboard("ProfileName") %></b>
-										<span class="float-right p-2 badge-warning rounded"><%= FormatNumber(rsLeaderboard("TotalSchmeckles"), 0) %></span>
-									</li>
+									<a href="/schmeckles/transactions/<%= thisTransactionHash %>/" class="list-group-item list-group-item-action pl-0 pr-0">
+										<div class="row p-0 m-0">
+											<div class="col-12 align-self-center">
+												<img src="https://samelevel.imgix.net/<%= rsLeaderboard("ProfileImage") %>?w=40&h=40&fit=crop&crop=focalpoint" class="rounded-circle"> &nbsp; <b><%= rsLeaderboard("ProfileName") %></b>
+												<span class="float-right p-2 badge-warning rounded"><%= FormatNumber(rsLeaderboard("TotalSchmeckles"), 0) %></span>
+											</div>
+										</div>
+									</a>
 <%
 									rsLeaderboard.MoveNext
 
@@ -109,8 +113,8 @@
 									thisTransactionTotal = FormatNumber(thisTransactionTotal, 0)
 									If thisTransactionTotal > 0 Then thisTransactionTotal = "+" & thisTransactionTotal
 %>
-									<a href="/schmeckles/transactions/<%= thisTransactionHash %>/" class="list-group-item list-group-item-action">
-										<div class="row">
+									<a href="/schmeckles/transactions/<%= thisTransactionHash %>/" class="list-group-item list-group-item-action pl-0 pr-0">
+										<div class="row p-0 m-0">
 											<div class="col-8 align-self-center">
 												<%= thisProfileImage %>
 												<div class="float-left pl-2">
@@ -231,24 +235,24 @@
 
 									If CInt(thisAccountID) = 0 Then
 										thisProfileName = "LOL BANK"
-										thisProfileImage = "<img src=""/assets/images/logo-sm.png"" width=""40"" class=""rounded-circle float-left"">"
+										thisProfileImage = "<img src=""/assets/images/logo-sm.png"" width=""40"" class=""rounded-circle float-left d-none d-xxl-block"">"
 									Else
-										thisProfileImage = "<img src=""https://samelevel.imgix.net/" & thisProfileImage & "?w=40&h=40&fit=crop&crop=focalpoint"" class=""rounded-circle float-left"">"
+										thisProfileImage = "<img src=""https://samelevel.imgix.net/" & thisProfileImage & "?w=40&h=40&fit=crop&crop=focalpoint"" class=""rounded-circle float-left d-none d-xxl-block mr-2"">"
 									End If
 
 									thisTransactionTotal = FormatNumber(thisTransactionTotal, 0)
 									If thisTransactionTotal > 0 Then thisTransactionTotal = "+" & thisTransactionTotal
 %>
-									<a href="/schmeckles/transactions/<%= thisTransactionHash %>/" class="list-group-item list-group-item-action">
-										<div class="row">
-											<div class="col-8 col-lg-3 align-self-center">
+									<a href="/schmeckles/transactions/<%= thisTransactionHash %>/" class="list-group-item list-group-item-action pl-0 pr-0">
+										<div class="row p-0 m-0">
+											<div class="col-8 col-lg-4 align-self-center">
 												<%= thisProfileImage %>
-												<div class="float-left pl-2">
+												<div class="float-left">
 													<div><b><%= thisProfileName %></b></div>
 													<div><%= Month(thisTransactionDate) %>/<%= Day(thisTransactionDate) %>&nbsp;<%= arrthisTransactionDate(1) %>&nbsp;<%= arrthisTransactionDate(2) %></div>
 												</div>
 											</div>
-											<div class="col-lg-6 align-self-center text-left d-none d-lg-block text-truncate">
+											<div class="col-lg-5 align-self-center text-left d-none d-lg-block text-truncate">
 												<div><i><%= thisTransactionHash %></i></div>
 											</div>
 											<div class="col-4 col-lg-3 align-self-center text-right"><span class="p-2 <%= thisTransactionDirection %> rounded"><%= thisTransactionTotal %></span></div>

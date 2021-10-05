@@ -83,7 +83,7 @@
 
 			<div class="page-content">
 
-				<div class="container-fluid">
+				<div class="container-fluid pl-0 pl-lg-2 pr-0 pr-lg-2">
 
 					<form method="post" action="/schmeckles/transactions/index.asp">
 
@@ -149,7 +149,6 @@
 
 						<div class="col-12">
 
-
 							<ul class="list-group mb-4">
 <%
 								sqlGetSchmeckles = "SELECT SchmeckleTransactions.TransactionID, DateAdd(hour, -4, SchmeckleTransactions.TransactionDate) AS TransactionDate, SchmeckleTransactions.TransactionTypeID, TransactionTypeTitle, SchmeckleTransactions.TransactionTotal, "
@@ -167,7 +166,7 @@
 
 								If rsSchmeckles.Eof Then
 %>
-									<li class="list-group-item list-group-item-action">
+									<li class="list-group-item list-group-item-action pl-0 pr-0">
 										<b>NO TRANSACTIONS FOUND</b>
 									</li>
 <%
@@ -203,7 +202,7 @@
 										thisTransactionTotal = FormatNumber(thisTransactionTotal, 0)
 										If thisTransactionTotal > 0 Then thisTransactionTotal = "+" & thisTransactionTotal
 %>
-										<a href="/schmeckles/transactions/<%= thisTransactionHash %>/" class="list-group-item list-group-item-action">
+										<a href="/schmeckles/transactions/<%= thisTransactionHash %>/" class="list-group-item list-group-item-action pl-2 pr-2">
 											<div class="row">
 												<div class="col-8 col-lg-3 align-self-center">
 													<%= thisProfileImage %>

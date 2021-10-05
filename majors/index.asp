@@ -52,11 +52,11 @@
 
 			<div class="page-content">
 
-				<div class="container-fluid">
+				<div class="container-fluid pl-0 pl-lg-2 pr-0 pr-lg-2">
 
 					<div class="row mt-4">
 
-						<div class="col-12 col-xl-4">
+						<div class="col-12 col-xl-6 col-xxl-5">
 <%
 							sqlGetMajors = "SELECT MajorID, Majors.LevelID, Levels.Title, MajorTitle FROM Majors INNER JOIN Levels ON Levels.LevelID = Majors.LevelID WHERE StartPeriod >= 4 ORDER BY LevelID ASC"
 							Set rsMajors = sqlDatabase.Execute(sqlGetMajors)
@@ -127,7 +127,7 @@
 %>
 						</div>
 
-						<div class="col-12 col-xl-8">
+						<div class="col-12 col-xl-6 col-xxl-7">
 
 							<div class="row">
 <%
@@ -238,7 +238,7 @@
 		<script src="/assets/js/jquery.slimscroll.min.js"></script>
 
 		<script src="/assets/js/app.js"></script>
-		
+
 		<!--#include virtual="/assets/asp/framework/google.asp" -->
 
 	</body>
