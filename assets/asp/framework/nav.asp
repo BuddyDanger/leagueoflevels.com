@@ -36,9 +36,10 @@
 				<ul class="nav">
 					<li class="nav-item"><a class="nav-link" href="/"><i class="dripicons-meter"></i>Dashboard</a></li>
 					<!--<li class="nav-item"><a class="nav-link" href="/lottery/"><i class="dripicons-network-3"></i>Lottery</a></li>-->
+					<li class="nav-item"><a class="nav-link" href="/sportsbook/"><i class="dripicons-ticket"></i>Sportsbook</a></li>
 					<li class="nav-item"><a class="nav-link" href="/scores/"><i class="dripicons-rocket"></i>Live Scoring</a></li>
 					<li class="nav-item"><a class="nav-link" href="/standings/"><i class="dripicons-view-list"></i>Standings</a></li>
-					<li class="nav-item"><a class="nav-link" href="/sportsbook/"><i class="dripicons-jewel"></i>Sportsbook</a></li>
+					<li class="nav-item"><a class="nav-link" href="/majors/"><i class="dripicons-trophy"></i>Majors</a></li>
 					<li class="nav-item"><a class="nav-link" href="/schmeckles/"><i class="dripicons-card"></i>Schmeckles</a></li>
 					<li class="nav-item"><a class="nav-link" href="/eliminator/"><i class="dripicons-warning"></i>Eliminator</a></li>
 					<li class="nav-item"><a class="nav-link" href="/power-rankings/"><i class="dripicons-star"></i>Power Rankings</a></li>

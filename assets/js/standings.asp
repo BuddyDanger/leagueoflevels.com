@@ -1,3 +1,4 @@
+<script>
 $(document).ready(function () {
 
 	function updateYears (data) {
@@ -27,9 +28,12 @@ $(document).ready(function () {
         type: "double",
         min: 1,
         max: 17,
+		from: 1,
+		to: <%= Session.Contents("CurrentPeriod") %>,
         grid: true,
 		prettify_enabled: false,
 		onChange: updatePeriods
     });
 
 });
+</script>

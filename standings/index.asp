@@ -9,7 +9,7 @@
 		Session.Contents("SITE_Standings_Start_Year") = "2021"
 		Session.Contents("SITE_Standings_End_Year") = "2021"
 		Session.Contents("SITE_Standings_Start_Period") = "1"
-		Session.Contents("SITE_Standings_End_Period") = "17"
+		Session.Contents("SITE_Standings_End_Period") = Session.Contents("CurrentPeriod")
 
 	End If
 
@@ -474,7 +474,8 @@
 		<script src="/assets/js/app.js"></script>
 
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.3.1/js/ion.rangeSlider.min.js"></script>
-        <script src="/assets/js/standings.js"></script>
+
+		<!--#include virtual="/assets/js/standings.asp" -->
 
 		<!--#include virtual="/assets/asp/framework/google.asp" -->
 
