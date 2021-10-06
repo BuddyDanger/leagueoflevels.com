@@ -51,7 +51,7 @@
 
 				<div class="container-fluid pl-0 pl-lg-2 pr-0 pr-lg-2">
 
-					<div class="row mt-3">
+					<div class="row mt-4">
 <%
 						sqlGetSportsbookData = "SELECT SUM(BetAmount) AS TotalActiveBetAmount, SUM(PayoutAmount) AS TotalPotentialPayout, COUNT(TicketSlipID) AS TotalActiveTickets, COUNT(DISTINCT AccountID) AS TotalBettingUsers FROM TicketSlips WHERE IsWinner IS NULL"
 						Set rsSportsbookData = sqlDatabase.Execute(sqlGetSportsbookData)
@@ -162,8 +162,7 @@
 
 						</div>
 
-
-
+					</div>
 <%
 					currentLevel = -1
 
@@ -221,7 +220,7 @@
 
 						If CInt(thisLevelID) <> currentLevel Then
 
-							If currentLevel <> -1 Then Response.Write("</div>")
+							If CInt(currentLevel) <> -1 Then Response.Write("</div>")
 							Response.Write("<div class=""row mb-4"">")
 							currentLevel = thisLevelID
 

@@ -80,11 +80,10 @@
 				<div style="border-bottom: 1px solid #e8ebf3;">
 					<h4>Eliminator Challenge<span class="float-right"><i class="fas fa-skull"></i></span></h4>
 				</div>
-
 <%
 				If thisAccountEliminated = 1 Then
 %>
-					<div class="row bg-light rounded mt-3 mb-3 pb-2 pt-2">
+					<div class="row bg-light rounded mt-3 mb-2 pb-2 pt-2">
 						<div class="col-4 text-center">
 							<div><u><b>Period</b></u></div>
 							<div><%= Session.Contents("CurrentPeriod") %></div>
@@ -101,7 +100,7 @@
 <%
 				Else
 %>
-					<div class="row bg-light rounded mt-3 mb-3 pb-2 pt-2">
+					<div class="row bg-light rounded mt-3 mb-2 pb-2 pt-2">
 						<div class="col-4 text-center">
 							<div><u><b>Period</b></u></div>
 							<div><%= Session.Contents("CurrentPeriod") %></div>
@@ -120,7 +119,7 @@
 
 						<input type="hidden" name="action" value="pick" />
 
-						<div class="form-group">
+						<div class="form-group pb-0 mb-3">
 
 							<select class="form-control form-control-lg" id="inputNFLTeamID" name="inputNFLTeamID" <% If alreadyPlayed Then %>disabled<% End If %>>
 								<option><%= selectPlaceholder %></option>
@@ -156,6 +155,22 @@
 <%
 				End If
 %>
+			</div>
+<%
+		Else
+%>
+			<div class="card-body pt-2 pb-2">
+
+				<div style="border-bottom: 1px solid #e8ebf3;">
+					<h4>Eliminator Challenge<span class="float-right"><i class="fas fa-skull"></i></span></h4>
+				</div>
+
+				<div class="row bg-light rounded mt-3 mb-2 pb-2 pt-2">
+					<div class="col-12 text-left">
+						<div><b>OPENS WEDNESDAY</b></div>
+					</div>
+				</div>
+
 			</div>
 <%
 		End If

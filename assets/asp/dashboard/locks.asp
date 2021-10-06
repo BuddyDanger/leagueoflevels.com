@@ -27,7 +27,7 @@
 <%
 				If noLocks = 1 Then
 %>
-					<div class="row bg-light rounded mt-3 mb-3 pb-2 pt-2">
+					<div class="row bg-light rounded mt-3 mb-2 pb-2 pt-2">
 						<div class="col-4 text-center">
 							<div><u><b>Locks</b></u></div>
 							<div>0</div>
@@ -63,7 +63,7 @@
 
 						<input type="hidden" name="action" value="lock" />
 
-						<div class="form-group">
+						<div class="form-group pb-0 mb-3">
 
 							<select class="form-control form-control-lg" id="inputMatchupID" name="inputMatchupID">
 								<option><%= selectPlaceholder %></option>
@@ -97,6 +97,22 @@
 <%
 				End If
 %>
+			</div>
+<%
+		Else
+%>
+			<div class="card-body pt-2 pb-2">
+
+				<div style="border-bottom: 1px solid #e8ebf3;">
+					<h4>Lockchain<span class="float-right"><i class="fas fa-link"></i></span></h4>
+				</div>
+
+				<div class="row bg-light rounded mt-3 mb-2 pb-2 pt-2">
+					<div class="col-12 text-left">
+						<div><b>OPENS WEDNESDAY</b></div>
+					</div>
+				</div>
+
 			</div>
 <%
 		End If
