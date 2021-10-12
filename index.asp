@@ -158,18 +158,18 @@
 
 		<title>Dashboard / League of Levels</title>
 
-		<meta name="description" content="" />
+		<meta name="description" content="The League of Levels is the world's first multi-league fantasy football system completely powered by greed, democracy, and a love for gambling." />
 
 		<meta property="og:site_name" content="LeagueOfLevels.com" />
 		<meta property="og:url" content="https://www.leagueoflevels.com/" />
 		<meta property="og:title" content="The League of Levels" />
-		<meta property="og:description" content="" />
+		<meta property="og:description" content="The League of Levels is the world's first multi-league fantasy football system completely powered by greed, democracy, and a love for gambling." />
 		<meta property="og:type" content="article" />
 
 		<meta name="twitter:site" content="samelevel" />
 		<meta name="twitter:url" content="https://www.leagueoflevels.com/" />
 		<meta name="twitter:title" content="The League of Levels" />
-		<meta name="twitter:description" content="" />
+		<meta name="twitter:description" content="The League of Levels is the world's first multi-league fantasy football system completely powered by greed, democracy, and a love for gambling." />
 
 		<meta name="title" content="The League of Levels" />
 		<meta name="medium" content="article" />
@@ -233,7 +233,6 @@
 
 						<% End If %>
 
-						<!-- LOGGED OUT -->
 						<!--#include virtual="/assets/asp/dashboard/login.asp" -->
 
 					</div>

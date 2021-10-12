@@ -1,4 +1,4 @@
-<div class="card">
+
 <%
 	If Len(Session.Contents("AccountID")) > 0 Then
 
@@ -65,41 +65,33 @@
 
 		End If
 %>
-		<div class="card-body rounded bg-dark pt-2 pb-2">
-
-			<div style="border-bottom: 1px solid #e8ebf3;">
-				<h4 class="text-white"><%= Session.Contents("AccountName") %><span class="float-right"><i class="fas fa-list-alt"></i></span></h4>
-			</div>
-
-			<div class="row mt-2 pb-2">
-				<div class="col-12 pl-1 pr-1">
-
-					<div class="row text-white mt-2 mt-xxl-0">
-						<div class="col-6 col-xl-8 text-right text-xl-left"><b>SCHMECKLES</b></div>
-						<div class="col-6 col-xl-4 text-xl-right"><%= FormatNumber(thisSchmeckleSackBalance, 0) %></div>
-						<div class="col-12"><hr class="bg-white mt-2 mb-2"></div>
-						<div class="col-6 col-xl-8 text-right text-xl-left"><b>CURRENT RECORD</b></div>
-						<div class="col-6 col-xl-4 text-xl-right"><%= thisCurrentWins %>-<%= thisCurrentLosses %>-<%= thisCurrentTies %></div>
-						<div class="col-12"><hr class="bg-white mt-2 mb-2"></div>
-						<div class="col-6 col-xl-8 text-right text-xl-left"><b>POINTS SCORED</b></div>
-						<div class="col-6 col-xl-4 text-xl-right"><%= FormatNumber(thisCurrentPoints, 2) %></div>
-						<div class="col-12"><hr class="bg-white mt-2 mb-2"></div>
-						<div class="col-6 col-xl-8 text-right text-xl-left"><b>CAREER RECORD</b></div>
-						<div class="col-6 col-xl-4 text-xl-right"><%= thisAllTimeWins %>-<%= thisAllTimeLosses %>-<%= thisAllTimeTies %></div>
-						<div class="col-12"><hr class="bg-white mt-2 mb-2"></div>
-						<div class="col-6 col-xl-8 text-right text-xl-left"><b>ALL-TIME POINTS</b></div>
-						<div class="col-6 col-xl-4 text-xl-right"><%= FormatNumber(thisAllTimePoints, 2) %></div>
-						<div class="col-12"><hr class="bg-white mt-2 mb-2"></div>
-						<div class="col-6 col-xl-7 text-right text-xl-left"><b>POWER RANKING</b></div>
-						<div class="col-6 col-xl-5 text-xl-right"><%= thisCurrentPowerRanking & ordsuffix %> (<%= thisPowerRankPoints %>/72)</div>
-					</div>
-
-				</div>
-			</div>
-
-		</div>
+		<a href="/teams/<%= Session.Contents("AccountProfileURL") %>/" style="display: block;">
+			<ul class="list-group mb-4">
+				<li class="list-group-item p-0">
+					<h4 class="text-left bg-dark text-white p-3 mt-0 mb-0 rounded-top"><b>DASHBOARD</b><span class="float-right dripicons-meter"></i></h4>
+				</li>
+				<li class="list-group-item rounded-0">
+					<span class="float-right"><%= Session.Contents("AccountName") %></span>
+					<div><b><i class="fas fa-fw fa-user"></i> &nbsp;ACCOUNT NAME</b></div>
+				</li>
+				<li class="list-group-item rounded-0">
+					<span class="float-right"><%= FormatNumber(thisSchmeckleSackBalance, 0) %></span>
+					<div><b><i class="fas fa-fw fa-wallet"></i> &nbsp;SCHMECKLE SACK</b></div>
+				</li>
+				<li class="list-group-item">
+					<span class="float-right"><%= thisCurrentWins %>-<%= thisCurrentLosses %>-<%= thisCurrentTies %></span>
+					<div><b><i class="fas fa-fw fa-table"></i> &nbsp;CURRENT RECORD</b></div>
+				</li>
+				<li class="list-group-item">
+					<span class="float-right"><%= FormatNumber(thisCurrentPoints, 2) %></span>
+					<div><b><i class="fas fa-fw fa-calculator"></i> &nbsp;POINTS SCORED</b></div>
+				</li>
+				<li class="list-group-item">
+					<span class="float-right"><%= thisCurrentPowerRanking & ordsuffix %> (<%= thisPowerRankPoints %>/72)</span>
+					<div><b><i class="fas fa-fw fa-star"></i> &nbsp;POWER RANKING</b></div>
+				</li>
+			</ul>
+		</a>
 <%
 	End If
 %>
-
-</div>

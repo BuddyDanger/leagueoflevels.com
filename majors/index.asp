@@ -82,14 +82,15 @@
 											</thead>
 											<tbody>
 <%
-												sqlGetStandings = "SELECT MajorStandingsID, MajorID, MajorStandings.LevelID, Year, MajorStandings.TeamID, Accounts.ProfileName, Accounts.ProfileImage, SUM(ActualWins) AS TotalWins, SUM(ActualLosses) AS TotalLosses, SUM(ActualTies) AS TotalTies, SUM(PointsScored) AS TotalPointsScored, SUM(PointsAgainst) AS TotalPointsAllowed "
+												sqlGetStandings = "SELECT MajorID, MajorStandings.LevelID, Year, MajorStandings.TeamID, Accounts.ProfileName, Accounts.ProfileImage, SUM(ActualWins) AS TotalWins, SUM(ActualLosses) AS TotalLosses, SUM(ActualTies) AS TotalTies, SUM(PointsScored) AS TotalPointsScored, SUM(PointsAgainst) AS TotalPointsAllowed "
 												sqlGetStandings = sqlGetStandings & "FROM MajorStandings "
 												sqlGetStandings = sqlGetStandings & "INNER JOIN Teams ON Teams.TeamID = MajorStandings.TeamID "
 												sqlGetStandings = sqlGetStandings & "INNER JOIN LinkAccountsTeams ON LinkAccountsTeams.TeamID = MajorStandings.TeamID "
 												sqlGetStandings = sqlGetStandings & "INNER JOIN Accounts ON Accounts.AccountID = LinkAccountsTeams.AccountID "
 												sqlGetStandings = sqlGetStandings & "WHERE MajorStandings.LevelID = " & thisLevelID & " And MajorStandings.MajorID = " & thisMajorID & " "
-												sqlGetStandings = sqlGetStandings & "GROUP BY MajorStandingsID, MajorID, MajorStandings.LevelID, Year, MajorStandings.TeamID, Accounts.ProfileName, Accounts.ProfileImage "
+												sqlGetStandings = sqlGetStandings & "GROUP BY MajorID, MajorStandings.LevelID, Year, MajorStandings.TeamID, Accounts.ProfileName, Accounts.ProfileImage "
 												sqlGetStandings = sqlGetStandings & "ORDER BY TotalWins DESC, TotalPointsScored DESC, TotalLosses ASC"
+												
 												Set rsStandings = sqlDatabase.Execute(sqlGetStandings)
 
 												thisPosition = 1

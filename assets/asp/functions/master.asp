@@ -78,7 +78,7 @@
 			If Right(sqlGetTicketSlips, 6) = "WHERE " Then sqlGetTicketSlips = Left(sqlGetTicketSlips, Len(sqlGetTicketSlips) - 6)
 			If Right(sqlGetTicketSlips, 4) = "AND " Then sqlGetTicketSlips = Left(sqlGetTicketSlips, Len(sqlGetTicketSlips) - 4)
 			sqlGetTicketSlips = sqlGetTicketSlips & "ORDER BY InsertDateTime DESC"
-			'Response.Write(sqlGetTicketSlips)
+
 			Set rsTicketSlips = sqlDatabase.Execute(sqlGetTicketSlips)
 
 			Do While Not rsTicketSlips.Eof
@@ -146,47 +146,48 @@
 				End If
 
 					Response.Write("<ul class=""list-group mb-4"">")
-						Response.Write("<li class=""list-group-item text-center p-3"">")
-
-
-							If Len(thisMatchupID) > 0 Then
-								Response.Write("<div class=""bg-light p-2 rounded text-dark"">" & thisLOLTeamName1 & " @ " & thisLOLTeamName2 & "</div>")
-							Else
-								Response.Write("<div class=""bg-light p-2 rounded text-dark"">" & thisNFLTeamName1 & " @ " & thisNFLTeamName2 & "</div>")
-							End If
-
-							Response.Write("<div class=""pt-2 pb-2"">")
-
-								thisBetPad = "style=""padding-top: 10px; padding-bottom: 9px;"""
-								If CInt(thisTicketTypeID) = 4 Then
-									Response.Write("<div><b>" & thisPropQuestion & "</b></div>")
-									thisBetPad = ""
-								End If
+						Response.Write("<a href=""/sportsbook/ticket/" & thisTicketSlipID & "/"">")
+							Response.Write("<li class=""list-group-item text-center p-3"">")
 
 								If Len(thisMatchupID) > 0 Then
-									Response.Write("<div " & thisBetPad & "><b>" & thisLOLBetTeamName & "&nbsp;" & thisTicketDetails & "</b></div>")
+									Response.Write("<div class=""bg-light p-2 rounded text-dark"">" & thisLOLTeamName1 & " @ " & thisLOLTeamName2 & "</div>")
 								Else
-									Response.Write("<div " & thisBetPad & "><b>" & thisNFLBetTeamName & "&nbsp;" & thisTicketDetails & "</b></div>")
+									Response.Write("<div class=""bg-light p-2 rounded text-dark"">" & thisNFLTeamName1 & " @ " & thisNFLTeamName2 & "</div>")
 								End If
 
-							Response.Write("</div>")
+								Response.Write("<div class=""pt-2 pb-2"">")
 
-							Response.Write("<div class=""row pt-2"">")
-								Response.Write("<div class=""col-6"" style=""border-right: 1px dashed #edebf1;"">")
-									Response.Write("<div><u>WAGER</u></div>")
-									Response.Write("<div>" & FormatNumber(thisBetAmount, 0) & "</div>")
+									thisBetPad = "style=""padding-top: 10px; padding-bottom: 9px;"""
+									If CInt(thisTicketTypeID) = 4 Then
+										Response.Write("<div><b>" & thisPropQuestion & "</b></div>")
+										thisBetPad = ""
+									End If
+
+									If Len(thisMatchupID) > 0 Then
+										Response.Write("<div " & thisBetPad & "><b>" & thisLOLBetTeamName & "&nbsp;" & thisTicketDetails & "</b></div>")
+									Else
+										Response.Write("<div " & thisBetPad & "><b>" & thisNFLBetTeamName & "&nbsp;" & thisTicketDetails & "</b></div>")
+									End If
+
 								Response.Write("</div>")
-								Response.Write("<div class=""col-6"">")
-									Response.Write("<div><u>PAYOUT</u></div>")
-									Response.Write("<div>" & FormatNumber(thisPayoutAmount, 0) & "</div>")
+
+								Response.Write("<div class=""row pt-2"">")
+									Response.Write("<div class=""col-6"" style=""border-right: 1px dashed #edebf1;"">")
+										Response.Write("<div><u>WAGER</u></div>")
+										Response.Write("<div>" & FormatNumber(thisBetAmount, 0) & "</div>")
+									Response.Write("</div>")
+									Response.Write("<div class=""col-6"">")
+										Response.Write("<div><u>PAYOUT</u></div>")
+										Response.Write("<div>" & FormatNumber(thisPayoutAmount, 0) & "</div>")
+									Response.Write("</div>")
 								Response.Write("</div>")
-							Response.Write("</div>")
-						Response.Write("</li>")
-						Response.Write("<li class=""list-group-item p-3"">")
-							Response.Write("<div class=""float-right pt-2 mt-1""><span class=""p-2 " & thisCurrentStatusBGColor & " rounded"">" & thisCurrentStatus & "</span></div>")
-							Response.Write("<div><b>" & thisProfileName & "</b></div>")
-							Response.Write("<div><i>" & thisInsertDateTime & " (EST)</i></div>")
-						Response.Write("</li>")
+							Response.Write("</li>")
+							Response.Write("<li class=""list-group-item p-3"">")
+								Response.Write("<div class=""float-right pt-2 mt-1""><span class=""p-2 " & thisCurrentStatusBGColor & " rounded"">" & thisCurrentStatus & "</span></div>")
+								Response.Write("<div><b>" & thisProfileName & "</b></div>")
+								Response.Write("<div><i>" & thisInsertDateTime & " (EST)</i></div>")
+							Response.Write("</li>")
+						Response.Write("</a>")
 					Response.Write("</ul>")
 				Response.Write("</div>")
 
@@ -200,32 +201,13 @@
 
 	Function GetToken (League)
 
-		Set xmlhttpSLFFL = CreateObject("Microsoft.XMLHTTP")
-
 		If League = "SLFFL" Then
-			'xmlhttpSLFFL.open "GET", "https://api.cbssports.com/general/oauth/test/access_token?user_id=naptown-&league_id=samelevel&sport=football&response_format=xml", false
 			thisToken = "U2FsdGVkX1-nLiU_Ohv2rB2SaenbXwpQylBie1tQNoBTZOnUpFFdLDV5OUgc3vmFrMKwDDYb7m3qQo9ibt3sJJBqwOc_sTeToX5k68OaIN0syDyxnNK55k6p4tHLlggE8RhkO1lg8HrIpytn-fl1iQ"
 		ElseIf League = "OMEGA" Then
-			'xmlhttpSLFFL.open "GET", "https://api.cbssports.com/general/oauth/test/access_token?user_id=naptown-&league_id=omegalevel&sport=football&response_format=xml", false
 			thisToken = "U2FsdGVkX1_qjmv9BNf7THPpaUam02iQhwXpqOpq4shkjBli6JKBx6jTkoLtjr9O-vpLxUlbrMYeG_oYthVZ-LyvmlxbYT2GM60aSUzvZ65ptKQoW5aXQLHypxM4zkS7XVfxPK1QricXvAKx03EPvg"
 		Else
-			'xmlhttpSLFFL.open "GET", "https://api.cbssports.com/general/oauth/test/access_token?user_id=naptown-&league_id=farmlevel&sport=football&response_format=xml", false
 			thisToken = "U2FsdGVkX18SKm91VpVXfO9uNx9RYniWaNBh1gqk-7NPji49ceBLJHbZO4mddgm6ooiVrhSYqxFkEIzIy9mCoE3L_ZyAGA9zPnKWUOIsfF-xSXvnaeKtrEejU-V-OZVSTnQvC9r2N_PdA3E3nE9lYw"
 		End If
-		'xmlhttpSLFFL.send ""
-
-		'SLFFLAccessResponse = xmlhttpSLFFL.ResponseText
-
-		'Set xmlhttpSLFFL = Nothing
-
-		'If Left(SLFFLAccessToken, 1) = " " Then SLFFLAccessToken = Right(SLFFLAccessToken, Len(SLFFLAccessToken) - 1)
-
-		'Set xmlDoc = CreateObject("Microsoft.XMLDOM")
-		'xmlDoc.async = False
-		'TokenDoc = xmlDoc.loadxml(SLFFLAccessResponse)
-
-		'Set Node =  xmlDoc.documentElement.selectSingleNode("body/access_token")
-		'GetToken = Node.text
 
 		GetToken = thisToken
 
@@ -727,14 +709,11 @@
 		Dim sOutput
 		Dim I
 		If IsNull(sConvert) Then
-		URLDecode = ""
-		Exit Function
+			URLDecode = ""
+			Exit Function
 		End If
 
-		' convert all pluses to spaces
 		sOutput = REPLACE(sConvert, "+", " ")
-
-		' next convert %hexdigits to the character
 		aSplit = Split(sOutput, "%")
 
 		If IsArray(aSplit) Then
@@ -897,5 +876,4 @@
 		CalculateWinPercentage = homeWinProbability & "/" & awayWinProbability
 
 	End Function
-
 %>
