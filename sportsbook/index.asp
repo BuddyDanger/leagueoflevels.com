@@ -13,18 +13,18 @@
 
 		<title>Sportsbook / League of Levels</title>
 
-		<meta name="description" content="Active matchups available for gambling. Wager options include moneyline, point spread, and over/under totals. Schmeckles are the primary currency used in the Sportsbook and matchups consist of active LOL games within the 80/20 probability window." />
+		<meta name="description" content="Active matchups available for gambling. Wager options include moneyline, point spread, and over/under totals. Schmeckles are the primary currency used in the Sportsbook and matchups consist of active LOL games within the 70/30 probability window." />
 
 		<meta property="og:site_name" content="League of Levels" />
 		<meta property="og:url" content="https://www.leagueoflevels.com/sportsbook/" />
 		<meta property="og:title" content="Sportsbook / League of Levels" />
-		<meta property="og:description" content="Active matchups available for gambling. Wager options include moneyline, point spread, and over/under totals. Schmeckles are the primary currency used in the Sportsbook and matchups consist of active LOL games within the 80/20 probability window." />
+		<meta property="og:description" content="Active matchups available for gambling. Wager options include moneyline, point spread, and over/under totals. Schmeckles are the primary currency used in the Sportsbook and matchups consist of active LOL games within the 70/30 probability window." />
 		<meta property="og:type" content="article" />
 
 		<meta name="twitter:site" content="samelevel" />
 		<meta name="twitter:url" content="https://www.leagueoflevels.com/sportsbook/" />
 		<meta name="twitter:title" content="Sportsbook / League of Levels" />
-		<meta name="twitter:description" content="Active matchups available for gambling. Wager options include moneyline, point spread, and over/under totals. Schmeckles are the primary currency used in the Sportsbook and matchups consist of active LOL games within the 80/20 probability window." />
+		<meta name="twitter:description" content="Active matchups available for gambling. Wager options include moneyline, point spread, and over/under totals. Schmeckles are the primary currency used in the Sportsbook and matchups consist of active LOL games within the 70/30 probability window." />
 
 		<meta name="title" content="Sportsbook / League of Levels" />
 		<meta name="medium" content="article" />
@@ -169,7 +169,7 @@
 					sqlGetSchedules = "SELECT MatchupID, Matchups.LevelID, Year, Period, IsPlayoffs, TeamID1, TeamID2, Team1.TeamName AS TeamName1, Team2.TeamName AS TeamName2, TeamScore1, TeamScore2, TeamPMR1, TeamPMR2, Leg, TeamProjected1, TeamProjected2, TeamWinPercentage1, TeamWinPercentage2, TeamMoneyline1, TeamMoneyline2, TeamSpread1, TeamSpread2 FROM Matchups "
 					sqlGetSchedules = sqlGetSchedules & "INNER JOIN Teams AS Team1 ON Team1.TeamID = Matchups.TeamID1 "
 					sqlGetSchedules = sqlGetSchedules & "INNER JOIN Teams AS Team2 ON Team2.TeamID = Matchups.TeamID2 "
-					sqlGetSchedules = sqlGetSchedules & "WHERE Matchups.Year = " & Session.Contents("CurrentYear") & " AND Matchups.Period = " & Session.Contents("CurrentPeriod") & " AND (TeamPMR1 > 0 OR TeamPMR2 > 0) AND (TeamWinPercentage1 >= 0.20 AND TeamWinPercentage1 <= 0.80)  AND (TeamWinPercentage2 >= 0.20 AND TeamWinPercentage2 <= 0.80) AND "
+					sqlGetSchedules = sqlGetSchedules & "WHERE Matchups.Year = " & Session.Contents("CurrentYear") & " AND Matchups.Period = " & Session.Contents("CurrentPeriod") & " AND (TeamPMR1 > 0 OR TeamPMR2 > 0) AND (TeamWinPercentage1 >= 0.30 AND TeamWinPercentage1 <= 0.70)  AND (TeamWinPercentage2 >= 0.30 AND TeamWinPercentage2 <= 0.70) AND "
 
 					If Session.Contents("switchOMEGA") = 1 Or Session.Contents("switchNEXT") = 1 Or Session.Contents("switchSLFFL") = 1 Or Session.Contents("switchFLFFL") = 1 Then
 
