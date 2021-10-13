@@ -76,8 +76,40 @@
 										</thead>
 										<tbody>
 <%
-											sqlGetLeaderboard = "SELECT * FROM PowerRankings ORDER BY PowerRanking ASC"
+											sqlGetLeaderboard = "SELECT ROW_NUMBER() OVER (ORDER BY SUM(PowerPoints_Points) + SUM(PowerPoints_Wins) + SUM(PowerPoints_Break) DESC, SUM(PowerPoints_Points) DESC) AS PowerRanking, "
+											sqlGetLeaderboard = sqlGetLeaderboard & "Accounts.ProfileName, SUM(PowerPoints_Points) + SUM(PowerPoints_Wins) + SUM(PowerPoints_Break) AS PowerPoints_Total, SUM(PowerPoints_Points) AS PowerPoints_Points, "
+											sqlGetLeaderboard = sqlGetLeaderboard & "SUM(PowerPoints_Wins) AS PowerPoints_Wins, SUM(PowerPoints_Break) AS PowerPoints_Break, SUM(TotalPoints) AS TotalPoints, SUM(TotalWins) AS TotalWins, SUM(TotalLosses) AS TotalLosses, SUM(TotalTies) AS TotalTies, "
+											sqlGetLeaderboard = sqlGetLeaderboard & "SUM(TotalBreakdownWins) AS TotalBreakdownWins, SUM(TotalBreakdownLosses) AS TotalBreakdownLosses, SUM(TotalBreakdownTies) AS TotalBreakdownTies, "
+											sqlGetLeaderboard = sqlGetLeaderboard & "A.TeamID, Accounts.AccountID, Accounts.ProfileImage FROM ( "
+												sqlGetLeaderboard = sqlGetLeaderboard & "SELECT TeamID, ROW_NUMBER() OVER (ORDER BY SUM(PointsScored), SUM(ActualWins)) AS PowerPoints_Points, NULL AS PowerPoints_Wins, NULL AS PowerPoints_Break, NULL AS TotalWins, NULL AS TotalLosses, NULL AS TotalTies, SUM(PointsScored) AS TotalPoints, NULL AS TotalBreakdownWins, NULL AS TotalBreakdownLosses, NULL AS TotalBreakdownTies FROM Standings "
+												sqlGetLeaderboard = sqlGetLeaderboard & "WHERE (LevelID = 2 OR LevelID = 3) AND Year = 2021 GROUP BY TeamID UNION ALL "
+												sqlGetLeaderboard = sqlGetLeaderboard & "SELECT TeamID, NULL AS PowerPoints_Points, ROW_NUMBER() OVER (ORDER BY SUM(ActualWins), SUM(BreakdownWins)) AS PowerPoints_Wins, NULL AS PowerPoints_Break, SUM(ActualWins) AS TotalWins, SUM(ActualLosses) AS TotalLosses, SUM(ActualTies) AS TotalTies, NULL AS TotalPoints, NULL AS TotalBreakdownWins, NULL AS TotalBreakdownLosses, NULL AS TotalBreakdownTies FROM Standings "
+												sqlGetLeaderboard = sqlGetLeaderboard & "WHERE (LevelID = 2 OR LevelID = 3) AND Year = 2021 GROUP BY TeamID UNION ALL "
+												sqlGetLeaderboard = sqlGetLeaderboard & "SELECT TeamID, NULL AS PowerPoints_Points, NULL AS PowerPoints_Wins, ROW_NUMBER() OVER (ORDER BY SUM(BreakdownWins), SUM(ActualWins)) AS PowerPoints_Break, NULL AS TotalWins, NULL AS TotalLosses, NULL AS TotalTies, NULL AS TotalPoints, SUM(BreakdownWins) AS TotalBreakdownWins, SUM(BreakdownLosses) AS TotalBreakdownLosses, SUM(BreakdownTies) AS TotalBreakdownTies FROM Standings "
+												sqlGetLeaderboard = sqlGetLeaderboard & "WHERE (LevelID = 2 OR LevelID = 3) AND Year = 2021 GROUP BY TeamID "
+											sqlGetLeaderboard = sqlGetLeaderboard & ") A "
+											sqlGetLeaderboard = sqlGetLeaderboard & "INNER JOIN LinkAccountsTeams ON LinkAccountsTeams.TeamID = A.TeamID "
+											sqlGetLeaderboard = sqlGetLeaderboard & "INNER JOIN Accounts ON Accounts.AccountID = LinkAccountsTeams.AccountID "
+											sqlGetLeaderboard = sqlGetLeaderboard & "WHERE Accounts.Active = 1 GROUP BY A.TeamID, Accounts.AccountID, Accounts.ProfileName, Accounts.ProfileImage ORDER BY PowerRanking ASC"
+
+											sqlGetLastWeek = "SELECT ROW_NUMBER() OVER (ORDER BY SUM(PowerPoints_Points) + SUM(PowerPoints_Wins) + SUM(PowerPoints_Break) DESC, SUM(PowerPoints_Points) DESC) AS PowerRanking, A.TeamID FROM ( "
+												sqlGetLastWeek = sqlGetLastWeek & "SELECT TeamID, ROW_NUMBER() OVER (ORDER BY SUM(PointsScored), SUM(ActualWins)) AS PowerPoints_Points, NULL AS PowerPoints_Wins, NULL AS PowerPoints_Break, NULL AS TotalWins, NULL AS TotalLosses, NULL AS TotalTies, SUM(PointsScored) AS TotalPoints, NULL AS TotalBreakdownWins, NULL AS TotalBreakdownLosses, NULL AS TotalBreakdownTies FROM Standings "
+												sqlGetLastWeek = sqlGetLastWeek & "WHERE (LevelID = 2 OR LevelID = 3) AND Year = 2021 AND Period < " & CInt(Session.Contents("CurrentPeriod")) - 1 & " GROUP BY TeamID UNION ALL "
+												sqlGetLastWeek = sqlGetLastWeek & "SELECT TeamID, NULL AS PowerPoints_Points, ROW_NUMBER() OVER (ORDER BY SUM(ActualWins), SUM(BreakdownWins)) AS PowerPoints_Wins, NULL AS PowerPoints_Break, SUM(ActualWins) AS TotalWins, SUM(ActualLosses) AS TotalLosses, SUM(ActualTies) AS TotalTies, NULL AS TotalPoints, NULL AS TotalBreakdownWins, NULL AS TotalBreakdownLosses, NULL AS TotalBreakdownTies FROM Standings "
+												sqlGetLastWeek = sqlGetLastWeek & "WHERE (LevelID = 2 OR LevelID = 3) AND Year = 2021 AND Period < " & CInt(Session.Contents("CurrentPeriod")) - 1 & " GROUP BY TeamID UNION ALL "
+												sqlGetLastWeek = sqlGetLastWeek & "SELECT TeamID, NULL AS PowerPoints_Points, NULL AS PowerPoints_Wins, ROW_NUMBER() OVER (ORDER BY SUM(BreakdownWins), SUM(ActualWins)) AS PowerPoints_Break, NULL AS TotalWins, NULL AS TotalLosses, NULL AS TotalTies, NULL AS TotalPoints, SUM(BreakdownWins) AS TotalBreakdownWins, SUM(BreakdownLosses) AS TotalBreakdownLosses, SUM(BreakdownTies) AS TotalBreakdownTies FROM Standings "
+												sqlGetLastWeek = sqlGetLastWeek & "WHERE (LevelID = 2 OR LevelID = 3) AND Year = 2021 AND Period < " & CInt(Session.Contents("CurrentPeriod")) - 1 & " GROUP BY TeamID "
+											sqlGetLastWeek = sqlGetLastWeek & ") A "
+											sqlGetLastWeek = sqlGetLastWeek & "INNER JOIN LinkAccountsTeams ON LinkAccountsTeams.TeamID = A.TeamID "
+											sqlGetLastWeek = sqlGetLastWeek & "INNER JOIN Accounts ON Accounts.AccountID = LinkAccountsTeams.AccountID "
+											sqlGetLastWeek = sqlGetLastWeek & "WHERE Accounts.Active = 1 GROUP BY A.TeamID, Accounts.AccountID, Accounts.ProfileName, Accounts.ProfileImage ORDER BY PowerRanking ASC"
+
 											Set rsLeaderboard = sqlDatabase.Execute(sqlGetLeaderboard)
+											Set rsLastWeek = sqlDatabase.Execute(sqlGetLastWeek)
+
+											arrLastWeek = rsLastWeek.GetRows()
+											rsLastWeek.Close
+											Set rsLastWeek = Nothing
 
 											Do While Not rsLeaderboard.Eof
 
@@ -92,14 +124,27 @@
 												thisTotalBreakdownLosses = rsLeaderboard("TotalBreakdownLosses")
 												thisTotalBreakdownTies = rsLeaderboard("TotalBreakdownTies")
 												thisPowerPoints = rsLeaderboard("PowerPoints_Total")
+												thisTeamID = rsLeaderboard("TeamID")
 
 												thisRecord = thisTotalWins & "-" & thisTotalLosses & "-" & thisTotalTies
 												thisBreakdown = thisTotalBreakdownWins & "-" & thisTotalBreakdownLosses & "-" & thisTotalBreakdownTies
 
+												thisLastWeekRank = "A"
+												For i = 0 To UBound(arrLastWeek, 2) - 1
+													If CInt(thisTeamID) = CInt(arrLastWeek(1, i)) Then
+														thisLastWeekRank = arrLastWeek(0, i)
+														thisRankChange = CInt(thisLastWeekRank) - CInt(thisRank)
+													End If
+												Next
+
+												thisRankChangeDisplay = "<span class=""badge badge-light"">" & thisRankChange & "</span>"
+												If thisRankChange > 0 Then thisRankChangeDisplay = "<span class=""badge badge-success"">+" & thisRankChange & "</span>"
+												If thisRankChange < 0 Then thisRankChangeDisplay = "<span class=""badge badge-danger"">" & thisRankChange & "</span>"
+
 												If Len(thisRank) = 1 Then thisRank = "0" & thisRank
 %>
 												<tr style="<%= thisBorderBottom %>">
-													<td class="pl-3"><img src="https://samelevel.imgix.net/<%= rsLeaderboard("ProfileImage") %>?w=40&h=40&fit=crop&crop=focalpoint" class="rounded-circle hidden d-none d-sm-none d-md-inline mr-1 pr-1"><b><%= thisRank %>.</b> &nbsp;<%= rsLeaderboard("ProfileName") %></td>
+													<td class="pl-3"><img src="https://samelevel.imgix.net/<%= rsLeaderboard("ProfileImage") %>?w=40&h=40&fit=crop&crop=focalpoint" class="rounded-circle hidden d-none d-sm-none d-md-inline mr-1 pr-1"><b><%= thisRank %>.</b> &nbsp;<%= rsLeaderboard("ProfileName") %>&nbsp;&nbsp;<%= thisRankChangeDisplay %></td>
 													<td class="text-center d-none d-md-table-cell"><%= FormatNumber(rsLeaderboard("TotalPoints"), 2) %></td>
 													<td class="text-center d-none d-sm-table-cell"><%= thisRecord %></td>
 													<td class="text-center d-none d-sm-table-cell"><%= thisBreakdown %></td>
