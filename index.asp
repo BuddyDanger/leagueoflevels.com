@@ -21,18 +21,23 @@
 				thisTeamID1 = rsMatchup("TeamID1")
 				thisTeamID2 = rsMatchup("TeamID2")
 				thisBetTeamID = 0
-				myTeams = Session.Contents("AccountTeams")
 
-				If InStr(myTeams, ",") Then
+				sqlCheckTeams = "SELECT Teams.TeamID FROM LinkAccountsTeams INNER JOIN Teams ON Teams.TeamID = LinkAccountsTeams.TeamID WHERE LinkAccountsTeams.AccountID = " & Session.Contents("AccountID")
+				Set rsTeams = sqlDatabase.Execute(sqlCheckTeams)
 
-					arrTeams = Split(myTeams, ",")
-					If CInt(arrTeams(0)) = CInt(thisTeamID1) Then thisBetTeamID = thisTeamID1
-					If CInt(arrTeams(1)) = CInt(thisTeamID2) Then thisBetTeamID = thisTeamID2
+				If Not rsTeams.Eof Then
 
-				Else
+					Do While Not rsTeams.Eof
 
-					If CInt(myTeams) = CInt(thisTeamID1) Then thisBetTeamID = thisTeamID1
-					If CInt(myTeams) = CInt(thisTeamID2) Then thisBetTeamID = thisTeamID2
+						If CInt(rsTeams("TeamID")) = CInt(thisTeamID1) Then thisBetTeamID = thisTeamID1
+						If CInt(rsTeams("TeamID")) = CInt(thisTeamID2) Then thisBetTeamID = thisTeamID2
+
+						rsTeams.MoveNext
+
+					Loop
+
+					rsTeams.Close
+					Set rsTeams = Nothing
 
 				End If
 

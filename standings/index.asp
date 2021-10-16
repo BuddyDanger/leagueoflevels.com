@@ -407,54 +407,7 @@
 							</div>
 <%
 						End If
-
-						Set rsStandings = rsStandings.NextRecordset
 %>
-						<div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-6">
-
-							<div class="card">
-
-								<div class="card-body p-0">
-
-									<table class="table mb-1">
-										<thead>
-											<tr>
-												<th><b>TOTAL POINTS</b></th>
-												<th class="text-center">PF</th>
-											</tr>
-										</thead>
-										<tbody>
-<%
-											thisPosition = 1
-											Do While Not rsStandings.Eof
-
-												thisTeamName = rsStandings("TeamName")
-												thisPointsScored = rsStandings("PointsScored")
-
-												thisProfileImage = rsStandings("ProfileImage")
-												If IsNull(thisProfileImage) Then thisProfileImage = "user.jpg"
-%>
-												<tr>
-													<td><img src="https://samelevel.imgix.net/<%= thisProfileImage %>?w=40&h=40&fit=crop&crop=focalpoint" class="rounded-circle hidden d-none d-sm-none d-md-inline mr-1 pr-1"><b><%= thisPosition %>.</b> &nbsp;<%= thisTeamName %></td>
-													<td class="text-center"><%= FormatNumber(thisPointsScored, 2) %></td>
-												</tr>
-<%
-												thisPosition = thisPosition + 1
-												rsStandings.MoveNext
-
-											Loop
-%>
-											</tbody>
-										</table>
-
-									</div>
-
-								</div>
-
-							</div>
-
-						</div>
-
 					</div>
 
 				</div>
