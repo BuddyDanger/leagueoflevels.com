@@ -43,6 +43,41 @@
 					</div>
 <%
 				Else
+
+					currentChain = 1
+					currentBoost = 100
+
+					sqlGetLockchain = "SELECT TicketSlipID, IsWinner FROM TicketSlips WHERE TicketTypeID = 5 AND IsWinner IS NOT NULL AND AccountID = " & Session.Contents("AccountID") & " ORDER BY InsertDateTime DESC"
+					Set rsLockchain = sqlDatabase.Execute(sqlGetLockchain)
+
+					If Not rsLockchain.Eof Then
+
+						Do While Not rsLockchain.Eof
+
+							thisWinner = rsLockchain("IsWinner")
+
+							If thisWinner = 1 Then
+
+								currentChain = currentChain + 1
+								currentBoost = currentBoost + 20
+
+							Else
+
+								Exit Do
+
+							End If
+
+							rsLockchain.MoveNext
+
+						Loop
+
+						rsLockchain.Close
+						Set rsLockchain = Nothing
+
+					Else
+
+
+					End If
 %>
 					<div class="row bg-light rounded mt-3 mb-3 pb-2 pt-2">
 						<div class="col-4 text-center">
@@ -51,17 +86,18 @@
 						</div>
 						<div class="col-4 text-center">
 							<div><u><b>Chain</b></u></div>
-							<div>1x</div>
+							<div><%= currentChain %>x</div>
 						</div>
 						<div class="col-4 text-center">
 							<div><u><b>Boost</b></u></div>
-							<div>+100ML</div>
+							<div>+<%= currentBoost %>ML</div>
 						</div>
 					</div>
 
 					<form action="/" method="post">
 
 						<input type="hidden" name="action" value="lock" />
+						<input type="hidden" name="inputMoneyline" value="<%= currentBoost %>" />
 
 						<div class="form-group pb-0 mb-3">
 

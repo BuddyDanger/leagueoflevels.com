@@ -76,6 +76,14 @@
 										</thead>
 										<tbody>
 <%
+											sqlGetLastPeriod = "SELECT TOP (1) Period FROM YearPeriods WHERE StartDate > DATEADD(""d"", -7, GETDATE())"
+											Set rsLastPeriod = sqlDatabase.Execute(sqlGetLastPeriod)
+
+											thisLastPeriod = rsLastPeriod("Period")
+
+											rsLastPeriod.Close
+											Set rsLastPeriod = Nothing
+
 											sqlGetLeaderboard = "SELECT ROW_NUMBER() OVER (ORDER BY SUM(PowerPoints_Points) + SUM(PowerPoints_Wins) + SUM(PowerPoints_Break) DESC, SUM(PowerPoints_Points) DESC) AS PowerRanking, "
 											sqlGetLeaderboard = sqlGetLeaderboard & "Accounts.ProfileName, SUM(PowerPoints_Points) + SUM(PowerPoints_Wins) + SUM(PowerPoints_Break) AS PowerPoints_Total, SUM(PowerPoints_Points) AS PowerPoints_Points, "
 											sqlGetLeaderboard = sqlGetLeaderboard & "SUM(PowerPoints_Wins) AS PowerPoints_Wins, SUM(PowerPoints_Break) AS PowerPoints_Break, SUM(TotalPoints) AS TotalPoints, SUM(TotalWins) AS TotalWins, SUM(TotalLosses) AS TotalLosses, SUM(TotalTies) AS TotalTies, "
@@ -94,11 +102,11 @@
 
 											sqlGetLastWeek = "SELECT ROW_NUMBER() OVER (ORDER BY SUM(PowerPoints_Points) + SUM(PowerPoints_Wins) + SUM(PowerPoints_Break) DESC, SUM(PowerPoints_Points) DESC) AS PowerRanking, A.TeamID FROM ( "
 												sqlGetLastWeek = sqlGetLastWeek & "SELECT TeamID, ROW_NUMBER() OVER (ORDER BY SUM(PointsScored), SUM(ActualWins)) AS PowerPoints_Points, NULL AS PowerPoints_Wins, NULL AS PowerPoints_Break, NULL AS TotalWins, NULL AS TotalLosses, NULL AS TotalTies, SUM(PointsScored) AS TotalPoints, NULL AS TotalBreakdownWins, NULL AS TotalBreakdownLosses, NULL AS TotalBreakdownTies FROM Standings "
-												sqlGetLastWeek = sqlGetLastWeek & "WHERE (LevelID = 2 OR LevelID = 3) AND Year = 2021 AND Period < " & CInt(Session.Contents("CurrentPeriod")) - 1 & " GROUP BY TeamID UNION ALL "
+												sqlGetLastWeek = sqlGetLastWeek & "WHERE (LevelID = 2 OR LevelID = 3) AND Year = 2021 AND Period < " & thisLastPeriod & " GROUP BY TeamID UNION ALL "
 												sqlGetLastWeek = sqlGetLastWeek & "SELECT TeamID, NULL AS PowerPoints_Points, ROW_NUMBER() OVER (ORDER BY SUM(ActualWins), SUM(BreakdownWins)) AS PowerPoints_Wins, NULL AS PowerPoints_Break, SUM(ActualWins) AS TotalWins, SUM(ActualLosses) AS TotalLosses, SUM(ActualTies) AS TotalTies, NULL AS TotalPoints, NULL AS TotalBreakdownWins, NULL AS TotalBreakdownLosses, NULL AS TotalBreakdownTies FROM Standings "
-												sqlGetLastWeek = sqlGetLastWeek & "WHERE (LevelID = 2 OR LevelID = 3) AND Year = 2021 AND Period < " & CInt(Session.Contents("CurrentPeriod")) - 1 & " GROUP BY TeamID UNION ALL "
+												sqlGetLastWeek = sqlGetLastWeek & "WHERE (LevelID = 2 OR LevelID = 3) AND Year = 2021 AND Period < " & thisLastPeriod & " GROUP BY TeamID UNION ALL "
 												sqlGetLastWeek = sqlGetLastWeek & "SELECT TeamID, NULL AS PowerPoints_Points, NULL AS PowerPoints_Wins, ROW_NUMBER() OVER (ORDER BY SUM(BreakdownWins), SUM(ActualWins)) AS PowerPoints_Break, NULL AS TotalWins, NULL AS TotalLosses, NULL AS TotalTies, NULL AS TotalPoints, SUM(BreakdownWins) AS TotalBreakdownWins, SUM(BreakdownLosses) AS TotalBreakdownLosses, SUM(BreakdownTies) AS TotalBreakdownTies FROM Standings "
-												sqlGetLastWeek = sqlGetLastWeek & "WHERE (LevelID = 2 OR LevelID = 3) AND Year = 2021 AND Period < " & CInt(Session.Contents("CurrentPeriod")) - 1 & " GROUP BY TeamID "
+												sqlGetLastWeek = sqlGetLastWeek & "WHERE (LevelID = 2 OR LevelID = 3) AND Year = 2021 AND Period < " & thisLastPeriod & " GROUP BY TeamID "
 											sqlGetLastWeek = sqlGetLastWeek & ") A "
 											sqlGetLastWeek = sqlGetLastWeek & "INNER JOIN LinkAccountsTeams ON LinkAccountsTeams.TeamID = A.TeamID "
 											sqlGetLastWeek = sqlGetLastWeek & "INNER JOIN Accounts ON Accounts.AccountID = LinkAccountsTeams.AccountID "

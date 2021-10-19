@@ -12,6 +12,8 @@
 
 			thisTicketType = 5
 			thisMatchupID = Request.Form("inputMatchupID")
+			thisMoneyline = Request.Form("inputMoneyline")
+			thisPayout = CInt(2500 * (thisMoneyline / 100)) + 2500
 
 			sqlGetMatchup = "SELECT * FROM Matchups WHERE MatchupID = " & thisMatchupID
 			Set rsMatchup = sqlDatabase.Execute(sqlGetMatchup)
@@ -53,9 +55,9 @@
 					rsInsert("AccountID") = Session.Contents("AccountID")
 					rsInsert("MatchupID") = thisMatchupID
 					rsInsert("TeamID") = thisBetTeamID
-					rsInsert("Moneyline") = 100
+					rsInsert("Moneyline") = thisMoneyline
 					rsInsert("BetAmount") = 2500
-					rsInsert("PayoutAmount") = 5000
+					rsInsert("PayoutAmount") = thisPayout
 
 					rsInsert.Update
 					Set rsInsert = Nothing

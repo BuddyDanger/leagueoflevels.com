@@ -54,7 +54,7 @@
 				Set rsGametime = sqlDatabase.Execute(sqlGetGametime)
 
 				thisGameTimeEST = DateAdd("h", 4, rsGametime("DateTimeEST"))
-			
+
 				If thisGameTimeEST < Now() Then
 					alreadyPlayed = 1
 					selectPlaceholder = "Selection Locked"
