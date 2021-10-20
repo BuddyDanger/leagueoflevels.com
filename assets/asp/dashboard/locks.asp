@@ -56,7 +56,7 @@
 
 							thisWinner = rsLockchain("IsWinner")
 
-							If thisWinner = 1 Then
+							If thisWinner Then
 
 								currentChain = currentChain + 1
 								currentBoost = currentBoost + 20
