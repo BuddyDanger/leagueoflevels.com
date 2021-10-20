@@ -146,7 +146,7 @@
 				End If
 
 					Response.Write("<ul class=""list-group mb-4"">")
-						Response.Write("<a href=""/sportsbook/ticket/" & thisTicketSlipID & "/"">")
+						'Response.Write("<a href=""/sportsbook/ticket/" & thisTicketSlipID & "/"">")
 							Response.Write("<li class=""list-group-item text-center p-3"">")
 
 								If Len(thisMatchupID) > 0 Then
@@ -187,7 +187,7 @@
 								Response.Write("<div><b>" & thisProfileName & "</b></div>")
 								Response.Write("<div><i>" & thisInsertDateTime & " (EST)</i></div>")
 							Response.Write("</li>")
-						Response.Write("</a>")
+						'Response.Write("</a>")
 					Response.Write("</ul>")
 				Response.Write("</div>")
 
