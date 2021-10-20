@@ -71,6 +71,7 @@
 												<th class="text-center d-none d-md-table-cell">TOTAL POINTS</th>
 												<th class="text-center d-none d-sm-table-cell">ACTUAL RECORD</th>
 												<th class="text-center d-none d-sm-table-cell">BREAKDOWN RECORD</th>
+												<th class="text-center d-none d-sm-table-cell">LUCK RATE</th>
 												<th class="text-center">POWER POINTS</th>
 											</tr>
 										</thead>
@@ -88,6 +89,7 @@
 											sqlGetLeaderboard = sqlGetLeaderboard & "Accounts.ProfileName, SUM(PowerPoints_Points) + SUM(PowerPoints_Wins) + SUM(PowerPoints_Break) AS PowerPoints_Total, SUM(PowerPoints_Points) AS PowerPoints_Points, "
 											sqlGetLeaderboard = sqlGetLeaderboard & "SUM(PowerPoints_Wins) AS PowerPoints_Wins, SUM(PowerPoints_Break) AS PowerPoints_Break, SUM(TotalPoints) AS TotalPoints, SUM(TotalWins) AS TotalWins, SUM(TotalLosses) AS TotalLosses, SUM(TotalTies) AS TotalTies, "
 											sqlGetLeaderboard = sqlGetLeaderboard & "SUM(TotalBreakdownWins) AS TotalBreakdownWins, SUM(TotalBreakdownLosses) AS TotalBreakdownLosses, SUM(TotalBreakdownTies) AS TotalBreakdownTies, "
+											sqlGetLeaderboard = sqlGetLeaderboard & "((CAST(SUM(TotalWins) AS DECIMAL) / (CAST(SUM(TotalWins) AS DECIMAL) + CAST(SUM(TotalLosses) AS DECIMAL))) * 100) / ((CAST(SUM(TotalBreakdownWins) AS DECIMAL) / (CAST(SUM(TotalBreakdownWins) AS DECIMAL) + CAST(SUM(TotalBreakdownLosses) AS DECIMAL)))) - 100 AS LuckRate, "
 											sqlGetLeaderboard = sqlGetLeaderboard & "A.TeamID, Accounts.AccountID, Accounts.ProfileImage FROM ( "
 												sqlGetLeaderboard = sqlGetLeaderboard & "SELECT TeamID, ROW_NUMBER() OVER (ORDER BY SUM(PointsScored), SUM(ActualWins)) AS PowerPoints_Points, NULL AS PowerPoints_Wins, NULL AS PowerPoints_Break, NULL AS TotalWins, NULL AS TotalLosses, NULL AS TotalTies, SUM(PointsScored) AS TotalPoints, NULL AS TotalBreakdownWins, NULL AS TotalBreakdownLosses, NULL AS TotalBreakdownTies FROM Standings "
 												sqlGetLeaderboard = sqlGetLeaderboard & "WHERE (LevelID = 2 OR LevelID = 3) AND Year = 2021 GROUP BY TeamID UNION ALL "
@@ -132,7 +134,10 @@
 												thisTotalBreakdownLosses = rsLeaderboard("TotalBreakdownLosses")
 												thisTotalBreakdownTies = rsLeaderboard("TotalBreakdownTies")
 												thisPowerPoints = rsLeaderboard("PowerPoints_Total")
+												thisLuckRate = FormatNumber(rsLeaderboard("LuckRate"), 2) & "%"
 												thisTeamID = rsLeaderboard("TeamID")
+
+												If Left(thisLuckRate, 1) <> "-" Then thisLuckRate = "+" & thisLuckRate
 
 												thisRecord = thisTotalWins & "-" & thisTotalLosses & "-" & thisTotalTies
 												thisBreakdown = thisTotalBreakdownWins & "-" & thisTotalBreakdownLosses & "-" & thisTotalBreakdownTies
@@ -156,6 +161,7 @@
 													<td class="text-center d-none d-md-table-cell"><%= FormatNumber(rsLeaderboard("TotalPoints"), 2) %></td>
 													<td class="text-center d-none d-sm-table-cell"><%= thisRecord %></td>
 													<td class="text-center d-none d-sm-table-cell"><%= thisBreakdown %></td>
+													<td class="text-center d-none d-sm-table-cell"><%= thisLuckRate %></td>
 													<td class="text-center"><%= thisPowerPoints %></td>
 												</tr>
 <%
