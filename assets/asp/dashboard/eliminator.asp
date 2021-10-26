@@ -17,11 +17,15 @@
 		sqlGetSurvivors = "SELECT TotalCorrect, AccountID FROM ( SELECT COUNT(*) AS TotalCorrect, AccountID FROM EliminatorPicks WHERE CorrectPick = 1 AND EliminatorRoundID = " & thisEliminatorRoundID & " GROUP BY AccountID) A WHERE TotalCorrect = " & (Session.Contents("CurrentPeriod") - 1)
 		Set rsSurvivors = sqlDatabase.Execute(sqlGetSurvivors)
 
-		arrSurvivors = rsSurvivors.GetRows()
-		thisSurvivorCount = UBound(arrSurvivors, 2) + 1
+		If rsSurvivors.RecordCount > 0 Then
 
-		rsSurvivors.Close
-		Set rsSurvivors = Nothing
+			arrSurvivors = rsSurvivors.GetRows()
+			thisSurvivorCount = UBound(arrSurvivors, 2) + 1
+
+			rsSurvivors.Close
+			Set rsSurvivors = Nothing
+
+		End If
 
 		sqlGetCurrentGames = "SELECT Team.[NFLTeamID] AS thisNFLTeamID, Team.[City] AS thisCity, Team.[Name] AS thisName, Team.[Abbreviation] AS thisAbbr, thisHome = 0, H.[City] AS opponentCity, H.[Name] AS opponentName, H.[Abbreviation] AS opponentAbbr FROM [dbo].[NFLTeams] Team INNER JOIN NFLGames A ON A.AwayTeamID = Team.NFLTeamID INNER JOIN NFLTeams H ON H.NFLTeamID = A.HomeTeamID "
 		sqlGetCurrentGames = sqlGetCurrentGames & "WHERE ( A.Year = " & Session.Contents("CurrentYear") & " AND A.Period = " & Session.Contents("CurrentPeriod") & " AND A.DateTimeEST > '" & DateAdd("h", -4, Now()) & "' AND Team.[NFLTeamID] NOT IN (SELECT NFLTeamID FROM EliminatorPicks WHERE AccountID = " & Session.Contents("AccountID") & " AND EliminatorRoundID = " & Session.Contents("EliminatorRoundID") & ")) UNION ALL "
