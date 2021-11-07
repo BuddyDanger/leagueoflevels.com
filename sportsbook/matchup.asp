@@ -255,7 +255,7 @@
 
 	If Session.Contents("SITE_Bet_Type") = "nfl" Then
 
-		sqlGetSchedules = "SELECT NFLGameID, Year, Period, DateTimeEST, DateAdd(hour,-4,getdate()) AS CurrentDateTime, AwayTeamID, A.City + ' ' + A.Name AS AwayTeam, HomeTeamID, B.City + ' ' + B.Name AS HomeTeam, AwayTeamScore, HomeTeamScore, Notes, AwayTeamMoneyline, HomeTeamMoneyline, AwayTeamSpread, HomeTeamSpread, OverUnderTotal "
+		sqlGetSchedules = "SELECT NFLGameID, Year, Period, DateTimeEST, DateAdd(hour,-5,getdate()) AS CurrentDateTime, AwayTeamID, A.City + ' ' + A.Name AS AwayTeam, HomeTeamID, B.City + ' ' + B.Name AS HomeTeam, AwayTeamScore, HomeTeamScore, Notes, AwayTeamMoneyline, HomeTeamMoneyline, AwayTeamSpread, HomeTeamSpread, OverUnderTotal "
 		sqlGetSchedules = sqlGetSchedules & "FROM dbo.NFLGames INNER JOIN NFLTeams A ON A.NFLTeamID = NFLGames.AwayTeamID INNER JOIN NFLTeams B ON B.NFLTeamID = NFLGames.HomeTeamID WHERE NFLGameID = " & Session.Contents("SITE_Bet_MatchupID")
 		Set rsSchedules = sqlDatabase.Execute(sqlGetSchedules)
 
