@@ -292,9 +292,10 @@
 							sqlGetNFLGames = "SELECT NFLGameID, Year, Period, DateTimeEST, AwayTeamID, HomeTeamID, A.City + ' ' + A.Name AS AwayTeam, B.City + ' ' + B.Name AS HomeTeam, AwayTeamMoneyline, HomeTeamMoneyline, AwayTeamSpread, HomeTeamSpread, OverUnderTotal FROM NFLGames "
 							sqlGetNFLGames = sqlGetNFLGames & "INNER JOIN NFLTeams A ON A.NFLTeamID = NFLGames.AwayTeamID "
 							sqlGetNFLGames = sqlGetNFLGames & "INNER JOIN NFLTeams B ON B.NFLTeamID = NFLGames.HomeTeamID "
-							sqlGetNFLGames = sqlGetNFLGames & "WHERE NFLGames.Year = " & Session.Contents("CurrentYear") & " AND NFLGames.Period = " & Session.Contents("CurrentPeriod") & " AND NFLGames.DateTimeEST > DateAdd(hour, -4, GetDate()) "
+							sqlGetNFLGames = sqlGetNFLGames & "WHERE NFLGames.Year = " & Session.Contents("CurrentYear") & " AND NFLGames.Period = " & Session.Contents("CurrentPeriod") & " AND NFLGames.DateTimeEST > DateAdd(hour, -5, GetDate()) "
 							sqlGetNFLGames = sqlGetNFLGames & "ORDER BY NFLGames.DateTimeEST ASC"
 							Set rsSchedules = sqlDatabase.Execute(sqlGetNFLGames)
+
 %>
 							<div class="col-12">
 								<ul class="list-group mb-2">

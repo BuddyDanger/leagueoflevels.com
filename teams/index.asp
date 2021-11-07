@@ -79,34 +79,16 @@
 											Do While Not rsAccounts.Eof
 
 												thisAccountID = rsAccounts("AccountID")
-												thisLevelString = ""
-
-												sqlGetCurrentLevels = "SELECT LevelID FROM LinkTeamsLevels WHERE LinkTeamsLevels.Year = " & Session.Contents("CurrentYear") & " AND LinkTeamsLevels.TeamID IN (SELECT TeamID FROM LinkAccountsTeams WHERE LinkAccountsTeams.AccountID = " & thisAccountID & ") "
-												Set rsCurrentLevels = sqlDatabase.Execute(sqlGetCurrentLevels)
-
-												Do While Not rsCurrentLevels.Eof
-
-													If CInt(rsCurrentLevels("LevelID")) = 3 Then thisLevelString = thisLevelString & "FLFFL"
-													If CInt(rsCurrentLevels("LevelID")) = 2 Then thisLevelString = thisLevelString & "SLFFL"
-													If CInt(rsCurrentLevels("LevelID")) = 1 Then thisLevelString = thisLevelString & " / OMEGA"
-
-													rsCurrentLevels.MoveNext
-
-												Loop
-
-												rsCurrentLevels.Close
-												Set rsCurrentLevels = Nothing
-
-												thisProfileImage = "<img src=""https://samelevel.imgix.net/" & rsAccounts("ProfileImage") & "?w=40&h=40&fit=crop&crop=focalpoint"" class=""rounded-circle float-left d-none d-xxl-block mr-2"">"
+												thisProfileImage = "<img src=""https://samelevel.imgix.net/" & rsAccounts("ProfileImage") & "?w=40&h=40&fit=crop&crop=focalpoint"" class=""rounded-circle d-inline mr-2"">"
 %>
+
 												<tr>
 
 													<td class="pl-3">
+														<a href="/teams/<%= rsAccounts("ProfileURL") %>/">
 														<%= thisProfileImage %>
-														<div class="float-left">
-															<div><b><%= rsAccounts("ProfileName") %></b></div>
-															<% If Len(thisLevelString) > 0 Then %><div><%= thisLevelString %></div><% End If %>
-														</div>
+														<b><%= rsAccounts("ProfileName") %></b>
+														</a>
 													</td>
 													<td class="text-center d-none d-sm-table-cell"><%= FormatNumber(rsAccounts("PointsScored"), 2) %></td>
 													<td class="text-center d-none d-sm-table-cell"><%= rsAccounts("ActualWins") %>-<%= rsAccounts("ActualLosses") %>-<%= rsAccounts("ActualTies") %></td>
@@ -114,8 +96,9 @@
 													<td class="text-center d-none d-md-table-cell"><%= rsAccounts("BreakdownWins") %>-<%= rsAccounts("BreakdownLosses") %>-<%= rsAccounts("BreakdownTies") %></td>
 													<td class="text-center d-none d-md-table-cell"><%= FormatNumber(CDbl(rsAccounts("BreakdownWinPercentage"))*100, 2) %>%</td>
 													<td class="text-center d-none d-sm-table-cell"><%= FormatNumber(rsAccounts("LuckRate"), 2) %>%</td>
-
+											
 												</tr>
+
 <%
 												rsAccounts.MoveNext
 
@@ -151,34 +134,12 @@
 											Do While Not rsAccounts.Eof
 
 												thisAccountID = rsAccounts("AccountID")
-												thisLevelString = ""
-
-												sqlGetCurrentLevels = "SELECT LevelID FROM LinkTeamsLevels WHERE LinkTeamsLevels.Year = " & Session.Contents("CurrentYear") & " AND LinkTeamsLevels.TeamID IN (SELECT TeamID FROM LinkAccountsTeams WHERE LinkAccountsTeams.AccountID = " & thisAccountID & ") "
-												Set rsCurrentLevels = sqlDatabase.Execute(sqlGetCurrentLevels)
-
-												Do While Not rsCurrentLevels.Eof
-
-													If CInt(rsCurrentLevels("LevelID")) = 3 Then thisLevelString = thisLevelString & "FLFFL"
-													If CInt(rsCurrentLevels("LevelID")) = 2 Then thisLevelString = thisLevelString & "SLFFL"
-													If CInt(rsCurrentLevels("LevelID")) = 1 Then thisLevelString = thisLevelString & " / OMEGA"
-
-													rsCurrentLevels.MoveNext
-
-												Loop
-
-												rsCurrentLevels.Close
-												Set rsCurrentLevels = Nothing
-
 												thisProfileImage = "<img src=""https://samelevel.imgix.net/" & rsAccounts("ProfileImage") & "?w=40&h=40&fit=crop&crop=focalpoint"" class=""rounded-circle float-left d-none d-xxl-block mr-2"">"
 %>
 												<tr style="<%= thisBorderBottom %>">
 
 													<td class="pl-3">
-														<%= thisProfileImage %>
-														<div class="float-left">
-															<div><b><%= rsAccounts("ProfileName") %></b></div>
-															<% If Len(thisLevelString) > 0 Then %><div><%= thisLevelString %></div><% End If %>
-														</div>
+														<div><b><%= rsAccounts("ProfileName") %></b></div>
 													</td>
 													<td class="text-center d-none d-sm-table-cell"><%= FormatNumber(rsAccounts("PointsScored"), 2) %></td>
 													<td class="text-center d-none d-sm-table-cell"><%= rsAccounts("ActualWins") %>-<%= rsAccounts("ActualLosses") %>-<%= rsAccounts("ActualTies") %></td>
