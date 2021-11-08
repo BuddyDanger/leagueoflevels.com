@@ -77,6 +77,44 @@
 
 	End If
 
+	If Request.Form("action") = "send" Then
+
+		thisRecipientID = Request.Form("inputRecipientID")
+		thisTotalSchmeckles = Request.Form("inputTotalSchmeckles")
+
+		If thisTotalSchmeckles > 0 Then
+
+			sqlGetSchmeckles = "SELECT SUM(TransactionTotal) AS CurrentSchmeckleTotal FROM SchmeckleTransactions WHERE AccountID = " & Session.Contents("AccountID")
+			Set rsSchmeckles = sqlDatabase.Execute(sqlGetSchmeckles)
+
+			thisCurrentSchmeckleTotal = rsSchmeckles("CurrentSchmeckleTotal")
+
+			If CDbl(thisCurrentSchmeckleTotal) >= CDbl(thisTotalSchmeckles) Then
+
+				thisTransactionTypeID = 1015
+				thisTransactionDateTime = Now()
+				thisTransactionTotal = thisTotalSchmeckles * -1
+				thisAccountID = Session.Contents("AccountID")
+				thisTransactionDescription = ""
+
+				thisTransactionStatus = SchmeckleTransaction(thisAccountID, thisTransactionTypeID, NULL, thisTransactionTotal, thisTransactionDescription)
+
+				thisTransactionTypeID = 1015
+				thisTransactionDateTime = Now()
+				thisTransactionTotal = thisTotalSchmeckles
+				thisAccountID = thisRecipientID
+				thisTransactionDescription = ""
+
+				thisTransactionStatus = SchmeckleTransaction(thisAccountID, thisTransactionTypeID, NULL, thisTransactionTotal, thisTransactionDescription)
+
+			End If
+
+			Response.Redirect("/")
+
+		End If
+
+	End If
+
 	If Request.Form("action") = "buy" Then
 
 		thisBallPurchase = Request.Form("inputBallPurchase")
@@ -214,6 +252,8 @@
 								<!--#include virtual="/assets/asp/dashboard/eliminator.asp" -->
 
 								<!--#include virtual="/assets/asp/dashboard/locks.asp" -->
+
+								<!--#include virtual="/assets/asp/dashboard/sender.asp" -->
 
 							</div>
 
