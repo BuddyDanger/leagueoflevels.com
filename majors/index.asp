@@ -14,22 +14,22 @@
 		<meta http-equiv="x-ua-compatible" content="IE=edge,chrome=1" />
 		<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
-		<title>Major One / Qualifying & Standings / League of Levels</title>
+		<title>Major Two / Qualifying & Standings / League of Levels</title>
 
-		<meta name="description" content="Major One represents the top-six teams from each level through the first three weeks, respectively. These teams are then squared off against each other in a four-week round-robin tournament with 10,000 schmeckles up for grabs." />
+		<meta name="description" content="Major Two represents the top-six teams from each level through the first three weeks, respectively. These teams are then squared off against each other in a four-week round-robin tournament with 10,000 schmeckles up for grabs." />
 
 		<meta property="og:site_name" content="League of Levels" />
 		<meta property="og:url" content="https://www.leagueoflevels.com/majors/" />
-		<meta property="og:title" content="Major One / Qualifying & Standings / League of Levels" />
-		<meta property="og:description" content="Major One represents the top-six teams from each level through the first three weeks, respectively. These teams are then squared off against each other in a four-week round-robin tournament with 10,000 schmeckles up for grabs." />
+		<meta property="og:title" content="Major Two / Qualifying & Standings / League of Levels" />
+		<meta property="og:description" content="Major Two represents the top-six teams from each level through the first three weeks, respectively. These teams are then squared off against each other in a four-week round-robin tournament with 10,000 schmeckles up for grabs." />
 		<meta property="og:type" content="article" />
 
 		<meta name="twitter:site" content="samelevel" />
 		<meta name="twitter:url" content="https://www.leagueoflevels.com/majors/" />
-		<meta name="twitter:title" content="Major One / Qualifying & Standings / League of Levels" />
-		<meta name="twitter:description" content="Major One represents the top-six teams from each level through the first three weeks, respectively. These teams are then squared off against each other in a four-week round-robin tournament with 10,000 schmeckles up for grabs." />
+		<meta name="twitter:title" content="Major Two / Qualifying & Standings / League of Levels" />
+		<meta name="twitter:description" content="Major Two represents the top-six teams from each level through the first three weeks, respectively. These teams are then squared off against each other in a four-week round-robin tournament with 10,000 schmeckles up for grabs." />
 
-		<meta name="title" content="Major One / Qualifying & Standings / League of Levels" />
+		<meta name="title" content="Major Two / Qualifying & Standings / League of Levels" />
 		<meta name="medium" content="article" />
 
 		<link rel="shortcut icon" href="/favicon.ico" />
@@ -58,7 +58,7 @@
 
 						<div class="col-12 col-xl-6 col-xxl-5">
 <%
-							sqlGetMajors = "SELECT MajorID, Majors.LevelID, Levels.Title, MajorTitle FROM Majors INNER JOIN Levels ON Levels.LevelID = Majors.LevelID WHERE StartPeriod >= 4 ORDER BY LevelID ASC"
+							sqlGetMajors = "SELECT MajorID, Majors.LevelID, Levels.Title, MajorTitle FROM Majors INNER JOIN Levels ON Levels.LevelID = Majors.LevelID WHERE StartPeriod >= 4 ORDER BY StartPeriod DESC, LevelID ASC"
 							Set rsMajors = sqlDatabase.Execute(sqlGetMajors)
 
 							Do While Not rsMajors.Eof
@@ -90,7 +90,7 @@
 												sqlGetStandings = sqlGetStandings & "WHERE MajorStandings.LevelID = " & thisLevelID & " And MajorStandings.MajorID = " & thisMajorID & " "
 												sqlGetStandings = sqlGetStandings & "GROUP BY MajorID, MajorStandings.LevelID, Year, MajorStandings.TeamID, Accounts.ProfileName, Accounts.ProfileImage "
 												sqlGetStandings = sqlGetStandings & "ORDER BY TotalWins DESC, TotalPointsScored DESC, TotalLosses ASC"
-												
+
 												Set rsStandings = sqlDatabase.Execute(sqlGetStandings)
 
 												thisPosition = 1
@@ -140,7 +140,7 @@
 								sqlGetMajorMatchups = sqlGetMajorMatchups & "INNER JOIN LinkAccountsTeams L2 ON L2.TeamID = T2.TeamID "
 								sqlGetMajorMatchups = sqlGetMajorMatchups & "INNER JOIN Accounts A1 ON A1.AccountID = L1.AccountID "
 								sqlGetMajorMatchups = sqlGetMajorMatchups & "INNER JOIN Accounts A2 ON A2.AccountID = L2.AccountID "
-								sqlGetMajorMatchups = sqlGetMajorMatchups & "WHERE Year = 2021 AND (Period >= 4 AND Period <= 7) AND (Matchups.LevelID = 2 OR Matchups.LevelID = 3) AND IsMajor = 1 "
+								sqlGetMajorMatchups = sqlGetMajorMatchups & "WHERE Year = 2021 AND (Period >= 11 AND Period <= 14) AND (Matchups.LevelID = 2 OR Matchups.LevelID = 3) AND IsMajor = 1 "
 								sqlGetMajorMatchups = sqlGetMajorMatchups & "ORDER BY Period ASC, LevelID ASC"
 
 								Set rsMajorMatchups = sqlDatabase.Execute(sqlGetMajorMatchups)
