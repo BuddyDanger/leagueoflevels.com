@@ -255,7 +255,7 @@
 
 	If Session.Contents("SITE_Bet_Type") = "nfl" Then
 
-		sqlGetSchedules = "SELECT NFLGameID, Year, Period, DateTimeEST, DateAdd(hour,-5,getdate()) AS CurrentDateTime, AwayTeamID, A.City + ' ' + A.Name AS AwayTeam, HomeTeamID, B.City + ' ' + B.Name AS HomeTeam, AwayTeamScore, HomeTeamScore, Notes, AwayTeamMoneyline, HomeTeamMoneyline, AwayTeamSpread, HomeTeamSpread, OverUnderTotal "
+		sqlGetSchedules = "SELECT NFLGameID, Year, Period, DateTimeEST, DateAdd(hour,-5,getdate()) AS CurrentDateTime, AwayTeamID, A.City + ' ' + A.Name AS AwayTeam, HomeTeamID, B.City + ' ' + B.Name AS HomeTeam, AwayTeamScore, HomeTeamScore, Notes, AwayTeamMoneyline, HomeTeamMoneyline, AwayTeamSpread, HomeTeamSpread, OverUnderTotal, Boost_AwayTeamMoneyline, Boost_HomeTeamMoneyline, Boost_AwayTeamSpread, Boost_HomeTeamSpread, Boost_AwayTeamSpreadMoneyline, Boost_HomeTeamSpreadMoneyline, Boost_OverUnderTotal, Boost_OverTotalMoneyline, Boost_UnderTotalMoneyline "
 		sqlGetSchedules = sqlGetSchedules & "FROM dbo.NFLGames INNER JOIN NFLTeams A ON A.NFLTeamID = NFLGames.AwayTeamID INNER JOIN NFLTeams B ON B.NFLTeamID = NFLGames.HomeTeamID WHERE NFLGameID = " & Session.Contents("SITE_Bet_MatchupID")
 		Set rsSchedules = sqlDatabase.Execute(sqlGetSchedules)
 
@@ -277,7 +277,24 @@
 			thisOverUnderTotal = rsSchedules("OverUnderTotal")
 			thisGameTimeEST = rsSchedules("DateTimeEST")
 			thisCurrentTimeEST = rsSchedules("CurrentDateTime")
-			thisOverUnderTotal = rsSchedules("OverUnderTotal")
+
+			thisBoostTeamMoneyline1 = rsSchedules("Boost_AwayTeamMoneyline")
+			thisBoostTeamMoneyline2 = rsSchedules("Boost_HomeTeamMoneyline")
+			thisBoostTeamSpread1 = rsSchedules("Boost_AwayTeamSpread")
+			thisBoostTeamSpread2 = rsSchedules("Boost_HomeTeamSpread")
+			thisBoostOverUnderTotal = rsSchedules("Boost_OverUnderTotal")
+			thisBoostTeamSpreadMoneyline1 = rsSchedules("Boost_AwayTeamSpreadMoneyline")
+			thisBoostTeamSpreadMoneyline2 = rsSchedules("Boost_HomeTeamSpreadMoneyline")
+			thisBoostOverTotalMoneyline = rsSchedules("Boost_OverTotalMoneyline")
+			thisBoostUnderTotalMoneyline = rsSchedules("Boost_UnderTotalMoneyline")
+
+			thisBoostMoneylineFlag = 0
+			thisBoostSpreadFlag = 0
+			thisBoostTotalFlag = 0
+
+			If IsNumeric(thisBoostTeamMoneyline1) Or IsNumeric(thisBoostTeamMoneyline2) Then thisBoostMoneylineFlag = 1
+			If IsNumeric(thisBoostTeamSpread1) Or IsNumeric(thisBoostTeamSpread2) Or IsNumeric(thisBoostTeamSpreadMoneyline1) Or IsNumeric(thisBoostTeamSpreadMoneyline2) Then thisBoostSpreadFlag = 1
+			If IsNumeric(thisBoostOverUnderTotal) Or IsNumeric(thisBoostOverTotalMoneyline) Or IsNumeric(thisBoostUnderTotalMoneyline) Then thisBoostTotalFlag = 1
 
 			thisMatchupURL = "/sportsbook/nfl/" & thisNFLGameID & "/"
 
@@ -404,6 +421,17 @@
 							If thisTeamSpread1 > 0 Then thisTeamSpread1 = "+" & thisTeamSpread1
 							If thisTeamSpread2 > 0 Then thisTeamSpread2 = "+" & thisTeamSpread2
 
+							If thisBoostTeamMoneyline1 > 0 Then thisBoostTeamMoneyline1 = "+" & thisBoostTeamMoneyline1
+							If thisBoostTeamMoneyline2 > 0 Then thisBoostTeamMoneyline2 = "+" & thisBoostTeamMoneyline2
+
+							If thisBoostTeamSpread1 > 0 Then thisBoostTeamSpread1 = "+" & thisBoostTeamSpread1
+							If thisBoostTeamSpread2 > 0 Then thisBoostTeamSpread2 = "+" & thisBoostTeamSpread2
+
+							If thisBoostTeamSpreadMoneyline1 > 0 Then thisBoostTeamSpreadMoneyline1 = "+" & thisBoostTeamSpreadMoneyline1
+							If thisBoostTeamSpreadMoneyline2 > 0 Then thisBoostTeamSpreadMoneyline2 = "+" & thisBoostTeamSpreadMoneyline2
+
+							If thisBoostOverTotalMoneyline > 0 Then thisBoostOverTotalMoneyline = "+" & thisBoostOverTotalMoneyline
+
 							headerBGcolor = "032B43"
 							headerTextColor = "fff"
 							headerText = "NFL"
@@ -491,10 +519,7 @@
 
 						<div class="col-12 col-xl-3">
 							<div class="card">
-
-								<div class="card-body pb-0 pt-2">
-
-									<div style="border-bottom: 1px solid #e8ebf3;"><h4>Moneyline Wager</h4></div>
+								<div class="card-body pb-0 pt-0">
 
 									<form action="<%= thisMatchupURL %>" method="post">
 										<div class="form-group">
@@ -505,16 +530,41 @@
 											<input type="hidden" id="inputNFLGameID" name="inputNFLGameID" value="<%= thisNFLGameID %>" />
 											<input type="hidden" id="inputTeamID1" name="inputTeamID1" value="<%= thisTeamID1 %>" />
 											<input type="hidden" id="inputTeamID2" name="inputTeamID2" value="<%= thisTeamID2 %>" />
-											<input type="hidden" id="inputMoneylineValue1" name="inputMoneylineValue1" value="<%= thisTeamMoneyline1 %>" />
-											<input type="hidden" id="inputMoneylineValue2" name="inputMoneylineValue2" value="<%= thisTeamMoneyline2 %>" />
+<%
+											BoostText = ""
+											If IsNumeric(thisBoostTeamMoneyline1) Then
+												Response.Write("<input type=""hidden"" id=""inputMoneylineValue1"" name=""inputMoneylineValue1"" value=""" & thisBoostTeamMoneyline1 & """ />")
+												BoostText = "<span class=""badge badge-pill badge-warning"" title=""Boosted"">BOOSTED</span>"
+											Else
+												Response.Write("<input type=""hidden"" id=""inputMoneylineValue1"" name=""inputMoneylineValue1"" value=""" & thisTeamMoneyline1 & """ />")
+											End If
+
+											If IsNumeric(thisBoostTeamMoneyline2) Then
+												Response.Write("<input type=""hidden"" id=""inputMoneylineValue2"" name=""inputMoneylineValue2"" value=""" & thisBoostTeamMoneyline2 & """ />")
+												BoostText = "<span class=""badge badge-pill badge-warning"" title=""Boosted"">BOOSTED</span>"
+											Else
+												Response.Write("<input type=""hidden"" id=""inputMoneylineValue2"" name=""inputMoneylineValue2"" value=""" & thisTeamMoneyline2 & """ />")
+											End If
+%>
 											<input type="hidden" id="inputMoneylineWin" name="inputMoneylineWin" value="" />
 											<input type="hidden" id="inputMoneylinePayout" name="inputMoneylinePayout" value="" />
 
-											<label class="form-check-label-lg mt-4" for="inputMoneylineTeam" class="col-form-label"><b>Team (ML)</b></label>
+											<label class="form-check-label-lg mt-4" for="inputMoneylineTeam" class="col-form-label"><b>Moneyline</b> <%= BoostText %></label>
 											<select <%= thisFormDisabled %> class="form-control form-control-lg form-check-input-lg" name="inputMoneylineTeam" id="inputMoneylineTeam" onchange="calculate_moneyline_payout(document.getElementById('inputMoneylineBetAmount').value)" required>
 												<option></option>
-												<option value="1"><%= thisTeamName1 %> (<%= thisTeamMoneyline1 %> ML)</option>
-												<option value="2"><%= thisTeamName2 %> (<%= thisTeamMoneyline2 %> ML)</option>
+<%
+												If IsNumeric(thisBoostTeamMoneyline1) Then
+													Response.Write("<option value=""1"">" & thisTeamName1 & " (" & thisBoostTeamMoneyline1 & " ML)</option>")
+												Else
+													Response.Write("<option value=""1"">" & thisTeamName1 & " (" & thisTeamMoneyline1 & " ML)</option>")
+												End If
+
+												If IsNumeric(thisBoostTeamMoneyline2) Then
+													Response.Write("<option value=""2"">" & thisTeamName2 & " (" & thisBoostTeamMoneyline2 & " ML)</option>")
+												Else
+													Response.Write("<option value=""2"">" & thisTeamName2 & " (" & thisTeamMoneyline2 & " ML)</option>")
+												End If
+%>
 											</select>
 
 											<label for="inputMoneylineBetAmount" class="col-form-label mt-2"><b>Bet Amount (Schmeckles)</b></label>
@@ -542,9 +592,7 @@
 						<div class="col-12 col-xl-3">
 							<div class="card">
 
-								<div class="card-body pb-0 pt-2">
-
-									<div style="border-bottom: 1px solid #e8ebf3;"><h4>Point Spread Wager</h4></div>
+								<div class="card-body pb-0 pt-0">
 
 									<form action="<%= thisMatchupURL %>" method="post">
 										<div class="form-group">
@@ -555,16 +603,78 @@
 											<input type="hidden" id="inputNFLGameID" name="inputNFLGameID" value="<%= thisNFLGameID %>" />
 											<input type="hidden" id="inputTeamID1" name="inputTeamID1" value="<%= thisTeamID1 %>" />
 											<input type="hidden" id="inputTeamID2" name="inputTeamID2" value="<%= thisTeamID2 %>" />
-											<input type="hidden" id="inputSpreadValue1" name="inputSpreadValue1" value="<%= thisTeamSpread1 %>" />
-											<input type="hidden" id="inputSpreadValue2" name="inputSpreadValue2" value="<%= thisTeamSpread2 %>" />
+<%
+											BoostText = ""
+											If IsNumeric(thisBoostTeamSpreadMoneyline1) Then
+												Response.Write("<input type=""hidden"" id=""inputSpreadMoneylineValue1"" name=""inputSpreadMoneylineValue1"" value=""" & thisBoostTeamSpreadMoneyline1 & """ />")
+												BoostText = "<span class=""badge badge-pill badge-warning"" title=""Boosted"">BOOSTED</span>"
+											Else
+												Response.Write("<input type=""hidden"" id=""inputSpreadMoneylineValue1"" name=""inputSpreadMoneylineValue1"" value=""100"" />")
+											End If
+
+											If IsNumeric(thisBoostTeamSpreadMoneyline2) Then
+												Response.Write("<input type=""hidden"" id=""inputSpreadMoneylineValue2"" name=""inputSpreadMoneylineValue2"" value=""" & thisBoostTeamSpreadMoneyline2 & """ />")
+												BoostText = "<span class=""badge badge-pill badge-warning"" title=""Boosted"">BOOSTED</span>"
+											Else
+												Response.Write("<input type=""hidden"" id=""inputSpreadMoneylineValue2"" name=""inputSpreadMoneylineValue2"" value=""100"" />")
+											End If
+
+											If IsNumeric(thisBoostTeamSpread1) Then
+												Response.Write("<input type=""hidden"" id=""inputSpreadValue1"" name=""inputSpreadValue1"" value=""" & thisBoostTeamSpread1 & """ />")
+												BoostText = "<span class=""badge badge-pill badge-warning"" title=""Boosted"">BOOSTED</span>"
+											Else
+												Response.Write("<input type=""hidden"" id=""inputSpreadValue1"" name=""inputSpreadValue1"" value=""" & thisTeamSpread1 & """ />")
+											End If
+
+											If IsNumeric(thisBoostTeamSpread2) Then
+												Response.Write("<input type=""hidden"" id=""inputSpreadValue2"" name=""inputSpreadValue2"" value=""" & thisBoostTeamSpread2 & """ />")
+												BoostText = "<span class=""badge badge-pill badge-warning"" title=""Boosted"">BOOSTED</span>"
+											Else
+												Response.Write("<input type=""hidden"" id=""inputSpreadValue2"" name=""inputSpreadValue2"" value=""" & thisTeamSpread2 & """ />")
+											End If
+%>
 											<input type="hidden" id="inputSpreadWin" name="inputSpreadWin" value="" />
 											<input type="hidden" id="inputSpreadPayout" name="inputSpreadPayout" value="" />
 
-											<label class="form-check-label-lg mt-4" for="inputSpreadTeam" class="col-form-label"><b>Team (Spread)</b></label>
+											<label class="form-check-label-lg mt-4" for="inputSpreadTeam" class="col-form-label"><b>Point Spread</b> <%= BoostText %></label>
 											<select <%= thisFormDisabled %> class="form-control form-control-lg form-check-input-lg" name="inputSpreadTeam" id="inputSpreadTeam" onchange="calculate_spread_payout('document.getElementById('inputSpreadBetAmount').value')" required>
 												<option></option>
-												<option value="1"><%= thisTeamName1 %> (<%= thisTeamSpread1 %>)</option>
-												<option value="2"><%= thisTeamName2 %> (<%= thisTeamSpread2 %>)</option>
+<%
+												If IsNumeric(thisBoostTeamSpread1) Or IsNumeric(thisBoostTeamSpread2) Then
+
+													If IsNumeric(thisBoostTeamSpread1) Then
+														Response.Write("<option value=""1"">" & thisTeamName1 & " (" & thisBoostTeamSpread1 & ")</option>")
+													Else
+														Response.Write("<option value=""1"">" & thisTeamName1 & " (" & thisTeamSpread1 & ")</option>")
+													End If
+
+													If IsNumeric(thisBoostTeamSpread2) Then
+														Response.Write("<option value=""2"">" & thisTeamName2 & " (" & thisBoostTeamSpread2 & ")</option>")
+													Else
+														Response.Write("<option value=""2"">" & thisTeamName2 & " (" & thisTeamSpread2 & ")</option>")
+													End If
+
+												ElseIf IsNumeric(thisBoostTeamSpreadMoneyline1) Or IsNumeric(thisBoostTeamSpreadMoneyline2) Then
+
+													If IsNumeric(thisBoostTeamSpreadMoneyline1) Then
+														Response.Write("<option value=""1"">" & thisTeamName1 & " (" & thisTeamSpread1 & ") (" & thisBoostTeamSpreadMoneyline1 & " ML)</option>")
+													Else
+														Response.Write("<option value=""1"">" & thisTeamName1 & " (" & thisTeamSpread1 & ")</option>")
+													End If
+
+													If IsNumeric(thisBoostTeamSpreadMoneyline2) Then
+														Response.Write("<option value=""2"">" & thisTeamName2 & " (" & thisTeamSpread2 & ") (" & thisBoostTeamSpreadMoneyline2 & " ML)</option>")
+													Else
+														Response.Write("<option value=""2"">" & thisTeamName2 & " (" & thisTeamSpread2 & ")</option>")
+													End If
+
+												Else
+
+													Response.Write("<option value=""1"">" & thisTeamName1 & " (" & thisTeamSpread1 & ")</option>")
+													Response.Write("<option value=""2"">" & thisTeamName2 & " (" & thisTeamSpread2 & ")</option>")
+
+												End If
+%>
 											</select>
 
 											<label for="inputSpreadBetAmount" class="col-form-label mt-2"><b>Bet Amount (Schmeckles)</b></label>
@@ -592,9 +702,7 @@
 						<div class="col-12 col-xl-3">
 							<div class="card">
 
-								<div class="card-body pb-0 pt-2">
-
-									<div style="border-bottom: 1px solid #e8ebf3;"><h4>Over / Under Wager</h4></div>
+								<div class="card-body pb-0 pt-0">
 
 									<form action="<%= thisMatchupURL %>" method="post">
 										<div class="form-group">
@@ -603,15 +711,61 @@
 											<input type="hidden" id="inputTicketType" name="inputTicketType" value="3" />
 											<input type="hidden" id="inputMatchupID" name="inputMatchupID" value="<%= thisMatchupID %>" />
 											<input type="hidden" id="inputNFLGameID" name="inputNFLGameID" value="<%= thisNFLGameID %>" />
-											<input type="hidden" id="inputOverUnderAmount" name="inputOverUnderAmount" value="<%= thisOverUnderTotal %>" />
+<%
+											BoostText = ""
+											If IsNumeric(thisBoostOverUnderTotal) Then
+												Response.Write("<input type=""hidden"" id=""inputOverUnderAmount"" name=""inputOverUnderAmount"" value=""" & thisBoostOverTotalMoneyline & """ />")
+												BoostText = "<span class=""badge badge-pill badge-warning"" title=""Boosted"">BOOSTED</span>"
+											Else
+												Response.Write("<input type=""hidden"" id=""inputOverUnderAmount"" name=""inputOverUnderAmount"" value=""" & thisOverUnderTotal & """ />")
+											End If
+
+											If IsNumeric(thisBoostOverTotalMoneyline) Then
+												Response.Write("<input type=""hidden"" id=""inputOverMoneyline"" name=""inputOverMoneyline"" value=""" & thisBoostOverTotalMoneyline & """ />")
+												BoostText = "<span class=""badge badge-pill badge-warning"" title=""Boosted"">BOOSTED</span>"
+											Else
+												Response.Write("<input type=""hidden"" id=""inputOverMoneyline"" name=""inputOverMoneyline"" value=""100"" />")
+											End If
+
+											If IsNumeric(thisBoostUnderTotalMoneyline) Then
+												Response.Write("<input type=""hidden"" id=""inputUnderMoneyline"" name=""inputUnderMoneyline"" value=""" & thisBoostUnderTotalMoneyline & """ />")
+												BoostText = "<span class=""badge badge-pill badge-warning"" title=""Boosted"">BOOSTED</span>"
+											Else
+												Response.Write("<input type=""hidden"" id=""inputUnderMoneyline"" name=""inputUnderMoneyline"" value=""100"" />")
+											End If
+%>
 											<input type="hidden" id="inputOverUnderWin" name="inputOverUnderWin" value="" />
 											<input type="hidden" id="inputOverUnderPayout" name="inputOverUnderPayout" value="" />
 
-											<label class="form-check-label-lg mt-4" for="inputOverUnderBet" class="col-form-label"><b>Over / Under (Points)</b></label>
+											<label class="form-check-label-lg mt-4" for="inputOverUnderBet" class="col-form-label"><b>Over / Under (Points)</b> <%= BoostText %></label>
 											<select <%= thisFormDisabled %> class="form-control form-control-lg form-check-input-lg" name="inputOverUnderBet" id="inputOverUnderBet" onchange="calculate_ou_payout(document.getElementById('inputOverUnderBetAmount').value)">
 												<option></option>
-												<option value="1">OVER (<%= thisOverUnderTotal %>)</option>
-												<option value="2">UNDER (<%= thisOverUnderTotal %>)</option>
+<%
+												If IsNumeric(thisBoostOverUnderTotal) Then
+
+													Response.Write("<option value=""1"">OVER (" & thisBoostOverUnderTotal & ")</option>")
+
+												ElseIf IsNumeric(thisBoostOverTotalMoneyline) Or IsNumeric(thisBoostUnderTotalMoneyline) Then
+
+													If IsNumeric(thisBoostOverTotalMoneyline) Then
+														Response.Write("<option value=""1"">OVER (" & thisOverUnderTotal & ") (" & thisBoostOverTotalMoneyline & " ML)</option>")
+													Else
+														Response.Write("<option value=""1"">OVER (" & thisOverUnderTotal & ")</option>")
+													End If
+
+													If IsNumeric(thisBoostUnderTotalMoneyline) Then
+														Response.Write("<option value=""2"">UNDER (" & thisOverUnderTotal & ") (" & thisBoostUnderTotalMoneyline & " ML)</option>")
+													Else
+														Response.Write("<option value=""2"">UNDER (" & thisOverUnderTotal & ")</option>")
+													End If
+
+												Else
+
+													Response.Write("<option value=""1"">OVER (" & thisOverUnderTotal & ")</option>")
+													Response.Write("<option value=""2"">UNDER (" & thisOverUnderTotal & ")</option>")
+
+												End If
+%>
 											</select>
 
 											<label for="inputOverUnderBetAmount" class="col-form-label mt-2"><b>Bet Amount (Schmeckles)</b></label>
@@ -794,7 +948,7 @@
 
 				var payout = 0;
 				moneylineValue = 100;
-
+				
 				document.getElementById("winSpread").innerHTML = numberWithCommas(parseInt(stake * (moneylineValue / 100)));
 				document.getElementById("payoutSpread").innerHTML = numberWithCommas(parseInt(stake * (moneylineValue / 100)) + parseInt(stake));
 				document.getElementById("inputSpreadWin").value = numberWithCommas(parseInt(stake * (moneylineValue / 100)));
