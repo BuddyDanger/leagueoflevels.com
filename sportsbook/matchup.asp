@@ -532,14 +532,14 @@
 											<input type="hidden" id="inputTeamID2" name="inputTeamID2" value="<%= thisTeamID2 %>" />
 <%
 											BoostText = ""
-											If IsNumeric(thisBoostTeamMoneyline1) Then
+											If IsNumeric(thisBoostTeamMoneyline1) And thisBoostTeamMoneyline1 > 0 Then
 												Response.Write("<input type=""hidden"" id=""inputMoneylineValue1"" name=""inputMoneylineValue1"" value=""" & thisBoostTeamMoneyline1 & """ />")
 												BoostText = "<span class=""badge badge-pill badge-warning"" title=""Boosted"">BOOSTED</span>"
 											Else
 												Response.Write("<input type=""hidden"" id=""inputMoneylineValue1"" name=""inputMoneylineValue1"" value=""" & thisTeamMoneyline1 & """ />")
 											End If
 
-											If IsNumeric(thisBoostTeamMoneyline2) Then
+											If IsNumeric(thisBoostTeamMoneyline2) And thisBoostTeamMoneyline2 > 0 Then
 												Response.Write("<input type=""hidden"" id=""inputMoneylineValue2"" name=""inputMoneylineValue2"" value=""" & thisBoostTeamMoneyline2 & """ />")
 												BoostText = "<span class=""badge badge-pill badge-warning"" title=""Boosted"">BOOSTED</span>"
 											Else
@@ -553,13 +553,13 @@
 											<select <%= thisFormDisabled %> class="form-control form-control-lg form-check-input-lg" name="inputMoneylineTeam" id="inputMoneylineTeam" onchange="calculate_moneyline_payout(document.getElementById('inputMoneylineBetAmount').value)" required>
 												<option></option>
 <%
-												If IsNumeric(thisBoostTeamMoneyline1) Then
+												If IsNumeric(thisBoostTeamMoneyline1) And thisBoostTeamMoneyline1 > 0 Then
 													Response.Write("<option value=""1"">" & thisTeamName1 & " (" & thisBoostTeamMoneyline1 & " ML)</option>")
 												Else
 													Response.Write("<option value=""1"">" & thisTeamName1 & " (" & thisTeamMoneyline1 & " ML)</option>")
 												End If
 
-												If IsNumeric(thisBoostTeamMoneyline2) Then
+												If IsNumeric(thisBoostTeamMoneyline2) And thisBoostTeamMoneyline2 > 0 Then
 													Response.Write("<option value=""2"">" & thisTeamName2 & " (" & thisBoostTeamMoneyline2 & " ML)</option>")
 												Else
 													Response.Write("<option value=""2"">" & thisTeamName2 & " (" & thisTeamMoneyline2 & " ML)</option>")
@@ -605,28 +605,28 @@
 											<input type="hidden" id="inputTeamID2" name="inputTeamID2" value="<%= thisTeamID2 %>" />
 <%
 											BoostText = ""
-											If IsNumeric(thisBoostTeamSpreadMoneyline1) Then
+											If IsNumeric(thisBoostTeamSpreadMoneyline1) And thisBoostTeamSpreadMoneyline1 > 0 Then
 												Response.Write("<input type=""hidden"" id=""inputSpreadMoneylineValue1"" name=""inputSpreadMoneylineValue1"" value=""" & thisBoostTeamSpreadMoneyline1 & """ />")
 												BoostText = "<span class=""badge badge-pill badge-warning"" title=""Boosted"">BOOSTED</span>"
 											Else
 												Response.Write("<input type=""hidden"" id=""inputSpreadMoneylineValue1"" name=""inputSpreadMoneylineValue1"" value=""100"" />")
 											End If
 
-											If IsNumeric(thisBoostTeamSpreadMoneyline2) Then
+											If IsNumeric(thisBoostTeamSpreadMoneyline2) And thisBoostTeamSpreadMoneyline2 > 0 Then
 												Response.Write("<input type=""hidden"" id=""inputSpreadMoneylineValue2"" name=""inputSpreadMoneylineValue2"" value=""" & thisBoostTeamSpreadMoneyline2 & """ />")
 												BoostText = "<span class=""badge badge-pill badge-warning"" title=""Boosted"">BOOSTED</span>"
 											Else
 												Response.Write("<input type=""hidden"" id=""inputSpreadMoneylineValue2"" name=""inputSpreadMoneylineValue2"" value=""100"" />")
 											End If
 
-											If IsNumeric(thisBoostTeamSpread1) Then
+											If IsNumeric(thisBoostTeamSpread1) And thisBoostTeamSpread1 > 0 Then
 												Response.Write("<input type=""hidden"" id=""inputSpreadValue1"" name=""inputSpreadValue1"" value=""" & thisBoostTeamSpread1 & """ />")
 												BoostText = "<span class=""badge badge-pill badge-warning"" title=""Boosted"">BOOSTED</span>"
 											Else
 												Response.Write("<input type=""hidden"" id=""inputSpreadValue1"" name=""inputSpreadValue1"" value=""" & thisTeamSpread1 & """ />")
 											End If
 
-											If IsNumeric(thisBoostTeamSpread2) Then
+											If IsNumeric(thisBoostTeamSpread2) And thisBoostTeamSpread2 > 0 Then
 												Response.Write("<input type=""hidden"" id=""inputSpreadValue2"" name=""inputSpreadValue2"" value=""" & thisBoostTeamSpread2 & """ />")
 												BoostText = "<span class=""badge badge-pill badge-warning"" title=""Boosted"">BOOSTED</span>"
 											Else
@@ -640,15 +640,15 @@
 											<select <%= thisFormDisabled %> class="form-control form-control-lg form-check-input-lg" name="inputSpreadTeam" id="inputSpreadTeam" onchange="calculate_spread_payout('document.getElementById('inputSpreadBetAmount').value')" required>
 												<option></option>
 <%
-												If IsNumeric(thisBoostTeamSpread1) Or IsNumeric(thisBoostTeamSpread2) Then
+												If (IsNumeric(thisBoostTeamSpread1) And thisBoostTeamSpread1 > 0) Or (IsNumeric(thisBoostTeamSpread2) And thisBoostTeamSpread2 > 0) Then
 
-													If IsNumeric(thisBoostTeamSpread1) Then
+													If IsNumeric(thisBoostTeamSpread1) And thisBoostTeamSpread1 > 0 Then
 														Response.Write("<option value=""1"">" & thisTeamName1 & " (" & thisBoostTeamSpread1 & ")</option>")
 													Else
 														Response.Write("<option value=""1"">" & thisTeamName1 & " (" & thisTeamSpread1 & ")</option>")
 													End If
 
-													If IsNumeric(thisBoostTeamSpread2) Then
+													If IsNumeric(thisBoostTeamSpread2) And thisBoostTeamSpread2 > 0 Then
 														Response.Write("<option value=""2"">" & thisTeamName2 & " (" & thisBoostTeamSpread2 & ")</option>")
 													Else
 														Response.Write("<option value=""2"">" & thisTeamName2 & " (" & thisTeamSpread2 & ")</option>")
@@ -656,13 +656,13 @@
 
 												ElseIf IsNumeric(thisBoostTeamSpreadMoneyline1) Or IsNumeric(thisBoostTeamSpreadMoneyline2) Then
 
-													If IsNumeric(thisBoostTeamSpreadMoneyline1) Then
+													If IsNumeric(thisBoostTeamSpreadMoneyline1) And thisBoostTeamSpreadMoneyline1 > 0 Then
 														Response.Write("<option value=""1"">" & thisTeamName1 & " (" & thisTeamSpread1 & ") (" & thisBoostTeamSpreadMoneyline1 & " ML)</option>")
 													Else
 														Response.Write("<option value=""1"">" & thisTeamName1 & " (" & thisTeamSpread1 & ")</option>")
 													End If
 
-													If IsNumeric(thisBoostTeamSpreadMoneyline2) Then
+													If IsNumeric(thisBoostTeamSpreadMoneyline2) And thisBoostTeamSpreadMoneyline2 > 0 Then
 														Response.Write("<option value=""2"">" & thisTeamName2 & " (" & thisTeamSpread2 & ") (" & thisBoostTeamSpreadMoneyline2 & " ML)</option>")
 													Else
 														Response.Write("<option value=""2"">" & thisTeamName2 & " (" & thisTeamSpread2 & ")</option>")
@@ -713,21 +713,21 @@
 											<input type="hidden" id="inputNFLGameID" name="inputNFLGameID" value="<%= thisNFLGameID %>" />
 <%
 											BoostText = ""
-											If IsNumeric(thisBoostOverUnderTotal) Then
+											If IsNumeric(thisBoostOverUnderTotal) And thisBoostOverUnderTotal > 0 Then
 												Response.Write("<input type=""hidden"" id=""inputOverUnderAmount"" name=""inputOverUnderAmount"" value=""" & thisBoostOverTotalMoneyline & """ />")
 												BoostText = "<span class=""badge badge-pill badge-warning"" title=""Boosted"">BOOSTED</span>"
 											Else
 												Response.Write("<input type=""hidden"" id=""inputOverUnderAmount"" name=""inputOverUnderAmount"" value=""" & thisOverUnderTotal & """ />")
 											End If
 
-											If IsNumeric(thisBoostOverTotalMoneyline) Then
+											If IsNumeric(thisBoostOverTotalMoneyline) And thisBoostOverTotalMoneyline > 0 Then
 												Response.Write("<input type=""hidden"" id=""inputOverMoneyline"" name=""inputOverMoneyline"" value=""" & thisBoostOverTotalMoneyline & """ />")
 												BoostText = "<span class=""badge badge-pill badge-warning"" title=""Boosted"">BOOSTED</span>"
 											Else
 												Response.Write("<input type=""hidden"" id=""inputOverMoneyline"" name=""inputOverMoneyline"" value=""100"" />")
 											End If
 
-											If IsNumeric(thisBoostUnderTotalMoneyline) Then
+											If IsNumeric(thisBoostUnderTotalMoneyline) And thisBoostUnderTotalMoneyline > 0 Then
 												Response.Write("<input type=""hidden"" id=""inputUnderMoneyline"" name=""inputUnderMoneyline"" value=""" & thisBoostUnderTotalMoneyline & """ />")
 												BoostText = "<span class=""badge badge-pill badge-warning"" title=""Boosted"">BOOSTED</span>"
 											Else
@@ -948,7 +948,7 @@
 
 				var payout = 0;
 				moneylineValue = 100;
-				
+
 				document.getElementById("winSpread").innerHTML = numberWithCommas(parseInt(stake * (moneylineValue / 100)));
 				document.getElementById("payoutSpread").innerHTML = numberWithCommas(parseInt(stake * (moneylineValue / 100)) + parseInt(stake));
 				document.getElementById("inputSpreadWin").value = numberWithCommas(parseInt(stake * (moneylineValue / 100)));
