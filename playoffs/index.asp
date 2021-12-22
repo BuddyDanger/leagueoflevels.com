@@ -54,26 +54,20 @@
 					<div class="row mt-4">
 
 						<div class="col-xxxl-6 col-xxl-6 col-xl-6 col-lg-6 col-md-12 col-sm-12 col-xs-12 col-xxs-12">
-							<a href="https://samelevel.imgix.net/SLFFL-2021-WEEK-15.jpg" style="text-decoration: none; display: block;">
+							<a href="https://samelevel.imgix.net/SLFFL-2021-WEEK-16.jpg" style="text-decoration: none; display: block;">
 								<ul class="list-group mb-4">
-									<li class="list-group-item p-0">
-										<h4 class="text-left bg-dark text-white p-3 mt-0 mb-0 rounded-top"><b>SAME LEVEL PLAYOFF BRACKET</b></h4>
-									</li>
 									<li class="list-group-item">
-										<img src="https://samelevel.imgix.net/SLFFL-2021-WEEK-15.jpg" class="img-fluid mb-2" border="0" />
+										<img src="https://samelevel.imgix.net/SLFFL-2021-WEEK-16.jpg" class="img-fluid mb-2 mt-2" border="0" />
 									</li>
 								</ul>
 							</a>
 						</div>
 
 						<div class="col-xxxl-6 col-xxl-6 col-xl-6 col-lg-6 col-md-12 col-sm-12 col-xs-12 col-xxs-12">
-							<a href="https://samelevel.imgix.net/FLFFL-2021-WEEK-15.jpg" style="text-decoration: none; display: block;">
+							<a href="https://samelevel.imgix.net/FLFFL-2021-WEEK-16.jpg" style="text-decoration: none; display: block;">
 								<ul class="list-group mb-4">
-									<li class="list-group-item p-0">
-										<h4 class="text-left bg-dark text-white p-3 mt-0 mb-0 rounded-top"><b>FARM LEVEL PLAYOFF BRACKET</b></h4>
-									</li>
 									<li class="list-group-item">
-										<img src="https://samelevel.imgix.net/FLFFL-2021-WEEK-15.jpg" class="img-fluid mb-2" border="0" />
+										<img src="https://samelevel.imgix.net/FLFFL-2021-WEEK-16.jpg" class="img-fluid mb-2 mt-2" border="0" />
 									</li>
 								</ul>
 							</a>
