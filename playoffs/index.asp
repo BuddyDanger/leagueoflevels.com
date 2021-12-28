@@ -18,13 +18,13 @@
 		<meta property="og:site_name" content="LeagueOfLevels.com" />
 		<meta property="og:url" content="https://www.leagueoflevels.com/" />
 		<meta property="og:title" content="Playoffs / The League of Levels" />
-		<meta property="og:description" content="Up-to-date playoff brackets for both the SLFFL and FLFFL. Last updated 12/20/21." />
+		<meta property="og:description" content="Up-to-date playoff brackets for both the SLFFL and FLFFL. Last updated 12/28/21." />
 		<meta property="og:type" content="article" />
 
 		<meta name="twitter:site" content="samelevel" />
 		<meta name="twitter:url" content="https://www.leagueoflevels.com/" />
 		<meta name="twitter:title" content="Playoffs / The League of Levels" />
-		<meta name="twitter:description" content="Up-to-date playoff brackets for both the SLFFL and FLFFL. Last updated 12/20/21." />
+		<meta name="twitter:description" content="Up-to-date playoff brackets for both the SLFFL and FLFFL. Last updated 12/28/21." />
 
 		<meta name="title" content="Playoffs - The League of Levels" />
 		<meta name="medium" content="article" />
@@ -54,20 +54,20 @@
 					<div class="row mt-4">
 
 						<div class="col-xxxl-6 col-xxl-6 col-xl-6 col-lg-6 col-md-12 col-sm-12 col-xs-12 col-xxs-12">
-							<a href="https://samelevel.imgix.net/SLFFL-2021-WEEK-16.jpg" style="text-decoration: none; display: block;">
+							<a href="https://samelevel.imgix.net/SLFFL-2021-WEEK-17.jpg" style="text-decoration: none; display: block;">
 								<ul class="list-group mb-4">
 									<li class="list-group-item">
-										<img src="https://samelevel.imgix.net/SLFFL-2021-WEEK-16.jpg" class="img-fluid mb-2 mt-2" border="0" />
+										<img src="https://samelevel.imgix.net/SLFFL-2021-WEEK-17.jpg" class="img-fluid mb-2 mt-2" border="0" />
 									</li>
 								</ul>
 							</a>
 						</div>
 
 						<div class="col-xxxl-6 col-xxl-6 col-xl-6 col-lg-6 col-md-12 col-sm-12 col-xs-12 col-xxs-12">
-							<a href="https://samelevel.imgix.net/FLFFL-2021-WEEK-16.jpg" style="text-decoration: none; display: block;">
+							<a href="https://samelevel.imgix.net/FLFFL-2021-WEEK-17.jpg" style="text-decoration: none; display: block;">
 								<ul class="list-group mb-4">
 									<li class="list-group-item">
-										<img src="https://samelevel.imgix.net/FLFFL-2021-WEEK-16.jpg" class="img-fluid mb-2 mt-2" border="0" />
+										<img src="https://samelevel.imgix.net/FLFFL-2021-WEEK-17.jpg" class="img-fluid mb-2 mt-2" border="0" />
 									</li>
 								</ul>
 							</a>
