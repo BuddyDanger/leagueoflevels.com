@@ -741,11 +741,11 @@
 											<select <%= thisFormDisabled %> class="form-control form-control-lg form-check-input-lg" name="inputOverUnderBet" id="inputOverUnderBet" onchange="calculate_ou_payout(document.getElementById('inputOverUnderBetAmount').value)">
 												<option></option>
 <%
-												If IsNumeric(thisBoostOverUnderTotal) Then
+												If IsNumeric(thisBoostOverUnderTotal) And thisBoostOverUnderTotal > 0 Then
 
 													Response.Write("<option value=""1"">OVER (" & thisBoostOverUnderTotal & ")</option>")
 
-												ElseIf IsNumeric(thisBoostOverTotalMoneyline) Or IsNumeric(thisBoostUnderTotalMoneyline) Then
+												ElseIf (IsNumeric(thisBoostOverTotalMoneyline) Or IsNumeric(thisBoostUnderTotalMoneyline)) And (thisBoostOverTotalMoneyline > 0 Or thisBoostUnderTotalMoneyline > 0) Then
 
 													If IsNumeric(thisBoostOverTotalMoneyline) Then
 														Response.Write("<option value=""1"">OVER (" & thisOverUnderTotal & ") (" & thisBoostOverTotalMoneyline & " ML)</option>")
