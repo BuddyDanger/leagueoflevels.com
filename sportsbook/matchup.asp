@@ -509,7 +509,7 @@
 										<div><b>Available Schmeckles</b></div>
 									</li>
 									<li class="list-group-item">
-										<span id="countdownTimer" class="float-right">60</span>
+										<span id="countdownTimer" class="float-right">600</span>
 										<div><b>Refresh Countdown</b></div>
 									</li>
 								</ul>
@@ -1002,7 +1002,7 @@
 			function numberWithCommas(x) { return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","); }
 
 			var countdownTimer = new Date();
-			countdownTimer.setSeconds( countdownTimer.getSeconds() + 60 );
+			countdownTimer.setSeconds( countdownTimer.getSeconds() + 600 );
 
 			var x = setInterval(function() {
 
@@ -1010,7 +1010,7 @@
 
 				var distance = countdownTimer - now;
 
-				var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+				var seconds = Math.floor((distance % (1000 * 600)) / 1000);
 
 				document.getElementById("countdownTimer").innerHTML = seconds;
 
