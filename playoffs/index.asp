@@ -54,20 +54,20 @@
 					<div class="row mt-4">
 
 						<div class="col-xxxl-6 col-xxl-6 col-xl-6 col-lg-6 col-md-12 col-sm-12 col-xs-12 col-xxs-12">
-							<a href="https://samelevel.imgix.net/SLFFL-2021-WEEK-17.jpg" style="text-decoration: none; display: block;">
+							<a href="https://samelevel.imgix.net/SLFFL-2021-FINAL.jpg" style="text-decoration: none; display: block;">
 								<ul class="list-group mb-4">
 									<li class="list-group-item">
-										<img src="https://samelevel.imgix.net/SLFFL-2021-WEEK-17.jpg" class="img-fluid mb-2 mt-2" border="0" />
+										<img src="https://samelevel.imgix.net/SLFFL-2021-FINAL.jpg" class="img-fluid mb-2 mt-2" border="0" />
 									</li>
 								</ul>
 							</a>
 						</div>
 
 						<div class="col-xxxl-6 col-xxl-6 col-xl-6 col-lg-6 col-md-12 col-sm-12 col-xs-12 col-xxs-12">
-							<a href="https://samelevel.imgix.net/FLFFL-2021-WEEK-17.jpg" style="text-decoration: none; display: block;">
+							<a href="https://samelevel.imgix.net/FLFFL-2021-FINAL.jpg" style="text-decoration: none; display: block;">
 								<ul class="list-group mb-4">
 									<li class="list-group-item">
-										<img src="https://samelevel.imgix.net/FLFFL-2021-WEEK-17.jpg" class="img-fluid mb-2 mt-2" border="0" />
+										<img src="https://samelevel.imgix.net/FLFFL-2021-FINAL.jpg" class="img-fluid mb-2 mt-2" border="0" />
 									</li>
 								</ul>
 							</a>

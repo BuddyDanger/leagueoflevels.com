@@ -148,7 +148,7 @@
 							If CInt(thisLevel) = 2 Then thisHeader = "SAME LEVEL"
 							If CInt(thisLevel) = 3 Then thisHeader = "FARM LEVEL"
 %>
-							<div class="col-12 col-xl-4">
+							<div class="col-12 col-xl-4 mb-4">
 
 								<h4 class="text-left bg-primary text-white p-3 mt-0 mb-0 rounded-top"><b><%= thisHeader %> LOTTERY RESULTS</b><span class="float-right dripicons-trophy"></i></h4>
 

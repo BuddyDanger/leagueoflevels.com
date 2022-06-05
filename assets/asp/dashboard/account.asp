@@ -87,7 +87,7 @@
 					<div><b><i class="fas fa-fw fa-calculator"></i> &nbsp;POINTS SCORED</b></div>
 				</li>
 				<li class="list-group-item">
-					<span class="float-right"><%= thisCurrentPowerRanking & ordsuffix %> (<%= thisPowerRankPoints %>/72)</span>
+					<span class="float-right"><%= thisCurrentPowerRanking & ordsuffix %> (<%= thisPowerRankPoints %>/96)</span>
 					<div><b><i class="fas fa-fw fa-star"></i> &nbsp;POWER RANKING</b></div>
 				</li>
 			</ul>
