@@ -18,7 +18,7 @@ $(document).ready(function () {
 	$(".standings_year").ionRangeSlider({
         type: "double",
         min: 2008,
-        max: 2021,
+        max: 2022,
         grid: true,
 		prettify_enabled: false,
 		onChange: updateYears

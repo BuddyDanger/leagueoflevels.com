@@ -68,11 +68,12 @@
 										<thead>
 											<tr>
 												<th class="pl-3"><b>TEAM NAME</b></th>
-												<th class="text-center d-none d-md-table-cell">TOTAL POINTS</th>
-												<th class="text-center d-none d-sm-table-cell">ACTUAL RECORD</th>
-												<th class="text-center d-none d-sm-table-cell">BREAKDOWN RECORD</th>
-												<th class="text-center d-none d-sm-table-cell">LUCK RATE</th>
-												<th class="text-center">POWER POINTS</th>
+												<th class="text-right d-none d-md-table-cell">TOTAL POINTS</th>
+												<th class="text-right d-none d-sm-table-cell">ACTUAL RECORD</th>
+												<th class="text-right d-none d-md-table-cell">LEVEL RECORD</th>
+												<th class="text-right d-none d-md-table-cell">LOL RECORD</th>
+												<th class="text-right d-none d-sm-table-cell">LUCK RATE</th>
+												<th class="text-right pr-4">POWER POINTS</th>
 											</tr>
 										</thead>
 										<tbody>
@@ -89,7 +90,7 @@
 											sqlGetLeaderboard = sqlGetLeaderboard & "Accounts.ProfileName, SUM(PowerPoints_Points) + SUM(PowerPoints_Wins) + SUM(PowerPoints_Break) + SUM(PowerPoints_LOLBreak) AS PowerPoints_Total, SUM(PowerPoints_Points) AS PowerPoints_Points, "
 											sqlGetLeaderboard = sqlGetLeaderboard & "SUM(PowerPoints_Wins) AS PowerPoints_Wins, SUM(PowerPoints_Break) AS PowerPoints_Break, SUM(PowerPoints_LOLBreak) AS PowerPoints_LOLBreak, SUM(TotalPoints) AS TotalPoints, SUM(TotalWins) AS TotalWins, SUM(TotalLosses) AS TotalLosses, SUM(TotalTies) AS TotalTies, "
 											sqlGetLeaderboard = sqlGetLeaderboard & "SUM(TotalBreakdownWins) AS TotalBreakdownWins, SUM(TotalBreakdownLosses) AS TotalBreakdownLosses, SUM(TotalBreakdownTies) AS TotalBreakdownTies, "
-											sqlGetLeaderboard = sqlGetLeaderboard & "SUM(TotalLOLBreakdownWins) AS TotalLOLBreakdownWins, SUM(TotalLOLBreakdownLosses) AS TotalLOLBreakdownLosses, SUM(TotalLOLBreakdownTies) AS TotalBreakdownTies, "
+											sqlGetLeaderboard = sqlGetLeaderboard & "SUM(TotalLOLBreakdownWins) AS TotalLOLBreakdownWins, SUM(TotalLOLBreakdownLosses) AS TotalLOLBreakdownLosses, SUM(TotalLOLBreakdownTies) AS TotalLOLBreakdownTies, "
 											sqlGetLeaderboard = sqlGetLeaderboard & "((CAST(SUM(TotalWins) AS DECIMAL) / (CAST(SUM(TotalWins) AS DECIMAL) + CAST(SUM(TotalLosses) AS DECIMAL))) * 100) / ((CAST(SUM(TotalLOLBreakdownWins) AS DECIMAL) / (CAST(SUM(TotalLOLBreakdownWins) AS DECIMAL) + CAST(SUM(TotalLOLBreakdownLosses) AS DECIMAL)))) - 100 AS LuckRate, "
 											sqlGetLeaderboard = sqlGetLeaderboard & "A.TeamID, Accounts.AccountID, Accounts.ProfileImage FROM ( "
 												sqlGetLeaderboard = sqlGetLeaderboard & "SELECT TeamID, ROW_NUMBER() OVER (ORDER BY SUM(PointsScored), SUM(ActualWins)) AS PowerPoints_Points, NULL AS PowerPoints_Wins, NULL AS PowerPoints_Break, NULL AS PowerPoints_LOLBreak, NULL AS TotalWins, NULL AS TotalLosses, NULL AS TotalTies, SUM(PointsScored) AS TotalPoints, NULL AS TotalBreakdownWins, NULL AS TotalBreakdownLosses, NULL AS TotalBreakdownTies, NULL AS TotalLOLBreakdownWins, NULL AS TotalLOLBreakdownLosses, NULL AS TotalLOLBreakdownTies FROM Standings "
@@ -136,6 +137,9 @@
 												thisTotalBreakdownWins = rsLeaderboard("TotalBreakdownWins")
 												thisTotalBreakdownLosses = rsLeaderboard("TotalBreakdownLosses")
 												thisTotalBreakdownTies = rsLeaderboard("TotalBreakdownTies")
+												thisTotalLOLBreakdownWins = rsLeaderboard("TotalLOLBreakdownWins")
+												thisTotalLOLBreakdownLosses = rsLeaderboard("TotalLOLBreakdownLosses")
+												thisTotalLOLBreakdownTies = rsLeaderboard("TotalLOLBreakdownTies")
 												thisPowerPoints = rsLeaderboard("PowerPoints_Total")
 												thisLuckRate = FormatNumber(rsLeaderboard("LuckRate"), 2) & "%"
 												thisTeamID = rsLeaderboard("TeamID")
@@ -144,6 +148,7 @@
 
 												thisRecord = thisTotalWins & "-" & thisTotalLosses & "-" & thisTotalTies
 												thisBreakdown = thisTotalBreakdownWins & "-" & thisTotalBreakdownLosses & "-" & thisTotalBreakdownTies
+												thisLOLBreakdown = thisTotalLOLBreakdownWins & "-" & thisTotalLOLBreakdownLosses & "-" & thisTotalLOLBreakdownTies
 
 												thisLastWeekRank = "A"
 												For i = 0 To UBound(arrLastWeek, 2) - 1
@@ -161,11 +166,12 @@
 %>
 												<tr style="<%= thisBorderBottom %>">
 													<td class="pl-3"><img src="https://samelevel.imgix.net/<%= rsLeaderboard("ProfileImage") %>?w=40&h=40&fit=crop&crop=focalpoint" class="rounded-circle hidden d-none d-sm-none d-md-inline mr-1 pr-1"><b><%= thisRank %>.</b> &nbsp;<%= rsLeaderboard("ProfileName") %>&nbsp;&nbsp;<%= thisRankChangeDisplay %></td>
-													<td class="text-center d-none d-md-table-cell"><%= FormatNumber(rsLeaderboard("TotalPoints"), 2) %></td>
-													<td class="text-center d-none d-sm-table-cell"><%= thisRecord %></td>
-													<td class="text-center d-none d-sm-table-cell"><%= thisBreakdown %></td>
-													<td class="text-center d-none d-sm-table-cell"><%= thisLuckRate %></td>
-													<td class="text-center"><%= thisPowerPoints %></td>
+													<td class="text-right d-none d-md-table-cell"><%= FormatNumber(rsLeaderboard("TotalPoints"), 2) %></td>
+													<td class="text-right d-none d-sm-table-cell"><%= thisRecord %></td>
+													<td class="text-right d-none d-md-table-cell"><%= thisBreakdown %></td>
+													<td class="text-right d-none d-md-table-cell"><%= thisLOLBreakdown %></td>
+													<td class="text-right d-none d-sm-table-cell"><%= thisLuckRate %></td>
+													<td class="text-right pr-4"><b><%= thisPowerPoints %></b></td>
 												</tr>
 <%
 												rsLeaderboard.MoveNext

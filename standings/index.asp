@@ -6,8 +6,8 @@
 	If Len(ParseForAbsolutePath(Right(Request.ServerVariables("QUERY_STRING"), Len(Request.ServerVariables("QUERY_STRING")) - Instr(Request.ServerVariables("QUERY_STRING"),";")))) < 1 Then
 
 		Session.Contents("SITE_Standings_LevelID") = ""
-		Session.Contents("SITE_Standings_Start_Year") = "2021"
-		Session.Contents("SITE_Standings_End_Year") = "2021"
+		Session.Contents("SITE_Standings_Start_Year") = "2022"
+		Session.Contents("SITE_Standings_End_Year") = "2022"
 		Session.Contents("SITE_Standings_Start_Period") = "1"
 		Session.Contents("SITE_Standings_End_Period") = Session.Contents("CurrentPeriod")
 
@@ -133,7 +133,7 @@
 		<meta name="medium" content="article" />
 
 		<link rel="shortcut icon" href="/favicon.ico" />
-		<link rel="canonical" href="https://www.leagueoflevels.com/standings/standings/" />
+		<link rel="canonical" href="https://www.leagueoflevels.com/standings/" />
 
 		<link href="/assets/css/bootstrap.css" rel="stylesheet" type="text/css" />
 		<link href="/assets/css/icons.css" rel="stylesheet" type="text/css" />
