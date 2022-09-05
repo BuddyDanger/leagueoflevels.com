@@ -406,11 +406,29 @@
 
 			End If
 
+			If MatchFound = 0 And Session.Contents("SITE_Level_2") = "redeem" Then
+
+				sqlCheckRedemption = "SELECT * FROM SchmeckleRedemptions WHERE RedemptionCode = '" & Level & "'"
+				Set rsRedemption = sqlDatabase.Execute(sqlCheckRedemption)
+
+				If Not rsRedemption.Eof Then
+
+					Session.Contents("SITE_Schmeckles_RedemptionID") = rsRedemption("RedemptionID")
+
+					rsRedemption.Close
+					Set rsRedemption = Nothing
+
+					sTransferURL = "redeem.asp"
+
+					MatchFound = 1
+
+				End If
+
+			End If
+
 			LevelCount = LevelCount + 1
 
 		Next
-
-
 
 	End If
 

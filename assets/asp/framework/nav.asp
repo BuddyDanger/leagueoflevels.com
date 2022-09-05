@@ -35,27 +35,22 @@
 
 				<ul class="nav">
 					<li class="nav-item"><a class="nav-link" href="/"><i class="dripicons-meter"></i>Dashboard</a></li>
-					<li class="nav-item"><a class="nav-link" href="/lottery/"><i class="dripicons-network-3"></i>Lottery</a></li>
-					<!--
-					<li class="nav-item"><a class="nav-link" href="/sportsbook/"><i class="dripicons-ticket"></i>Sportsbook</a></li>
+					<!--<li class="nav-item"><a class="nav-link" href="/lottery/"><i class="dripicons-network-3"></i>Lottery</a></li>-->
+					<!--<li class="nav-item"><a class="nav-link" href="/sportsbook/"><i class="dripicons-ticket"></i>Sportsbook</a></li>-->
 					<li class="nav-item"><a class="nav-link" href="/scores/"><i class="dripicons-rocket"></i>Live Scoring</a></li>
-					-->
 					<li class="nav-item"><a class="nav-link" href="/standings/"><i class="dripicons-view-list"></i>Standings</a></li>
 					<!--
 					<li class="nav-item"><a class="nav-link" href="/majors/"><i class="dripicons-trophy"></i>Majors</a></li>
 					-->
 					<li class="nav-item"><a class="nav-link" href="/schmeckles/"><i class="dripicons-card"></i>Schmeckles</a></li>
-					<!--
 					<li class="nav-item"><a class="nav-link" href="/eliminator/"><i class="dripicons-warning"></i>Eliminator</a></li>
-					-->
 					<li class="nav-item"><a class="nav-link" href="/power-rankings/"><i class="dripicons-star"></i>Power Rankings</a></li>
-					<li class="nav-item"><a class="nav-link" href="/playoffs/"><i class="dripicons-network-3"></i>Playoffs</a></li>
-					<!--<li class="nav-item"><a class="nav-link" href="/teams/"><i class="dripicons-user-group"></i>Teams</a></li>-->
-					<!--<li class="nav-item"><a class="nav-link" href="/schedule/"><i class="dripicons-calendar"></i>Schedule</a></li>-->
+					<!--<li class="nav-item"><a class="nav-link" href="/playoffs/"><i class="dripicons-network-3"></i>Playoffs</a></li>
+					<li class="nav-item"><a class="nav-link" href="/teams/"><i class="dripicons-user-group"></i>Teams</a></li>
+					<li class="nav-item"><a class="nav-link" href="/schedule/"><i class="dripicons-calendar"></i>Schedule</a></li>-->
 
 					<li class="nav-item <% If Session.Contents("LoggedIn") = "yes" Then %>d-block<% Else %>d-none<% End If %>"><a class="nav-link" href="/account/"><i class="dripicons-toggles"></i>Account Profile</a></li>
 					<li class="nav-item <% If Session.Contents("LoggedIn") <> "yes" Then %>d-block<% Else %>d-none<% End If %>"><a class="nav-link" href="/account/login/"><i class="dripicons-enter"></i>Login</a></li>
-					<li class="nav-item <% If Session.Contents("LoggedIn") <> "yes" Then %>d-block<% Else %>d-none<% End If %>"><a class="nav-link" href="/account/register/"><i class="dripicons-user-id"></i>Register</a></li>
 					<li class="nav-item <% If Session.Contents("LoggedIn") <> "yes" Then %>d-block<% Else %>d-none<% End If %>"><a class="nav-link" href="/account/reset-password/"><i class="dripicons-retweet"></i>Reset Password</a></li>
 				</ul>
 

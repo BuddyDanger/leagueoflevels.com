@@ -58,7 +58,7 @@
 						isWin = 0
 						isDone = 0
 
-						If CInt(thisTotalPMR) = 0 Then isDone = 1
+						If CInt(thisTotalPMR) = 0 And (CInt(thisTeamScore1) + CInt(thisTeamScore2)) > 0 Then isDone = 1
 
 						If thisTeamScore1 > thisTeamScore2 Then winTeam1 = 1
 						If thisTeamScore1 < thisTeamScore2 Then winTeam2 = 1

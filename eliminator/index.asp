@@ -53,7 +53,7 @@
 
 					<div class="row mb-2">
 <%
-					sqlGetPicks = "SELECT EliminatorPickID, EliminatorRoundID, EliminatorPicks.AccountID, Accounts.ProfileName, Accounts.ProfileImage, EliminatorPicks.NFLTeamID, NFLTeams.City, Year, Period, CorrectPick FROM EliminatorPicks INNER JOIN Accounts ON Accounts.AccountID = EliminatorPicks.AccountID INNER JOIN NFLTeams ON NFLTeams.NFLTeamID = EliminatorPicks.NFLTeamID ORDER BY Period DESC"
+					sqlGetPicks = "SELECT EliminatorPickID, EliminatorRoundID, EliminatorPicks.AccountID, Accounts.ProfileName, Accounts.ProfileImage, EliminatorPicks.NFLTeamID, NFLTeams.City, Year, Period, CorrectPick FROM EliminatorPicks INNER JOIN Accounts ON Accounts.AccountID = EliminatorPicks.AccountID INNER JOIN NFLTeams ON NFLTeams.NFLTeamID = EliminatorPicks.NFLTeamID WHERE EliminatorPicks.Year = 2022 ORDER BY Period DESC"
 					Set rsPicks = sqlDatabase.Execute(sqlGetPicks)
 
 					currentPeriod = 0
