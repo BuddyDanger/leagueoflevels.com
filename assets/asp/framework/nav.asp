@@ -36,7 +36,7 @@
 				<ul class="nav">
 					<li class="nav-item"><a class="nav-link" href="/"><i class="dripicons-meter"></i>Dashboard</a></li>
 					<!--<li class="nav-item"><a class="nav-link" href="/lottery/"><i class="dripicons-network-3"></i>Lottery</a></li>-->
-					<!--<li class="nav-item"><a class="nav-link" href="/sportsbook/"><i class="dripicons-ticket"></i>Sportsbook</a></li>-->
+					<li class="nav-item"><a class="nav-link" href="/sportsbook/"><i class="dripicons-ticket"></i>Sportsbook</a></li>
 					<li class="nav-item"><a class="nav-link" href="/scores/"><i class="dripicons-rocket"></i>Live Scoring</a></li>
 					<li class="nav-item"><a class="nav-link" href="/standings/"><i class="dripicons-view-list"></i>Standings</a></li>
 					<!--
