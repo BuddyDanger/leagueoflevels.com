@@ -70,6 +70,7 @@
 				Session.Contents("AccountEmail") = rsAccount("Email")
 				Session.Contents("AccountBalls") = rsAccount("Balls")
 				Session.Contents("AccountLocks") = rsAccount("Locks")
+				Session.Contents("AccountSlackHandle") = rsAccount("SlackHandle")
 
 				rsAccount.Close
 				Set rsAccount = Nothing
