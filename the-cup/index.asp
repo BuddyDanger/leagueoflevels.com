@@ -67,6 +67,7 @@
 								</li>
 							</ul>
 
+							<div class="py-2 py-xl-0"></div>
 							<div class="py-xl-5"></div>
 							<div class="py-xl-5"></div>
 							<div class="py-xl-5"></div>
@@ -121,6 +122,7 @@
 								</li>
 							</ul>
 
+							<div class="py-2 py-xl-0"></div>
 							<div class="py-xl-5"></div>
 							<div class="py-xl-5"></div>
 
@@ -133,6 +135,7 @@
 								</li>
 							</ul>
 
+							<div class="py-2 py-xl-0"></div>
 							<div class="py-xl-3"></div>
 
 							<ul class="list-group list-flush">
@@ -144,6 +147,7 @@
 								</li>
 							</ul>
 
+							<div class="py-2 py-xl-0"></div>
 							<div class="py-xl-5"></div>
 							<div class="py-xl-5"></div>
 
@@ -156,6 +160,7 @@
 								</li>
 							</ul>
 
+							<div class="py-2 py-xl-0"></div>
 							<div class="py-xl-5"></div>
 							<div class="py-xl-3"></div>
 
@@ -171,7 +176,7 @@
 						</div>
 
 						<!-- ROUND THREE -->
-						<div class="col-xl-2 col-12">
+						<div class="col-xl-2 col-12 pb-4">
 
 							<div class="bg-dark text-white p-2 mb-3 rounded"><b>ROUND THREE</b></div>
 
@@ -187,6 +192,7 @@
 								</li>
 							</ul>
 
+							<div class="py-2 py-xl-0"></div>
 							<div class="py-xl-3"></div>
 
 							<ul class="list-group list-flush">
@@ -198,6 +204,7 @@
 								</li>
 							</ul>
 
+							<div class="py-2 py-xl-0"></div>
 							<div class="py-xl-4"></div>
 							<div class="py-xl-2"></div>
 
@@ -210,6 +217,7 @@
 								</li>
 							</ul>
 
+							<div class="py-2 py-xl-0"></div>
 							<div class="py-xl-3"></div>
 
 							<ul class="list-group list-flush">
@@ -221,6 +229,7 @@
 								</li>
 							</ul>
 
+							<div class="py-2 py-xl-0"></div>
 							<div class="py-xl-4"></div>
 							<div class="py-xl-4"></div>
 							<div class="py-xl-3"></div>
@@ -234,6 +243,7 @@
 								</li>
 							</ul>
 
+							<div class="py-2 py-xl-0"></div>
 							<div class="py-xl-3"></div>
 
 							<ul class="list-group list-flush">
@@ -245,6 +255,7 @@
 								</li>
 							</ul>
 
+							<div class="py-2 py-xl-0"></div>
 							<div class="py-xl-4"></div>
 							<div class="py-xl-2"></div>
 
@@ -257,6 +268,7 @@
 								</li>
 							</ul>
 
+							<div class="py-2 py-xl-0"></div>
 							<div class="py-xl-3"></div>
 
 							<ul class="list-group list-flush">
@@ -271,7 +283,7 @@
 						</div>
 
 						<!-- ROUND FOUR -->
-						<div class="col-xl-2 col-12">
+						<div class="col-xl-2 col-12 pb-4">
 
 							<div class="bg-dark text-white p-2 mb-3 rounded"><b>ROUND FOUR</b></div>
 
@@ -289,6 +301,7 @@
 								</li>
 							</ul>
 
+							<div class="py-2 py-xl-0"></div>
 							<div class="py-xl-5"></div>
 							<div class="py-xl-5"></div>
 
@@ -301,6 +314,7 @@
 								</li>
 							</ul>
 
+							<div class="py-2 py-xl-0"></div>
 							<div class="py-xl-5"></div>
 							<div class="py-xl-5"></div>
 							<div class="py-xl-4"></div>
@@ -316,6 +330,7 @@
 								</li>
 							</ul>
 
+							<div class="py-2 py-xl-0"></div>
 							<div class="py-xl-5"></div>
 							<div class="py-xl-5"></div>
 
@@ -331,7 +346,7 @@
 						</div>
 
 						<!-- ROUND FIVE -->
-						<div class="col-xl-2 col-12">
+						<div class="col-xl-2 col-12 pb-4">
 
 							<div class="bg-dark text-white p-2 mb-3 rounded"><b>ROUND FIVE</b></div>
 
@@ -350,6 +365,7 @@
 								</li>
 							</ul>
 
+							<div class="py-2 py-xl-0"></div>
 							<div class="py-xl-5"></div>
 							<div class="py-xl-5"></div>
 							<div class="py-xl-5"></div>
@@ -370,7 +386,7 @@
 						</div>
 
 						<!-- ROUND SIX -->
-						<div class="col-xl-2 col-12">
+						<div class="col-xl-2 col-12 pb-4">
 
 							<div class="bg-dark text-white p-2 mb-3 rounded"><b>ROUND SIX</b></div>
 
