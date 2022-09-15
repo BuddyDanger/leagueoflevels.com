@@ -71,6 +71,7 @@
 				Session.Contents("AccountBalls") = rsAccount("Balls")
 				Session.Contents("AccountLocks") = rsAccount("Locks")
 				Session.Contents("AccountSlackHandle") = rsAccount("SlackHandle")
+				Session.Contents("AccountSlackEmoji") = rsAccount("SlackEmoji")
 
 				rsAccount.Close
 				Set rsAccount = Nothing

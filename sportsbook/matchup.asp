@@ -5,7 +5,8 @@
 <!--#include virtual="/assets/asp/functions/sha256.asp"-->
 <%
 	thisSchmeckleTotal = 0
-
+	IsNFL = 0
+	If Session.Contents("SITE_Bet_Type") = "nfl" Then IsNFL = 1
 	sqlGetStatus = "SELECT * FROM Switchboard WHERE SwitchboardID = 1"
 	Set rsStatus = sqlDatabase.Execute(sqlGetStatus)
 
@@ -34,6 +35,10 @@
 			Set rsSchmeckles = Nothing
 
 		End If
+
+		betTypeMoneyline = 0
+		betTypeSpread = 0
+		betTypeTotal = 0
 
 		thisTicketType = Request.Form("inputTicketType")
 		thisMatchupID = Request.Form("inputMatchupID")
@@ -89,6 +94,8 @@
 
 				thisTransactionStatus = SchmeckleTransaction(thisAccountID, thisTransactionTypeID, thisTicketSlipID, thisTransactionTotal, thisTransactionDescription)
 
+				betTypeMoneyline = 1
+
 			End If
 
 		ElseIf CInt(thisTicketType) = 2 Then
@@ -139,6 +146,8 @@
 
 				thisTransactionStatus = SchmeckleTransaction(thisAccountID, thisTransactionTypeID, thisTicketSlipID, thisTransactionTotal, thisTransactionDescription)
 
+				betTypeSpread = 1
+
 			End If
 
 		ElseIf CInt(thisTicketType) = 3 Then
@@ -187,6 +196,8 @@
 
 				thisTransactionStatus = SchmeckleTransaction(thisAccountID, thisTransactionTypeID, thisTicketSlipID, thisTransactionTotal, thisTransactionDescription)
 
+				betTypeTotal = 1
+
 			End If
 
 		ElseIf thisTicketType = "4" Then
@@ -234,6 +245,8 @@
 			End If
 
 		End If
+
+		thisSlackNotificationStatus = Slack_SportsbookBet(thisTicketSlipID, 2, IsNFL)
 
 	End If
 
