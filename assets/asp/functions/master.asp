@@ -102,8 +102,14 @@
 					JSON = JSON & "] "
 				JSON = JSON & "}"
 
+				sqlGetChannel = "SELECT URL FROM SlackHooks WHERE SlackHookID = " & thisSlackChannel
+				Set rsChannel = sqlDatabase.Execute(sqlGetChannel)
+				slackHookURL = rsChannel("URL")
+				rsChannel.Close
+				Set rsChannel = Nothing
+
 				Set httpPOST = Server.CreateObject("Microsoft.XMLHTTP")
-				httpPOST.Open "POST", "https://hooks.slack.com/services/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", false
+				httpPOST.Open "POST", slackHookURL, false
 				httpPOST.setRequestHeader "Content-Type","Application/JSON"
 				httpPOST.Send JSON
 
@@ -111,7 +117,7 @@
 
 		End If
 
-		Slack_SportsbookBet = 1
+		Slack_SportsbookBet = JSON
 
 	End Function
 

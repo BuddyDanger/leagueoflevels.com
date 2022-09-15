@@ -5,8 +5,8 @@
 <!--#include virtual="/assets/asp/functions/sha256.asp"-->
 <%
 	thisSchmeckleTotal = 0
-	IsNFL = 0
-	If Session.Contents("SITE_Bet_Type") = "nfl" Then IsNFL = 1
+	slackIsNFL = 0
+	If Session.Contents("SITE_Bet_Type") = "nfl" Then slackIsNFL = 1
 	sqlGetStatus = "SELECT * FROM Switchboard WHERE SwitchboardID = 1"
 	Set rsStatus = sqlDatabase.Execute(sqlGetStatus)
 
@@ -246,7 +246,9 @@
 
 		End If
 
-		thisSlackNotificationStatus = Slack_SportsbookBet(thisTicketSlipID, 2, IsNFL)
+		thisSlackNotificationStatus = Slack_SportsbookBet(thisTicketSlipID, 3, slackIsNFL)
+
+		Response.Write(thisSlackNotificationStatus)
 
 	End If
 
