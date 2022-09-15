@@ -246,9 +246,7 @@
 
 		End If
 
-		thisSlackNotificationStatus = Slack_SportsbookBet(thisTicketSlipID, 3, slackIsNFL)
-
-		Response.Write(thisSlackNotificationStatus)
+		thisSlackNotificationStatus = Slack_SportsbookBet(thisTicketSlipID, 2, slackIsNFL)
 
 	End If
 
