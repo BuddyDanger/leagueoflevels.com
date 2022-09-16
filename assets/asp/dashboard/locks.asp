@@ -47,7 +47,7 @@
 					currentChain = 1
 					currentBoost = 100
 
-					sqlGetLockchain = "SELECT TicketSlipID, IsWinner FROM TicketSlips WHERE TicketTypeID = 5 AND IsWinner IS NOT NULL AND AccountID = " & Session.Contents("AccountID") & " ORDER BY InsertDateTime DESC"
+					sqlGetLockchain = "SELECT TicketSlipID, IsWinner FROM TicketSlips WHERE TicketTypeID = 5 AND IsWinner IS NOT NULL AND AccountID = " & Session.Contents("AccountID") & " AND InsertDateTime > '1/1/2022' ORDER BY InsertDateTime DESC"
 					Set rsLockchain = sqlDatabase.Execute(sqlGetLockchain)
 
 					If Not rsLockchain.Eof Then
