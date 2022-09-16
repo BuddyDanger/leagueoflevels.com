@@ -84,14 +84,14 @@
 
 							<h4 class="text-left bg-dark text-white p-3 mt-0 mb-0 rounded-top"><b>SCHMECKLE LEADERBOARD</b><span class="float-right dripicons-trophy"></i></h4>
 
-							<ul class="list-group list-group-flush">
+							<ul class="list-group list-group-flush mb-4">
 <%
-								sqlGetLeaderboard = "SELECT Accounts.ProfileName, Accounts.ProfileImage, SUM([TransactionTotal]) AS TotalSchmeckles FROM SchmeckleTransactions INNER JOIN Accounts ON Accounts.AccountID = SchmeckleTransactions.AccountID WHERE Accounts.Active = 1 GROUP BY Accounts.ProfileName, Accounts.ProfileImage ORDER BY TotalSchmeckles DESC"
+								sqlGetLeaderboard = "SELECT Accounts.ProfileName, Accounts.ProfileURL, Accounts.ProfileImage, SUM([TransactionTotal]) AS TotalSchmeckles FROM SchmeckleTransactions INNER JOIN Accounts ON Accounts.AccountID = SchmeckleTransactions.AccountID WHERE Accounts.Active = 1 GROUP BY Accounts.ProfileName, Accounts.ProfileURL, Accounts.ProfileImage ORDER BY TotalSchmeckles DESC"
 								Set rsLeaderboard = sqlDatabase.Execute(sqlGetLeaderboard)
 
 								Do While Not rsLeaderboard.Eof
 %>
-									<a class="list-group-item list-group-item-action pl-2 pr-2">
+									<a href="/schmeckles/transactions/<%= rsLeaderboard("ProfileURL") %>/" class="list-group-item list-group-item-action pl-2 pr-2">
 										<div class="row">
 											<div class="col-12">
 												<img src="https://samelevel.imgix.net/<%= rsLeaderboard("ProfileImage") %>?w=40&h=40&fit=crop&crop=focalpoint" class="rounded-circle"> &nbsp; <b><%= rsLeaderboard("ProfileName") %></b>

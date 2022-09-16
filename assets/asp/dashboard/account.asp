@@ -65,7 +65,7 @@
 
 		End If
 %>
-		<a href="/teams/<%= Session.Contents("AccountProfileURL") %>/" style="display: block;">
+		<a href="#" style="display: block;">
 			<ul class="list-group mb-4">
 				<li class="list-group-item p-0">
 					<h4 class="text-left bg-dark text-white p-3 mt-0 mb-0 rounded-top"><b>DASHBOARD</b><span class="float-right dripicons-meter"></i></h4>

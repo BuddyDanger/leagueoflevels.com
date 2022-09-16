@@ -62,12 +62,12 @@
 
 							<ul class="list-group list-group-flush">
 <%
-								sqlGetLeaderboard = "SELECT TOP 5 Accounts.ProfileName, Accounts.ProfileImage, SUM([TransactionTotal]) AS TotalSchmeckles FROM SchmeckleTransactions INNER JOIN Accounts ON Accounts.AccountID = SchmeckleTransactions.AccountID WHERE Accounts.Active = 1 GROUP BY Accounts.ProfileName, Accounts.ProfileImage ORDER BY TotalSchmeckles DESC"
+								sqlGetLeaderboard = "SELECT TOP 5 Accounts.ProfileName, Accounts.ProfileURL, Accounts.ProfileImage, SUM([TransactionTotal]) AS TotalSchmeckles FROM SchmeckleTransactions INNER JOIN Accounts ON Accounts.AccountID = SchmeckleTransactions.AccountID WHERE Accounts.Active = 1 GROUP BY Accounts.ProfileName, Accounts.ProfileURL, Accounts.ProfileImage ORDER BY TotalSchmeckles DESC"
 								Set rsLeaderboard = sqlDatabase.Execute(sqlGetLeaderboard)
 
 								Do While Not rsLeaderboard.Eof
 %>
-									<a href="/schmeckles/transactions/<%= thisTransactionHash %>/" class="list-group-item list-group-item-action pl-0 pr-0">
+									<a href="/schmeckles/transactions/<%= rsLeaderboard("ProfileURL") %>/" class="list-group-item list-group-item-action pl-0 pr-0">
 										<div class="row p-0 m-0">
 											<div class="col-12 align-self-center">
 												<img src="https://samelevel.imgix.net/<%= rsLeaderboard("ProfileImage") %>?w=40&h=40&fit=crop&crop=focalpoint" class="rounded-circle"> &nbsp; <b><%= rsLeaderboard("ProfileName") %></b>
