@@ -2,6 +2,50 @@
 <!--#include virtual="/assets/asp/sql/connection.asp" -->
 <!--#include virtual="/assets/asp/framework/session.asp" -->
 <!--#include virtual="/assets/asp/functions/master.asp"-->
+<%
+	If Request.Form("action") = "pick" Then
+
+		thisNFLTeamID = Request.Form("inputNFLTeamID")
+
+		If thisNFLTeamID > 0 Then
+
+			sqlGetCurrentPick = "SELECT * FROM EliminatorPicks INNER JOIN NFLTeams ON NFLTeams.NFLTeamID = EliminatorPicks.NFLTeamID WHERE AccountID = " & Session.Contents("AccountID") & " AND Period = " & Session.Contents("CurrentPeriod") & " AND EliminatorRoundID = " & Session.Contents("EliminatorRoundID")
+			Set rsCurrentPick = sqlDatabase.Execute(sqlGetCurrentPick)
+
+			If Not rsCurrentPick.Eof Then
+
+				thisEliminatorPickID = rsCurrentPick("EliminatorPickID")
+				rsCurrentPick.Close
+				Set rsCurrentPick = Nothing
+
+				sqlUpdatePick = "UPDATE EliminatorPicks SET NFLTeamID = " &  thisNFLTeamID & " WHERE EliminatorPickID = " & thisEliminatorPickID
+				Set rsUpdate  = sqlDatabase.Execute(sqlUpdatePick)
+
+			Else
+
+				Set rsInsert = Server.CreateObject("ADODB.RecordSet")
+				rsInsert.CursorType = adOpenKeySet
+				rsInsert.LockType = adLockOptimistic
+				rsInsert.Open "EliminatorPicks", sqlDatabase, , , adCmdTable
+				rsInsert.AddNew
+
+				rsInsert("EliminatorRoundID") = Session.Contents("EliminatorRoundID")
+				rsInsert("AccountID") = Session.Contents("AccountID")
+				rsInsert("NFLTeamID") = thisNFLTeamID
+				rsInsert("Year") = Session.Contents("CurrentYear")
+				rsInsert("Period") = Session.Contents("CurrentPeriod")
+
+				rsInsert.Update
+				Set rsInsert = Nothing
+
+			End If
+
+			Response.Redirect("/eliminator/")
+
+		End If
+
+	End If
+%>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -49,61 +93,65 @@
 
 			<div class="page-content">
 
-				<div class="container-fluid pl-0 pl-lg-2 pr-0 pr-lg-2">
+				<div class="container-fluid pl-0 pl-lg-2 pr-0 pr-lg-2 pt-4">
 
 					<div class="row mb-2">
-<%
-					sqlGetPicks = "SELECT EliminatorPickID, EliminatorRoundID, EliminatorPicks.AccountID, Accounts.ProfileName, Accounts.ProfileImage, EliminatorPicks.NFLTeamID, NFLTeams.City, Year, Period, CorrectPick FROM EliminatorPicks INNER JOIN Accounts ON Accounts.AccountID = EliminatorPicks.AccountID INNER JOIN NFLTeams ON NFLTeams.NFLTeamID = EliminatorPicks.NFLTeamID WHERE EliminatorPicks.Year = 2022 ORDER BY Period DESC"
-					Set rsPicks = sqlDatabase.Execute(sqlGetPicks)
 
-					currentPeriod = 0
-
-					Do While Not rsPicks.Eof
-
-						thisProfileName = rsPicks("ProfileName")
-						thisProfileImage = rsPicks("ProfileImage")
-						thisCity = rsPicks("City")
-						thisYear = rsPicks("Year")
-						thisPeriod = rsPicks("Period")
-						thisCorrectPick = rsPicks("CorrectPick")
-
-						btnClass = "btn-warning"
-						If thisCorrectPick Then btnClass = "btn-success"
-						If Not thisCorrectPick Then btnClass = "btn-danger"
-
-
-
-						If thisPeriod <> currentPeriod Then
-
-							currentPeriod = thisPeriod
-%>
-							<div class="col-12 mt-4">
-								<ul class="list-group mb-2">
-									<li class="list-group-item p-0">
-										<h5 class="text-left text-white bg-dark p-3 mt-0 mb-0 rounded"><b>WEEK <%= currentPeriod %></b></h5>
-									</li>
-								</ul>
-							</div>
-<%
-						End If
-%>
-						<div class="col-xxl-4 col-xl-6 col-lg-6 col-md-6 col-sm-12 pb-2">
-
-							<ul class="list-group">
-								<li class="list-group-item">
-									<span class="btn-sm <%= btnClass %>" style="float: right;"><%= thisCity %></span>
-									<img src="https://samelevel.imgix.net/<%= thisProfileImage %>?w=28&h=28&fit=crop&crop=focalpoint" width="28" height="28" style="margin-right: 0.5rem;" /> <b><%= thisProfileName %></b>
-								</li>
-							</ul>
-
+						<div class="col-12 col-xl-4 mb-0 pb-0">
+							<!--#include virtual="/assets/asp/dashboard/eliminator.asp" -->
 						</div>
 <%
-						rsPicks.MoveNext
+						sqlGetPicks = "SELECT EliminatorPickID, EliminatorRoundID, EliminatorPicks.AccountID, Accounts.ProfileName, Accounts.ProfileImage, EliminatorPicks.NFLTeamID, NFLTeams.City, Year, Period, CorrectPick FROM EliminatorPicks INNER JOIN Accounts ON Accounts.AccountID = EliminatorPicks.AccountID INNER JOIN NFLTeams ON NFLTeams.NFLTeamID = EliminatorPicks.NFLTeamID WHERE EliminatorPicks.Year = 2022 ORDER BY Period DESC"
+						Set rsPicks = sqlDatabase.Execute(sqlGetPicks)
 
-					Loop
+						currentPeriod = 0
 
-					rsPicks.Close
-					Set rsPicks = Nothing
+						Do While Not rsPicks.Eof
+
+							thisProfileName = rsPicks("ProfileName")
+							thisProfileImage = rsPicks("ProfileImage")
+							thisCity = rsPicks("City")
+							thisYear = rsPicks("Year")
+							thisPeriod = rsPicks("Period")
+							thisCorrectPick = rsPicks("CorrectPick")
+
+							thisMargin = "mt-3"
+							If currentPeriod = 0 Then thisMargin = "mt-0"
+							btnClass = "btn-warning"
+							If thisCorrectPick Then btnClass = "btn-success"
+							If Not thisCorrectPick Then btnClass = "btn-danger"
+
+							If thisPeriod <> currentPeriod Then
+
+								currentPeriod = thisPeriod
+%>
+								<div class="col-12 <%= thisMargin %>">
+									<ul class="list-group mb-2">
+										<li class="list-group-item p-0">
+											<h5 class="text-left text-white bg-dark p-3 mt-0 mb-0 rounded"><b>WEEK <%= currentPeriod %></b></h5>
+										</li>
+									</ul>
+								</div>
+<%
+							End If
+%>
+							<div class="col-xxl-4 col-xl-6 col-lg-6 col-md-6 col-sm-12 pb-2">
+
+								<ul class="list-group">
+									<li class="list-group-item">
+										<span class="btn-sm <%= btnClass %>" style="float: right;"><%= thisCity %></span>
+										<img src="https://samelevel.imgix.net/<%= thisProfileImage %>?w=28&h=28&fit=crop&crop=focalpoint" width="28" height="28" style="margin-right: 0.5rem;" /> <b><%= thisProfileName %></b>
+									</li>
+								</ul>
+
+							</div>
+<%
+							rsPicks.MoveNext
+
+						Loop
+
+						rsPicks.Close
+						Set rsPicks = Nothing
 %>
 					</div>
 

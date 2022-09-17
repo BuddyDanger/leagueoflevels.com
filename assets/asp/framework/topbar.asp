@@ -15,22 +15,6 @@
 %>
 			<ul class="list-unstyled topbar-nav float-right mb-0">
 
-				<li class="dropdown notification-list">
-
-					<a class="nav-link dropdown-toggle arrow-none waves-light waves-effect" data-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
-						<i class="ti-bell noti-icon"></i><!--<span class="badge badge-danger badge-pill noti-icon-badge"></span>-->
-					</a>
-
-					<div class="dropdown-menu dropdown-menu-right dropdown-lg pt-0">
-
-						<h6 class="dropdown-item-text font-15 m-0 py-3 bg-primary text-white d-flex justify-content-between align-items-center">Notifications <span class="badge badge-light badge-pill"></span></h6>
-
-						<!--<a href="javascript:void(0);" class="dropdown-item text-center text-primary">View all <i class="fi-arrow-right"></i></a>-->
-
-					</div>
-
-				</li>
-
 				<li class="dropdown">
 
 					<a class="nav-link dropdown-toggle waves-effect waves-light nav-user" data-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">

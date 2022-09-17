@@ -148,49 +148,6 @@
 		End If
 
 	End If
-
-	If Request.Form("action") = "pick" Then
-
-		thisNFLTeamID = Request.Form("inputNFLTeamID")
-
-		If thisNFLTeamID > 0 Then
-
-			sqlGetCurrentPick = "SELECT * FROM EliminatorPicks INNER JOIN NFLTeams ON NFLTeams.NFLTeamID = EliminatorPicks.NFLTeamID WHERE AccountID = " & Session.Contents("AccountID") & " AND Period = " & Session.Contents("CurrentPeriod") & " AND EliminatorRoundID = " & Session.Contents("EliminatorRoundID")
-			Set rsCurrentPick = sqlDatabase.Execute(sqlGetCurrentPick)
-
-			If Not rsCurrentPick.Eof Then
-
-				thisEliminatorPickID = rsCurrentPick("EliminatorPickID")
-				rsCurrentPick.Close
-				Set rsCurrentPick = Nothing
-
-				sqlUpdatePick = "UPDATE EliminatorPicks SET NFLTeamID = " &  thisNFLTeamID & " WHERE EliminatorPickID = " & thisEliminatorPickID
-				Set rsUpdate  = sqlDatabase.Execute(sqlUpdatePick)
-
-			Else
-
-				Set rsInsert = Server.CreateObject("ADODB.RecordSet")
-				rsInsert.CursorType = adOpenKeySet
-				rsInsert.LockType = adLockOptimistic
-				rsInsert.Open "EliminatorPicks", sqlDatabase, , , adCmdTable
-				rsInsert.AddNew
-
-				rsInsert("EliminatorRoundID") = Session.Contents("EliminatorRoundID")
-				rsInsert("AccountID") = Session.Contents("AccountID")
-				rsInsert("NFLTeamID") = thisNFLTeamID
-				rsInsert("Year") = Session.Contents("CurrentYear")
-				rsInsert("Period") = Session.Contents("CurrentPeriod")
-
-				rsInsert.Update
-				Set rsInsert = Nothing
-
-			End If
-
-			Response.Redirect("/")
-
-		End If
-
-	End If
 %>
 <!DOCTYPE html>
 <html lang="en">
