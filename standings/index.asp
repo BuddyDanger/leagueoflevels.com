@@ -416,7 +416,7 @@
 													If IsNull(thisProfileImage) Then thisProfileImage = "user.jpg"
 
 													thisBorderBottom = ""
-													If thisPosition = 4 Then thisBorderBottom = "border-bottom: 3px dashed #eaf0f7;"
+													If thisPosition = 4 Then thisBorderBottom = "border-bottom: 2px dashed #eaf0f7;"
 %>
 													<tr style="<%= thisBorderBottom %>">
 														<td><img src="https://samelevel.imgix.net/<%= thisProfileImage %>?w=40&h=40&fit=crop&crop=focalpoint" class="rounded-circle hidden d-none d-sm-none d-md-inline mr-1 pr-1"><b><%= thisPosition %>.</b> &nbsp;<%= thisTeamName %></td>
