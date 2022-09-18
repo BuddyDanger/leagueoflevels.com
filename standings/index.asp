@@ -45,27 +45,60 @@
 
 	End If
 
-	sqlGetSLFFL = "SELECT Levels.Title, Teams.TeamName, SUM([ActualWins]) AS WinTotal, SUM([ActualLosses]) AS LossTotal, SUM([ActualTies]) AS TieTotal, SUM([PointsScored]) AS PointsScored, SUM([PointsAgainst]) AS PointsAgainst, SUM([BreakdownWins]) AS BreakdownWins, SUM([BreakdownLosses]) AS BreakdownLosses, SUM([BreakdownTies]) AS BreakdownTies, CAST(AVG([Position]) AS DECIMAL(10,2)) AS AveragePositionYTD, "
+	sqlGetSLFFL = "SELECT TOP 4 Levels.Title, Teams.TeamID, Teams.TeamName, SUM([ActualWins]) AS WinTotal, SUM([ActualLosses]) AS LossTotal, SUM([ActualTies]) AS TieTotal, SUM([PointsScored]) AS PointsScored, SUM([PointsAgainst]) AS PointsAgainst, SUM([BreakdownWins]) AS BreakdownWins, SUM([BreakdownLosses]) AS BreakdownLosses, SUM([BreakdownTies]) AS BreakdownTies, CAST(AVG([Position]) AS DECIMAL(10,2)) AS AveragePositionYTD, "
 	sqlGetSLFFL = sqlGetSLFFL & "(SELECT ProfileImage FROM Accounts WHERE Accounts.AccountID IN (SELECT AccountID FROM LinkAccountsTeams WHERE LinkAccountsTeams.TeamID = Standings.TeamID)) AS ProfileImage FROM Standings "
 	sqlGetSLFFL = sqlGetSLFFL & "INNER JOIN Teams ON Teams.TeamID = Standings.TeamID "
 	sqlGetSLFFL = sqlGetSLFFL & "INNER JOIN Levels ON Levels.LevelID = Standings.LevelID "
-	sqlGetSLFFL = sqlGetSLFFL & "WHERE Levels.LevelID = 2 "
-	sqlGetSLFFL = sqlGetSLFFL & "AND Standings.Year >= " & Session.Contents("SITE_Standings_Start_Year") & " "
-	sqlGetSLFFL = sqlGetSLFFL & "AND Standings.Year <= " & Session.Contents("SITE_Standings_End_Year") & " "
-	sqlGetSLFFL = sqlGetSLFFL & "AND Standings.Period >= " & Session.Contents("SITE_Standings_Start_Period") & " "
-	sqlGetSLFFL = sqlGetSLFFL & "AND Standings.Period <= " & Session.Contents("SITE_Standings_End_Period") & " "
-	sqlGetSLFFL = sqlGetSLFFL & "GROUP BY Levels.LevelID, Levels.Title, Teams.TeamName, Standings.TeamID ORDER BY Levels.LevelID ASC, WinTotal DESC, PointsScored DESC; "
+	sqlGetSLFFL = sqlGetSLFFL & "WHERE Levels.LevelID = 2 AND Standings.Year >= " & Session.Contents("SITE_Standings_Start_Year") & " AND Standings.Year <= " & Session.Contents("SITE_Standings_End_Year") & " AND Standings.Period >= " & Session.Contents("SITE_Standings_Start_Period") & " AND Standings.Period <= " & Session.Contents("SITE_Standings_End_Period") & " "
+	sqlGetSLFFL = sqlGetSLFFL & "GROUP BY Levels.LevelID, Teams.TeamID, Levels.Title, Teams.TeamName, Standings.TeamID "
+	sqlGetSLFFL = sqlGetSLFFL & "ORDER BY Levels.LevelID ASC, WinTotal DESC, PointsScored DESC; "
 
-	sqlGetFLFFL = "SELECT Levels.Title, Teams.TeamName, SUM([ActualWins]) AS WinTotal, SUM([ActualLosses]) AS LossTotal, SUM([ActualTies]) AS TieTotal, SUM([PointsScored]) AS PointsScored, SUM([PointsAgainst]) AS PointsAgainst, SUM([BreakdownWins]) AS BreakdownWins, SUM([BreakdownLosses]) AS BreakdownLosses, SUM([BreakdownTies]) AS BreakdownTies, CAST(AVG([Position]) AS DECIMAL(10,2)) AS AveragePositionYTD, "
-	sqlGetFLFFL = sqlGetFLFFL & "(SELECT ProfileImage FROM Accounts WHERE Accounts.AccountID IN (SELECT AccountID FROM LinkAccountsTeams WHERE LinkAccountsTeams.TeamID = Standings.TeamID)) AS ProfileImage FROM Standings "
-	sqlGetFLFFL = sqlGetFLFFL & "INNER JOIN Teams ON Teams.TeamID = Standings.TeamID "
-	sqlGetFLFFL = sqlGetFLFFL & "INNER JOIN Levels ON Levels.LevelID = Standings.LevelID "
-	sqlGetFLFFL = sqlGetFLFFL & "WHERE Levels.LevelID = 3 "
-	sqlGetFLFFL = sqlGetFLFFL & "AND Standings.Year >= " & Session.Contents("SITE_Standings_Start_Year") & " "
-	sqlGetFLFFL = sqlGetFLFFL & "AND Standings.Year <= " & Session.Contents("SITE_Standings_End_Year") & " "
-	sqlGetFLFFL = sqlGetFLFFL & "AND Standings.Period >= " & Session.Contents("SITE_Standings_Start_Period") & " "
-	sqlGetFLFFL = sqlGetFLFFL & "AND Standings.Period <= " & Session.Contents("SITE_Standings_End_Period") & " "
-	sqlGetFLFFL = sqlGetFLFFL & "GROUP BY Levels.LevelID, Levels.Title, Teams.TeamName, Standings.TeamID ORDER BY Levels.LevelID ASC, WinTotal DESC, PointsScored DESC; "
+	sqlGetSLFFL = sqlGetSLFFL & "SELECT TOP 2 Levels.Title, Teams.TeamID, Teams.TeamName, SUM([ActualWins]) AS WinTotal, SUM([ActualLosses]) AS LossTotal, SUM([ActualTies]) AS TieTotal, SUM([PointsScored]) AS PointsScored, SUM([PointsAgainst]) AS PointsAgainst, SUM([BreakdownWins]) AS BreakdownWins, SUM([BreakdownLosses]) AS BreakdownLosses, SUM([BreakdownTies]) AS BreakdownTies, CAST(AVG([Position]) AS DECIMAL(10,2)) AS AveragePositionYTD, "
+	sqlGetSLFFL = sqlGetSLFFL & "(SELECT ProfileImage FROM Accounts WHERE Accounts.AccountID IN (SELECT AccountID FROM LinkAccountsTeams WHERE LinkAccountsTeams.TeamID = Standings.TeamID)) AS ProfileImage FROM Standings "
+	sqlGetSLFFL = sqlGetSLFFL & "INNER JOIN Teams ON Teams.TeamID = Standings.TeamID "
+	sqlGetSLFFL = sqlGetSLFFL & "INNER JOIN Levels ON Levels.LevelID = Standings.LevelID "
+	sqlGetSLFFL = sqlGetSLFFL & "WHERE Levels.LevelID = 2 AND Standings.Year >= " & Session.Contents("SITE_Standings_Start_Year") & " AND Standings.Year <= " & Session.Contents("SITE_Standings_End_Year") & " AND Standings.Period >= " & Session.Contents("SITE_Standings_Start_Period") & " AND Standings.Period <= " & Session.Contents("SITE_Standings_End_Period") & " AND Teams.TeamID NOT IN ( "
+		sqlGetSLFFL = sqlGetSLFFL & "SELECT TOP 4 Teams.TeamID FROM Standings "
+		sqlGetSLFFL = sqlGetSLFFL & "INNER JOIN Teams ON Teams.TeamID = Standings.TeamID "
+		sqlGetSLFFL = sqlGetSLFFL & "INNER JOIN Levels ON Levels.LevelID = Standings.LevelID "
+		sqlGetSLFFL = sqlGetSLFFL & "WHERE Levels.LevelID = 2 AND Standings.Year >= " & Session.Contents("SITE_Standings_Start_Year") & " AND Standings.Year <= " & Session.Contents("SITE_Standings_End_Year") & " AND Standings.Period >= " & Session.Contents("SITE_Standings_Start_Period") & " AND Standings.Period <= " & Session.Contents("SITE_Standings_End_Period") & " "
+		sqlGetSLFFL = sqlGetSLFFL & "GROUP BY Levels.LevelID, Teams.TeamID, Levels.Title, Teams.TeamName, Standings.TeamID "
+		sqlGetSLFFL = sqlGetSLFFL & "ORDER BY SUM([ActualWins]) DESC, SUM([PointsScored]) DESC "
+	sqlGetSLFFL = sqlGetSLFFL & ") "
+	sqlGetSLFFL = sqlGetSLFFL & "GROUP BY Levels.LevelID, Teams.TeamID, Levels.Title, Teams.TeamName, Standings.TeamID "
+	sqlGetSLFFL = sqlGetSLFFL & "ORDER BY Levels.LevelID ASC, BreakdownWins DESC, PointsScored DESC; "
+
+	sqlGetSLFFL = sqlGetSLFFL & "SELECT TOP 6 Levels.Title, Teams.TeamID, Teams.TeamName, SUM([ActualWins]) AS WinTotal, SUM([ActualLosses]) AS LossTotal, SUM([ActualTies]) AS TieTotal, SUM([PointsScored]) AS PointsScored, SUM([PointsAgainst]) AS PointsAgainst, SUM([BreakdownWins]) AS BreakdownWins, SUM([BreakdownLosses]) AS BreakdownLosses, SUM([BreakdownTies]) AS BreakdownTies, CAST(AVG([Position]) AS DECIMAL(10,2)) AS AveragePositionYTD, "
+	sqlGetSLFFL = sqlGetSLFFL & "(SELECT ProfileImage FROM Accounts WHERE Accounts.AccountID IN (SELECT AccountID FROM LinkAccountsTeams WHERE LinkAccountsTeams.TeamID = Standings.TeamID)) AS ProfileImage FROM Standings "
+	sqlGetSLFFL = sqlGetSLFFL & "INNER JOIN Teams ON Teams.TeamID = Standings.TeamID "
+	sqlGetSLFFL = sqlGetSLFFL & "INNER JOIN Levels ON Levels.LevelID = Standings.LevelID "
+	sqlGetSLFFL = sqlGetSLFFL & "WHERE Levels.LevelID = 2 AND Standings.Year >= " & Session.Contents("SITE_Standings_Start_Year") & " AND Standings.Year <= " & Session.Contents("SITE_Standings_End_Year") & " AND Standings.Period >= " & Session.Contents("SITE_Standings_Start_Period") & " AND Standings.Period <= " & Session.Contents("SITE_Standings_End_Period") & " AND Teams.TeamID NOT IN ( "
+		sqlGetSLFFL = sqlGetSLFFL & "SELECT TOP 4 Teams.TeamID FROM Standings "
+		sqlGetSLFFL = sqlGetSLFFL & "INNER JOIN Teams ON Teams.TeamID = Standings.TeamID "
+		sqlGetSLFFL = sqlGetSLFFL & "INNER JOIN Levels ON Levels.LevelID = Standings.LevelID "
+		sqlGetSLFFL = sqlGetSLFFL & "WHERE Levels.LevelID = 2 AND Standings.Year >= " & Session.Contents("SITE_Standings_Start_Year") & " AND Standings.Year <= " & Session.Contents("SITE_Standings_End_Year") & " AND Standings.Period >= " & Session.Contents("SITE_Standings_Start_Period") & " AND Standings.Period <= " & Session.Contents("SITE_Standings_End_Period") & " "
+		sqlGetSLFFL = sqlGetSLFFL & "GROUP BY Levels.LevelID, Teams.TeamID, Levels.Title, Teams.TeamName, Standings.TeamID "
+		sqlGetSLFFL = sqlGetSLFFL & "ORDER BY SUM([ActualWins]) DESC, SUM([PointsScored]) DESC "
+	sqlGetSLFFL = sqlGetSLFFL & ") AND Teams.TeamID NOT IN ( "
+		sqlGetSLFFL = sqlGetSLFFL & "SELECT TOP 2 Teams.TeamID FROM Standings "
+		sqlGetSLFFL = sqlGetSLFFL & "INNER JOIN Teams ON Teams.TeamID = Standings.TeamID "
+		sqlGetSLFFL = sqlGetSLFFL & "INNER JOIN Levels ON Levels.LevelID = Standings.LevelID "
+		sqlGetSLFFL = sqlGetSLFFL & "WHERE Levels.LevelID = 2 AND Standings.Year >= " & Session.Contents("SITE_Standings_Start_Year") & " AND Standings.Year <= " & Session.Contents("SITE_Standings_End_Year") & " AND Standings.Period >= " & Session.Contents("SITE_Standings_Start_Period") & " AND Standings.Period <= " & Session.Contents("SITE_Standings_End_Period") & " AND Teams.TeamID NOT IN ( "
+			sqlGetSLFFL = sqlGetSLFFL & "SELECT TOP 4 Teams.TeamID FROM Standings "
+			sqlGetSLFFL = sqlGetSLFFL & "INNER JOIN Teams ON Teams.TeamID = Standings.TeamID "
+			sqlGetSLFFL = sqlGetSLFFL & "INNER JOIN Levels ON Levels.LevelID = Standings.LevelID "
+			sqlGetSLFFL = sqlGetSLFFL & "WHERE Levels.LevelID = 2 AND Standings.Year >= " & Session.Contents("SITE_Standings_Start_Year") & " AND Standings.Year <= " & Session.Contents("SITE_Standings_End_Year") & " AND Standings.Period >= " & Session.Contents("SITE_Standings_Start_Period") & " AND Standings.Period <= " & Session.Contents("SITE_Standings_End_Period") & " "
+			sqlGetSLFFL = sqlGetSLFFL & "GROUP BY Levels.LevelID, Teams.TeamID, Levels.Title, Teams.TeamName, Standings.TeamID "
+			sqlGetSLFFL = sqlGetSLFFL & "ORDER BY SUM([ActualWins]) DESC, SUM([PointsScored]) DESC "
+		sqlGetSLFFL = sqlGetSLFFL & ") "
+		sqlGetSLFFL = sqlGetSLFFL & "GROUP BY Levels.LevelID, Teams.TeamID, Levels.Title, Teams.TeamName, Standings.TeamID "
+		sqlGetSLFFL = sqlGetSLFFL & "ORDER BY Levels.LevelID ASC, SUM([BreakdownWins]) DESC, SUM([PointsScored]) DESC "
+	sqlGetSLFFL = sqlGetSLFFL & ") "
+	sqlGetSLFFL = sqlGetSLFFL & "GROUP BY Levels.LevelID, Teams.TeamID, Levels.Title, Teams.TeamName, Standings.TeamID "
+	sqlGetSLFFL = sqlGetSLFFL & "ORDER BY Levels.LevelID ASC, WinTotal DESC, PointsScored DESC;"
+
+
+	sqlGetFLFFL = Replace(sqlGetSLFFL, "LevelID = 2", "LevelID = 3")
 
 	sqlGetOmega = "SELECT Levels.Title, Teams.TeamName, SUM([ActualWins]) AS WinTotal, SUM([ActualLosses]) AS LossTotal, SUM([ActualTies]) AS TieTotal, SUM([PointsScored]) AS PointsScored, SUM([PointsAgainst]) AS PointsAgainst, SUM([BreakdownWins]) AS BreakdownWins, SUM([BreakdownLosses]) AS BreakdownLosses, SUM([BreakdownTies]) AS BreakdownTies, CAST(AVG([Position]) AS DECIMAL(10,2)) AS AveragePositionYTD, "
 	sqlGetOmega = sqlGetOmega & "(SELECT ProfileImage FROM Accounts WHERE Accounts.AccountID IN (SELECT AccountID FROM LinkAccountsTeams WHERE LinkAccountsTeams.TeamID = Standings.TeamID)) AS ProfileImage FROM Standings "
@@ -250,7 +283,7 @@
 													If IsNull(thisProfileImage) Then thisProfileImage = "user.jpg"
 
 													thisBorderBottom = ""
-													If thisPosition = 5 Then thisBorderBottom = "border-bottom: 5px solid #eaf0f7;"
+													If thisPosition = 4 Then thisBorderBottom = "border-bottom: 2px dashed #eaf0f7;"
 %>
 													<tr style="<%= thisBorderBottom %>">
 														<td class="pl-3"><img src="https://samelevel.imgix.net/<%= thisProfileImage %>?w=40&h=40&fit=crop&crop=focalpoint" class="rounded-circle hidden d-none d-sm-none d-md-inline mr-1 pr-1"><b><%= thisPosition %>.</b> &nbsp;<%= thisTeamName %></td>
@@ -264,6 +297,73 @@
 													rsStandings.MoveNext
 
 												Loop
+												Set rsStandings = rsStandings.NextRecordset
+												Do While Not rsStandings.Eof
+
+													thisTeamName = rsStandings("TeamName")
+													thisWinTotal = rsStandings("WinTotal")
+													thisLossTotal = rsStandings("LossTotal")
+													thisTieTotal = rsStandings("TieTotal")
+													thisPointsScored = rsStandings("PointsScored")
+													thisPointsAgainst = rsStandings("PointsAgainst")
+													thisBreakdownWins = rsStandings("BreakdownWins")
+													thisBreakdownLosses = rsStandings("BreakdownLosses")
+													thisBreakdownTies = rsStandings("BreakdownTies")
+													thisAveragePositionYTD = rsStandings("AveragePositionYTD")
+
+													thisProfileImage = rsStandings("ProfileImage")
+													If IsNull(thisProfileImage) Then thisProfileImage = "user.jpg"
+
+													thisBorderBottom = ""
+													If thisPosition = 6 Then thisBorderBottom = "border-bottom: 5px solid #eaf0f7;"
+%>
+													<tr style="<%= thisBorderBottom %>">
+														<td class="pl-3"><img src="https://samelevel.imgix.net/<%= thisProfileImage %>?w=40&h=40&fit=crop&crop=focalpoint" class="rounded-circle hidden d-none d-sm-none d-md-inline mr-1 pr-1"><b><%= thisPosition %>.</b> &nbsp;<%= thisTeamName %></td>
+														<td class="text-center"><%= thisWinTotal %>-<%= thisLossTotal %>-<%= thisTieTotal %></td>
+														<td class="text-center d-none d-sm-table-cell"><%= FormatNumber(thisPointsScored, 2) %></td>
+														<td class="text-center d-none d-sm-table-cell"><%= FormatNumber(thisPointsAgainst, 2) %></td>
+														<td class="text-center d-none d-md-table-cell"><%= thisBreakdownWins %>-<%= thisBreakdownLosses %>-<%= thisBreakdownTies %></td>
+													</tr>
+<%
+													thisPosition = thisPosition + 1
+													rsStandings.MoveNext
+
+												Loop
+
+												Set rsStandings = rsStandings.NextRecordset
+
+												Do While Not rsStandings.Eof
+
+													thisTeamName = rsStandings("TeamName")
+													thisWinTotal = rsStandings("WinTotal")
+													thisLossTotal = rsStandings("LossTotal")
+													thisTieTotal = rsStandings("TieTotal")
+													thisPointsScored = rsStandings("PointsScored")
+													thisPointsAgainst = rsStandings("PointsAgainst")
+													thisBreakdownWins = rsStandings("BreakdownWins")
+													thisBreakdownLosses = rsStandings("BreakdownLosses")
+													thisBreakdownTies = rsStandings("BreakdownTies")
+													thisAveragePositionYTD = rsStandings("AveragePositionYTD")
+
+													thisProfileImage = rsStandings("ProfileImage")
+													If IsNull(thisProfileImage) Then thisProfileImage = "user.jpg"
+
+													thisBorderBottom = ""
+													'If thisPosition = 4 Then thisBorderBottom = "border-bottom: 5px solid #eaf0f7;"
+%>
+													<tr style="<%= thisBorderBottom %>">
+														<td class="pl-3"><img src="https://samelevel.imgix.net/<%= thisProfileImage %>?w=40&h=40&fit=crop&crop=focalpoint" class="rounded-circle hidden d-none d-sm-none d-md-inline mr-1 pr-1"><b><%= thisPosition %>.</b> &nbsp;<%= thisTeamName %></td>
+														<td class="text-center"><%= thisWinTotal %>-<%= thisLossTotal %>-<%= thisTieTotal %></td>
+														<td class="text-center d-none d-sm-table-cell"><%= FormatNumber(thisPointsScored, 2) %></td>
+														<td class="text-center d-none d-sm-table-cell"><%= FormatNumber(thisPointsAgainst, 2) %></td>
+														<td class="text-center d-none d-md-table-cell"><%= thisBreakdownWins %>-<%= thisBreakdownLosses %>-<%= thisBreakdownTies %></td>
+													</tr>
+<%
+													thisPosition = thisPosition + 1
+													rsStandings.MoveNext
+
+												Loop
+
 %>
 											</tbody>
 										</table>
@@ -316,7 +416,75 @@
 													If IsNull(thisProfileImage) Then thisProfileImage = "user.jpg"
 
 													thisBorderBottom = ""
-													If thisPosition = 5 Then thisBorderBottom = "border-bottom: 5px solid #eaf0f7;"
+													If thisPosition = 4 Then thisBorderBottom = "border-bottom: 3px dashed #eaf0f7;"
+%>
+													<tr style="<%= thisBorderBottom %>">
+														<td><img src="https://samelevel.imgix.net/<%= thisProfileImage %>?w=40&h=40&fit=crop&crop=focalpoint" class="rounded-circle hidden d-none d-sm-none d-md-inline mr-1 pr-1"><b><%= thisPosition %>.</b> &nbsp;<%= thisTeamName %></td>
+														<td class="text-center"><%= thisWinTotal %>-<%= thisLossTotal %>-<%= thisTieTotal %></td>
+														<td class="text-center d-none d-sm-table-cell"><%= FormatNumber(thisPointsScored, 2) %></td>
+														<td class="text-center d-none d-sm-table-cell"><%= FormatNumber(thisPointsAgainst, 2) %></td>
+														<td class="text-center d-none d-md-table-cell"><%= thisBreakdownWins %>-<%= thisBreakdownLosses %>-<%= thisBreakdownTies %></td>
+													</tr>
+<%
+													thisPosition = thisPosition + 1
+													rsStandings.MoveNext
+
+												Loop
+
+												Set rsStandings = rsStandings.NextRecordset
+
+												Do While Not rsStandings.Eof
+
+													thisTeamName = rsStandings("TeamName")
+													thisWinTotal = rsStandings("WinTotal")
+													thisLossTotal = rsStandings("LossTotal")
+													thisTieTotal = rsStandings("TieTotal")
+													thisPointsScored = rsStandings("PointsScored")
+													thisPointsAgainst = rsStandings("PointsAgainst")
+													thisBreakdownWins = rsStandings("BreakdownWins")
+													thisBreakdownLosses = rsStandings("BreakdownLosses")
+													thisBreakdownTies = rsStandings("BreakdownTies")
+													thisAveragePositionYTD = rsStandings("AveragePositionYTD")
+
+													thisProfileImage = rsStandings("ProfileImage")
+													If IsNull(thisProfileImage) Then thisProfileImage = "user.jpg"
+
+													thisBorderBottom = ""
+													If thisPosition = 6 Then thisBorderBottom = "border-bottom: 5px solid #eaf0f7;"
+%>
+													<tr style="<%= thisBorderBottom %>">
+														<td><img src="https://samelevel.imgix.net/<%= thisProfileImage %>?w=40&h=40&fit=crop&crop=focalpoint" class="rounded-circle hidden d-none d-sm-none d-md-inline mr-1 pr-1"><b><%= thisPosition %>.</b> &nbsp;<%= thisTeamName %></td>
+														<td class="text-center"><%= thisWinTotal %>-<%= thisLossTotal %>-<%= thisTieTotal %></td>
+														<td class="text-center d-none d-sm-table-cell"><%= FormatNumber(thisPointsScored, 2) %></td>
+														<td class="text-center d-none d-sm-table-cell"><%= FormatNumber(thisPointsAgainst, 2) %></td>
+														<td class="text-center d-none d-md-table-cell"><%= thisBreakdownWins %>-<%= thisBreakdownLosses %>-<%= thisBreakdownTies %></td>
+													</tr>
+<%
+													thisPosition = thisPosition + 1
+													rsStandings.MoveNext
+
+												Loop
+
+												Set rsStandings = rsStandings.NextRecordset
+
+												Do While Not rsStandings.Eof
+
+													thisTeamName = rsStandings("TeamName")
+													thisWinTotal = rsStandings("WinTotal")
+													thisLossTotal = rsStandings("LossTotal")
+													thisTieTotal = rsStandings("TieTotal")
+													thisPointsScored = rsStandings("PointsScored")
+													thisPointsAgainst = rsStandings("PointsAgainst")
+													thisBreakdownWins = rsStandings("BreakdownWins")
+													thisBreakdownLosses = rsStandings("BreakdownLosses")
+													thisBreakdownTies = rsStandings("BreakdownTies")
+													thisAveragePositionYTD = rsStandings("AveragePositionYTD")
+
+													thisProfileImage = rsStandings("ProfileImage")
+													If IsNull(thisProfileImage) Then thisProfileImage = "user.jpg"
+
+													thisBorderBottom = ""
+													'If thisPosition = 4 Then thisBorderBottom = "border-bottom: 3px dashed #eaf0f7;"
 %>
 													<tr style="<%= thisBorderBottom %>">
 														<td><img src="https://samelevel.imgix.net/<%= thisProfileImage %>?w=40&h=40&fit=crop&crop=focalpoint" class="rounded-circle hidden d-none d-sm-none d-md-inline mr-1 pr-1"><b><%= thisPosition %>.</b> &nbsp;<%= thisTeamName %></td>
