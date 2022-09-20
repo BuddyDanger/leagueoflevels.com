@@ -60,10 +60,16 @@
 
 							<ul class="list-group list-flush">
 								<li class="list-group-item p-0">
-									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-top"><img src="https://samelevel.imgix.net/user.jpg?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-1 pr-1">Nuke 'Em'</h6>
+									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-top">
+										<strike style="color:red"><img src="https://samelevel.imgix.net/user.jpg?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-1 pr-1">Nuke 'Em</strike>
+										<div class="float-right" style="color:red">153.56</div>
+									</h6>
 								</li>
 								<li class="list-group-item p-0">
-									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-bottom"><img src="https://samelevel.imgix.net/user.jpg?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-1 pr-1">Big Ballers</h6>
+									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-bottom">
+										<img src="https://samelevel.imgix.net/user.jpg?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-1 pr-1">Big Ballers
+										<div class="float-right">185.46</div>
+									</h6>
 								</li>
 							</ul>
 
@@ -84,10 +90,16 @@
 
 							<ul class="list-group list-flush">
 								<li class="list-group-item p-0">
-									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-top"><img src="https://samelevel.imgix.net/icon-be218a04554de8af12cdd4581d73eb5266684d2daa95739adee7c7e2b3b22ff0.jpeg?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-1 pr-1">Hangin' with Hernandez</h6>
+									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-top">
+										<img src="https://samelevel.imgix.net/icon-be218a04554de8af12cdd4581d73eb5266684d2daa95739adee7c7e2b3b22ff0.jpeg?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-1 pr-1">Hangin' with Hernandez
+										<div class="float-right">202.24</div>
+									</h6>
 								</li>
 								<li class="list-group-item p-0">
-									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-bottom"><img src="https://samelevel.imgix.net/icon-caters.jpg?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-1 pr-1">Fournette Caters</h6>
+									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-bottom">
+										<strike style="color:red"><img src="https://samelevel.imgix.net/icon-caters.jpg?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-1 pr-1">Fournette Caters</strike>
+										<div class="float-right" style="color:red">168.66</div>
+									</h6>
 								</li>
 							</ul>
 
@@ -102,7 +114,7 @@
 
 							<ul class="list-group list-flush">
 								<li class="list-group-item p-0">
-									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-top">&nbsp;</h6>
+									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-top"><img src="https://samelevel.imgix.net/user.jpg?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-1 pr-1">Big Ballers</h6>
 								</li>
 								<li class="list-group-item p-0">
 									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-bottom"><img src="https://samelevel.imgix.net/icon-6e5505b514c25680f5f712b79c908ed28fee241cfa943bb4d6ce42189b79ee53.jpg?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-1 pr-1">High Decibels</h6>
@@ -169,7 +181,7 @@
 									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-top"><img src="https://samelevel.imgix.net/gdeep.jpg?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-1 pr-1">Gone Deep</h6>
 								</li>
 								<li class="list-group-item p-0">
-									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-bottom">&nbsp;</h6>
+									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-bottom"><img src="https://samelevel.imgix.net/icon-be218a04554de8af12cdd4581d73eb5266684d2daa95739adee7c7e2b3b22ff0.jpeg?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-1 pr-1">Hangin' with Hernandez</h6>
 								</li>
 							</ul>
 
