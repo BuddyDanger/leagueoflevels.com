@@ -123,11 +123,11 @@
 					var playerStats = document.getElementsByClassName('team-1-player-' + thisPlayerID + '-stats')[0];
 					var playerGameLine = document.getElementsByClassName('team-1-player-' + thisPlayerID + '-gameline')[0];
 					var playerGamePosition = document.getElementsByClassName('team-1-player-' + thisPlayerID + '-gameposition')[0];
-					var playerPMR = document.getElementsByClassName('team-1-player-' + thisPlayerID + '-progress')[0];
+					//var playerPMR = document.getElementsByClassName('team-1-player-' + thisPlayerID + '-progress')[0];
 
 					playerGameLine.innerHTML = data["gameline"];
 					playerGamePosition.innerHTML = data["gameposition"];
-					playerPMR.innerHTML = "<div class=\"progress-bar progress-bar-" + data["pmrcolor"] + "\" role=\"progressbar\" aria-valuenow=\"" + data["pmrpercent"] + "\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: " + data["pmrpercent"] + "%\"><span class=\"sr-only\">" + data["pmrpercent"] + "%</span></div>";
+					//playerPMR.innerHTML = "<div class=\"progress-bar progress-bar-" + data["pmrcolor"] + "\" role=\"progressbar\" aria-valuenow=\"" + data["pmrpercent"] + "\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: " + data["pmrpercent"] + "%\"><span class=\"sr-only\">" + data["pmrpercent"] + "%</span></div>";
 
 					if (parseFloat(playerPoints.innerText) != parseFloat(data["points"])) {
 						var scoreAnimation = new CountUp(playerPoints, playerPoints.innerText, data["points"], 2, 4);
@@ -156,11 +156,11 @@
 					var playerStats = document.getElementsByClassName('team-2-player-' + thisPlayerID + '-stats')[0];
 					var playerGameLine = document.getElementsByClassName('team-2-player-' + thisPlayerID + '-gameline')[0];
 					var playerGamePosition = document.getElementsByClassName('team-2-player-' + thisPlayerID + '-gameposition')[0];
-					var playerPMR = document.getElementsByClassName('team-2-player-' + thisPlayerID + '-progress')[0];
+					//var playerPMR = document.getElementsByClassName('team-2-player-' + thisPlayerID + '-progress')[0];
 
 					playerGameLine.innerHTML = data["gameline"];
 					playerGamePosition.innerHTML = data["gameposition"];
-					playerPMR.innerHTML = "<div class=\"progress-bar progress-bar-" + data["pmrcolor"] + "\" role=\"progressbar\" aria-valuenow=\"" + data["pmrpercent"] + "\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: " + data["pmrpercent"] + "%\"><span class=\"sr-only\">" + data["pmrpercent"] + "%</span></div>";
+					//playerPMR.innerHTML = "<div class=\"progress-bar progress-bar-" + data["pmrcolor"] + "\" role=\"progressbar\" aria-valuenow=\"" + data["pmrpercent"] + "\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: " + data["pmrpercent"] + "%\"><span class=\"sr-only\">" + data["pmrpercent"] + "%</span></div>";
 
 					if (parseFloat(playerPoints.innerText) != parseFloat(data["points"])) {
 						var scoreAnimation = new CountUp(playerPoints, playerPoints.innerText, data["points"], 2, 4);

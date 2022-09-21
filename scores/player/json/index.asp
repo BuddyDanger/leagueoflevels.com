@@ -58,7 +58,7 @@
 	End If
 
 	thisPlayerGameTimestamp = DateAdd("s", thisPlayerGameTimestamp, DateSerial(1970,1,1))
-	thisPlayerGameTimestamp = DateAdd("h", -5, thisPlayerGameTimestamp)
+	thisPlayerGameTimestamp = DateAdd("h", -4, thisPlayerGameTimestamp)
 
 	thisPlayerGameDay = UCase(WeekdayName(Weekday(thisPlayerGameTimestamp),True))
 	thisPlayerHour = Hour(thisPlayerGameTimestamp)
