@@ -388,7 +388,7 @@
 														<a href="/scores/<%= MatchupID %>/" style="text-decoration: none; display: block;">
 															<ul class="list-group" id="matchup-<%= MatchupID %>" style="margin-bottom: 1rem;">
 																<li class="list-group-item team-flffl-box-<%= TeamID1 %>" style="position: relative;">
-																	<div style="position: absolute; top: -35px; right: -10px;"><%= MajorText %></div>
+																	<div style="position: absolute; top: -10px; right: -10px;"><%= MajorText %></div>
 																	<span class="team-flffl-score-<%= TeamID1 %>" style="font-size: 1em; line-height: 1.9rem; background-color: #fff; color: #0F574D; float: right; padding-top: 0rem;"><%= TeamScore1 %></span>
 																	<img src="https://samelevel.imgix.net/<%= TeamLogo1 %>?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-1 pr-1" /><span style="font-size: 13px; line-height: 1.9rem; color: #0F574D; font-weight: bold;"><%= TeamName1 %></span>
 																	<div class="progress team-flffl-progress-<%= TeamID1 %>" style="height: 1px; margin-top: 6px; margin-bottom: 0; padding-bottom: 0;">
