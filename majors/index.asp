@@ -14,22 +14,22 @@
 		<meta http-equiv="x-ua-compatible" content="IE=edge,chrome=1" />
 		<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
-		<title>Major Two / Qualifying & Standings / League of Levels</title>
+		<title>Major One / Qualifying & Standings / League of Levels</title>
 
-		<meta name="description" content="Major Two represents the top-six teams from each level through the first three weeks, respectively. These teams are then squared off against each other in a four-week round-robin tournament with 10,000 schmeckles up for grabs." />
+		<meta name="description" content="Major One represents the top-six teams from each level through the first three weeks, respectively. These teams are then squared off against each other in a four-week round-robin tournament with 10,000 schmeckles up for grabs." />
 
 		<meta property="og:site_name" content="League of Levels" />
 		<meta property="og:url" content="https://www.leagueoflevels.com/majors/" />
-		<meta property="og:title" content="Major Two / Qualifying & Standings / League of Levels" />
-		<meta property="og:description" content="Major Two represents the top-six teams from each level through the first three weeks, respectively. These teams are then squared off against each other in a four-week round-robin tournament with 10,000 schmeckles up for grabs." />
+		<meta property="og:title" content="Major One / Qualifying & Standings / League of Levels" />
+		<meta property="og:description" content="Major One represents the top-six teams from each level through the first three weeks, respectively. These teams are then squared off against each other in a four-week round-robin tournament with 10,000 schmeckles up for grabs." />
 		<meta property="og:type" content="article" />
 
 		<meta name="twitter:site" content="samelevel" />
 		<meta name="twitter:url" content="https://www.leagueoflevels.com/majors/" />
-		<meta name="twitter:title" content="Major Two / Qualifying & Standings / League of Levels" />
-		<meta name="twitter:description" content="Major Two represents the top-six teams from each level through the first three weeks, respectively. These teams are then squared off against each other in a four-week round-robin tournament with 10,000 schmeckles up for grabs." />
+		<meta name="twitter:title" content="Major One / Qualifying & Standings / League of Levels" />
+		<meta name="twitter:description" content="Major One represents the top-six teams from each level through the first three weeks, respectively. These teams are then squared off against each other in a four-week round-robin tournament with 10,000 schmeckles up for grabs." />
 
-		<meta name="title" content="Major Two / Qualifying & Standings / League of Levels" />
+		<meta name="title" content="Major One / Qualifying & Standings / League of Levels" />
 		<meta name="medium" content="article" />
 
 		<link rel="shortcut icon" href="/favicon.ico" />
@@ -58,7 +58,7 @@
 
 						<div class="col-12 col-xl-6 col-xxl-5">
 <%
-							sqlGetMajors = "SELECT MajorID, Majors.LevelID, Levels.Title, MajorTitle FROM Majors INNER JOIN Levels ON Levels.LevelID = Majors.LevelID WHERE StartPeriod >= 4 ORDER BY StartPeriod DESC, LevelID ASC"
+							sqlGetMajors = "SELECT MajorID, Majors.LevelID, Levels.Title, MajorTitle FROM Majors INNER JOIN Levels ON Levels.LevelID = Majors.LevelID WHERE Year = 2022 AND StartPeriod >= 4 ORDER BY StartPeriod DESC, LevelID ASC"
 							Set rsMajors = sqlDatabase.Execute(sqlGetMajors)
 
 							Do While Not rsMajors.Eof
@@ -71,7 +71,7 @@
 
 									<div class="card-body p-0">
 
-										<table class="table mb-1">
+										<table class="table mb-1 rounded">
 											<thead>
 												<tr>
 													<th class="pl-3"><b><%= thisMajorTitle %></b></th>
@@ -128,7 +128,7 @@
 %>
 						</div>
 
-						<div class="col-12 col-xl-6 col-xxl-7">
+						<div class="col-12 col-xl-6 col-xxl-7 pb-3">
 
 							<div class="row">
 <%
@@ -140,7 +140,7 @@
 								sqlGetMajorMatchups = sqlGetMajorMatchups & "INNER JOIN LinkAccountsTeams L2 ON L2.TeamID = T2.TeamID "
 								sqlGetMajorMatchups = sqlGetMajorMatchups & "INNER JOIN Accounts A1 ON A1.AccountID = L1.AccountID "
 								sqlGetMajorMatchups = sqlGetMajorMatchups & "INNER JOIN Accounts A2 ON A2.AccountID = L2.AccountID "
-								sqlGetMajorMatchups = sqlGetMajorMatchups & "WHERE Year = 2021 AND (Period >= 11 AND Period <= 14) AND (Matchups.LevelID = 2 OR Matchups.LevelID = 3) AND IsMajor = 1 "
+								sqlGetMajorMatchups = sqlGetMajorMatchups & "WHERE Year = 2022 AND (Period >= 4 AND Period <= 7) AND (Matchups.LevelID = 2 OR Matchups.LevelID = 3) AND IsMajor = 1 "
 								sqlGetMajorMatchups = sqlGetMajorMatchups & "ORDER BY Period ASC, LevelID ASC"
 
 								Set rsMajorMatchups = sqlDatabase.Execute(sqlGetMajorMatchups)
@@ -161,49 +161,42 @@
 									thisTeamPMR1 = rsMajorMatchups("TeamPMR1")
 									thisTeamPMR2 = rsMajorMatchups("TeamPMR2")
 
-									TeamPMRColor1 = "success"
-									If thisTeamPMR1 < 321 Then TeamPMRColor1 = "warning"
-									If thisTeamPMR1 < 161 Then TeamPMRColor1 = "danger"
-									TeamPMRPercent1 = (thisTeamPMR1 * 100) / 420
-
-									TeamPMRColor2 = "success"
-									If thisTeamPMR2 < 321 Then TeamPMRColor2 = "warning"
-									If thisTeamPMR2 < 161 Then TeamPMRColor2 = "danger"
-									TeamPMRPercent2 = (thisTeamPMR2 * 100) / 420
-
 									If CInt(thisRunningPeriod) <> CInt(thisPeriod) Then
 										thisRunningPeriod = thisPeriod
+										thisPadding = ""
+										If thisRunningPeriod > 4 Then thisPadding = "pt-3"
 %>
-										<div class="col-12">
-											<ul class="list-group mb-3">
-												<li class="list-group-item p-0">
-													<h5 class="text-left text-white p-3 mt-0 mb-0 rounded" style="background-color: #032B43;"><b>PERIOD <%= thisRunningPeriod %> MAJOR MATCHUPS</b></h5>
-												</li>
-											</ul>
+										<div class="col-12 pb-2 <%= thisPadding %>">
+											<h5 class="text-left mt-0 mb-0"><b>PERIOD <%= thisRunningPeriod %> MAJOR MATCHUPS</b></h5>
+											<hr />
 										</div>
 <%
 									End If
 %>
-									<div class="col-xxl-6 col-xl-12 col-lg-6 col-md-6 col-sm-12">
-										<a style="text-decoration: none; display: block;">
+									<div class="col-12 col-xxl-6 col-xxxl-4">
+										<a href="/scores/<%= thisMatchupID %>/" style="text-decoration: none; display: block;">
 											<ul class="list-group" id="matchup-<%= MatchupID %>" style="margin-bottom: 1rem;">
-												<li class="list-group-item team-flffl-box-<%= TeamID1 %>" style="position: relative;">
-													<span class="team-flffl-score-<%= TeamID1 %>" style="font-size: 1.25rem; line-height: 1.9rem; background-color: #fff; color: #03324F; float: right;"><%= thisTeamScore1 %></span>
-													<img src="https://samelevel.imgix.net/<%= thisProfileImage1 %>?w=28&h=28&fit=crop&crop=focalpoint" width="28" height="28" style="margin-right: 0.2rem;" /> <span style="font-size: 15px; color: #03324F; line-height: 1.9rem;"><b><%= thisProfileName1 %></b></span>
-													<div class="progress team-flffl-progress-<%= TeamID1 %>" style="height: 1px; margin-top: 6px; margin-bottom: 0; padding-bottom: 0;">
+												<li class="list-group-item team-slffl-box-<%= TeamID1 %>" style="position: relative;">
+													<span class="team-slffl-score-<%= TeamID1 %>" style="font-size: 1em; line-height: 1.9rem; background-color: #fff; color: #0F574D; float: right; padding-top: 0rem;"><%= thisTeamScore1 %></span>
+													<img src="https://samelevel.imgix.net/<%= thisProfileImage1 %>?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-2" /><span style="font-size: 13px; line-height: 1.9rem; color: #0F574D; font-weight: bold;"><%= thisProfileName1 %></span>
+													<% If TeamPMRPercent1 > 0 Then %>
+													<div class="progress team-slffl-progress-<%= TeamID1 %>" style="height: 1px; margin-top: 6px; margin-bottom: 0; padding-bottom: 0;">
 														<div class="progress-bar progress-bar-<%= TeamPMRColor1 %>" role="progressbar" aria-valuenow="<%= TeamPMRPercent1 %>" aria-valuemin="0" aria-valuemax="100" style="width: <%= TeamPMRPercent1 %>%">
-															<span class="sr-only team-flffl-progress-sr-<%= TeamID1 %>"><%= TeamPMRPercent1 %>%</span>
+															<span class="sr-only team-slffl-progress-sr-<%= TeamID1 %>"><%= TeamPMRPercent1 %>%</span>
 														</div>
 													</div>
+													<% End If %>
 												</li>
-												<li class="list-group-item team-flffl-box-<%= TeamID2 %>">
-													<span class="team-flffl-score-<%= TeamID2 %>" style="font-size: 1.25rem; line-height: 1.9rem; background-color: #fff; color: #03324F; float: right;"><%= thisTeamScore2 %></span>
-													<img src="https://samelevel.imgix.net/<%= thisProfileImage2 %>?w=28&h=28&fit=crop&crop=focalpoint" width="28" height="28" style="margin-right: 0.2rem;" /> <span style="font-size: 15px; color: #03324F; line-height: 1.9rem;"><b><%= thisProfileName2 %></b></span>
-													<div class="progress team-flffl-progress-<%= TeamID2 %>" style="height: 1px; margin-top: 4px; margin-bottom: 0; padding-bottom: 0;">
+												<li class="list-group-item team-slffl-box-<%= TeamID2 %>">
+													<span class="team-slffl-score-<%= TeamID2 %>" style="font-size: 1em; line-height: 1.9rem; background-color: #fff; color: #0F574D; float: right; padding-top: 0rem;"><%= thisTeamScore2 %></span>
+													<img src="https://samelevel.imgix.net/<%= thisProfileImage2 %>?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-2" /><span style="font-size: 13px; line-height: 1.9rem; color: #0F574D; font-weight: bold;"><%= thisProfileName2 %></span>
+													<% If TeamPMRPercent2 > 0 Then %>
+													<div class="progress team-slffl-progress-<%= TeamID2 %>" style="height: 1px; margin-top: 4px; margin-bottom: 0; padding-bottom: 0;">
 														<div class="progress-bar progress-bar-<%= TeamPMRColor2 %>" role="progressbar" aria-valuenow="<%= TeamPMRPercent2 %>" aria-valuemin="0" aria-valuemax="<%= TeamPMRPercent2 %>" style="width: <%= TeamPMRPercent2 %>%">
-															<span class="sr-only team-flffl-progress-sr-<%= TeamID2 %>"><%= TeamPMRPercent2 %>%</span>
+															<span class="sr-only team-slffl-progress-sr-<%= TeamID2 %>"><%= TeamPMRPercent2 %>%</span>
 														</div>
 													</div>
+													<% End If %>
 												</li>
 											</ul>
 										</a>
