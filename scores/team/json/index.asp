@@ -12,7 +12,7 @@
 	If leagueTitle = "CUP" Then
 
 		Leg = Request.QueryString("leg")
-
+		BaseScore = 0
 		If CInt(Leg) = 2 Then
 
 			sqlGetLastWeek = "SELECT * FROM Matchups WHERE (TeamID1 = " & teamID & " OR TeamID2 = " & teamID & ") AND LevelID = 0 AND Year = " & Session.Contents("CurrentYear") & " AND Period = " & Session.Contents("CurrentPeriod") - 1
@@ -21,6 +21,22 @@
 			If CInt(rsLastWeek("TeamID1")) = CInt(teamID) Then BaseScore = rsLastWeek("TeamScore1")
 
 			If CInt(rsLastWeek("TeamID2")) = CInt(teamID) Then BaseScore = rsLastWeek("TeamScore2")
+
+
+		End If
+
+		If CInt(Leg) = 3 Then
+
+			sqlGetLastWeek = "SELECT * FROM Matchups WHERE (TeamID1 = " & teamID & " OR TeamID2 = " & teamID & ") AND LevelID = 0 AND Year = " & Session.Contents("CurrentYear") & " AND Period >= " & Session.Contents("CurrentPeriod") - 2 & " AND Period <= " & Session.Contents("CurrentPeriod") - 1
+			Set rsLastWeek = sqlDatabase.Execute(sqlGetLastWeek)
+
+			Do While Not rsLastWeek.Eof
+				If CInt(rsLastWeek("TeamID1")) = CInt(teamID) Then BaseScore = BaseScore + rsLastWeek("TeamScore1")
+				If CInt(rsLastWeek("TeamID2")) = CInt(teamID) Then BaseScore = BaseScore + rsLastWeek("TeamScore2")
+				rsLastWeek.MoveNext
+			Loop
+			rsLastWeek.Close
+			Set rsLastWeek = Nothing
 
 
 		End If

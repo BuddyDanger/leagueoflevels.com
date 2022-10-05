@@ -161,6 +161,8 @@
 									TeamPMR1 = arrCup(12, i)
 									TeamPMR2 = arrCup(13, i)
 									Leg = arrCup(14, i)
+									BaseScore1 = 0
+									BaseScore2 = 0
 
 									If CInt(Leg) = 2 Then
 
@@ -178,6 +180,35 @@
 
 										If CInt(rsLastWeek("TeamID1")) = CInt(TeamID2) Then BaseScore2 = rsLastWeek("TeamScore1")
 										If CInt(rsLastWeek("TeamID2")) = CInt(TeamID2) Then BaseScore2 = rsLastWeek("TeamScore2")
+
+										rsLastWeek.Close
+										Set rsLastWeek = Nothing
+
+
+									End If
+
+									If CInt(Leg) = 3 Then
+
+										sqlGetLastWeek = "SELECT * FROM Matchups WHERE (TeamID1 = " & TeamID1 & " OR TeamID2 = " & TeamID1 & ") AND LevelID = 0 AND Year = " & Session.Contents("CurrentYear") & " AND Period >= " & Session.Contents("CurrentPeriod") - 2 & " AND Period <= " & Session.Contents("CurrentPeriod") - 1
+										Set rsLastWeek = sqlDatabase.Execute(sqlGetLastWeek)
+
+										Do While Not rsLastWeek.Eof
+											If CInt(rsLastWeek("TeamID1")) = CInt(TeamID1) Then BaseScore1 = BaseScore1 + rsLastWeek("TeamScore1")
+											If CInt(rsLastWeek("TeamID2")) = CInt(TeamID1) Then BaseScore1 = BaseScore1 + rsLastWeek("TeamScore2")
+											rsLastWeek.MoveNext
+										Loop
+
+										rsLastWeek.Close
+										Set rsLastWeek = Nothing
+
+										sqlGetLastWeek = "SELECT * FROM Matchups WHERE (TeamID1 = " & TeamID2 & " OR TeamID2 = " & TeamID2 & ") AND LevelID = 0 AND Year = " & Session.Contents("CurrentYear") & " AND Period >= " & Session.Contents("CurrentPeriod") - 2 & " AND Period <= " & Session.Contents("CurrentPeriod") - 1
+										Set rsLastWeek = sqlDatabase.Execute(sqlGetLastWeek)
+
+										Do While Not rsLastWeek.Eof
+											If CInt(rsLastWeek("TeamID1")) = CInt(TeamID2) Then BaseScore2 = BaseScore2 + rsLastWeek("TeamScore1")
+											If CInt(rsLastWeek("TeamID2")) = CInt(TeamID2) Then BaseScore2 = BaseScore2 + rsLastWeek("TeamScore2")
+											rsLastWeek.MoveNext
+										Loop
 
 										rsLastWeek.Close
 										Set rsLastWeek = Nothing
