@@ -265,7 +265,7 @@
 	'*****************************************************
 	'*** BET  ********************************************
 	'*****************************************************
-	If Session.Contents("SITE_Level_1") = "sportsbook" Then
+	If Session.Contents("SITE_Level_1") = "sportsbook" And Session.Contents("SITE_Level_2") <> "tickets" Then
 
 		Session.Contents("SITE_Bet_MatchupID") = ""
 		Session.Contents("SITE_Bet_Type") = ""
@@ -441,6 +441,7 @@
 		Session.Contents("SITE_Tickets_AccountProfileName") = ""
 		Session.Contents("SITE_Tickets_TypeID") = ""
 		Session.Contents("SITE_Tickets_TypeTitle") = ""
+		Session.Contents("SITE_Tickets_Progress") = ""
 
 		arLevels = Split(LevelString, "||")
 		RebuildURL = 0
@@ -452,6 +453,20 @@
 			MatchFound = 0
 			StrippedLevel = Level
 			If InStr(StrippedLevel, "-") Then StrippedLevel = Replace(StrippedLevel, "-", " ")
+
+			If MatchFound = 0 Then
+
+				If Level = "active" Then
+
+					Session.Contents("SITE_Tickets_Processed") = "active"
+
+					sTransferURL = "tickets/index.asp"
+
+					MatchFound = 1
+
+				End If
+
+			End If
 
 			If MatchFound = 0 Then
 

@@ -8,16 +8,19 @@
 		Session.Contents("SITE_Tickets_AccountProfileName") = ""
 		Session.Contents("SITE_Tickets_TypeID") = ""
 		Session.Contents("SITE_Tickets_TypeTitle") = ""
+		Session.Contents("SITE_Tickets_Processed") = ""
 	End If
 
 	If Request.Form("action") = "update" Then
 
 		thisAccount = Request.Form("account")
 		thisType = Request.Form("type")
+		thisProcessed = Request.Form("processed")
 
 		thisRedirect = "/sportsbook/tickets/"
 		If Len(thisAccount) > 0 Then thisRedirect = thisRedirect & thisAccount & "/"
 		If Len(thisType) > 0 Then thisRedirect = thisRedirect & thisType & "/"
+		If Len(thisProcessed) > 0 Then thisRedirect = thisRedirect & thisProcessed & "/"
 
 		Response.Redirect(thisRedirect)
 
@@ -25,11 +28,13 @@
 
 	thisPageTitle = "Sportsbook / Tickets / "
 	If Len(Session.Contents("SITE_Tickets_AccountProfileName")) > 0 Then thisPageTitle = thisPageTitle & Session.Contents("SITE_Tickets_AccountProfileName") & " / "
+	If Len(Session.Contents("SITE_Tickets_Processed")) > 0 Then thisPageTitle = thisPageTitle & "Active Tickets Only / "
 	If Len(Session.Contents("SITE_Tickets_TypeTitle")) > 0 Then thisPageTitle = thisPageTitle & Session.Contents("SITE_Tickets_TypeTitle") & " / "
 	thisPageTitle = thisPageTitle & "League of Levels"
 
 	thisPageDescription = "Real-time LOL Sportsbook ticket tracker"
 	If Len(Session.Contents("SITE_Tickets_AccountProfileName")) > 0 Then thisPageDescription = thisPageDescription & " for " & Session.Contents("SITE_Tickets_AccountProfileName")
+	If Len(Session.Contents("SITE_Tickets_Processed")) > 0 Then thisPageDescription = thisPageDescription & " in-progress bets"
 	If Len(Session.Contents("SITE_Tickets_TypeTitle")) > 0 Then thisPageDescription = thisPageDescription & " across all '" & Session.Contents("SITE_Tickets_TypeTitle") & "' ticket types"
 	If Len(Session.Contents("SITE_Tickets_AccountProfileName")) = 0 And Len(Session.Contents("SITE_Tickets_TypeTitle")) = 0 Then thisPageDescription = thisPageDescription & " tracking all ticket outcomes and related transactions."
 	thisPageDescription = thisPageDescription & "."
@@ -114,7 +119,7 @@
 							<div class="col-6 col-sm-6 col-md-6 col-lg-6 col-xl-3">
 
 								<select class="form-control form-control-lg form-check-input-lg mb-3" name="type" id="type">
-									<option value="">ALL TYPES</option>
+									<option value="">ALL BET TYPES</option>
 <%
 									sqlGetTypes = "SELECT * FROM TicketTypes ORDER BY TypeTitle ASC"
 									Set rsTypes = sqlDatabase.Execute(sqlGetTypes)
@@ -129,6 +134,16 @@
 
 									rsTypes.Close
 %>
+								</select>
+
+							</div>
+
+							<div class="col-6 col-sm-6 col-md-6 col-lg-6 col-xl-3">
+
+								<select class="form-control form-control-lg form-check-input-lg mb-3" name="processed" id="processed">
+									<option value="">ALL TICKETS</option>
+									<option value="active" <% If Session.Contents("SITE_Tickets_Processed") = "active" Then %>selected<% End If %>>In Progress Only</option>
+
 								</select>
 
 							</div>
