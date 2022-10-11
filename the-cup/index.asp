@@ -114,61 +114,16 @@
 
 							<ul class="list-group list-flush">
 								<li class="list-group-item p-0">
-									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-top"><img src="https://samelevel.imgix.net/user.jpg?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-1 pr-1">Big Ballers</h6>
+									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-top">
+										<img src="https://samelevel.imgix.net/user.jpg?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-1 pr-1">Big Ballers
+										<div class="float-right">318.72</div>
+									</h6>
 								</li>
 								<li class="list-group-item p-0">
-									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-bottom"><img src="https://samelevel.imgix.net/icon-6e5505b514c25680f5f712b79c908ed28fee241cfa943bb4d6ce42189b79ee53.jpg?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-1 pr-1">High Decibels</h6>
-								</li>
-							</ul>
-
-							<div class="py-2 py-xl-0"></div>
-							<div class="py-xl-5"></div>
-							<div class="py-xl-3"></div>
-
-							<ul class="list-group list-flush">
-								<li class="list-group-item p-0">
-									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-top"><img src="https://samelevel.imgix.net/icon-9aad698267bff349d84ee940906149280f61c71c745848f1749a13336a331d0b.png?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-1 pr-1">Sacks in the City</h6>
-								</li>
-								<li class="list-group-item p-0">
-									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-bottom"><img src="https://samelevel.imgix.net/user.jpg?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-1 pr-1">DangercrazyDC</h6>
-								</li>
-							</ul>
-
-							<div class="py-2 py-xl-0"></div>
-							<div class="py-xl-5"></div>
-							<div class="py-xl-5"></div>
-
-							<ul class="list-group list-flush">
-								<li class="list-group-item p-0">
-									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-top"><img src="https://samelevel.imgix.net/icon-499cdf64521a9eb639138ef715d3b76ee8f04c98538b2bac44c4dea0f9d3892d.jpg?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-1 pr-1">Big TD's</h6>
-								</li>
-								<li class="list-group-item p-0">
-									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-bottom"><img src="https://samelevel.imgix.net/icon-76a925038547e7e1ccea4686a9465048ae0514838a750cebc86802039c6988ca.jpg?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-1 pr-1">Filthy Animals</h6>
-								</li>
-							</ul>
-
-							<div class="py-2 py-xl-0"></div>
-							<div class="py-xl-3"></div>
-
-							<ul class="list-group list-flush">
-								<li class="list-group-item p-0">
-									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-top"><img src="https://samelevel.imgix.net/user.jpg?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-1 pr-1">Smokin' Jay Cutlers</h6>
-								</li>
-								<li class="list-group-item p-0">
-									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-bottom"><img src="https://samelevel.imgix.net/icon-4733557fd47f6eac9130ad27db36e6bca5590b8df4cd05458265e3746cc92548.jpeg?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-1 pr-1">Coheeds</h6>
-								</li>
-							</ul>
-
-							<div class="py-2 py-xl-0"></div>
-							<div class="py-xl-5"></div>
-							<div class="py-xl-5"></div>
-
-							<ul class="list-group list-flush">
-								<li class="list-group-item p-0">
-									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-top"><img src="https://samelevel.imgix.net/icon-31327d645150ef09d795efd3799aa41fb66791cbac553f8de61e75b82b6ae6fa.jpg?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-1 pr-1">Buddy Danger</h6>
-								</li>
-								<li class="list-group-item p-0">
-									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-bottom"><img src="https://samelevel.imgix.net/icon-8efe9b8e038ecc474a00fe1ddb9bdeeb90d99b943ef13acee63cfc06ec882b0c.jpeg?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-1 pr-1">Holding Court</h6>
+									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-bottom">
+										<strike style="color:red"><img src="https://samelevel.imgix.net/icon-6e5505b514c25680f5f712b79c908ed28fee241cfa943bb4d6ce42189b79ee53.jpg?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-1 pr-1">High Decibels</strike>
+										<div class="float-right" style="color:red">288.72</div>
+									</h6>
 								</li>
 							</ul>
 
@@ -178,10 +133,91 @@
 
 							<ul class="list-group list-flush">
 								<li class="list-group-item p-0">
-									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-top"><img src="https://samelevel.imgix.net/gdeep.jpg?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-1 pr-1">Gone Deep</h6>
+									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-top">
+										<strike style="color:red"><img src="https://samelevel.imgix.net/icon-9aad698267bff349d84ee940906149280f61c71c745848f1749a13336a331d0b.png?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-1 pr-1">Sacks in the City</strike>
+										<div class="float-right" style="color:red">287.14</div>
+									</h6>
 								</li>
 								<li class="list-group-item p-0">
-									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-bottom"><img src="https://samelevel.imgix.net/icon-be218a04554de8af12cdd4581d73eb5266684d2daa95739adee7c7e2b3b22ff0.jpeg?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-1 pr-1">Hangin' with Hernandez</h6>
+									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-bottom">
+										<img src="https://samelevel.imgix.net/user.jpg?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-1 pr-1">DangercrazyDC
+										<div class="float-right">308.42</div>
+									</h6>
+								</li>
+							</ul>
+
+							<div class="py-2 py-xl-0"></div>
+							<div class="py-xl-5"></div>
+							<div class="py-xl-5"></div>
+
+							<ul class="list-group list-flush">
+								<li class="list-group-item p-0">
+									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-top">
+										<img src="https://samelevel.imgix.net/icon-499cdf64521a9eb639138ef715d3b76ee8f04c98538b2bac44c4dea0f9d3892d.jpg?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-1 pr-1">Big TD's
+										<div class="float-right">297.74</div>
+									</h6>
+								</li>
+								<li class="list-group-item p-0">
+									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-bottom">
+										<strike style="color:red"><img src="https://samelevel.imgix.net/icon-76a925038547e7e1ccea4686a9465048ae0514838a750cebc86802039c6988ca.jpg?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-1 pr-1">Filthy Animals</strike>
+										<div class="float-right" style="color:red">232.82</div>
+									</h6>
+								</li>
+							</ul>
+
+							<div class="py-2 py-xl-0"></div>
+							<div class="py-xl-3"></div>
+
+							<ul class="list-group list-flush">
+								<li class="list-group-item p-0">
+									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-top">
+										<img src="https://samelevel.imgix.net/user.jpg?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-1 pr-1">Smokin' Jay Cutlers
+										<div class="float-right">294.88</div>
+									</h6>
+								</li>
+								<li class="list-group-item p-0">
+									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-bottom">
+										<strike style="color:red"><img src="https://samelevel.imgix.net/icon-4733557fd47f6eac9130ad27db36e6bca5590b8df4cd05458265e3746cc92548.jpeg?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-1 pr-1">Coheeds</strike>
+										<div class="float-right" style="color:red">246.10</div>
+									</h6>
+								</li>
+							</ul>
+
+							<div class="py-2 py-xl-0"></div>
+							<div class="py-xl-5"></div>
+							<div class="py-xl-5"></div>
+
+							<ul class="list-group list-flush">
+								<li class="list-group-item p-0">
+									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-top">
+										<img src="https://samelevel.imgix.net/icon-31327d645150ef09d795efd3799aa41fb66791cbac553f8de61e75b82b6ae6fa.jpg?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-1 pr-1">Buddy Danger
+										<div class="float-right">286.06</div>
+									</h6>
+								</li>
+								<li class="list-group-item p-0">
+									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-bottom">
+										<strike style="color:red"><img src="https://samelevel.imgix.net/icon-8efe9b8e038ecc474a00fe1ddb9bdeeb90d99b943ef13acee63cfc06ec882b0c.jpeg?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-1 pr-1">Holding Court</strike>
+										<div class="float-right" style="color:red">223.78</div>
+									</h6>
+								</li>
+							</ul>
+
+							<div class="py-2 py-xl-0"></div>
+							<div class="py-xl-5"></div>
+							<div class="py-xl-3"></div>
+
+							<ul class="list-group list-flush">
+								<li class="list-group-item p-0">
+									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-top">
+										<img src="https://samelevel.imgix.net/gdeep.jpg?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-1 pr-1">Gone Deep
+										<div class="float-right">288.86</div>
+									</h6>
+								</li>
+								<li class="list-group-item p-0">
+									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-bottom">
+										<strike style="color:red"><img src="https://samelevel.imgix.net/icon-be218a04554de8af12cdd4581d73eb5266684d2daa95739adee7c7e2b3b22ff0.jpeg?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-1 pr-1">Hangin' with Hernandez</strike>
+										<div class="float-right" style="color:red">279.44</div>
+									</h6>
 								</li>
 							</ul>
 
@@ -197,7 +233,7 @@
 
 							<ul class="list-group list-flush">
 								<li class="list-group-item p-0">
-									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-top">&nbsp;</h6>
+									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-top"><img src="https://samelevel.imgix.net/user.jpg?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-1 pr-1">Big Ballers</h6>
 								</li>
 								<li class="list-group-item p-0">
 									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-bottom"><img src="https://samelevel.imgix.net/user.jpg?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-1 pr-1">Ten Foot Midget</h6>
@@ -212,7 +248,7 @@
 									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-top"><img src="https://samelevel.imgix.net/icon-12e744aa13f23733bb0f7b458fad5179ff16f024ccf0d228baf04fd93db54126.jpeg?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-1 pr-1">AOL 4 Life</h6>
 								</li>
 								<li class="list-group-item p-0">
-									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-bottom">&nbsp;</h6>
+									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-bottom"><img src="https://samelevel.imgix.net/user.jpg?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-1 pr-1">DangercrazyDC</h6>
 								</li>
 							</ul>
 
@@ -237,7 +273,7 @@
 									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-top"><img src="https://samelevel.imgix.net/icon-proper.jpg?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-1 pr-1">Proper Football</h6>
 								</li>
 								<li class="list-group-item p-0">
-									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-bottom">&nbsp;</h6>
+									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-bottom"><img src="https://samelevel.imgix.net/icon-499cdf64521a9eb639138ef715d3b76ee8f04c98538b2bac44c4dea0f9d3892d.jpg?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-1 pr-1">Big TD's</h6>
 								</li>
 							</ul>
 
@@ -248,7 +284,7 @@
 
 							<ul class="list-group list-flush">
 								<li class="list-group-item p-0">
-									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-top">&nbsp;</h6>
+									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-top"><img src="https://samelevel.imgix.net/user.jpg?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-1 pr-1">Smokin' Jay Cutlers</h6>
 								</li>
 								<li class="list-group-item p-0">
 									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-bottom"><img src="https://samelevel.imgix.net/icon-3f3d785d2583e8c2d88ef1ad7e4a9a464fd6f19ddfa1d17c528d85e164320094.jpeg?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-1 pr-1">Terrible Towelie</h6>
@@ -273,7 +309,7 @@
 
 							<ul class="list-group list-flush">
 								<li class="list-group-item p-0">
-									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-top">&nbsp;</h6>
+									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-top"><img src="https://samelevel.imgix.net/icon-31327d645150ef09d795efd3799aa41fb66791cbac553f8de61e75b82b6ae6fa.jpg?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-1 pr-1">Buddy Danger</h6>
 								</li>
 								<li class="list-group-item p-0">
 									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-bottom"><img src="https://samelevel.imgix.net/icon-munchen.jpg?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-1 pr-1">Munchen on Bundchen</h6>
@@ -288,7 +324,7 @@
 									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-top"><img src="https://samelevel.imgix.net/icon-booyaahh.jpg?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-1 pr-1">BOOYAAHH</h6>
 								</li>
 								<li class="list-group-item p-0">
-									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-bottom">&nbsp;</h6>
+									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-bottom"><img src="https://samelevel.imgix.net/gdeep.jpg?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-1 pr-1">Gone Deep</h6>
 								</li>
 							</ul>
 
