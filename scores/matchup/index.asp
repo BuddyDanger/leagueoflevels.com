@@ -991,7 +991,7 @@
 
 							</div>
 
-							<div class="col-12 col-xl-6 pl-lg-3 pr-lg-0">
+							<div class="col-12 col-xl-6 pl-0 pr-0 pl-lg-3 pr-lg-0">
 
 								<div class="row">
 <%
@@ -1282,21 +1282,21 @@
 										If oLevelID = 2 Then LevelCSS = "slffl"
 										If oLevelID = 3 Then LevelCSS = "flffl"
 	%>
-										<div class="col-12 col-lg-3">
-										<a href="/scores/<%= oMatchupID %>/" style="text-decoration: none; display: block;">
-											<ul class="list-group" id="matchup-<%= oMatchupID %>" style="margin-bottom: 1rem;">
-												<li class="list-group-item team-<%= LevelCSS %>-box-<%= oTeamID1 %>" style="position: relative;">
-													<span class="team-<%= LevelCSS %>-score-<%= oTeamID1 %>" style="font-size: 1em; line-height: 1.9rem; background-color: #fff; float: right; padding-top: 0rem;"><%= oTeamScore1 %></span>
-													<span style="font-size: 13px; line-height: 1.9rem;  font-weight: bold;"><%= oTeamAbbreviatedName1 %></span>
+										<div class="col-6 col-lg-3">
+											<a href="/scores/<%= oMatchupID %>/" style="text-decoration: none; display: block;">
+												<ul class="list-group" id="matchup-<%= oMatchupID %>" style="margin-bottom: 1rem;">
+													<li class="list-group-item team-<%= LevelCSS %>-box-<%= oTeamID1 %>" style="position: relative;">
+														<span class="team-<%= LevelCSS %>-score-<%= oTeamID1 %>" style="font-size: 1em; line-height: 1.9rem; background-color: #fff; float: right; padding-top: 0rem;"><%= oTeamScore1 %></span>
+														<span style="font-size: 13px; line-height: 1.9rem;  font-weight: bold;"><%= oTeamAbbreviatedName1 %></span>
 
-												</li>
-												<li class="list-group-item team-<%= LevelCSS %>-box-<%= oTeamID2 %>">
-													<span class="team-<%= LevelCSS %>-score-<%= oTeamID2 %>" style="font-size: 1em; line-height: 1.9rem; background-color: #fff;  float: right; padding-top: 0rem;"><%= oTeamScore2 %></span>
-													<span style="font-size: 13px; line-height: 1.9rem;  font-weight: bold;"><%= oTeamAbbreviatedName2 %></span>
+													</li>
+													<li class="list-group-item team-<%= LevelCSS %>-box-<%= oTeamID2 %>">
+														<span class="team-<%= LevelCSS %>-score-<%= oTeamID2 %>" style="font-size: 1em; line-height: 1.9rem; background-color: #fff;  float: right; padding-top: 0rem;"><%= oTeamScore2 %></span>
+														<span style="font-size: 13px; line-height: 1.9rem;  font-weight: bold;"><%= oTeamAbbreviatedName2 %></span>
 
-												</li>
-											</ul>
-										</a>
+													</li>
+												</ul>
+											</a>
 										</div>
 	<%
 									Next
