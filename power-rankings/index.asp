@@ -78,10 +78,10 @@
 										</thead>
 										<tbody>
 <%
-											sqlGetLastPeriod = "SELECT TOP (1) Period FROM YearPeriods WHERE StartDate > DATEADD(""d"", -13, GETDATE())"
+											sqlGetLastPeriod = "SELECT TOP (1) Period FROM YearPeriods WHERE StartDate > DATEADD(""d"", -14, GETDATE())"
 											Set rsLastPeriod = sqlDatabase.Execute(sqlGetLastPeriod)
 
-											thisLastPeriod = 1
+											thisLastPeriod = rsLastPeriod("Period")
 
 											rsLastPeriod.Close
 											Set rsLastPeriod = Nothing

@@ -1288,12 +1288,10 @@
 													<li class="list-group-item team-<%= LevelCSS %>-box-<%= oTeamID1 %>" style="position: relative;">
 														<span class="team-<%= LevelCSS %>-score-<%= oTeamID1 %>" style="font-size: 1em; line-height: 1.9rem; background-color: #fff; float: right; padding-top: 0rem;"><%= oTeamScore1 %></span>
 														<span style="font-size: 13px; line-height: 1.9rem;  font-weight: bold;"><%= oTeamAbbreviatedName1 %></span>
-
 													</li>
 													<li class="list-group-item team-<%= LevelCSS %>-box-<%= oTeamID2 %>">
 														<span class="team-<%= LevelCSS %>-score-<%= oTeamID2 %>" style="font-size: 1em; line-height: 1.9rem; background-color: #fff;  float: right; padding-top: 0rem;"><%= oTeamScore2 %></span>
 														<span style="font-size: 13px; line-height: 1.9rem;  font-weight: bold;"><%= oTeamAbbreviatedName2 %></span>
-
 													</li>
 												</ul>
 											</a>
