@@ -265,7 +265,7 @@
 	'*****************************************************
 	'*** BET  ********************************************
 	'*****************************************************
-	If Session.Contents("SITE_Level_1") = "sportsbook" And Session.Contents("SITE_Level_2") <> "tickets" Then
+	If Session.Contents("SITE_Level_1") = "sportsbook" Then
 
 		Session.Contents("SITE_Bet_MatchupID") = ""
 		Session.Contents("SITE_Bet_Type") = ""

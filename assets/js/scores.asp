@@ -116,22 +116,13 @@
 				success: function(data) {
 
 					var scoreBox1 = document.getElementsByClassName('team-omega-score-' + data["teamid"])[0];
-					var scoreBox2 = document.getElementsByClassName('team-omega-score-' + data["teamid"])[1];
 
 					var PMR1 = document.getElementsByClassName('team-omega-progress-' + data["teamid"])[0];
-					var PMR2 = document.getElementsByClassName('team-omega-progress-' + data["teamid"])[1];
-
 					PMR1.innerHTML = "<div class=\"progress-bar progress-bar-" + data["teampmrcolor"] + "\" role=\"progressbar\" aria-valuenow=\"" + data["teampmrpercent"] + "\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: " + data["teampmrpercent"] + "%\"><span class=\"sr-only\">" + data["teampmrpercent"] + "%</span></div>";
-					PMR2.innerHTML = "<div class=\"progress-bar progress-bar-" + data["teampmrcolor"] + "\" role=\"progressbar\" aria-valuenow=\"" + data["teampmrpercent"] + "\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: " + data["teampmrpercent"] + "%\"><span class=\"sr-only\">" + data["teampmrpercent"] + "%</span></div>";
 
 					if (parseFloat(scoreBox1.innerText) != parseFloat(data["teamscore"])) {
 						var scoreAnimation1 = new CountUp(scoreBox1, scoreBox1.innerText, data["teamscore"], 2, 4);
 						scoreAnimation1.start();
-					}
-
-					if (parseFloat(scoreBox2.innerText) != parseFloat(data["teamscore"])) {
-						var scoreAnimation2 = new CountUp(scoreBox2, scoreBox2.innerText, data["teamscore"], 2, 4);
-						scoreAnimation2.start();
 					}
 
 				}

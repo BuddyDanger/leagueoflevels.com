@@ -53,7 +53,12 @@
 <%
 					If CInt(Session.Contents("CurrentPeriod")) < 18 Then
 
-						sqlMatchups = "SELECT Matchups.MatchupID, Matchups.LevelID, Matchups.TeamID1, Teams1.TeamName AS TeamName1, Accounts1.ProfileImage AS Logo1, Teams1.CBSID AS CBSID1, Matchups.TeamID2, Teams2.TeamName, Accounts2.ProfileImage AS Logo2, Teams2.CBSID AS CBSID2, Matchups.TeamScore1, Matchups.TeamScore2, Matchups.TeamPMR1, Matchups.TeamPMR2 FROM Matchups INNER JOIN Teams AS Teams1 ON Teams1.TeamID = Matchups.TeamID1 INNER JOIN Teams AS Teams2 ON Teams2.TeamID = Matchups.TeamID2 INNER JOIN LinkAccountsTeams AS Link1 ON Link1.TeamID = Teams1.TeamID INNER JOIN LinkAccountsTeams AS Link2 ON Link2.TeamID = Teams2.TeamID INNER JOIN Accounts AS Accounts1 ON Accounts1.AccountID = Link1.AccountID INNER JOIN Accounts AS Accounts2 ON Accounts2.AccountID = Link2.AccountID WHERE Matchups.Year = " & Session.Contents("CurrentYear") & " AND Matchups.Period = " & Session.Contents("CurrentPeriod") & " AND Matchups.LevelID = 1 ORDER BY MatchupID;"
+						'sqlGetSLFFLTotal = "SELECT (sum([TeamScore1]) + sum([TeamScore2]))/2 AS LevelTotal FROM [dbo].[Matchups] WHERE year =2022 and period=6 and levelid=2"
+						sqlGetTopScore = "SELECT TOP 1 TeamName, Score FROM (SELECT A.TeamName, A.Score FROM (SELECT TOP 1 TeamScore1 AS Score, TeamID1 AS TeamID, Teams.TeamName FROM Matchups INNER JOIN Teams ON Teams.TeamID = TeamID1 WHERE Year = 2022 and Period = 6 and Matchups.LevelID <> 1 ORDER BY TeamScore1 DESC) A "
+						sqlGetTopScore = sqlGetTopScore & "UNION ALL "
+						sqlGetTopScore = sqlGetTopScore & "SELECT B.TeamName, B.Score FROM (SELECT TOP 1 TeamScore2 AS Score, TeamID2 AS TeamID, Teams.TeamName FROM Matchups INNER JOIN Teams ON Teams.TeamID = TeamID2 WHERE Year = 2022 and Period = 6 and Matchups.LevelID <> 1 ORDER BY TeamScore2 DESC) B) Scores ORDER BY Score DESC; "
+
+						sqlMatchups = sqlGetTopScore & "SELECT Matchups.MatchupID, Matchups.LevelID, Matchups.TeamID1, Teams1.TeamName AS TeamName1, Accounts1.ProfileImage AS Logo1, Teams1.CBSID AS CBSID1, Matchups.TeamID2, Teams2.TeamName, Accounts2.ProfileImage AS Logo2, Teams2.CBSID AS CBSID2, Matchups.TeamScore1, Matchups.TeamScore2, Matchups.TeamPMR1, Matchups.TeamPMR2 FROM Matchups INNER JOIN Teams AS Teams1 ON Teams1.TeamID = Matchups.TeamID1 INNER JOIN Teams AS Teams2 ON Teams2.TeamID = Matchups.TeamID2 INNER JOIN LinkAccountsTeams AS Link1 ON Link1.TeamID = Teams1.TeamID INNER JOIN LinkAccountsTeams AS Link2 ON Link2.TeamID = Teams2.TeamID INNER JOIN Accounts AS Accounts1 ON Accounts1.AccountID = Link1.AccountID INNER JOIN Accounts AS Accounts2 ON Accounts2.AccountID = Link2.AccountID WHERE Matchups.Year = " & Session.Contents("CurrentYear") & " AND Matchups.Period = " & Session.Contents("CurrentPeriod") & " AND Matchups.LevelID = 1 ORDER BY MatchupID;"
 						sqlMatchups = sqlMatchups & "SELECT Matchups.MatchupID, Matchups.LevelID, Matchups.TeamID1, Teams1.TeamName AS TeamName1, Accounts1.ProfileImage AS Logo1, Teams1.CBSID AS CBSID1, Matchups.TeamID2, Teams2.TeamName, Accounts2.ProfileImage AS Logo2, Teams2.CBSID, Matchups.TeamScore1, Matchups.TeamScore2, Matchups.TeamPMR1, Matchups.TeamPMR2, Matchups.Leg FROM Matchups INNER JOIN Teams AS Teams1 ON Teams1.TeamID = Matchups.TeamID1 INNER JOIN Teams AS Teams2 ON Teams2.TeamID = Matchups.TeamID2 INNER JOIN LinkAccountsTeams AS Link1 ON Link1.TeamID = Teams1.TeamID INNER JOIN LinkAccountsTeams AS Link2 ON Link2.TeamID = Teams2.TeamID INNER JOIN Accounts AS Accounts1 ON Accounts1.AccountID = Link1.AccountID INNER JOIN Accounts AS Accounts2 ON Accounts2.AccountID = Link2.AccountID WHERE Matchups.Year = " & Session.Contents("CurrentYear") & " AND Matchups.Period = " & Session.Contents("CurrentPeriod") & " AND Matchups.LevelID = 0 ORDER BY MatchupID;"
 						sqlMatchups = sqlMatchups & "SELECT Matchups.MatchupID, Matchups.LevelID, Matchups.TeamID1, Teams1.TeamName AS TeamName1, Accounts1.ProfileImage AS Logo1, Teams1.CBSID AS CBSID1, Matchups.TeamID2, Teams2.TeamName, Accounts2.ProfileImage AS Logo2, Teams2.CBSID AS CBSID2, Matchups.TeamScore1, Matchups.TeamScore2, Matchups.TeamPMR1, Matchups.TeamPMR2, Matchups.IsPlayoffs, Matchups.IsMajor, Power1.PowerPoints_Total + Power2.PowerPoints_Total AS PowerMatchup, Power1.PowerPoints_Total AS PowerPoints1, Power2.PowerPoints_Total AS PowerPoints2 FROM Matchups INNER JOIN Teams AS Teams1 ON Teams1.TeamID = Matchups.TeamID1 INNER JOIN Teams AS Teams2 ON Teams2.TeamID = Matchups.TeamID2 INNER JOIN LinkAccountsTeams AS Link1 ON Link1.TeamID = Teams1.TeamID INNER JOIN LinkAccountsTeams AS Link2 ON Link2.TeamID = Teams2.TeamID INNER JOIN Accounts AS Accounts1 ON Accounts1.AccountID = Link1.AccountID INNER JOIN Accounts AS Accounts2 ON Accounts2.AccountID = Link2.AccountID INNER JOIN PowerRankings AS Power1 ON Power1.TeamID = Teams1.TeamID INNER JOIN PowerRankings AS Power2 ON Power2.TeamID = Teams2.TeamID WHERE Matchups.Year = " & Session.Contents("CurrentYear") & " AND Matchups.Period = " & Session.Contents("CurrentPeriod") & " AND Matchups.LevelID = 2 ORDER BY PowerMatchup DESC;"
 						sqlMatchups = sqlMatchups & "SELECT Matchups.MatchupID, Matchups.LevelID, Matchups.TeamID1, Teams1.TeamName AS TeamName1, Accounts1.ProfileImage AS Logo1, Teams1.CBSID AS CBSID1, Matchups.TeamID2, Teams2.TeamName, Accounts2.ProfileImage AS Logo2, Teams2.CBSID AS CBSID2, Matchups.TeamScore1, Matchups.TeamScore2, Matchups.TeamPMR1, Matchups.TeamPMR2, Matchups.IsPlayoffs, Matchups.IsMajor, Power1.PowerPoints_Total + Power2.PowerPoints_Total AS PowerMatchup, Power1.PowerPoints_Total AS PowerPoints1, Power2.PowerPoints_Total AS PowerPoints2 FROM Matchups INNER JOIN Teams AS Teams1 ON Teams1.TeamID = Matchups.TeamID1 INNER JOIN Teams AS Teams2 ON Teams2.TeamID = Matchups.TeamID2 INNER JOIN LinkAccountsTeams AS Link1 ON Link1.TeamID = Teams1.TeamID INNER JOIN LinkAccountsTeams AS Link2 ON Link2.TeamID = Teams2.TeamID INNER JOIN Accounts AS Accounts1 ON Accounts1.AccountID = Link1.AccountID INNER JOIN Accounts AS Accounts2 ON Accounts2.AccountID = Link2.AccountID INNER JOIN PowerRankings AS Power1 ON Power1.TeamID = Teams1.TeamID INNER JOIN PowerRankings AS Power2 ON Power2.TeamID = Teams2.TeamID WHERE Matchups.Year = " & Session.Contents("CurrentYear") & " AND Matchups.Period = " & Session.Contents("CurrentPeriod") & " AND Matchups.LevelID = 3 ORDER BY PowerMatchup DESC;"
@@ -66,6 +71,8 @@
 
 						Set rsMatchups = sqlDatabase.Execute(sqlMatchups)
 
+						If Not rsMatchups.Eof Then arrTopScore = rsMatchups.GetRows()
+						Set rsMatchups = rsMatchups.NextRecordset()
 						If Not rsMatchups.Eof Then arrOmega = rsMatchups.GetRows()
 						Set rsMatchups = rsMatchups.NextRecordset()
 						If Not rsMatchups.Eof Then arrCup = rsMatchups.GetRows()
@@ -75,6 +82,28 @@
 						If Not rsMatchups.Eof Then arrFLFFL = rsMatchups.GetRows()
 
 						Response.Write("<div class=""row mt-4"">")
+
+							Response.Write("<div class=""col-12 col-xl-4 col-xxxl-2 mb-3"">")
+%>
+								<div class="text-white bg-dark rounded">
+
+									<div class="card-body pt-2 pb-1">
+
+										<div>
+											<h4 style="border-bottom: 1px solid;" class="mb-2 pb-2">LOL Live Scoring<span class="float-right"><i class="fas fa-football-ball"></i></span></h4>
+										</div>
+
+										<div style="padding-bottom: 2px;">(Week 6) Highest Score</div>
+
+										<div class="pb-2">
+											<span><b><%= arrTopScore(0,0) %></b> (<%= arrTopScore(1,0) %>)</span>
+										</div>
+
+									</div>
+
+								</div>
+<%
+							Response.Write("</div>")
 
 							If IsArray(arrOmega) Then
 
@@ -139,9 +168,6 @@
 								Next
 
 							End If
-
-						Response.Write("</div>")
-						Response.Write("<div class=""row"">")
 
 							If IsArray(arrCup) Then
 

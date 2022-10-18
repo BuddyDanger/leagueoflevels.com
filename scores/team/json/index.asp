@@ -41,23 +41,19 @@
 
 		End If
 
-		sqlGetLeague = "SELECT LevelID FROM Teams WHERE TeamID = " & teamID
-		Set rsLeague = sqlDatabase.Execute(sqlGetLeague)
-
-		thisLevelID = CInt(rsLeague("LevelID"))
-
-		If thisLevelID = 2 Then leagueTitle = "SLFFL"
-		If thisLevelID = 3 Then leagueTitle = "FLFFL"
-
-		rsLeague.Close
-		Set rsLeague = Nothing
-
 	End If
 
-	sqlGetCBSID = "SELECT CBSID FROM Teams WHERE TeamID = " & teamID
-	Set rsCBSID = sqlDatabase.Execute(sqlGetCBSID)
+	sqlGetLeague = "SELECT LevelID, CBSID FROM Teams WHERE TeamID = " & teamID
+	Set rsLeague = sqlDatabase.Execute(sqlGetLeague)
 
-	thisCBSID = rsCBSID("CBSID")
+	thisLevelID = CInt(rsLeague("LevelID"))
+	thisCBSID = rsLeague("CBSID")
+
+	If thisLevelID = 2 Then leagueTitle = "SLFFL"
+	If thisLevelID = 3 Then leagueTitle = "FLFFL"
+
+	rsLeague.Close
+	Set rsLeague = Nothing
 
 	Set oXML = CreateObject("MSXML2.DOMDocument.3.0")
 	oXML.loadXML(GetScores(leagueTitle, Session.Contents("CurrentPeriod")))
