@@ -454,7 +454,7 @@
 
 						<div class="row">
 
-							<div class="col-6 col-lg-3 pr-0">
+							<div class="col-6 col-lg-3 pl-0 pr-0">
 
 								<ul class="list-group" id="team-1-roster" style="margin-bottom: 1rem;">
 <%
