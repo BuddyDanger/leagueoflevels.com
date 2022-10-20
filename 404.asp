@@ -514,7 +514,33 @@
 
 		Next
 
+	End If
 
+	'*****************************************************
+	'*** TRANSACTIONS  ***********************************
+	'*****************************************************
+	If Session.Contents("SITE_Level_1") = "transactions" Then
+
+		Session.Contents("SITE_Transactions_LevelID") = ""
+
+		arLevels = Split(LevelString, "||")
+		RebuildURL = 0
+		LevelCount = 1
+		DeadPage = 0
+
+		For Each Level In arLevels
+
+			MatchFound = 0
+			StrippedLevel = Level
+			If InStr(StrippedLevel, "-") Then StrippedLevel = Replace(StrippedLevel, "-", " ")
+
+			If Level = "same-level" Then Session.Contents("SITE_Transactions_LevelID") = 2
+			If Level = "farm-level" Then Session.Contents("SITE_Transactions_LevelID") = 3
+			If Level = "omega-level" Then Session.Contents("SITE_Transactions_LevelID") = 1
+
+			sTransferURL = "index.asp"
+
+		Next
 
 	End If
 

@@ -44,6 +44,7 @@
 					<li class="nav-item"><a class="nav-link" href="/schmeckles/"><i class="dripicons-card"></i>Schmeckles</a></li>
 					<li class="nav-item"><a class="nav-link" href="/eliminator/"><i class="dripicons-warning"></i>Eliminator</a></li>
 					<li class="nav-item"><a class="nav-link" href="/power-rankings/"><i class="dripicons-star"></i>Power Rankings</a></li>
+					<li class="nav-item"><a class="nav-link" href="/transactions/"><i class="dripicons-swap"></i>Transactions</a></li>
 					<!--<li class="nav-item"><a class="nav-link" href="/playoffs/"><i class="dripicons-network-3"></i>Playoffs</a></li>
 					<li class="nav-item"><a class="nav-link" href="/teams/"><i class="dripicons-user-group"></i>Teams</a></li>
 					<li class="nav-item"><a class="nav-link" href="/schedule/"><i class="dripicons-calendar"></i>Schedule</a></li>-->
