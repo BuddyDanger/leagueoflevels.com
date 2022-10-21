@@ -56,10 +56,7 @@
 
 	$(function () {
 
-		var SLFFL_ID = [<%= SLFFLTeams %>]
-		var FLFFL_ID = [<%= FLFFLTeams %>]
-		var OMEGA_ID = [<%= OmegaTeams %>]
-		var CUP_ID   = [<%= CupTeams %>]
+		var MATCHUPS = [<%= thisWeeklyMatchups %>]
 
 		function loopThroughArray(array, callback, interval) {
 
@@ -102,136 +99,34 @@
 
 		}
 
-		loopThroughArray(OMEGA_ID, function (arrayElement, loopTime) {
+		loopThroughArray(MATCHUPS, function (arrayElement, loopTime) {
 
 			var thisID = arrayElement;
-			var data = {"league":"OMEGA", "id":thisID};
+			var data = {"id":thisID};
 			data = $.param(data);
 
 			$.ajax({
 				type: "GET",
 				dataType: "json",
-				url: "/scores/team/json/",
+				url: "/scores/json/matchup/",
 				data: data,
 				success: function(data) {
 
-					var scoreBox1 = document.getElementsByClassName('team-omega-score-' + data["teamid"])[0];
+					//alert('team-' + data["level"] + '-progress-' + data["teamid1"]);
+					var objScore1 = document.getElementsByClassName('team-' + data["level"] + '-score-' + data["teamid1"])[0];
+					var objPMR1 = document.getElementsByClassName('team-' + data["level"] + '-progress-' + data["teamid1"])[0];
+					objPMR1.innerHTML = "<div class=\"progress-bar progress-bar-" + data["teampmrcolor1"] + "\" role=\"progressbar\" aria-valuenow=\"" + data["teampmrpercent1"] + "\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: " + data["teampmrpercent1"] + "%\"><span class=\"sr-only\">" + data["teampmrpercent1"] + "%</span></div>";
+					if (parseFloat(objScore1.innerText) != parseFloat(data["teamscore1"])) { var scoreAnimation1 = new CountUp(objScore1, objScore1.innerText, data["teamscore1"], 2, 4); scoreAnimation1.start(); }
 
-					var PMR1 = document.getElementsByClassName('team-omega-progress-' + data["teamid"])[0];
-					PMR1.innerHTML = "<div class=\"progress-bar progress-bar-" + data["teampmrcolor"] + "\" role=\"progressbar\" aria-valuenow=\"" + data["teampmrpercent"] + "\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: " + data["teampmrpercent"] + "%\"><span class=\"sr-only\">" + data["teampmrpercent"] + "%</span></div>";
-
-					if (parseFloat(scoreBox1.innerText) != parseFloat(data["teamscore"])) {
-						var scoreAnimation1 = new CountUp(scoreBox1, scoreBox1.innerText, data["teamscore"], 2, 4);
-						scoreAnimation1.start();
-					}
+					var objScore2 = document.getElementsByClassName('team-' + data["level"] + '-score-' + data["teamid2"])[0];
+					var objPMR2 = document.getElementsByClassName('team-' + data["level"] + '-progress-' + data["teamid2"])[0];
+					objPMR2.innerHTML = "<div class=\"progress-bar progress-bar-" + data["teampmrcolor2"] + "\" role=\"progressbar\" aria-valuenow=\"" + data["teampmrpercent2"] + "\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: " + data["teampmrpercent2"] + "%\"><span class=\"sr-only\">" + data["teampmrpercent2"] + "%</span></div>";
+					if (parseFloat(objScore2.innerText) != parseFloat(data["teamscore2"])) { var scoreAnimation2 = new CountUp(objScore1, objScore2.innerText, data["teamscore2"], 2, 4); scoreAnimation2.start(); }
 
 				}
 			});
 
-		}, 3000);
-
-		loopThroughArray(CUP_ID, function (arrayElement, loopTime) {
-
-			var thisID = arrayElement;
-			var data = {"league":"CUP", "id":thisID, "leg":"<%= Leg %>"};
-			data = $.param(data);
-
-			$.ajax({
-				type: "GET",
-				dataType: "json",
-				url: "/scores/team/json/",
-				data: data,
-				success: function(data) {
-
-					var scoreBox1 = document.getElementsByClassName('team-cup-score-' + data["teamid"])[0];
-
-					var PMR1 = document.getElementsByClassName('team-cup-progress-' + data["teamid"])[0];
-
-					PMR1.innerHTML = "<div class=\"progress-bar progress-bar-" + data["teampmrcolor"] + "\" role=\"progressbar\" aria-valuenow=\"" + data["teampmrpercent"] + "\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: " + data["teampmrpercent"] + "%\"><span class=\"sr-only\">" + data["teampmrpercent"] + "%</span></div>";
-
-					if (parseFloat(scoreBox1.innerText) != parseFloat(data["teamscore"])) {
-						var scoreAnimation1 = new CountUp(scoreBox1, scoreBox1.innerText, data["teamscore"], 2, 4);
-						scoreAnimation1.start();
-					}
-
-				}
-			});
-
-		}, 3000);
-
-		loopThroughArray(SLFFL_ID, function (arrayElement, loopTime) {
-
-			var thisID = arrayElement;
-			var data = {"league":"SLFFL", "id":thisID};
-			data = $.param(data);
-
-			$.ajax({
-				type: "GET",
-				dataType: "json",
-				url: "/scores/team/json/",
-				data: data,
-				success: function(data) {
-
-					var scoreBox1 = document.getElementsByClassName('team-slffl-score-' + data["teamid"])[0];
-					var scoreBox2 = document.getElementsByClassName('team-slffl-score-' + data["teamid"])[1];
-
-					var PMR1 = document.getElementsByClassName('team-slffl-progress-' + data["teamid"])[0];
-					var PMR2 = document.getElementsByClassName('team-slffl-progress-' + data["teamid"])[1];
-
-					PMR1.innerHTML = "<div class=\"progress-bar progress-bar-" + data["teampmrcolor"] + "\" role=\"progressbar\" aria-valuenow=\"" + data["teampmrpercent"] + "\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: " + data["teampmrpercent"] + "%\"><span class=\"sr-only\">" + data["teampmrpercent"] + "%</span></div>";
-					PMR2.innerHTML = "<div class=\"progress-bar progress-bar-" + data["teampmrcolor"] + "\" role=\"progressbar\" aria-valuenow=\"" + data["teampmrpercent"] + "\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: " + data["teampmrpercent"] + "%\"><span class=\"sr-only\">" + data["teampmrpercent"] + "%</span></div>";
-
-					if (parseFloat(scoreBox1.innerText) != parseFloat(data["teamscore"])) {
-						var scoreAnimation1 = new CountUp(scoreBox1, scoreBox1.innerText, data["teamscore"], 2, 4);
-						scoreAnimation1.start();
-					}
-
-					if (parseFloat(scoreBox2.innerText) != parseFloat(data["teamscore"])) {
-						var scoreAnimation2 = new CountUp(scoreBox2, scoreBox2.innerText, data["teamscore"], 2, 4);
-						scoreAnimation2.start();
-					}
-
-				}
-			});
-
-		}, 3000);
-
-		loopThroughArray(FLFFL_ID, function (arrayElement, loopTime) {
-
-			var thisID = arrayElement;
-			var data = {"league":"FLFFL", "id":thisID};
-			data = $.param(data);
-
-			$.ajax({
-				type: "GET",
-				dataType: "json",
-				url: "/scores/team/json/",
-				data: data,
-				success: function(data) {
-
-					var scoreBox1 = document.getElementsByClassName('team-flffl-score-' + data["teamid"])[0];
-					var scoreBox2 = document.getElementsByClassName('team-flffl-score-' + data["teamid"])[1];
-
-					var PMR1 = document.getElementsByClassName('team-flffl-progress-' + data["teamid"])[0];
-					var PMR2 = document.getElementsByClassName('team-flffl-progress-' + data["teamid"])[1];
-
-					PMR1.innerHTML = "<div class=\"progress-bar progress-bar-" + data["teampmrcolor"] + "\" role=\"progressbar\" aria-valuenow=\"" + data["teampmrpercent"] + "\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: " + data["teampmrpercent"] + "%\"><span class=\"sr-only\">" + data["teampmrpercent"] + "%</span></div>";
-					PMR2.innerHTML = "<div class=\"progress-bar progress-bar-" + data["teampmrcolor"] + "\" role=\"progressbar\" aria-valuenow=\"" + data["teampmrpercent"] + "\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: " + data["teampmrpercent"] + "%\"><span class=\"sr-only\">" + data["teampmrpercent"] + "%</span></div>";
-
-					if (parseFloat(scoreBox1.innerText) != parseFloat(data["teamscore"])) {
-						var scoreAnimation1 = new CountUp(scoreBox1, scoreBox1.innerText, data["teamscore"], 2, 4);
-						scoreAnimation1.start();
-					}
-
-					if (parseFloat(scoreBox2.innerText) != parseFloat(data["teamscore"])) {
-						var scoreAnimation2 = new CountUp(scoreBox2, scoreBox2.innerText, data["teamscore"], 2, 4);
-						scoreAnimation2.start();
-					}
-
-				}
-			});
-
-		}, 3000);
+		}, 500);
 
 	});
 </script>

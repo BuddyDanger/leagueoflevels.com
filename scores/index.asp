@@ -54,9 +54,9 @@
 					If CInt(Session.Contents("CurrentPeriod")) < 18 Then
 
 						'sqlGetSLFFLTotal = "SELECT (sum([TeamScore1]) + sum([TeamScore2]))/2 AS LevelTotal FROM [dbo].[Matchups] WHERE year =2022 and period=6 and levelid=2"
-						sqlGetTopScore = "SELECT TOP 1 TeamName, Score FROM (SELECT A.TeamName, A.Score FROM (SELECT TOP 1 TeamScore1 AS Score, TeamID1 AS TeamID, Teams.TeamName FROM Matchups INNER JOIN Teams ON Teams.TeamID = TeamID1 WHERE Year = 2022 and Period = 6 and Matchups.LevelID <> 1 ORDER BY TeamScore1 DESC) A "
+						sqlGetTopScore = "SELECT TOP 1 TeamName, Score FROM (SELECT A.TeamName, A.Score FROM (SELECT TOP 1 TeamScore1 AS Score, TeamID1 AS TeamID, Teams.TeamName FROM Matchups INNER JOIN Teams ON Teams.TeamID = TeamID1 WHERE Year = 2022 and Period = 7 and Matchups.LevelID <> 1 ORDER BY TeamScore1 DESC) A "
 						sqlGetTopScore = sqlGetTopScore & "UNION ALL "
-						sqlGetTopScore = sqlGetTopScore & "SELECT B.TeamName, B.Score FROM (SELECT TOP 1 TeamScore2 AS Score, TeamID2 AS TeamID, Teams.TeamName FROM Matchups INNER JOIN Teams ON Teams.TeamID = TeamID2 WHERE Year = 2022 and Period = 6 and Matchups.LevelID <> 1 ORDER BY TeamScore2 DESC) B) Scores ORDER BY Score DESC; "
+						sqlGetTopScore = sqlGetTopScore & "SELECT B.TeamName, B.Score FROM (SELECT TOP 1 TeamScore2 AS Score, TeamID2 AS TeamID, Teams.TeamName FROM Matchups INNER JOIN Teams ON Teams.TeamID = TeamID2 WHERE Year = 2022 and Period = 7 and Matchups.LevelID <> 1 ORDER BY TeamScore2 DESC) B) Scores ORDER BY Score DESC; "
 
 						sqlMatchups = sqlGetTopScore & "SELECT Matchups.MatchupID, Matchups.LevelID, Matchups.TeamID1, Teams1.TeamName AS TeamName1, Accounts1.ProfileImage AS Logo1, Teams1.CBSID AS CBSID1, Matchups.TeamID2, Teams2.TeamName, Accounts2.ProfileImage AS Logo2, Teams2.CBSID AS CBSID2, Matchups.TeamScore1, Matchups.TeamScore2, Matchups.TeamPMR1, Matchups.TeamPMR2 FROM Matchups INNER JOIN Teams AS Teams1 ON Teams1.TeamID = Matchups.TeamID1 INNER JOIN Teams AS Teams2 ON Teams2.TeamID = Matchups.TeamID2 INNER JOIN LinkAccountsTeams AS Link1 ON Link1.TeamID = Teams1.TeamID INNER JOIN LinkAccountsTeams AS Link2 ON Link2.TeamID = Teams2.TeamID INNER JOIN Accounts AS Accounts1 ON Accounts1.AccountID = Link1.AccountID INNER JOIN Accounts AS Accounts2 ON Accounts2.AccountID = Link2.AccountID WHERE Matchups.Year = " & Session.Contents("CurrentYear") & " AND Matchups.Period = " & Session.Contents("CurrentPeriod") & " AND Matchups.LevelID = 1 ORDER BY MatchupID;"
 						sqlMatchups = sqlMatchups & "SELECT Matchups.MatchupID, Matchups.LevelID, Matchups.TeamID1, Teams1.TeamName AS TeamName1, Accounts1.ProfileImage AS Logo1, Teams1.CBSID AS CBSID1, Matchups.TeamID2, Teams2.TeamName, Accounts2.ProfileImage AS Logo2, Teams2.CBSID, Matchups.TeamScore1, Matchups.TeamScore2, Matchups.TeamPMR1, Matchups.TeamPMR2, Matchups.Leg FROM Matchups INNER JOIN Teams AS Teams1 ON Teams1.TeamID = Matchups.TeamID1 INNER JOIN Teams AS Teams2 ON Teams2.TeamID = Matchups.TeamID2 INNER JOIN LinkAccountsTeams AS Link1 ON Link1.TeamID = Teams1.TeamID INNER JOIN LinkAccountsTeams AS Link2 ON Link2.TeamID = Teams2.TeamID INNER JOIN Accounts AS Accounts1 ON Accounts1.AccountID = Link1.AccountID INNER JOIN Accounts AS Accounts2 ON Accounts2.AccountID = Link2.AccountID WHERE Matchups.Year = " & Session.Contents("CurrentYear") & " AND Matchups.Period = " & Session.Contents("CurrentPeriod") & " AND Matchups.LevelID = 0 ORDER BY MatchupID;"
@@ -80,6 +80,8 @@
 						If Not rsMatchups.Eof Then arrSLFFL = rsMatchups.GetRows()
 						Set rsMatchups = rsMatchups.NextRecordset()
 						If Not rsMatchups.Eof Then arrFLFFL = rsMatchups.GetRows()
+
+						thisWeeklyMatchups = ""
 
 						Response.Write("<div class=""row mt-4"">")
 
@@ -122,6 +124,8 @@
 									TeamScore2 = FormatNumber(arrOmega(11, i), 2)
 									TeamPMR1 = arrOmega(12, i)
 									TeamPMR2 = arrOmega(13, i)
+
+									thisWeeklyMatchups = thisWeeklyMatchups & MatchupID & ","
 
 									TeamPMRColor1 = "success"
 									If TeamPMR1 < 396 Then TeamPMRColor1 = "warning"
@@ -189,6 +193,8 @@
 									Leg = arrCup(14, i)
 									BaseScore1 = 0
 									BaseScore2 = 0
+
+									thisWeeklyMatchups = thisWeeklyMatchups & MatchupID & ","
 
 									If CInt(Leg) = 2 Then
 
@@ -322,6 +328,8 @@
 											IsPlayoffs = arrSLFFL(14, i)
 											IsMajor = arrSLFFL(15, i)
 
+											thisWeeklyMatchups = thisWeeklyMatchups & MatchupID & ","
+
 											TeamPMRColor1 = "success"
 											If TeamPMR1 < 321 Then TeamPMRColor1 = "warning"
 											If TeamPMR1 < 161 Then TeamPMRColor1 = "danger"
@@ -411,6 +419,8 @@
 													IsPlayoffs = arrFLFFL(14, i)
 													IsMajor = arrFLFFL(15, i)
 
+													thisWeeklyMatchups = thisWeeklyMatchups & MatchupID & ","
+
 													TeamPMRColor1 = "success"
 													If TeamPMR1 < 321 Then TeamPMRColor1 = "warning"
 													If TeamPMR1 < 161 Then TeamPMRColor1 = "danger"
@@ -473,13 +483,9 @@
 											End If
 
 										Response.Write("</div>")
-								Response.Write("<div class=""col-12 col-xl-6"">")
-
-
-
 
 %>
-								</div>
+
 <%
 					Else
 %>
@@ -490,6 +496,8 @@
 						</div>
 <%
 					End If
+
+					If Right(thisWeeklyMatchups, 1) = "," Then thisWeeklyMatchups = Left(thisWeeklyMatchups, Len(thisWeeklyMatchups)-1)
 %>
 				</div>
 
