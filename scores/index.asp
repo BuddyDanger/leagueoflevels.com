@@ -144,7 +144,7 @@
 									Response.Write("<div class=""col-12 col-xl-4 col-xxxl-2"">")
 %>
 										<a href="/scores/<%= MatchupID %>/" style="text-decoration: none; display: block;">
-											<ul class="list-group" id="matchup-<%= MatchupID %>" style="margin-bottom: 1rem;">
+											<ul class="list-group" style="margin-bottom: 1rem;">
 												<li class="list-group-item" style="padding-top: 0.25rem; padding-bottom: 0.25rem; font-size: 0.75rem; text-align: center; background-color: #FFBA08; color: #fff;"><strong><%= MatchupTitle %></strong></li>
 												<li class="list-group-item team-omega-box-<%= TeamID1 %>">
 													<span class="team-omega-score-<%= TeamID1 %>" style="font-size: 1em; background-color: #fff; color: #805C04; float: right;"><%= TeamScore1 %></span>
@@ -271,8 +271,8 @@
 									If TeamID2 = 59 Then TeamName2 = "Filthy Animals"
 %>
 									<div class="col-xxxl-2 col-xxl-4 col-xl-4 col-lg-6 col-md-6 col-sm-12">
-										<a href="/scores/<%= MatchupID %>/" style="text-decoration: none; display: block;">
-											<ul class="list-group" id="matchup-<%= MatchupID %>" style="margin-bottom: 1rem;">
+										<a href="/scores/<%= MatchupID %>/" class="matchup-<%= MatchupID %>" style="text-decoration: none; display: block;">
+											<ul class="list-group" style="margin-bottom: 1rem;">
 												<li class="list-group-item" style="padding-top: 0.25rem; padding-bottom: 0.25rem; font-size: 0.75rem; text-align: center; background-color: #D00000; color: #fff;"></li>
 												<li class="list-group-item team-cup-box-<%= TeamID1 %>">
 													<span class="team-cup-score-<%= TeamID1 %>" style="font-size: 1em; background-color: #fff; color: #520000; float: right;"><%= TeamScore1 %></span>
@@ -361,8 +361,8 @@
 
 											Response.Write("<div class=""col-12 col-xxl-6 col-xxxl-4"">")
 %>
-												<a href="/scores/<%= MatchupID %>/" style="text-decoration: none; display: block;">
-													<ul class="list-group" id="matchup-<%= MatchupID %>" style="margin-bottom: 1rem;">
+												<a href="/scores/<%= MatchupID %>/" class="matchup-<%= MatchupID %>" style="text-decoration: none; display: block;">
+													<ul class="list-group" style="margin-bottom: 1rem;">
 														<li class="list-group-item team-slffl-box-<%= TeamID1 %>" style="position: relative;">
 															<div style="position: absolute; top: -10px; right: -10px;"><%= MajorText %></div>
 															<span class="team-slffl-score-<%= TeamID1 %>" style="font-size: 1em; line-height: 1.9rem; background-color: #fff; color: #0F574D; float: right; padding-top: 0rem;"><%= TeamScore1 %></span>
@@ -452,8 +452,8 @@
 
 													Response.Write("<div class=""col-12 col-xxl-6 col-xxxl-4"">")
 %>
-														<a href="/scores/<%= MatchupID %>/" style="text-decoration: none; display: block;">
-															<ul class="list-group" id="matchup-<%= MatchupID %>" style="margin-bottom: 1rem;">
+														<a href="/scores/<%= MatchupID %>/" class="matchup-<%= MatchupID %>" style="text-decoration: none; display: block;">
+															<ul class="list-group" style="margin-bottom: 1rem;">
 																<li class="list-group-item team-flffl-box-<%= TeamID1 %>" style="position: relative;">
 																	<div style="position: absolute; top: -10px; right: -10px;"><%= MajorText %></div>
 																	<span class="team-flffl-score-<%= TeamID1 %>" style="font-size: 1em; line-height: 1.9rem; background-color: #fff; color: #0F574D; float: right; padding-top: 0rem;"><%= TeamScore1 %></span>

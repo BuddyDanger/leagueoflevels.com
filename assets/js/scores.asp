@@ -1,62 +1,20 @@
 <%
-	sqlGetOmegaTeams = "SELECT DISTINCT TeamID FROM (SELECT Distinct TeamID1 AS TeamID FROM Matchups WHERE LevelID = 1 and Year = " & Session.Contents("CurrentYear") & " AND Period = " & Session.Contents("CurrentPeriod") & " UNION ALL SELECT DISTINCT TeamID2 AS TeamID FROM Matchups WHERE LevelID = 1 and Year = " & Session.Contents("CurrentYear") & " AND Period = " & Session.Contents("CurrentPeriod") & ") AS ActiveTeams;"
-	sqlGetCupTeams = "SELECT DISTINCT TeamID FROM (SELECT Distinct TeamID1 AS TeamID FROM Matchups WHERE LevelID = 0 and Year = " & Session.Contents("CurrentYear") & " AND Period = " & Session.Contents("CurrentPeriod") & " UNION ALL SELECT DISTINCT TeamID2 AS TeamID FROM Matchups WHERE LevelID = 0 and Year = " & Session.Contents("CurrentYear") & " AND Period = " & Session.Contents("CurrentPeriod") & ") AS ActiveTeams;"
-	sqlGetSLFFLTeams = "SELECT DISTINCT TeamID FROM (SELECT Distinct TeamID1 AS TeamID FROM Matchups WHERE LevelID = 2 and Year = " & Session.Contents("CurrentYear") & " AND Period = " & Session.Contents("CurrentPeriod") & " UNION ALL SELECT DISTINCT TeamID2 AS TeamID FROM Matchups WHERE LevelID = 2 and Year = " & Session.Contents("CurrentYear") & " AND Period = " & Session.Contents("CurrentPeriod") & ") AS ActiveTeams;"
-	sqlGetFLFFLTeams = "SELECT DISTINCT TeamID FROM (SELECT Distinct TeamID1 AS TeamID FROM Matchups WHERE LevelID = 3 and Year = " & Session.Contents("CurrentYear") & " AND Period = " & Session.Contents("CurrentPeriod") & " UNION ALL SELECT DISTINCT TeamID2 AS TeamID FROM Matchups WHERE LevelID = 3 and Year = " & Session.Contents("CurrentYear") & " AND Period = " & Session.Contents("CurrentPeriod") & ") AS ActiveTeams;"
 	sqlGetLeg = "SELECT TOP 1 Leg FROM Matchups WHERE LevelID = 0 AND Year = " & Session.Contents("CurrentYear") & " AND Period = " & Session.Contents("CurrentPeriod") & ";"
-	Set rsTeams = sqlDatabase.Execute(sqlGetOmegaTeams & sqlGetCupTeams & sqlGetSLFFLTeams & sqlGetFLFFLTeams & sqlGetLeg)
+	Set rsLeg = sqlDatabase.Execute(sqlGetLeg)
 
-	OmegaTeams = ""
-	CupTeams = ""
-	SLFFLTeams = ""
-	FLFFLTeams = ""
-
-	Do While Not rsTeams.Eof
-		OmegaTeams = OmegaTeams & rsTeams("TeamID") & ","
-		rsTeams.MoveNext
+	Do While Not rsLeg.Eof
+		Leg = rsLeg("Leg")
+		rsLeg.MoveNext
 	Loop
 
-	Set rsTeams = rsTeams.NextRecordset
-
-	Do While Not rsTeams.Eof
-		CupTeams = CupTeams & rsTeams("TeamID") & ","
-		rsTeams.MoveNext
-	Loop
-
-	Set rsTeams = rsTeams.NextRecordset
-
-	Do While Not rsTeams.Eof
-		SLFFLTeams = SLFFLTeams & rsTeams("TeamID") & ","
-		rsTeams.MoveNext
-	Loop
-
-	Set rsTeams = rsTeams.NextRecordset
-
-	Do While Not rsTeams.Eof
-		FLFFLTeams = FLFFLTeams & rsTeams("TeamID") & ","
-		rsTeams.MoveNext
-	Loop
-
-	Set rsTeams = rsTeams.NextRecordset
-
-	Do While Not rsTeams.Eof
-		Leg = rsTeams("Leg")
-		rsTeams.MoveNext
-	Loop
-
-	rsTeams.Close
-	Set rsTeams = Nothing
-
-	If Right(OmegaTeams, 1) = "," Then OmegaTeams = Left(OmegaTeams, Len(OmegaTeams) - 1)
-	If Right(CupTeams, 1) = "," Then CupTeams = Left(CupTeams, Len(CupTeams) - 1)
-	If Right(SLFFLTeams, 1) = "," Then SLFFLTeams = Left(SLFFLTeams, Len(SLFFLTeams) - 1)
-	If Right(FLFFLTeams, 1) = "," Then FLFFLTeams = Left(FLFFLTeams, Len(FLFFLTeams) - 1)
+	rsLeg.Close
+	Set rsLeg = Nothing
 %>
 <script>
 
 	$(function () {
 
-		var MATCHUPS = [<%= thisWeeklyMatchups %>]
+		var MATCHUPS = [1]
 
 		function loopThroughArray(array, callback, interval) {
 
@@ -101,32 +59,41 @@
 
 		loopThroughArray(MATCHUPS, function (arrayElement, loopTime) {
 
-			var thisID = arrayElement;
-			var data = {"id":thisID};
-			data = $.param(data);
-
 			$.ajax({
 				type: "GET",
 				dataType: "json",
-				url: "/scores/json/matchup/",
-				data: data,
+				url: "/scores/json/period/",
 				success: function(data) {
 
-					//alert('team-' + data["level"] + '-progress-' + data["teamid1"]);
-					var objScore1 = document.getElementsByClassName('team-' + data["level"] + '-score-' + data["teamid1"])[0];
-					var objPMR1 = document.getElementsByClassName('team-' + data["level"] + '-progress-' + data["teamid1"])[0];
-					objPMR1.innerHTML = "<div class=\"progress-bar progress-bar-" + data["teampmrcolor1"] + "\" role=\"progressbar\" aria-valuenow=\"" + data["teampmrpercent1"] + "\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: " + data["teampmrpercent1"] + "%\"><span class=\"sr-only\">" + data["teampmrpercent1"] + "%</span></div>";
-					if (parseFloat(objScore1.innerText) != parseFloat(data["teamscore1"])) { var scoreAnimation1 = new CountUp(objScore1, objScore1.innerText, data["teamscore1"], 2, 4); scoreAnimation1.start(); }
+					let json = data["matchups"];
 
-					var objScore2 = document.getElementsByClassName('team-' + data["level"] + '-score-' + data["teamid2"])[0];
-					var objPMR2 = document.getElementsByClassName('team-' + data["level"] + '-progress-' + data["teamid2"])[0];
-					objPMR2.innerHTML = "<div class=\"progress-bar progress-bar-" + data["teampmrcolor2"] + "\" role=\"progressbar\" aria-valuenow=\"" + data["teampmrpercent2"] + "\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: " + data["teampmrpercent2"] + "%\"><span class=\"sr-only\">" + data["teampmrpercent2"] + "%</span></div>";
-					if (parseFloat(objScore2.innerText) != parseFloat(data["teamscore2"])) { var scoreAnimation2 = new CountUp(objScore1, objScore2.innerText, data["teamscore2"], 2, 4); scoreAnimation2.start(); }
+					for(let i = 0; i < json.length; i++) {
+
+						let obj = json[i];
+
+						var pmrc1, pmrc2; pmrc1 = pmrc2 = 'success';
+						if (obj.pmrp1 <= 66.6) { pmrc1 = 'warning' } if (obj.pmrp1 <= 33.3) { pmrc1 = 'danger' }
+						if (obj.pmrp2 <= 66.6) { pmrc2 = 'warning' } if (obj.pmrp2 <= 33.3) { pmrc2 = 'danger' }
+
+						var objScore1 = document.getElementsByClassName('team-' + obj.level + '-score-' + obj.id1)[0];
+						var objPMR1 = document.getElementsByClassName('team-' + obj.level + '-progress-' + obj.id1)[0];
+						objPMR1.innerHTML = "<div class=\"progress-bar progress-bar-" + pmrc1 + "\" role=\"progressbar\" aria-valuenow=\"" + obj.pmrp1 + "\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: " + obj.pmrp1 + "%\"><span class=\"sr-only\">" + obj.pmrp1 + "%</span></div>";
+						if (parseFloat(objScore1.innerText) != parseFloat(obj.score1)) { var scoreAnimation1 = new CountUp(objScore1, objScore1.innerText, obj.score1, 2, 4); scoreAnimation1.start(); }
+
+						var objScore2 = document.getElementsByClassName('team-' + obj.level + '-score-' + obj.id2)[0];
+						var objPMR2 = document.getElementsByClassName('team-' + obj.level + '-progress-' + obj.id2)[0];
+						objPMR2.innerHTML = "<div class=\"progress-bar progress-bar-" + pmrc2 + "\" role=\"progressbar\" aria-valuenow=\"" + obj.pmrp2 + "\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: " + obj.pmrp2 + "%\"><span class=\"sr-only\">" + obj.pmrp2 + "%</span></div>";
+						if (parseFloat(objScore2.innerText) != parseFloat(obj.score2)) { var scoreAnimation2 = new CountUp(objScore2, objScore2.innerText, obj.score2, 2, 4); scoreAnimation2.start(); }
+
+						console.log(obj.name1 + ' (' + obj.score1 + ') vs. ' + obj.name2 + ' (' + obj.score2 + ')');
+
+
+					}
 
 				}
 			});
 
-		}, 500);
+		}, 5000);
 
 	});
 </script>

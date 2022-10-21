@@ -56,7 +56,7 @@
 
 						If CInt(thisMatchupLeg) = 2 Then
 
-							sqlGetLastWeek = "SELECT * FROM Matchups WHERE (TeamID1 = " & thisTeamID1 & " OR TeamID2 = " & thisTeamID1 & ") AND LevelID = 0 AND Year = (SELECT TOP 1 Year FROM YearPeriods WHERE StartDate < GetDate() ORDER BY StartDate DESC) AND Period = (SELECT TOP 1 Period FROM YearPeriods WHERE StartDate < GetDate() ORDER BY StartDate DESC);"
+							sqlGetLastWeek = "SELECT * FROM Matchups WHERE (TeamID1 = " & thisTeamID1 & " OR TeamID2 = " & thisTeamID1 & ") AND LevelID = 0 AND Year = (SELECT TOP 1 Year FROM YearPeriods WHERE StartDate < GetDate() ORDER BY StartDate DESC) AND Period = (SELECT TOP 1 Period FROM YearPeriods WHERE StartDate < GetDate() ORDER BY StartDate DESC)-1;"
 							Set rsLastWeek = sqlDatabase.Execute(sqlGetLastWeek)
 
 							If CInt(rsLastWeek("TeamID1")) = CInt(thisTeamID1) Then thisTeamBaseScore1 = rsLastWeek("TeamScore1")
