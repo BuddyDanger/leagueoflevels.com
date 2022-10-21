@@ -26,7 +26,7 @@
 
 	slackJSON = slackJSON & "{"
 
-		slackJSON = slackJSON & """matchups"":{"
+		slackJSON = slackJSON & """matchups"":["
 
 			Do While Not rsMatchup.Eof
 
@@ -55,7 +55,7 @@
 				thisTeamCBSID1 = rsMatchup("TeamCBSID1")
 				thisTeamCBSID2 = rsMatchup("TeamCBSID2")
 
-				slackJSON = slackJSON & """" & thisMatchupID & """:["
+				slackJSON = slackJSON & "{"
 
 					If thisMatchupLevel = 0 And thisMatchupLeg > 1 Then
 
@@ -128,10 +128,11 @@
 					If thisTeamSpread1 > 0 Then thisTeamSpread1 = "+" & thisTeamSpread1
 					If thisTeamSpread2 > 0 Then thisTeamSpread2 = "+" & thisTeamSpread2
 
-					slackJSON = slackJSON & "{"
 
+						slackJSON = slackJSON & """id"": """ & thisMatchupID & ""","
 						slackJSON = slackJSON & """level"": """ & leagueTitle & ""","
 						slackJSON = slackJSON & """id1"": """ & thisTeamID1 & ""","
+						slackJSON = slackJSON & """cbs1"": """ & thisTeamCBSID1 & ""","
 						slackJSON = slackJSON & """name1"": """ & thisTeamName1 & ""","
 						slackJSON = slackJSON & """score1"": """ & FormatNumber(thisTeamScore1, 2) & ""","
 						slackJSON = slackJSON & """pmr1"": """ & thisTeamPMR1 & ""","
@@ -142,6 +143,7 @@
 						slackJSON = slackJSON & """ml1"": """ & thisTeamMoneyline1 & ""","
 						slackJSON = slackJSON & """spread1"": """ & thisTeamSpread1 & ""","
 						slackJSON = slackJSON & """id2"": """ & thisTeamID2 & ""","
+						slackJSON = slackJSON & """cbs2"": """ & thisTeamCBSID2 & ""","
 						slackJSON = slackJSON & """name2"": """ & thisTeamName2 & ""","
 						slackJSON = slackJSON & """score2"": """ & FormatNumber(thisTeamScore2, 2) & ""","
 						slackJSON = slackJSON & """pmr2"": """ & thisTeamPMR2 & ""","
@@ -153,9 +155,7 @@
 						slackJSON = slackJSON & """spread2"": """ & thisTeamSpread2 & ""","
 						slackJSON = slackJSON & """projtotal"": """ & thisProjectedTotal & """"
 
-					slackJSON = slackJSON & "} "
-
-				slackJSON = slackJSON & "], "
+				slackJSON = slackJSON & "}, "
 
 				rsMatchup.MoveNext
 
@@ -163,7 +163,7 @@
 
 			If Right(slackJSON, 2) = ", " Then slackJSON = Left(slackJSON, Len(slackJSON)-2)
 
-		slackJSON = slackJSON & "} "
+		slackJSON = slackJSON & "] "
 
 	slackJSON = slackJSON & "} "
 
