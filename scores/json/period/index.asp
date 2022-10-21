@@ -1,7 +1,5 @@
 <!--#include virtual="/adovbs.inc"-->
 <!--#include virtual="/assets/asp/sql/connection.asp"-->
-<!--#include virtual="/assets/asp/framework/session.asp"-->
-<!--#include virtual="/assets/asp/functions/master.asp"-->
 <%
 	Response.ContentType = "application/json"
 
@@ -18,9 +16,8 @@
 	sqlGetMatchup = sqlGetMatchup & "Matchups.TeamSpread1, Matchups.TeamSpread2, "
 	sqlGetMatchup = sqlGetMatchup & "(Matchups.TeamProjected1 + Matchups.TeamProjected2) AS ProjectedTotal, "
 	sqlGetMatchup = sqlGetMatchup & "T1.TeamName AS TeamName1, T2.TeamName AS TeamName2, "
-	sqlGetMatchup = sqlGetMatchup & "T1.LevelID AS TeamLevel1, T2.LevelID AS TeamLevel2, "
-	sqlGetMatchup = sqlGetMatchup & "T1.CBSID AS TeamCBSID1, T2.CBSID AS TeamCBSID2 "
-	sqlGetMatchup = sqlGetMatchup & "FROM Matchups LEFT JOIN Teams T1 ON T1.TeamID = Matchups.TeamID1 LEFT JOIN Teams T2 ON T2.TeamID = Matchups.TeamID2 WHERE Year = " & Session.Contents("CurrentYear") & " AND Period = " & Session.Contents("CurrentPeriod") & ";"
+	sqlGetMatchup = sqlGetMatchup & "T1.LevelID AS TeamLevel1, T2.LevelID AS TeamLevel2 "
+	sqlGetMatchup = sqlGetMatchup & "FROM Matchups LEFT JOIN Teams T1 ON T1.TeamID = Matchups.TeamID1 LEFT JOIN Teams T2 ON T2.TeamID = Matchups.TeamID2 WHERE Year = (SELECT TOP 1 Year FROM YearPeriods WHERE StartDate < GetDate() ORDER BY StartDate DESC) AND Period = (SELECT TOP 1 Period FROM YearPeriods WHERE StartDate < GetDate() ORDER BY StartDate DESC);"
 
 	Set rsMatchup = sqlDatabase.Execute(sqlGetMatchup)
 
@@ -52,8 +49,6 @@
 				thisTeamName2 = rsMatchup("TeamName2")
 				thisTeamLevel1 = rsMatchup("TeamLevel1")
 				thisTeamLevel2 = rsMatchup("TeamLevel2")
-				thisTeamCBSID1 = rsMatchup("TeamCBSID1")
-				thisTeamCBSID2 = rsMatchup("TeamCBSID2")
 
 				slackJSON = slackJSON & "{"
 
@@ -61,7 +56,7 @@
 
 						If CInt(thisMatchupLeg) = 2 Then
 
-							sqlGetLastWeek = "SELECT * FROM Matchups WHERE (TeamID1 = " & thisTeamID1 & " OR TeamID2 = " & thisTeamID1 & ") AND LevelID = 0 AND Year = " & Session.Contents("CurrentYear") & " AND Period = " & Session.Contents("CurrentPeriod") - 1 & ";"
+							sqlGetLastWeek = "SELECT * FROM Matchups WHERE (TeamID1 = " & thisTeamID1 & " OR TeamID2 = " & thisTeamID1 & ") AND LevelID = 0 AND Year = (SELECT TOP 1 Year FROM YearPeriods WHERE StartDate < GetDate() ORDER BY StartDate DESC) AND Period = (SELECT TOP 1 Period FROM YearPeriods WHERE StartDate < GetDate() ORDER BY StartDate DESC);"
 							Set rsLastWeek = sqlDatabase.Execute(sqlGetLastWeek)
 
 							If CInt(rsLastWeek("TeamID1")) = CInt(thisTeamID1) Then thisTeamBaseScore1 = rsLastWeek("TeamScore1")
@@ -73,7 +68,7 @@
 
 						If CInt(thisMatchupLeg) = 3 Then
 
-							sqlGetLastWeek = "SELECT * FROM Matchups WHERE (TeamID1 = " & thisTeamID1 & " OR TeamID2 = " & thisTeamID1 & ") AND LevelID = 0 AND Year = " & Session.Contents("CurrentYear") & " AND Period >= " & Session.Contents("CurrentPeriod") - 2 & " AND Period <= " & Session.Contents("CurrentPeriod") - 1
+							sqlGetLastWeek = "SELECT * FROM Matchups WHERE (TeamID1 = " & thisTeamID1 & " OR TeamID2 = " & thisTeamID1 & ") AND LevelID = 0 AND Year = (SELECT TOP 1 Year FROM YearPeriods WHERE StartDate < GetDate() ORDER BY StartDate DESC) AND Period >= (SELECT TOP 1 Period FROM YearPeriods WHERE StartDate < GetDate() ORDER BY StartDate DESC)-2 AND Period <= (SELECT TOP 1 Period FROM YearPeriods WHERE StartDate < GetDate() ORDER BY StartDate DESC)-1"
 							Set rsLastWeek = sqlDatabase.Execute(sqlGetLastWeek)
 
 							Do While Not rsLastWeek.Eof
@@ -94,29 +89,11 @@
 					End If
 
 					If thisMatchupLevel = 1 Then
-
-						thisTeamPMRColor1 = "success"
-						If thisTeamPMR1 < 396 Then thisTeamPMRColor1 = "warning"
-						If thisTeamPMR1 < 198 Then thisTeamPMRColor1 = "danger"
 						thisTeamPMRPercent1 = (thisTeamPMR1 * 100) / 600
-
-						thisTeamPMRColor2 = "success"
-						If thisTeamPMR2 < 396 Then thisTeamPMRColor2 = "warning"
-						If thisTeamPMR2 < 198 Then thisTeamPMRColor2 = "danger"
 						thisTeamPMRPercent2 = (thisTeamPMR2 * 100) / 600
-
 					Else
-
-						thisTeamPMRColor1 = "success"
-						If thisTeamPMR1 < 321 Then thisTeamPMRColor1 = "warning"
-						If thisTeamPMR1 < 161 Then thisTeamPMRColor1 = "danger"
 						thisTeamPMRPercent1 = (thisTeamPMR1 * 100) / 420
-
-						thisTeamPMRColor2 = "success"
-						If thisTeamPMR2 < 321 Then thisTeamPMRColor2 = "warning"
-						If thisTeamPMR2 < 161 Then thisTeamPMRColor2 = "danger"
 						thisTeamPMRPercent2 = (thisTeamPMR2 * 100) / 420
-
 					End If
 
 					If thisMatchupLevel = 0 Then leagueTitle = "cup"
@@ -129,31 +106,29 @@
 					If thisTeamSpread2 > 0 Then thisTeamSpread2 = "+" & thisTeamSpread2
 
 
-						slackJSON = slackJSON & """id"":""" & thisMatchupID & ""","
-						slackJSON = slackJSON & """level"":""" & leagueTitle & ""","
-						slackJSON = slackJSON & """id1"":""" & thisTeamID1 & ""","
-						slackJSON = slackJSON & """cbs1"":""" & thisTeamCBSID1 & ""","
-						slackJSON = slackJSON & """name1"":""" & thisTeamName1 & ""","
-						slackJSON = slackJSON & """score1"":""" & FormatNumber(thisTeamScore1, 2) & ""","
-						slackJSON = slackJSON & """pmr1"":""" & thisTeamPMR1 & ""","
-						slackJSON = slackJSON & """pmrp1"":""" & FormatNumber(thisTeamPMRPercent1, 2) & ""","
-						slackJSON = slackJSON & """pmrc1"":""" & thisTeamPMRColor1 & ""","
-						slackJSON = slackJSON & """proj1"":""" & FormatNumber(thisTeamProjected1, 2) & ""","
-						slackJSON = slackJSON & """chance1"":""" & FormatNumber(thisTeamWinPercentage1, 2) & ""","
-						slackJSON = slackJSON & """ml1"":""" & thisTeamMoneyline1 & ""","
-						slackJSON = slackJSON & """spread1"":""" & thisTeamSpread1 & ""","
-						slackJSON = slackJSON & """id2"":""" & thisTeamID2 & ""","
-						slackJSON = slackJSON & """cbs2"":""" & thisTeamCBSID2 & ""","
-						slackJSON = slackJSON & """name2"":""" & thisTeamName2 & ""","
-						slackJSON = slackJSON & """score2"":""" & FormatNumber(thisTeamScore2, 2) & ""","
-						slackJSON = slackJSON & """pmr2"":""" & thisTeamPMR2 & ""","
-						slackJSON = slackJSON & """pmrp2"":""" & FormatNumber(thisTeamPMRPercent2, 2) & ""","
-						slackJSON = slackJSON & """pmrc2"":""" & thisTeamPMRColor2 & ""","
-						slackJSON = slackJSON & """proj2"":""" & FormatNumber(thisTeamProjected2, 2) & ""","
-						slackJSON = slackJSON & """chance2"":""" & FormatNumber(thisTeamWinPercentage2, 2) & ""","
-						slackJSON = slackJSON & """ml2"":""" & thisTeamMoneyline2 & ""","
-						slackJSON = slackJSON & """spread2"":""" & thisTeamSpread2 & ""","
-						slackJSON = slackJSON & """projtotal"":""" & thisProjectedTotal & """"
+					slackJSON = slackJSON & """id"":""" & thisMatchupID & ""","
+					slackJSON = slackJSON & """level"":""" & leagueTitle & ""","
+					slackJSON = slackJSON & """id1"":""" & thisTeamID1 & ""","
+					slackJSON = slackJSON & """cbs1"":""" & thisTeamCBSID1 & ""","
+					slackJSON = slackJSON & """name1"":""" & thisTeamName1 & ""","
+					slackJSON = slackJSON & """score1"":""" & FormatNumber(thisTeamScore1, 2) & ""","
+					slackJSON = slackJSON & """pmr1"":""" & thisTeamPMR1 & ""","
+					slackJSON = slackJSON & """pmrp1"":""" & FormatNumber(thisTeamPMRPercent1, 2) & ""","
+					slackJSON = slackJSON & """proj1"":""" & FormatNumber(thisTeamProjected1, 2) & ""","
+					slackJSON = slackJSON & """chance1"":""" & FormatNumber(thisTeamWinPercentage1, 2) & ""","
+					slackJSON = slackJSON & """ml1"":""" & thisTeamMoneyline1 & ""","
+					slackJSON = slackJSON & """spread1"":""" & thisTeamSpread1 & ""","
+					slackJSON = slackJSON & """id2"":""" & thisTeamID2 & ""","
+					slackJSON = slackJSON & """cbs2"":""" & thisTeamCBSID2 & ""","
+					slackJSON = slackJSON & """name2"":""" & thisTeamName2 & ""","
+					slackJSON = slackJSON & """score2"":""" & FormatNumber(thisTeamScore2, 2) & ""","
+					slackJSON = slackJSON & """pmr2"":""" & thisTeamPMR2 & ""","
+					slackJSON = slackJSON & """pmrp2"":""" & FormatNumber(thisTeamPMRPercent2, 2) & ""","
+					slackJSON = slackJSON & """proj2"":""" & FormatNumber(thisTeamProjected2, 2) & ""","
+					slackJSON = slackJSON & """chance2"":""" & FormatNumber(thisTeamWinPercentage2, 2) & ""","
+					slackJSON = slackJSON & """ml2"":""" & thisTeamMoneyline2 & ""","
+					slackJSON = slackJSON & """spread2"":""" & thisTeamSpread2 & ""","
+					slackJSON = slackJSON & """projtotal"":""" & thisProjectedTotal & """"
 
 				slackJSON = slackJSON & "},"
 
