@@ -155,7 +155,7 @@
 						slackJSON = slackJSON & """spread2"": """ & thisTeamSpread2 & ""","
 						slackJSON = slackJSON & """projtotal"": """ & thisProjectedTotal & """"
 
-				slackJSON = slackJSON & "}, "
+				slackJSON = slackJSON & "},"
 
 				rsMatchup.MoveNext
 
@@ -163,9 +163,9 @@
 
 			If Right(slackJSON, 2) = ", " Then slackJSON = Left(slackJSON, Len(slackJSON)-2)
 
-		slackJSON = slackJSON & "] "
+		slackJSON = slackJSON & "]"
 
-	slackJSON = slackJSON & "} "
+	slackJSON = slackJSON & "}"
 
 	rsMatchup.Close
 	Set rsMatchup = Nothing
