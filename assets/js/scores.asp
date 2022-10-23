@@ -83,6 +83,24 @@
 							objBox.classList.add("box-glow");
 						}
 
+						if (obj.level != 'omega') {
+							var objScore1 = document.getElementsByClassName('team-' + obj.level + '-score-' + obj.id1)[1];
+							var objPMR1 = document.getElementsByClassName('team-' + obj.level + '-progress-' + obj.id1)[1];
+							objPMR1.innerHTML = "<div class=\"progress-bar progress-bar-" + pmrc1 + "\" role=\"progressbar\" aria-valuenow=\"" + obj.pmrp1 + "\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: " + obj.pmrp1 + "%\"><span class=\"sr-only\">" + obj.pmrp1 + "%</span></div>";
+							if (parseFloat(objScore1.innerText) != parseFloat(obj.score1)) {
+								var scoreAnimation1 = new CountUp(objScore1, objScore1.innerText, obj.score1, 2, 2);
+								scoreAnimation1.start();
+							}
+
+							var objScore2 = document.getElementsByClassName('team-' + obj.level + '-score-' + obj.id2)[1];
+							var objPMR2 = document.getElementsByClassName('team-' + obj.level + '-progress-' + obj.id2)[1];
+							objPMR2.innerHTML = "<div class=\"progress-bar progress-bar-" + pmrc2 + "\" role=\"progressbar\" aria-valuenow=\"" + obj.pmrp2 + "\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: " + obj.pmrp2 + "%\"><span class=\"sr-only\">" + obj.pmrp2 + "%</span></div>";
+							if (parseFloat(objScore2.innerText) != parseFloat(obj.score2)) {
+								var scoreAnimation2 = new CountUp(objScore2, objScore2.innerText, obj.score2, 2, 2);
+								scoreAnimation2.start();
+							}
+						}
+
 						//console.log(obj.name1 + ' (' + obj.score1 + ') vs. ' + obj.name2 + ' (' + obj.score2 + ')');
 
 					}
@@ -90,14 +108,14 @@
 				}
 			});
 
-		}, 10000);
+		}, 5000);
 
 		loopThroughArray(MATCHUPS, function (arrayElement, loopTime) {
 
 			var objBox = document.getElementsByClassName('matchup-' + arrayElement)[0];
 			objBox.classList.remove("box-glow");
 
-		}, 5000);
+		}, 3500);
 
 	});
 </script>
