@@ -99,7 +99,7 @@
 											<h4 style="border-bottom: 1px solid;" class="mb-2 pb-2">LOL Live Scoring<span class="float-right"><i class="fas fa-football-ball"></i></span></h4>
 										</div>
 
-										<div style="padding-bottom: 2px;">(Week 6) Highest Score</div>
+										<div style="padding-bottom: 2px;">(Week <%= Session.Contents("CurrentPeriod") %>) Highest Score</div>
 
 										<div class="pb-2">
 											<span><b><%= arrTopScore(0,0) %></b> (<%= arrTopScore(1,0) %>)</span>
