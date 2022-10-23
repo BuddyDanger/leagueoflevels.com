@@ -90,14 +90,14 @@
 				}
 			});
 
-		}, 5000);
+		}, 10000);
 
 		loopThroughArray(MATCHUPS, function (arrayElement, loopTime) {
 
 			var objBox = document.getElementsByClassName('matchup-' + arrayElement)[0];
 			objBox.classList.remove("box-glow");
 
-		}, 3000);
+		}, 5000);
 
 	});
 </script>
