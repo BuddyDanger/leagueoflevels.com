@@ -60,8 +60,9 @@
 						let obj = json[i];
 
 						var pmrc1, pmrc2; pmrc1 = pmrc2 = 'success';
-						if (obj.pmrp1 <= 66.6) { pmrc1 = 'warning' } if (obj.pmrp1 <= 33.3) { pmrc1 = 'danger' }
-						if (obj.pmrp2 <= 66.6) { pmrc2 = 'warning' } if (obj.pmrp2 <= 33.3) { pmrc2 = 'danger' }
+						var update = 0;
+						if (parseFloat(obj.pmrp1) <= 66.6666) { pmrc1 = 'warning' } if (parseFloat(obj.pmrp1) <= 33.3333) { pmrc1 = 'danger' }
+						if (parseFloat(obj.pmrp2) <= 66.6666) { pmrc2 = 'warning' } if (parseFloat(obj.pmrp2) <= 33.3333) { pmrc2 = 'danger' }
 
 						var objScore1 = document.getElementsByClassName('team-' + obj.level + '-score-' + obj.id1)[0];
 						var objPMR1 = document.getElementsByClassName('team-' + obj.level + '-progress-' + obj.id1)[0];
@@ -69,8 +70,7 @@
 						if (parseFloat(objScore1.innerText) != parseFloat(obj.score1)) {
 							var scoreAnimation1 = new CountUp(objScore1, objScore1.innerText, obj.score1, 2, 2);
 							scoreAnimation1.start();
-							var objBox = document.getElementsByClassName('matchup-' + obj.id)[0];
-							objBox.classList.add("box-glow");
+							update = 1;
 						}
 
 						var objScore2 = document.getElementsByClassName('team-' + obj.level + '-score-' + obj.id2)[0];
@@ -79,6 +79,10 @@
 						if (parseFloat(objScore2.innerText) != parseFloat(obj.score2)) {
 							var scoreAnimation2 = new CountUp(objScore2, objScore2.innerText, obj.score2, 2, 2);
 							scoreAnimation2.start();
+							update = 1;
+						}
+
+						if (update == 1) {
 							var objBox = document.getElementsByClassName('matchup-' + obj.id)[0];
 							objBox.classList.add("box-glow");
 						}

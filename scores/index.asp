@@ -132,14 +132,14 @@
 									thisWeeklyMatchups = thisWeeklyMatchups & MatchupID & ","
 
 									TeamPMRColor1 = "success"
-									If TeamPMR1 < 396 Then TeamPMRColor1 = "warning"
-									If TeamPMR1 < 198 Then TeamPMRColor1 = "danger"
 									TeamPMRPercent1 = (TeamPMR1 * 100) / 600
+									If TeamPMRPercent1 < 66.66 Then TeamPMRColor1 = "warning"
+									If TeamPMRPercent1 < 33.33 Then TeamPMRColor1 = "danger"
 
 									TeamPMRColor2 = "success"
-									If TeamPMR2 < 396 Then TeamPMRColor2 = "warning"
-									If TeamPMR2 < 198 Then TeamPMRColor2 = "danger"
 									TeamPMRPercent2 = (TeamPMR2 * 100) / 600
+									If TeamPMRPercent2 < 66.66 Then TeamPMRColor2 = "warning"
+									If TeamPMRPercent2 < 33.33 Then TeamPMRColor2 = "danger"
 
 									If MatchupID = 3709 Then MatchupTitle = "OMEGA CHAMPIONSHIP"
 									If MatchupID = 3710 Then MatchupTitle = "OMEGA 3RD PLACE"
@@ -256,14 +256,14 @@
 									TeamScore2 = FormatNumber(TeamScore2 + BaseScore2, 2)
 
 									TeamPMRColor1 = "success"
-									If TeamPMR1 < 321 Then TeamPMRColor1 = "warning"
-									If TeamPMR1 < 161 Then TeamPMRColor1 = "danger"
 									TeamPMRPercent1 = (TeamPMR1 * 100) / 420
+									If TeamPMRPercent1 < 66.66 Then TeamPMRColor1 = "warning"
+									If TeamPMRPercent1 < 33.33 Then TeamPMRColor1 = "danger"
 
 									TeamPMRColor2 = "success"
-									If TeamPMR2 < 321 Then TeamPMRColor2 = "warning"
-									If TeamPMR2 < 161 Then TeamPMRColor2 = "danger"
 									TeamPMRPercent2 = (TeamPMR2 * 100) / 420
+									If TeamPMRPercent2 < 66.66 Then TeamPMRColor2 = "warning"
+									If TeamPMRPercent2 < 33.33 Then TeamPMRColor2 = "danger"
 
 									If TeamID1 = 38 Then TeamName1 = "München"
 									If TeamID2 = 38 Then TeamName2 = "München"
@@ -335,14 +335,14 @@
 											thisWeeklyMatchups = thisWeeklyMatchups & MatchupID & ","
 
 											TeamPMRColor1 = "success"
-											If TeamPMR1 < 321 Then TeamPMRColor1 = "warning"
-											If TeamPMR1 < 161 Then TeamPMRColor1 = "danger"
 											TeamPMRPercent1 = (TeamPMR1 * 100) / 420
+											If TeamPMRPercent1 < 66.66 Then TeamPMRColor1 = "warning"
+											If TeamPMRPercent1 < 33.33 Then TeamPMRColor1 = "danger"
 
 											TeamPMRColor2 = "success"
-											If TeamPMR2 < 321 Then TeamPMRColor2 = "warning"
-											If TeamPMR2 < 161 Then TeamPMRColor2 = "danger"
 											TeamPMRPercent2 = (TeamPMR2 * 100) / 420
+											If TeamPMRPercent2 < 66.66 Then TeamPMRColor2 = "warning"
+											If TeamPMRPercent2 < 33.33 Then TeamPMRColor2 = "danger"
 
 											If TeamID1 = 38 Then TeamName1 = "München"
 											If TeamID2 = 38 Then TeamName2 = "München"
@@ -426,14 +426,14 @@
 													thisWeeklyMatchups = thisWeeklyMatchups & MatchupID & ","
 
 													TeamPMRColor1 = "success"
-													If TeamPMR1 < 321 Then TeamPMRColor1 = "warning"
-													If TeamPMR1 < 161 Then TeamPMRColor1 = "danger"
 													TeamPMRPercent1 = (TeamPMR1 * 100) / 420
+													If TeamPMRPercent1 < 66.66 Then TeamPMRColor1 = "warning"
+													If TeamPMRPercent1 < 33.33 Then TeamPMRColor1 = "danger"
 
 													TeamPMRColor2 = "success"
-													If TeamPMR2 < 321 Then TeamPMRColor2 = "warning"
-													If TeamPMR2 < 161 Then TeamPMRColor2 = "danger"
 													TeamPMRPercent2 = (TeamPMR2 * 100) / 420
+													If TeamPMRPercent2 < 66.66 Then TeamPMRColor2 = "warning"
+													If TeamPMRPercent2 < 33.33 Then TeamPMRColor2 = "danger"
 
 													If TeamID1 = 38 Then TeamName1 = "München"
 													If TeamID2 = 38 Then TeamName2 = "München"
