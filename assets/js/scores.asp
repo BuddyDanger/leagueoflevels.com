@@ -1,15 +1,3 @@
-<%
-	sqlGetLeg = "SELECT TOP 1 Leg FROM Matchups WHERE LevelID = 0 AND Year = " & Session.Contents("CurrentYear") & " AND Period = " & Session.Contents("CurrentPeriod") & ";"
-	Set rsLeg = sqlDatabase.Execute(sqlGetLeg)
-
-	Do While Not rsLeg.Eof
-		Leg = rsLeg("Leg")
-		rsLeg.MoveNext
-	Loop
-
-	rsLeg.Close
-	Set rsLeg = Nothing
-%>
 <script>
 
 	$(function () {
@@ -102,7 +90,7 @@
 				}
 			});
 
-		}, 5000);
+		}, 3000);
 
 		loopThroughArray(MATCHUPS, function (arrayElement, loopTime) {
 
