@@ -83,7 +83,7 @@
 							objBox.classList.add("box-glow");
 						}
 
-						if (obj.level != 'omega') {
+						if (obj.level != 'omega' && obj.level != 'cup') {
 							var objScore1 = document.getElementsByClassName('team-' + obj.level + '-score-' + obj.id1)[1];
 							var objPMR1 = document.getElementsByClassName('team-' + obj.level + '-progress-' + obj.id1)[1];
 							objPMR1.innerHTML = "<div class=\"progress-bar progress-bar-" + pmrc1 + "\" role=\"progressbar\" aria-valuenow=\"" + obj.pmrp1 + "\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: " + obj.pmrp1 + "%\"><span class=\"sr-only\">" + obj.pmrp1 + "%</span></div>";
@@ -101,7 +101,7 @@
 							}
 						}
 
-						//console.log(obj.name1 + ' (' + obj.score1 + ') vs. ' + obj.name2 + ' (' + obj.score2 + ')');
+						console.log(obj.name1 + ' (' + obj.score1 + ') vs. ' + obj.name2 + ' (' + obj.score2 + ')');
 
 					}
 
