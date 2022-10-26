@@ -24,7 +24,7 @@
 	If Len(Session.Contents("SITE_Transactions_TypeTitle")) > 0 Then thisPageTitle = thisPageTitle & Session.Contents("SITE_Transactions_TypeTitle") & " / "
 	thisPageTitle = thisPageTitle & "League of Levels"
 
-	thisPageDescription = "Real-time Schmeckle transaction ledger"
+	thisPageDescription = "Real-time roster transaction ledger"
 	If Len(Session.Contents("SITE_Transactions_AccountProfileName")) > 0 Then thisPageDescription = thisPageDescription & " for " & Session.Contents("SITE_Transactions_AccountProfileName")
 	If Len(Session.Contents("SITE_Transactions_TypeTitle")) > 0 Then thisPageDescription = thisPageDescription & " across all '" & Session.Contents("SITE_Transactions_TypeTitle") & "' transaction types"
 	If Len(Session.Contents("SITE_Transactions_AccountProfileName")) = 0 And Len(Session.Contents("SITE_Transactions_TypeTitle")) = 0 Then thisPageDescription = thisPageDescription & " tracking all users and transaction types"
@@ -151,6 +151,19 @@
 										thisPlayerPosition = rsTransactions("PlayerPosition")
 										thisProfileImage = "<img src=""https://samelevel.imgix.net/" & thisProfileImage & "?w=40&h=40&fit=crop&crop=focalpoint"" class=""rounded-circle float-left"">"
 
+										If thisLevelTitle = "Omega Level" Then
+											thisLevelLabel = "OMEGA"
+											thisLevelColor = "FFBA08"
+										End If
+										If thisLevelTitle = "Same Level" Then
+											thisLevelLabel = "SLFFL"
+											thisLevelColor = "136F63"
+										End If
+										If thisLevelTitle = "Farm Level" Then
+											thisLevelLabel = "FLFFL"
+											thisLevelColor = "032B43"
+										End If
+
 										If Left(thisMoveAction, 6) = "Signed" Then thisMoveIcon = "plus"
 										If Left(thisMoveAction, 6) = "Droppe" Then thisMoveIcon = "minus"
 										If Left(thisMoveAction, 6) = "Traded" Then thisMoveIcon = "plus"
@@ -190,7 +203,7 @@
 										<a href="#" class="list-group-item list-group-item-action pl-2 pr-2">
 											<div class="row mb-2 mb-lg-0">
 												<!-- TEAM INFO -->
-												<div class="col-9 col-lg-3 align-self-center order-1">
+												<div class="col-8 col-lg-3 align-self-center order-1">
 													<%= thisProfileImage %>
 													<div class="float-left pl-2">
 														<div><b><%= thisProfileName %></b></div>
@@ -199,19 +212,19 @@
 												</div>
 
 												<!-- MOVE 1 -->
-												<div class="col-12 col-lg-4 align-self-center order-3 order-lg-2 pt-3 pt-lg-0">
-													<span class="p-2 badge-light rounded"><small><i class="dripicons-<%= thisMoveIcon %>"></i></small></span> &nbsp;<b><%= thisPlayerName %></b>, <%= thisPlayerPosition %> (<%= thisPlayerTeam %>) &nbsp;<span class="p-2 badge-light rounded"><small><%= thisMoveAction %></small><span>
+												<div class="col-12 col-lg-4 align-self-center order-3 order-lg-2 pl-3 pl-lg-2 pt-3 pt-lg-0">
+													<div class="pl-1 pl-lg-0"><span class="p-2 badge-light rounded"><small><i class="dripicons-<%= thisMoveIcon %>"></i></small></span> &nbsp;<b><%= thisPlayerName %></b>, <%= thisPlayerPosition %> (<%= thisPlayerTeam %>) &nbsp;<span class="p-2 badge-light rounded"><small><%= thisMoveAction %></small><span></div>
 												</div>
 
 												<!-- MOVE TWO -->
-												<div class="col-12 col-lg-4 align-self-center order-4 order-lg-3 <% If Len(pairPlayerName) > 0 Then %>pt-3 pt-lg-0<% End If %>">
+												<div class="col-12 col-lg-4 align-self-center order-4 order-lg-3 <% If Len(pairPlayerName) > 0 Then %>pl-3 pl-lg-2 pt-3 pt-lg-0<% End If %>">
 													<% If Len(pairPlayerName) > 0 Then %>
-														<span class="p-2 badge-light rounded"><small><i class="dripicons-<%= pairMoveIcon %>"></i></small></span> &nbsp;<b><%= pairPlayerName %></b>, <%= pairPlayerPosition %> (<%= pairPlayerTeam %>) &nbsp;<span class="p-2 badge-light rounded"><small><%= pairMoveAction %></small><span>
+														<div class="pl-1 pl-lg-0"><span class="p-2 badge-light rounded"><small><i class="dripicons-<%= pairMoveIcon %>"></i></small></span> &nbsp;<b><%= pairPlayerName %></b>, <%= pairPlayerPosition %> (<%= pairPlayerTeam %>) &nbsp;<span class="p-2 badge-light rounded"><small><%= pairMoveAction %></small><span></div>
 													<% End If %>
 												</div>
 
-												<div class="col-3 col-lg-1 align-self-center text-right order-2 order-lg-4">
-													<span class="p-2 badge-info rounded"><small>Week <%= thisEffectivePeriod %></small></span>
+												<div class="col-4 col-lg-1 align-self-center text-right order-2 order-lg-4">
+													<span class="p-2 badge-info rounded" style="background-color: #<%= thisLevelColor %>;"><small><%= thisLevelLabel %> (<%= thisEffectivePeriod %>)</small></span>
 												</div>
 
 											</div>

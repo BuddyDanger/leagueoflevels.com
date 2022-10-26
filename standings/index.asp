@@ -286,7 +286,7 @@
 													If thisPosition = 4 Then thisBorderBottom = "border-bottom: 2px dashed #eaf0f7;"
 %>
 													<tr style="<%= thisBorderBottom %>">
-														<td class="pl-3"><img src="https://samelevel.imgix.net/<%= thisProfileImage %>?w=40&h=40&fit=crop&crop=focalpoint" class="rounded-circle hidden d-none d-sm-none d-md-inline mr-1 pr-1"><b><%= thisPosition %>.</b> &nbsp;<%= thisTeamName %></td>
+														<td class="pl-3"><img src="https://samelevel.imgix.net/<%= thisProfileImage %>?w=40&h=40&fit=crop&crop=focalpoint" class="rounded-circle hidden d-none d-sm-none d-md-inline mr-2"><b><%= thisPosition %>.</b> &nbsp;<%= thisTeamName %></td>
 														<td class="text-center"><%= thisWinTotal %>-<%= thisLossTotal %>-<%= thisTieTotal %></td>
 														<td class="text-center d-none d-sm-table-cell"><%= FormatNumber(thisPointsScored, 2) %></td>
 														<td class="text-center d-none d-sm-table-cell"><%= FormatNumber(thisPointsAgainst, 2) %></td>
@@ -318,7 +318,7 @@
 													If thisPosition = 6 Then thisBorderBottom = "border-bottom: 5px solid #eaf0f7;"
 %>
 													<tr style="<%= thisBorderBottom %>">
-														<td class="pl-3"><img src="https://samelevel.imgix.net/<%= thisProfileImage %>?w=40&h=40&fit=crop&crop=focalpoint" class="rounded-circle hidden d-none d-sm-none d-md-inline mr-1 pr-1"><b><%= thisPosition %>.</b> &nbsp;<%= thisTeamName %></td>
+														<td class="pl-3"><img src="https://samelevel.imgix.net/<%= thisProfileImage %>?w=40&h=40&fit=crop&crop=focalpoint" class="rounded-circle hidden d-none d-sm-none d-md-inline mr-2"><b><%= thisPosition %>.</b> &nbsp;<%= thisTeamName %></td>
 														<td class="text-center"><%= thisWinTotal %>-<%= thisLossTotal %>-<%= thisTieTotal %></td>
 														<td class="text-center d-none d-sm-table-cell"><%= FormatNumber(thisPointsScored, 2) %></td>
 														<td class="text-center d-none d-sm-table-cell"><%= FormatNumber(thisPointsAgainst, 2) %></td>
@@ -352,7 +352,7 @@
 													'If thisPosition = 4 Then thisBorderBottom = "border-bottom: 5px solid #eaf0f7;"
 %>
 													<tr style="<%= thisBorderBottom %>">
-														<td class="pl-3"><img src="https://samelevel.imgix.net/<%= thisProfileImage %>?w=40&h=40&fit=crop&crop=focalpoint" class="rounded-circle hidden d-none d-sm-none d-md-inline mr-1 pr-1"><b><%= thisPosition %>.</b> &nbsp;<%= thisTeamName %></td>
+														<td class="pl-3"><img src="https://samelevel.imgix.net/<%= thisProfileImage %>?w=40&h=40&fit=crop&crop=focalpoint" class="rounded-circle hidden d-none d-sm-none d-md-inline mr-2"><b><%= thisPosition %>.</b> &nbsp;<%= thisTeamName %></td>
 														<td class="text-center"><%= thisWinTotal %>-<%= thisLossTotal %>-<%= thisTieTotal %></td>
 														<td class="text-center d-none d-sm-table-cell"><%= FormatNumber(thisPointsScored, 2) %></td>
 														<td class="text-center d-none d-sm-table-cell"><%= FormatNumber(thisPointsAgainst, 2) %></td>
@@ -419,7 +419,7 @@
 													If thisPosition = 4 Then thisBorderBottom = "border-bottom: 2px dashed #eaf0f7;"
 %>
 													<tr style="<%= thisBorderBottom %>">
-														<td><img src="https://samelevel.imgix.net/<%= thisProfileImage %>?w=40&h=40&fit=crop&crop=focalpoint" class="rounded-circle hidden d-none d-sm-none d-md-inline mr-1 pr-1"><b><%= thisPosition %>.</b> &nbsp;<%= thisTeamName %></td>
+														<td><img src="https://samelevel.imgix.net/<%= thisProfileImage %>?w=40&h=40&fit=crop&crop=focalpoint" class="rounded-circle hidden d-none d-sm-none d-md-inline mr-2"><b><%= thisPosition %>.</b> &nbsp;<%= thisTeamName %></td>
 														<td class="text-center"><%= thisWinTotal %>-<%= thisLossTotal %>-<%= thisTieTotal %></td>
 														<td class="text-center d-none d-sm-table-cell"><%= FormatNumber(thisPointsScored, 2) %></td>
 														<td class="text-center d-none d-sm-table-cell"><%= FormatNumber(thisPointsAgainst, 2) %></td>
@@ -453,7 +453,7 @@
 													If thisPosition = 6 Then thisBorderBottom = "border-bottom: 5px solid #eaf0f7;"
 %>
 													<tr style="<%= thisBorderBottom %>">
-														<td><img src="https://samelevel.imgix.net/<%= thisProfileImage %>?w=40&h=40&fit=crop&crop=focalpoint" class="rounded-circle hidden d-none d-sm-none d-md-inline mr-1 pr-1"><b><%= thisPosition %>.</b> &nbsp;<%= thisTeamName %></td>
+														<td><img src="https://samelevel.imgix.net/<%= thisProfileImage %>?w=40&h=40&fit=crop&crop=focalpoint" class="rounded-circle hidden d-none d-sm-none d-md-inline mr-2"><b><%= thisPosition %>.</b> &nbsp;<%= thisTeamName %></td>
 														<td class="text-center"><%= thisWinTotal %>-<%= thisLossTotal %>-<%= thisTieTotal %></td>
 														<td class="text-center d-none d-sm-table-cell"><%= FormatNumber(thisPointsScored, 2) %></td>
 														<td class="text-center d-none d-sm-table-cell"><%= FormatNumber(thisPointsAgainst, 2) %></td>
@@ -487,7 +487,7 @@
 													'If thisPosition = 4 Then thisBorderBottom = "border-bottom: 3px dashed #eaf0f7;"
 %>
 													<tr style="<%= thisBorderBottom %>">
-														<td><img src="https://samelevel.imgix.net/<%= thisProfileImage %>?w=40&h=40&fit=crop&crop=focalpoint" class="rounded-circle hidden d-none d-sm-none d-md-inline mr-1 pr-1"><b><%= thisPosition %>.</b> &nbsp;<%= thisTeamName %></td>
+														<td><img src="https://samelevel.imgix.net/<%= thisProfileImage %>?w=40&h=40&fit=crop&crop=focalpoint" class="rounded-circle hidden d-none d-sm-none d-md-inline mr-2"><b><%= thisPosition %>.</b> &nbsp;<%= thisTeamName %></td>
 														<td class="text-center"><%= thisWinTotal %>-<%= thisLossTotal %>-<%= thisTieTotal %></td>
 														<td class="text-center d-none d-sm-table-cell"><%= FormatNumber(thisPointsScored, 2) %></td>
 														<td class="text-center d-none d-sm-table-cell"><%= FormatNumber(thisPointsAgainst, 2) %></td>
@@ -553,7 +553,7 @@
 													If thisPosition = 4 Then thisBorderBottom = "border-bottom: 5px solid #eaf0f7;"
 %>
 													<tr style="<%= thisBorderBottom %>">
-														<td><img src="https://samelevel.imgix.net/<%= thisProfileImage %>?w=40&h=40&fit=crop&crop=focalpoint" class="rounded-circle hidden d-none d-sm-none d-md-inline mr-1 pr-1"><b><%= thisPosition %>.</b> &nbsp;<%= thisTeamName %></td>
+														<td><img src="https://samelevel.imgix.net/<%= thisProfileImage %>?w=40&h=40&fit=crop&crop=focalpoint" class="rounded-circle hidden d-none d-sm-none d-md-inline mr-2"><b><%= thisPosition %>.</b> &nbsp;<%= thisTeamName %></td>
 														<td class="text-center"><%= thisWinTotal %>-<%= thisLossTotal %>-<%= thisTieTotal %></td>
 														<td class="text-center d-none d-sm-table-cell"><%= FormatNumber(thisPointsScored, 2) %></td>
 														<td class="text-center d-none d-sm-table-cell"><%= FormatNumber(thisPointsAgainst, 2) %></td>

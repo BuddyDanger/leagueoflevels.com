@@ -2,6 +2,10 @@
 <!--#include virtual="/assets/asp/sql/connection.asp"-->
 <%
 	Response.ContentType = "application/json"
+	Response.Buffer = True
+	Response.CacheControl = "no-cache"
+	Response.AddHeader "Pragma", "no-cache"
+	Response.Expires = -1
 
 	thisTeamBaseScore1 = 0
 	thisTeamBaseScore2 = 0
@@ -49,6 +53,9 @@
 				thisTeamName2 = rsMatchup("TeamName2")
 				thisTeamLevel1 = rsMatchup("TeamLevel1")
 				thisTeamLevel2 = rsMatchup("TeamLevel2")
+
+				thisTeamBaseScore1 = 0
+				thisTeamBaseScore2 = 0
 
 				slackJSON = slackJSON & "{"
 
@@ -104,7 +111,6 @@
 					If thisTeamMoneyline2 > 0 Then thisTeamMoneyline2 = "+" & thisTeamMoneyline2
 					If thisTeamSpread1 > 0 Then thisTeamSpread1 = "+" & thisTeamSpread1
 					If thisTeamSpread2 > 0 Then thisTeamSpread2 = "+" & thisTeamSpread2
-
 
 					slackJSON = slackJSON & """id"":""" & thisMatchupID & ""","
 					slackJSON = slackJSON & """level"":""" & leagueTitle & ""","

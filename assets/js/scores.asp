@@ -68,7 +68,7 @@
 						var objPMR1 = document.getElementsByClassName('team-' + obj.level + '-progress-' + obj.id1)[0];
 						objPMR1.innerHTML = "<div class=\"progress-bar progress-bar-" + pmrc1 + "\" role=\"progressbar\" aria-valuenow=\"" + obj.pmrp1 + "\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: " + obj.pmrp1 + "%\"><span class=\"sr-only\">" + obj.pmrp1 + "%</span></div>";
 						if (parseFloat(objScore1.innerText).toFixed(2) != parseFloat(obj.score1).toFixed(2)) {
-							var scoreAnimation1 = new CountUp(objScore1, objScore1.innerText, obj.score1, 2, 2);
+							var scoreAnimation1 = new CountUp(objScore1, objScore1.innerText, obj.score1, 1, 2);
 							scoreAnimation1.start();
 							update = 1;
 						}
@@ -77,7 +77,7 @@
 						var objPMR2 = document.getElementsByClassName('team-' + obj.level + '-progress-' + obj.id2)[0];
 						objPMR2.innerHTML = "<div class=\"progress-bar progress-bar-" + pmrc2 + "\" role=\"progressbar\" aria-valuenow=\"" + obj.pmrp2 + "\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: " + obj.pmrp2 + "%\"><span class=\"sr-only\">" + obj.pmrp2 + "%</span></div>";
 						if (parseFloat(objScore2.innerText).toFixed(2) != parseFloat(obj.score2).toFixed(2)) {
-							var scoreAnimation2 = new CountUp(objScore2, objScore2.innerText, obj.score2, 2, 2);
+							var scoreAnimation2 = new CountUp(objScore2, objScore2.innerText, obj.score2, 1, 2);
 							scoreAnimation2.start();
 							update = 1;
 						}
@@ -88,21 +88,21 @@
 							console.log(obj.name1 + ' (' + obj.score1 + ') vs. ' + obj.name2 + ' (' + obj.score2 + ')');
 						}
 
-						if (obj.level != 'omega' && obj.level != 'cup') {
-							var objScore1 = document.getElementsByClassName('team-' + obj.level + '-score-' + obj.id1)[1];
-							var objPMR1 = document.getElementsByClassName('team-' + obj.level + '-progress-' + obj.id1)[1];
-							objPMR1.innerHTML = "<div class=\"progress-bar progress-bar-" + pmrc1 + "\" role=\"progressbar\" aria-valuenow=\"" + obj.pmrp1 + "\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: " + obj.pmrp1 + "%\"><span class=\"sr-only\">" + obj.pmrp1 + "%</span></div>";
-							if (parseFloat(objScore1.innerText).toFixed(2) != parseFloat(obj.score1).toFixed(2)) {
-								var scoreAnimation1 = new CountUp(objScore1, objScore1.innerText, obj.score1, 2, 2);
-								scoreAnimation1.start();
+						if (obj.level != 'omega' && obj.level != 'cup' && update == 1) {
+							var objScore1b = document.getElementsByClassName('team-' + obj.level + '-score-' + obj.id1)[1];
+							var objPMR1b = document.getElementsByClassName('team-' + obj.level + '-progress-' + obj.id1)[1];
+							objPMR1b.innerHTML = "<div class=\"progress-bar progress-bar-" + pmrc1 + "\" role=\"progressbar\" aria-valuenow=\"" + obj.pmrp1 + "\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: " + obj.pmrp1 + "%\"><span class=\"sr-only\">" + obj.pmrp1 + "%</span></div>";
+							if (parseFloat(objScore1b.innerText).toFixed(2) != parseFloat(obj.score1).toFixed(2)) {
+								var scoreAnimation1b = new CountUp(objScore1b, objScore1b.innerText, obj.score1, 1, 2);
+								scoreAnimation1b.start();
 							}
 
-							var objScore2 = document.getElementsByClassName('team-' + obj.level + '-score-' + obj.id2)[1];
-							var objPMR2 = document.getElementsByClassName('team-' + obj.level + '-progress-' + obj.id2)[1];
-							objPMR2.innerHTML = "<div class=\"progress-bar progress-bar-" + pmrc2 + "\" role=\"progressbar\" aria-valuenow=\"" + obj.pmrp2 + "\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: " + obj.pmrp2 + "%\"><span class=\"sr-only\">" + obj.pmrp2 + "%</span></div>";
-							if (parseFloat(objScore2.innerText).toFixed(2) != parseFloat(obj.score2).toFixed(2)) {
-								var scoreAnimation2 = new CountUp(objScore2, objScore2.innerText, obj.score2, 2, 2);
-								scoreAnimation2.start();
+							var objScore2b = document.getElementsByClassName('team-' + obj.level + '-score-' + obj.id2)[1];
+							var objPMR2b = document.getElementsByClassName('team-' + obj.level + '-progress-' + obj.id2)[1];
+							objPMR2b.innerHTML = "<div class=\"progress-bar progress-bar-" + pmrc2 + "\" role=\"progressbar\" aria-valuenow=\"" + obj.pmrp2 + "\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: " + obj.pmrp2 + "%\"><span class=\"sr-only\">" + obj.pmrp2 + "%</span></div>";
+							if (parseFloat(objScore2b.innerText).toFixed(2) != parseFloat(obj.score2).toFixed(2)) {
+								var scoreAnimation2 = new CountUp(objScore2b, objScore2b.innerText, obj.score2, 1, 2);
+								scoreAnimation2b.start();
 							}
 						}
 
