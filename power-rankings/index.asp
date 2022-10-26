@@ -78,13 +78,13 @@
 										</thead>
 										<tbody>
 <%
-											sqlGetLastPeriod = "SELECT TOP (1) Period FROM YearPeriods WHERE StartDate > DATEADD(""d"", -14, GETDATE())"
-											Set rsLastPeriod = sqlDatabase.Execute(sqlGetLastPeriod)
+											'sqlGetLastPeriod = "SELECT TOP (1) Period FROM YearPeriods WHERE StartDate > DATEADD(""d"", -20, GETDATE())"
+											'Set rsLastPeriod = sqlDatabase.Execute(sqlGetLastPeriod)
 
-											thisLastPeriod = rsLastPeriod("Period")
+											thisLastPeriod = Session.Contents("CurrentPeriod") - 2
 
-											rsLastPeriod.Close
-											Set rsLastPeriod = Nothing
+											'rsLastPeriod.Close
+											'Set rsLastPeriod = Nothing
 
 											sqlGetLeaderboard = "SELECT ROW_NUMBER() OVER (ORDER BY SUM(PowerPoints_Points) + SUM(PowerPoints_Wins) + SUM(PowerPoints_Break) + SUM(PowerPoints_LOLBreak) DESC, SUM(PowerPoints_Points) DESC) AS PowerRanking, "
 											sqlGetLeaderboard = sqlGetLeaderboard & "Accounts.ProfileName, SUM(PowerPoints_Points) + SUM(PowerPoints_Wins) + SUM(PowerPoints_Break) + SUM(PowerPoints_LOLBreak) AS PowerPoints_Total, SUM(PowerPoints_Points) AS PowerPoints_Points, "
