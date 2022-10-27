@@ -299,7 +299,7 @@
 												</li>
 												<li class="list-group-item px-3 team-cup-box-<%= TeamID2 %>">
 													<span class="team-cup-score-<%= TeamID2 %>" style="font-size: 1em; background-color: #fff; color: #520000; float: right;"><%= TeamScore2 %></span>
-													<img src="https://samelevel.imgix.net/<%= TeamLogo1 %>?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-none d-lg-inline mr-2" /><span class="d-none d-lg-inline" style="font-size: 13px; color: #520000;"><%= TeamName2 %></span><span class="d-inline d-lg-none" style="font-size: 13px; color: #520000;"><%= TeamAbbreviatedName2 %></span>
+													<img src="https://samelevel.imgix.net/<%= TeamLogo2 %>?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-none d-lg-inline mr-2" /><span class="d-none d-lg-inline" style="font-size: 13px; color: #520000;"><%= TeamName2 %></span><span class="d-inline d-lg-none" style="font-size: 13px; color: #520000;"><%= TeamAbbreviatedName2 %></span>
 													<div class="progress team-cup-progress-<%= TeamID2 %>" style="height: 1px; margin-top: 4px; margin-bottom: 0; padding-bottom: 0;">
 														<div class="progress-bar progress-bar-<%= TeamPMRColor2 %>" role="progressbar" aria-valuenow="<%= TeamPMRPercent2 %>" aria-valuemin="0" aria-valuemax="<%= TeamPMRPercent2 %>" style="width: <%= TeamPMRPercent2 %>%">
 															<span class="sr-only team-cup-progress-sr-<%= TeamID2 %>"><%= TeamPMRPercent2 %>%</span>
