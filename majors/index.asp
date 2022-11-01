@@ -88,12 +88,15 @@
 <%
 											thisPosition = 1
 											Do While Not rsStandings.Eof
+
+												thisBorderBottom = ""
+												If thisPosition = 6 Then thisBorderBottom = "border-bottom: 5px solid #eaf0f7;"
 %>
 												<tr style="<%= thisBorderBottom %>">
-													<td class="pl-3"><img src="https://samelevel.imgix.net/<%= rsStandings("ProfileImage") %>?w=40&h=40&fit=crop&crop=focalpoint" class="rounded-circle hidden d-none d-sm-none d-md-inline mr-2"><b><%= thisPosition %>.</b> &nbsp;<%= rsStandings("ProfileName") %></td>
-													<td class="text-center"><%= rsStandings("TotalWins") %>-<%= rsStandings("TotalLosses") %>-<%= rsStandings("TotalTies") %></td>
-													<td class="text-center d-none d-sm-table-cell"><%= FormatNumber(rsStandings("TotalPointsScored"), 2) %></td>
-													<td class="text-center d-none d-sm-table-cell"><%= FormatNumber(rsStandings("TotalPointsAllowed"), 2) %></td>
+													<td class="pl-3"><img src="https://samelevel.imgix.net/<%= rsStandings("ProfileImage") %>?w=40&h=40&fit=crop&crop=focalpoint" class="rounded-circle hidden d-none d-sm-none d-md-inline mr-2"><b><%= thisPosition %>.</b> &nbsp;<%= rsStandings("TeamName") %></td>
+													<td class="text-center"><%= rsStandings("WinTotal") %>-<%= rsStandings("LossTotal") %>-<%= rsStandings("TieTotal") %></td>
+													<td class="text-center d-none d-sm-table-cell"><%= FormatNumber(rsStandings("PointsScored"), 2) %></td>
+													<td class="text-center d-none d-sm-table-cell"><%= FormatNumber(rsStandings("PointsAgainst"), 2) %></td>
 												</tr>
 <%
 												rsStandings.MoveNext
@@ -148,12 +151,15 @@
 <%
 											thisPosition = 1
 											Do While Not rsStandings.Eof
+
+												thisBorderBottom = ""
+												If thisPosition = 6 Then thisBorderBottom = "border-bottom: 5px solid #eaf0f7;"
 %>
 												<tr style="<%= thisBorderBottom %>">
-													<td class="pl-3"><img src="https://samelevel.imgix.net/<%= rsStandings("ProfileImage") %>?w=40&h=40&fit=crop&crop=focalpoint" class="rounded-circle hidden d-none d-sm-none d-md-inline mr-2"><b><%= thisPosition %>.</b> &nbsp;<%= rsStandings("ProfileName") %></td>
-													<td class="text-center"><%= rsStandings("TotalWins") %>-<%= rsStandings("TotalLosses") %>-<%= rsStandings("TotalTies") %></td>
-													<td class="text-center d-none d-sm-table-cell"><%= FormatNumber(rsStandings("TotalPointsScored"), 2) %></td>
-													<td class="text-center d-none d-sm-table-cell"><%= FormatNumber(rsStandings("TotalPointsAllowed"), 2) %></td>
+													<td class="pl-3"><img src="https://samelevel.imgix.net/<%= rsStandings("ProfileImage") %>?w=40&h=40&fit=crop&crop=focalpoint" class="rounded-circle hidden d-none d-sm-none d-md-inline mr-2"><b><%= thisPosition %>.</b> &nbsp;<%= rsStandings("TeamName") %></td>
+													<td class="text-center"><%= rsStandings("WinTotal") %>-<%= rsStandings("LossTotal") %>-<%= rsStandings("TieTotal") %></td>
+													<td class="text-center d-none d-sm-table-cell"><%= FormatNumber(rsStandings("PointsScored"), 2) %></td>
+													<td class="text-center d-none d-sm-table-cell"><%= FormatNumber(rsStandings("PointsAgainst"), 2) %></td>
 												</tr>
 <%
 												rsStandings.MoveNext

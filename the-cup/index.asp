@@ -289,14 +289,14 @@
 							<ul class="list-group list-flush">
 								<li class="list-group-item p-0">
 									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-top">
-										<img src="https://samelevel.imgix.net/icon-proper.jpg?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-2">Proper Football
-										<div class="float-right">250.02</div>
+										<strike style="color:red"><img src="https://samelevel.imgix.net/icon-proper.jpg?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-2">Proper Football</strike>
+										<div class="float-right" style="color:red">274.92</div>
 									</h6>
 								</li>
 								<li class="list-group-item p-0">
 									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-bottom">
 										<img src="https://samelevel.imgix.net/icon-499cdf64521a9eb639138ef715d3b76ee8f04c98538b2bac44c4dea0f9d3892d.jpg?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-2">Big TD's
-										<div class="float-right">245.96</div>
+										<div class="float-right">274.96</div>
 									</h6>
 								</li>
 							</ul>
@@ -347,13 +347,13 @@
 								<li class="list-group-item p-0">
 									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-top">
 										<img src="https://samelevel.imgix.net/icon-31327d645150ef09d795efd3799aa41fb66791cbac553f8de61e75b82b6ae6fa.jpg?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-2">Buddy Danger
-										<div class="float-right">276.78</div>
+										<div class="float-right">301.68</div>
 									</h6>
 								</li>
 								<li class="list-group-item p-0">
 									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-bottom">
-										<img src="https://samelevel.imgix.net/icon-munchen.jpg?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-2">Munchen on Bundchen
-										<div class="float-right">300.28</div>
+										<strike style="color:red"><img src="https://samelevel.imgix.net/icon-munchen.jpg?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-2">Munchen on Bundchen</strike>
+										<div class="float-right" style="color:red">300.28</div>
 									</h6>
 								</li>
 							</ul>
@@ -415,7 +415,10 @@
 									</h6>
 								</li>
 								<li class="list-group-item p-0">
-									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-bottom">&nbsp;</h6>
+									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-bottom">
+										<img src="https://samelevel.imgix.net/icon-499cdf64521a9eb639138ef715d3b76ee8f04c98538b2bac44c4dea0f9d3892d.jpg?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-2">Big TD's
+										<div class="float-right"></div>
+									</h6>
 								</li>
 							</ul>
 
@@ -447,7 +450,10 @@
 
 							<ul class="list-group list-flush">
 								<li class="list-group-item p-0">
-									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-top">&nbsp;</h6>
+									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-top">
+										<img src="https://samelevel.imgix.net/icon-31327d645150ef09d795efd3799aa41fb66791cbac553f8de61e75b82b6ae6fa.jpg?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-2">Buddy Danger
+										<div class="float-right"></div>
+									</h6>
 								</li>
 								<li class="list-group-item p-0">
 									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-bottom">
