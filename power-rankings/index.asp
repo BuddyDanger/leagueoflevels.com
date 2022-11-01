@@ -81,7 +81,7 @@
 											'sqlGetLastPeriod = "SELECT TOP (1) Period FROM YearPeriods WHERE StartDate > DATEADD(""d"", -20, GETDATE())"
 											'Set rsLastPeriod = sqlDatabase.Execute(sqlGetLastPeriod)
 
-											thisLastPeriod = Session.Contents("CurrentPeriod") - 2
+											thisLastPeriod = 7
 
 											'rsLastPeriod.Close
 											'Set rsLastPeriod = Nothing
