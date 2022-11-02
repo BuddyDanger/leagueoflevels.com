@@ -89,7 +89,7 @@
 
 						Response.Write("<div class=""row mt-3 mt-lg-4"">")
 
-							Response.Write("<div class=""col-6 col-xl-4 col-xxxl-2 mb-3 pl-1 pr-1 pl-lg-3 pr-lg-0"">")
+							Response.Write("<div class=""col-6 col-xl-4 col-xxxl-3 mb-3 pl-1 pr-1 pl-lg-3 pr-lg-0"">")
 %>
 								<div class="text-white bg-dark rounded">
 
@@ -153,7 +153,7 @@
 									If MatchupID = 3710 Then MatchupTitle = "OMEGA 3RD PLACE"
 									If MatchupID = 3711 Then MatchupTitle = "OMEGA 5TH PLACE"
 
-									Response.Write("<div class=""col-6 col-xl-4 col-xxxl-2 pl-1 pr-1 pl-lg-3 pr-lg-0"">")
+									Response.Write("<div class=""col-6 col-xl-4 col-xxxl-3 pl-1 pr-1 pl-lg-3 pr-lg-0"">")
 %>
 										<a href="/scores/<%= MatchupID %>/" class="matchup-<%= MatchupID %>" style="text-decoration: none; display: block;">
 											<ul class="list-group" style="margin-bottom: 1rem;">
@@ -284,7 +284,7 @@
 									If TeamID1 = 59 Then TeamName1 = "Filthy Animals"
 									If TeamID2 = 59 Then TeamName2 = "Filthy Animals"
 %>
-									<div class="col-6 col-xl-4 col-xxxl-2 pl-1 pr-1 pl-lg-3 pr-lg-0">
+									<div class="col-6 col-xl-4 col-xxxl-3 pl-1 pr-1 pl-lg-3 pr-lg-0">
 										<a href="/scores/<%= MatchupID %>/" class="matchup-<%= MatchupID %>" style="text-decoration: none; display: block;">
 											<ul class="list-group" style="margin-bottom: 1rem;">
 												<li class="list-group-item" style="padding-top: 0.25rem; padding-bottom: 0.25rem; font-size: 0.75rem; text-align: center; background-color: #D00000; color: #fff;"></li>
