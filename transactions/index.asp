@@ -213,13 +213,13 @@
 
 												<!-- MOVE 1 -->
 												<div class="col-12 col-lg-4 align-self-center order-3 order-lg-2 pl-3 pl-lg-2 pt-3 pt-lg-0">
-													<div class="pl-1 pl-lg-0"><span class="p-2 badge-light rounded"><small><i class="dripicons-<%= thisMoveIcon %>"></i></small></span> &nbsp;<b><%= thisPlayerName %></b>, <%= thisPlayerPosition %> (<%= thisPlayerTeam %>) &nbsp;<span class="p-2 badge-light rounded"><small><%= thisMoveAction %></small><span></div>
+													<div class="pl-1 pl-lg-0"><span class="p-2 badge-light rounded"><small><i class="dripicons-<%= thisMoveIcon %>"></i></small></span> &nbsp;<b><%= thisPlayerName %></b>, <%= thisPlayerPosition %> (<%= thisPlayerTeam %>) &nbsp;<% If thisMoveAction <> "Signed for $0" Then %><span class="p-2 badge-light rounded"><small><%= thisMoveAction %></small><span><% End If %></div>
 												</div>
 
 												<!-- MOVE TWO -->
 												<div class="col-12 col-lg-4 align-self-center order-4 order-lg-3 <% If Len(pairPlayerName) > 0 Then %>pl-3 pl-lg-2 pt-3 pt-lg-0<% End If %>">
 													<% If Len(pairPlayerName) > 0 Then %>
-														<div class="pl-1 pl-lg-0"><span class="p-2 badge-light rounded"><small><i class="dripicons-<%= pairMoveIcon %>"></i></small></span> &nbsp;<b><%= pairPlayerName %></b>, <%= pairPlayerPosition %> (<%= pairPlayerTeam %>) &nbsp;<span class="p-2 badge-light rounded"><small><%= pairMoveAction %></small><span></div>
+														<div class="pl-1 pl-lg-0"><span class="p-2 badge-light rounded"><small><i class="dripicons-<%= pairMoveIcon %>"></i></small></span> &nbsp;<b><%= pairPlayerName %></b>, <%= pairPlayerPosition %> (<%= pairPlayerTeam %>) &nbsp;<% If pairMoveAction <> "Dropped" Then %><span class="p-2 badge-light rounded"><small><%= pairMoveAction %></small><span><% End If %></div>
 													<% End If %>
 												</div>
 
