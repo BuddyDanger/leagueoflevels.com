@@ -1,70 +1,12 @@
-<%
-	sqlGetOmegaTeams = "SELECT DISTINCT TeamID FROM (SELECT Distinct TeamID1 AS TeamID FROM Matchups WHERE LevelID = 1 AND TeamPMR1 > 0 AND Year = " & Session.Contents("CurrentYear") & " AND Period = " & Session.Contents("CurrentPeriod") & " UNION ALL SELECT DISTINCT TeamID2 AS TeamID FROM Matchups WHERE LevelID = 1 AND TeamPMR2 > 0 AND Year = " & Session.Contents("CurrentYear") & " AND Period = " & Session.Contents("CurrentPeriod") & ") AS ActiveTeams;"
-	sqlGetCupTeams = "SELECT DISTINCT TeamID FROM (SELECT Distinct TeamID1 AS TeamID FROM Matchups WHERE LevelID = 0 AND TeamPMR1 > 0 AND Year = " & Session.Contents("CurrentYear") & " AND Period = " & Session.Contents("CurrentPeriod") & " UNION ALL SELECT DISTINCT TeamID2 AS TeamID FROM Matchups WHERE LevelID = 0 AND TeamPMR2 > 0 AND Year = " & Session.Contents("CurrentYear") & " AND Period = " & Session.Contents("CurrentPeriod") & ") AS ActiveTeams;"
-	sqlGetSLFFLTeams = "SELECT DISTINCT TeamID FROM (SELECT Distinct TeamID1 AS TeamID FROM Matchups WHERE LevelID = 2 AND TeamPMR1 > 0 AND Year = " & Session.Contents("CurrentYear") & " AND Period = " & Session.Contents("CurrentPeriod") & " UNION ALL SELECT DISTINCT TeamID2 AS TeamID FROM Matchups WHERE LevelID = 2 AND TeamPMR2 > 0 AND Year = " & Session.Contents("CurrentYear") & " AND Period = " & Session.Contents("CurrentPeriod") & ") AS ActiveTeams;"
-	sqlGetFLFFLTeams = "SELECT DISTINCT TeamID FROM (SELECT Distinct TeamID1 AS TeamID FROM Matchups WHERE LevelID = 3 AND TeamPMR1 > 0 AND Year = " & Session.Contents("CurrentYear") & " AND Period = " & Session.Contents("CurrentPeriod") & " UNION ALL SELECT DISTINCT TeamID2 AS TeamID FROM Matchups WHERE LevelID = 3 AND TeamPMR2 > 0 AND Year = " & Session.Contents("CurrentYear") & " AND Period = " & Session.Contents("CurrentPeriod") & ") AS ActiveTeams;"
-	sqlGetLeg = "SELECT TOP 1 Leg FROM Matchups WHERE LevelID = 0 AND Year = " & Session.Contents("CurrentYear") & " AND Period = " & Session.Contents("CurrentPeriod") & ";"
-
-	Set rsTeams = sqlDatabase.Execute(sqlGetOmegaTeams & sqlGetCupTeams & sqlGetSLFFLTeams & sqlGetFLFFLTeams & sqlGetLeg)
-
-	OmegaTeams = ""
-	CupTeams = ""
-	SLFFLTeams = ""
-	FLFFLTeams = ""
-
-	Do While Not rsTeams.Eof
-		OmegaTeams = OmegaTeams & rsTeams("TeamID") & ","
-		rsTeams.MoveNext
-	Loop
-
-	Set rsTeams = rsTeams.NextRecordset
-
-	Do While Not rsTeams.Eof
-		CupTeams = CupTeams & rsTeams("TeamID") & ","
-		rsTeams.MoveNext
-	Loop
-
-	Set rsTeams = rsTeams.NextRecordset
-
-	Do While Not rsTeams.Eof
-		SLFFLTeams = SLFFLTeams & rsTeams("TeamID") & ","
-		rsTeams.MoveNext
-	Loop
-
-	Set rsTeams = rsTeams.NextRecordset
-
-	Do While Not rsTeams.Eof
-		FLFFLTeams = FLFFLTeams & rsTeams("TeamID") & ","
-		rsTeams.MoveNext
-	Loop
-
-	Set rsTeams = rsTeams.NextRecordset
-
-	Do While Not rsTeams.Eof
-		Leg = rsTeams("Leg")
-		rsTeams.MoveNext
-	Loop
-
-	rsTeams.Close
-	Set rsTeams = Nothing
-
-	If Right(OmegaTeams, 1) = "," Then OmegaTeams = Left(OmegaTeams, Len(OmegaTeams) - 1)
-	If Right(CupTeams, 1) = "," Then CupTeams = Left(CupTeams, Len(CupTeams) - 1)
-	If Right(SLFFLTeams, 1) = "," Then SLFFLTeams = Left(SLFFLTeams, Len(SLFFLTeams) - 1)
-	If Right(FLFFLTeams, 1) = "," Then FLFFLTeams = Left(FLFFLTeams, Len(FLFFLTeams) - 1)
-%>
 <script>
+
+	var MATCHUPS = [0]
 
 	$(function () {
 
-		var SLFFL_ID = [<%= SLFFLTeams %>]
-		var FLFFL_ID = [<%= FLFFLTeams %>]
-		var OMEGA_ID = [<%= OmegaTeams %>]
-		var CUP_ID   = [<%= CupTeams %>]
-		var TEAM_ID1 = [<%= TeamID1 %>]
-		var TEAM_ID2 = [<%= TeamID2 %>]
-		var TEAM_ROSTER_1 = [<%= TeamRoster1 %>]
-		var TEAM_ROSTER_2 = [<%= TeamRoster2 %>]
+		var TEAM_ID1 = [<%= thisTeamID1 %>]
+		var TEAM_ID2 = [<%= thisTeamID2 %>]
+		var TEAM_ROSTER_1_RUNS = 0;
 
 		function loopThroughArray(array, callback, interval) {
 
@@ -107,256 +49,173 @@
 
 		}
 
-		<% If Len(TeamRoster1) > 0 Then %>
-		loopThroughArray(TEAM_ROSTER_1, function (arrayElement, loopTime) {
+		loopThroughArray([0], function (arrayElement, loopTime) {
 
-			var thisPlayerID = arrayElement;
-			var data = {"league":"<%= TeamLevelTitle1 %>","team":<%= TeamCBSID1 %>,"id":thisPlayerID};
-			data = $.param(data);
+			var team1 = $.param({"version":"3.0","response_format":"json","league_id":"<%= thisTeamLevelTitle1 %>","team_id":"<%= thisTeamCBSID1 %>","period":"<%= Session.Contents("CurrentPeriod") %>","access_token":"<%= GetToken(thisTeamLevelTitle1) %>"});
+			var team2 = $.param({"version":"3.0","response_format":"json","league_id":"<%= thisTeamLevelTitle2 %>","team_id":"<%= thisTeamCBSID2 %>","period":"<%= Session.Contents("CurrentPeriod") %>","access_token":"<%= GetToken(thisTeamLevelTitle2) %>"});
+			$.ajax({ type: "GET", dataType: "json", url: "https://api.cbssports.com/fantasy/league/scoring/live", data: team1, success: function(team1) { setPlayers(team1, 1); } });
+			$.ajax({ type: "GET", dataType: "json", url: "https://api.cbssports.com/fantasy/league/scoring/live", data: team2, success: function(team2) { setPlayers(team2, 2); } });
 
-			$.ajax({
-				type: "GET",
-				dataType: "json",
-				url: "/scores/player/json/",
-				data: data,
-				success: function(data) {
+		}, 3000);
 
-					var processUpdate = 0;
-					var playerPoints = document.getElementsByClassName('team-1-player-' + thisPlayerID + '-points')[0];
-					var playerStats = document.getElementsByClassName('team-1-player-' + thisPlayerID + '-stats')[0];
-					var playerGameLine = document.getElementsByClassName('team-1-player-' + thisPlayerID + '-gameline')[0];
-					var playerGamePosition = document.getElementsByClassName('team-1-player-' + thisPlayerID + '-gametime')[0];
-					//var playerPMR = document.getElementsByClassName('team-1-player-' + thisPlayerID + '-progress')[0];
+		function setPlayers (data, team) {
 
-					playerGamePosition.innerHTML = data["gameposition"];
-					//playerPMR.innerHTML = "<div class=\"progress-bar progress-bar-" + data["pmrcolor"] + "\" role=\"progressbar\" aria-valuenow=\"" + data["pmrpercent"] + "\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: " + data["pmrpercent"] + "%\"><span class=\"sr-only\">" + data["pmrpercent"] + "%</span></div>";
+			let body = data["body"];
+			let teams = body.live_scoring.teams;
+			let players = teams[0].players;
+			let weekday = ["SUN","MON","TUE","WED","THU","FRI","SAT"];
 
-					if (parseFloat(playerPoints.innerText) != parseFloat(data["points"])) {
-						processUpdate = 1;
-						var scoreAnimation = new CountUp(playerPoints, playerPoints.innerText, data["points"], 2, 4);
+			for(let i = 0; i < players.length; i++) {
+
+				let player = players[i];
+
+				var scoreboardPlayer = document.getElementsByClassName('team-' + team + '-player-' + player.id)[0];
+				var scoreboardPlayerPoints = document.getElementsByClassName('team-' + team + '-player-' + player.id + '-points')[0];
+				var scoreboardPlayerStats = document.getElementsByClassName('team-' + team + '-player-' + player.id + '-stats')[0];
+				var scoreboardPlayerGameLine = document.getElementsByClassName('team-' + team + '-player-' + player.id + '-gameline')[0];
+				var scoreboardPlayerGameTime = document.getElementsByClassName('team-' + team + '-player-' + player.id + '-gametime')[0];
+				var scoreboardPlayerPhoto = document.getElementsByClassName('team-' + team + '-player-' + player.id + '-photo')[0];
+				var scoreboardPlayerPhotoLoading = document.getElementsByClassName('team-' + team + '-player-' + player.id + '-photo-loading')[0];
+				var scoreboardPlayerName = document.getElementsByClassName('team-' + team + '-player-' + player.id + '-name')[0];
+
+				var live_GameInfo_Week = player.game_info.week;
+				var live_GameInfo_MinutesRemaining = player.game_info.minutes_remaining;
+				var live_Player_Stats = player.stats_period;
+				var live_Player_Points = player.fpts;
+				var live_Player_Photo = player.photo;
+				var live_Player_Position = player.position;
+				var live_Player_Team = player.pro_team;
+				var live_Player_Name = player.fullname;
+				var live_Player_FirstName = player.firstname;
+				var live_Player_LastName = player.lastname;
+				var live_Player_ID = player.id;
+
+				var live_Player_FirstInitial = Array.from(live_Player_FirstName)[0];
+				var live_Player_ShortName = live_Player_FirstInitial + ". " + live_Player_LastName;
+
+				if (live_Player_Position == "DST") { live_Player_ShortName = live_Player_LastName; }
+
+				if (scoreboardPlayerPhoto.classList.contains('d-none')) {
+
+					scoreboardPlayerPhoto.src = live_Player_Photo.replaceAll('http:', 'https:');
+					scoreboardPlayerPhotoLoading.classList.add("d-none");
+					scoreboardPlayerPhoto.classList.remove("d-none");
+					scoreboardPlayerName.innerHTML = '<b>' + live_Player_ShortName + '</b>';
+
+				}
+
+				if (live_GameInfo_Week != null) {
+
+					var live_GameInfo_GameStatus = player.game_info.game_status;
+					var live_GameInfo_GameTimestamp = player.game_info.game_start_timestamp;
+					var live_GameInfo_GameStartTime = player.game_info.game_start_time.replace(/\s/g, '').toUpperCase();
+					var live_GameInfo_HomeGame = player.game_info.home_game;
+					var live_GameInfo_Opponent = player.game_info.opponent;
+					var live_GameInfo_TimeRemainingQuarter = player.game_info.time_remaining;
+					var live_GameInfo_CurrentQuarter = player.game_info.quarter;
+
+					if (live_GameInfo_GameStatus == "P") {
+						scoreboardPlayerGameTime.innerHTML = live_GameInfo_CurrentQuarter + 'Q ' + live_GameInfo_TimeRemainingQuarter;
+						scoreboardPlayerGameTime.classList.remove("d-none");
+						scoreboardPlayerGameLine.classList.add("d-none");
+
+						scoreboardPlayerStats.innerHTML = live_Player_Stats;
+						scoreboardPlayerStats.classList.remove("d-none");
+						scoreboardPlayerStats.classList.add("d-block");
+					} else if (live_GameInfo_GameStatus == "F") {
+						scoreboardPlayerGameTime.innerHTML = "FINAL";
+						scoreboardPlayerGameTime.classList.remove("d-none");
+						scoreboardPlayerStats.classList.remove("d-none");
+						scoreboardPlayerGameLine.classList.add("d-none");
+						scoreboardPlayer.classList.add("inactive-player");
+					}
+
+					live_GameInfo_Matchup = live_Player_Team + ' @ ' + live_GameInfo_Opponent;
+					if (live_GameInfo_HomeGame == "1") { live_GameInfo_Matchup = live_Player_Team + ' vs. ' + live_GameInfo_Opponent }
+
+					var live_GameInfo_Gameline = new Date('1970-01-01 00:00:00');
+					live_GameInfo_Gameline.setSeconds(live_GameInfo_Gameline.getSeconds() + live_GameInfo_GameTimestamp);
+					live_GameInfo_Gameline.setHours(live_GameInfo_Gameline.getHours() - 5);
+					let live_GameInfo_Gameday = weekday[live_GameInfo_Gameline.getDay()];
+
+					scoreboardPlayerGameLine.innerHTML = live_GameInfo_Matchup + ' - ' + live_GameInfo_Gameday + ' ' + live_GameInfo_GameStartTime;
+					scoreboardPlayerStats.innerHTML = live_Player_Stats;
+
+					if (parseFloat(scoreboardPlayerPoints.innerText).toFixed(2) != parseFloat(player.fpts).toFixed(2)) {
+						var scoreAnimation = new CountUp(scoreboardPlayerPoints, scoreboardPlayerPoints.innerText, player.fpts, 2, 2);
 						scoreAnimation.start();
 					}
 
-					if (playerGameLine.innerHTML != data["gameline"]) {
-						processUpdate = 1;
-						playerGameLine.innerHTML = data["gameline"];
-					}
+				} else {
 
-					if (processUpdate == 1) {
+					scoreboardPlayerGameLine.innerHTML = "BYE";
+					scoreboardPlayer.classList.add("inactive-player");
 
-						var data = {"league":"<%= MatchupLevel %>", "id":"<%= TeamID1 %>", "leg":"<%= Leg %>"};
-						data = $.param(data);
+				}
+			}
+		}
 
-						$.ajax({
-							type: "GET",
-							dataType: "json",
-							url: "/scores/team/json/",
-							data: data,
-							success: function(data) {
+		loopThroughArray(MATCHUPS, function (arrayElement, loopTime) {
 
-								var scoreBox1 = document.getElementsByClassName('team-1-score')[0];
+			$.ajax({
+				type: "GET",
+				dataType: "json",
+				url: "/scores/json/period/",
+				success: function(data) {
 
-								var PMR1 = document.getElementsByClassName('team-1-progress')[0];
-								PMR1.innerHTML = data["teampmr"] + " PMR";
+					let json = data["matchups"];
 
-								if (parseFloat(scoreBox1.innerText) != parseFloat(data["teamscore"])) {
-									var scoreAnimation1 = new CountUp(scoreBox1, scoreBox1.innerText, data["teamscore"], 2, 4);
-									scoreAnimation1.start();
-								}
+					for(let i = 0; i < json.length; i++) {
 
+						let obj = json[i];
+
+						var pmrc1, pmrc2; pmrc1 = pmrc2 = 'success';
+						var update = 0;
+						if (parseFloat(obj.pmrp1) <= 66.6666) { pmrc1 = 'warning' } if (parseFloat(obj.pmrp1) <= 33.3333) { pmrc1 = 'danger' }
+						if (parseFloat(obj.pmrp2) <= 66.6666) { pmrc2 = 'warning' } if (parseFloat(obj.pmrp2) <= 33.3333) { pmrc2 = 'danger' }
+
+						var objScore1 = document.getElementsByClassName('team-' + obj.level + '-score-' + obj.id1)[0];
+						if (parseFloat(objScore1.innerText).toFixed(2) != parseFloat(obj.score1).toFixed(2)) {
+							var scoreAnimation1 = new CountUp(objScore1, objScore1.innerText, obj.score1, 2, 1);
+							scoreAnimation1.start();
+							update = 1;
+						}
+
+						var objScore2 = document.getElementsByClassName('team-' + obj.level + '-score-' + obj.id2)[0];
+						if (parseFloat(objScore2.innerText).toFixed(2) != parseFloat(obj.score2).toFixed(2)) {
+							var scoreAnimation2 = new CountUp(objScore2, objScore2.innerText, obj.score2, 2, 1);
+							scoreAnimation2.start();
+							update = 1;
+						}
+
+						if (update == 1) {
+							var objBox = document.getElementsByClassName('matchup-' + obj.id)[0];
+							objBox.classList.add("box-glow");
+							console.log(obj.name1 + ' (' + obj.score1 + ') vs. ' + obj.name2 + ' (' + obj.score2 + ')');
+						}
+
+					/*	if (obj.level != 'omega' && obj.level != 'cup' && update == 1) {
+							var objScore1b = document.getElementsByClassName('team-' + obj.level + '-score-' + obj.id1)[1];
+							if (parseFloat(objScore1b.innerText).toFixed(2) != parseFloat(obj.score1).toFixed(2)) {
+								var scoreAnimation1b = new CountUp(objScore1b, objScore1b.innerText, obj.score1, 2, 1);
+								objScore1b.innerText = obj.score1;
+								scoreAnimation1b.start();
 							}
-						});
-					}
-				}
-			});
 
-		}, 3000);
-		<% End If %>
-
-		<% If Len(TeamRoster2) > 0 Then %>
-		loopThroughArray(TEAM_ROSTER_2, function (arrayElement, loopTime) {
-
-			var thisPlayerID = arrayElement;
-			var data = {"league":"<%= TeamLevelTitle1 %>","team":<%= TeamCBSID2 %>,"id":thisPlayerID};
-			data = $.param(data);
-
-			$.ajax({
-				type: "GET",
-				dataType: "json",
-				url: "/scores/player/json/",
-				data: data,
-				success: function(data) {
-
-					var processUpdate = 0;
-					var playerPoints = document.getElementsByClassName('team-2-player-' + thisPlayerID + '-points')[0];
-					var playerStats = document.getElementsByClassName('team-2-player-' + thisPlayerID + '-stats')[0];
-					var playerGameLine = document.getElementsByClassName('team-2-player-' + thisPlayerID + '-gameline')[0];
-					var playerGamePosition = document.getElementsByClassName('team-2-player-' + thisPlayerID + '-gametime')[0];
-					//var playerPMR = document.getElementsByClassName('team-2-player-' + thisPlayerID + '-progress')[0];
-
-					playerGamePosition.innerHTML = data["gameposition"];
-					//playerPMR.innerHTML = "<div class=\"progress-bar progress-bar-" + data["pmrcolor"] + "\" role=\"progressbar\" aria-valuenow=\"" + data["pmrpercent"] + "\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: " + data["pmrpercent"] + "%\"><span class=\"sr-only\">" + data["pmrpercent"] + "%</span></div>";
-
-					if (parseFloat(playerPoints.innerText) != parseFloat(data["points"])) {
-						processUpdate = 1;
-						var scoreAnimation = new CountUp(playerPoints, playerPoints.innerText, data["points"], 2, 4);
-						scoreAnimation.start();
-					}
-
-					if (playerGameLine.innerHTML != data["gameline"]) { playerGameLine.innerHTML = data["gameline"]; }
-
-					if (processUpdate == 1) {
-
-						var data = {"league":"<%= MatchupLevel %>", "id":"<%= TeamID2 %>", "leg":"<%= Leg %>"};
-						data = $.param(data);
-
-						$.ajax({
-							type: "GET",
-							dataType: "json",
-							url: "/scores/team/json/",
-							data: data,
-							success: function(data) {
-
-								var scoreBox1 = document.getElementsByClassName('team-2-score')[0];
-
-								var PMR1 = document.getElementsByClassName('team-2-progress')[0];
-								PMR1.innerHTML = data["teampmr"] + " PMR";
-
-								if (parseFloat(scoreBox1.innerText) != parseFloat(data["teamscore"])) {
-									var scoreAnimation1 = new CountUp(scoreBox1, scoreBox1.innerText, data["teamscore"], 2, 4);
-									scoreAnimation1.start();
-								}
-
+							var objScore2b = document.getElementsByClassName('team-' + obj.level + '-score-' + obj.id2)[1];
+							if (parseFloat(objScore2b.innerText).toFixed(2) != parseFloat(obj.score2).toFixed(2)) {
+								var scoreAnimation2b = new CountUp(objScore2b, objScore2b.innerText, obj.score2, 2, 1);
+								objScore2b.innerText = obj.score2;
+								scoreAnimation2b.start();
 							}
-						});
-
+						}
+						*/
 					}
 
 				}
 			});
 
-		}, 3000);
-		<% End If %>
-
-		<% If Len(OmegaTeams) > 0 Then %>
-		loopThroughArray(OMEGA_ID, function (arrayElement, loopTime) {
-
-			var thisID = arrayElement;
-			var data = {"league":"OMEGA", "id":thisID};
-			data = $.param(data);
-
-			$.ajax({
-				type: "GET",
-				dataType: "json",
-				url: "/scores/team/json/",
-				data: data,
-				success: function(data) {
-
-					var scoreBox1 = document.getElementsByClassName('team-omega-score-' + data["teamid"])[0];
-
-					if (parseFloat(scoreBox1.innerText) != parseFloat(data["teamscore"])) {
-						var scoreAnimation1 = new CountUp(scoreBox1, scoreBox1.innerText, data["teamscore"], 2, 4);
-						scoreAnimation1.start();
-					}
-
-				}
-			});
-
-		}, 5000);
-		<% End If %>
-
-		<% If Len(CupTeams) > 0 Then %>
-		loopThroughArray(CUP_ID, function (arrayElement, loopTime) {
-
-			var thisID = arrayElement;
-			var data = {"league":"CUP", "id":thisID, "leg":"<%= Leg %>"};
-			data = $.param(data);
-
-			$.ajax({
-				type: "GET",
-				dataType: "json",
-				url: "/scores/team/json/",
-				data: data,
-				success: function(data) {
-
-					var scoreBox1 = document.getElementsByClassName('team-cup-score-' + data["teamid"])[0];
-
-					if (parseFloat(scoreBox1.innerText) != parseFloat(data["teamscore"])) {
-						var scoreAnimation1 = new CountUp(scoreBox1, scoreBox1.innerText, data["teamscore"], 2, 4);
-						scoreAnimation1.start();
-					}
-
-				}
-			});
-
-		}, 5000);
-		<% End If %>
-
-		<% If Len(SLFFLTeams) > 0 Then %>
-		loopThroughArray(SLFFL_ID, function (arrayElement, loopTime) {
-
-			var thisID = arrayElement;
-			var data = {"league":"SLFFL", "id":thisID};
-			data = $.param(data);
-
-			$.ajax({
-				type: "GET",
-				dataType: "json",
-				url: "/scores/team/json/",
-				data: data,
-				success: function(data) {
-
-					var scoreBox1 = document.getElementsByClassName('team-slffl-score-' + data["teamid"])[0];
-					var scoreBox2 = document.getElementsByClassName('team-slffl-score-' + data["teamid"])[1];
-
-					if (parseFloat(scoreBox1.innerText) != parseFloat(data["teamscore"])) {
-						var scoreAnimation1 = new CountUp(scoreBox1, scoreBox1.innerText, data["teamscore"], 2, 4);
-						scoreAnimation1.start();
-					}
-
-					if (parseFloat(scoreBox2.innerText) != parseFloat(data["teamscore"])) {
-						var scoreAnimation2 = new CountUp(scoreBox2, scoreBox2.innerText, data["teamscore"], 2, 4);
-						scoreAnimation2.start();
-					}
-
-				}
-			});
-
-		}, 5000);
-		<% End If %>
-
-		<% If Len(FLFFLTeams) > 0 Then %>
-		loopThroughArray(FLFFL_ID, function (arrayElement, loopTime) {
-
-			var thisID = arrayElement;
-			var data = {"league":"FLFFL", "id":thisID};
-			data = $.param(data);
-
-			$.ajax({
-				type: "GET",
-				dataType: "json",
-				url: "/scores/team/json/",
-				data: data,
-				success: function(data) {
-
-					var scoreBox1 = document.getElementsByClassName('team-flffl-score-' + data["teamid"])[0];
-					var scoreBox2 = document.getElementsByClassName('team-flffl-score-' + data["teamid"])[1];
-
-					if (parseFloat(scoreBox1.innerText) != parseFloat(data["teamscore"])) {
-						var scoreAnimation1 = new CountUp(scoreBox1, scoreBox1.innerText, data["teamscore"], 2, 4);
-						scoreAnimation1.start();
-					}
-
-					if (parseFloat(scoreBox2.innerText) != parseFloat(data["teamscore"])) {
-						var scoreAnimation2 = new CountUp(scoreBox2, scoreBox2.innerText, data["teamscore"], 2, 4);
-						scoreAnimation2.start();
-					}
-
-				}
-			});
-
-		}, 5000);
-		<% End If %>
+		}, 10000);
 
 	});
 </script>

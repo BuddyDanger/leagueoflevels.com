@@ -101,7 +101,7 @@
 							var objPMR2b = document.getElementsByClassName('team-' + obj.level + '-progress-' + obj.id2)[1];
 							objPMR2b.innerHTML = "<div class=\"progress-bar progress-bar-" + pmrc2 + "\" role=\"progressbar\" aria-valuenow=\"" + obj.pmrp2 + "\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: " + obj.pmrp2 + "%\"><span class=\"sr-only\">" + obj.pmrp2 + "%</span></div>";
 							if (parseFloat(objScore2b.innerText).toFixed(2) != parseFloat(obj.score2).toFixed(2)) {
-								var scoreAnimation2 = new CountUp(objScore2b, objScore2b.innerText, obj.score2, 1, 2);
+								var scoreAnimation2b = new CountUp(objScore2b, objScore2b.innerText, obj.score2, 1, 2);
 								scoreAnimation2b.start();
 							}
 						}
@@ -111,14 +111,14 @@
 				}
 			});
 
-		}, 10000);
+		}, 7000);
 
 		loopThroughArray(MATCHUPS, function (arrayElement, loopTime) {
 
 			var objBox = document.getElementsByClassName('matchup-' + arrayElement)[0];
 			objBox.classList.remove("box-glow");
 
-		}, 5000);
+		}, 3000);
 
 	});
 </script>

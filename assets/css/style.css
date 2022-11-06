@@ -582,7 +582,7 @@ small {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  padding: 20px 0;
+  padding: 0px 0;
   background-color: #4d79f6;
   height: 100%;
   z-index: 500;
@@ -862,7 +862,7 @@ small {
     min-height: 100vh;
   }
   .enlarge-menu .topbar .topbar-left {
-    margin-left: 0;
+    margin-left: 0; padding-left: 10px;
     width: 70px;
   }
 }
@@ -939,7 +939,7 @@ small {
 
 .navbar-custom {
   background: #ffffff;
-  padding: 0 10px 0 0;
+  padding: 0 0 0 0;
   margin-left: 240px;
   min-height: 70px;
   position: relative;
