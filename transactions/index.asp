@@ -137,7 +137,7 @@
 
 										thisTransactionID = rsTransactions("TransactionID")
 										thisTransactionCBSID = rsTransactions("TransactionCBSID")
-										thisTransactionDateTime = DateAdd("h", -4, rsTransactions("TransactionDateTime"))
+										thisTransactionDateTime = DateAdd("h", -5, rsTransactions("TransactionDateTime"))
 										thisLevelTitle = rsTransactions("LevelTitle")
 										thisProfileName = rsTransactions("ProfileName")
 										thisProfileImage = rsTransactions("ProfileImage")
