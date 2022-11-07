@@ -120,57 +120,50 @@
 
 		<style>
 
-			@media (max-width:1200px) {
-				.gamestats { display: none !important; }
-			}
+			@media (max-width:1200px) {	.gamestats { display: none !important; } }
 
-			@media (max-width:768px) {
-				.page-content { padding: 0 !important; padding-bottom: 2rem !important; }
+			@media (max-width:768px) { .page-content { padding: 0 !important; padding-bottom: 2rem !important; } }
 
-			}
 			.is-loading {
-	background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.5) 50%, rgba(255, 255, 255, 0) 100%);
-	background-size: 75% 100%;
-	animation-duration: 1500ms;
-	animation-name: headerShine;
-	animation-iteration-count: infinite;
-	background-repeat: no-repeat;
-	animation-timing-function: ease;
-	background-position: 0 0;
-	background-color: #166dc1;
-	background-blend-mode: overlay;
-}
+				background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.5) 50%, rgba(255, 255, 255, 0) 100%);
+				background-size: 75% 100%;
+				animation-duration: 1500ms;
+				animation-name: headerShine;
+				animation-iteration-count: infinite;
+				background-repeat: no-repeat;
+				animation-timing-function: ease;
+				background-position: 0 0;
+				background-color: #166dc1;
+				background-blend-mode: overlay;
+			}
 
-.progress-bar-name {
-	background-color: #ddd;
-	height: 12px;
-	width: 30%;
-	border-radius: 100px;
-}
+			.progress-bar-name {
+				background-color: #ddd;
+				height: 12px;
+				width: 30%;
+				border-radius: 100px;
+			}
 
-.progress-bar-gameline {
-	background-color: #ddd;
-	height: 12px;
-	width: 70%;
-	border-radius: 100px;
-}
+			.progress-bar-gameline {
+				background-color: #ddd;
+				height: 12px;
+				width: 70%;
+				border-radius: 100px;
+			}
 
-.progress-bar-photo {
-	height: 40px;
-	width: 40px; height: 40px;
-	background-color: #ddd;
-	border-radius: 50%;
-}
+			.progress-bar-photo {
+				height: 40px;
+				width: 40px; height: 40px;
+				background-color: #ddd;
+				border-radius: 50%;
+			}
 
-.inactive-player { background-color:#fafafa; }
+			.inactive-player { background-color:#fafafa; }
 
-
-@keyframes headerShine {
-  0% {
-    background-position: -300% 0; }
-  100% {
-    background-position: 500% 0; }
-}
+			@keyframes headerShine {
+				0% { background-position: -300% 0; }
+				100% { background-position: 500% 0; }
+			}
 
 		</style>
 
@@ -303,8 +296,6 @@
 											<div class="col-6 col-lg-2 p-0 pt-1 text-right">
 												<span><img src="https://samelevel.imgix.net/<%= thisProfileImage2 %>?w=40&h=40&fit=crop&crop=focalpoint" width="40" alt="<%= TeamName2 %>" class="rounded-circle mr-3 mr-lg-2" /></span>
 											</div>
-
-
 										</div>
 									</li>
 

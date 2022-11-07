@@ -53,8 +53,8 @@
 
 			var team1 = $.param({"version":"3.0","response_format":"json","league_id":"<%= thisTeamLevelTitle1 %>","team_id":"<%= thisTeamCBSID1 %>","period":"<%= Session.Contents("CurrentPeriod") %>","access_token":"<%= GetToken(thisTeamLevelTitle1) %>"});
 			var team2 = $.param({"version":"3.0","response_format":"json","league_id":"<%= thisTeamLevelTitle2 %>","team_id":"<%= thisTeamCBSID2 %>","period":"<%= Session.Contents("CurrentPeriod") %>","access_token":"<%= GetToken(thisTeamLevelTitle2) %>"});
-			$.ajax({ type: "GET", dataType: "json", url: "https://api.cbssports.com/fantasy/league/scoring/live", data: team1, success: function(team1) { setPlayers(team1, 1); } });
-			$.ajax({ type: "GET", dataType: "json", url: "https://api.cbssports.com/fantasy/league/scoring/live", data: team2, success: function(team2) { setPlayers(team2, 2); } });
+			$.ajax({ cache: false, type: "GET", dataType: "json", url: "https://api.cbssports.com/fantasy/league/scoring/live", data: team1, success: function(team1) { setPlayers(team1, 1); } });
+			$.ajax({ cache: false, type: "GET", dataType: "json", url: "https://api.cbssports.com/fantasy/league/scoring/live", data: team2, success: function(team2) { setPlayers(team2, 2); } });
 
 		}, 3000);
 
