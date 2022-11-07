@@ -150,7 +150,7 @@
 					scoreboardPlayerStats.innerHTML = live_Player_Stats;
 
 					if (parseFloat(scoreboardPlayerPoints.innerText).toFixed(2) != parseFloat(player.fpts).toFixed(2)) {
-						var scoreAnimation = new CountUp(scoreboardPlayerPoints, scoreboardPlayerPoints.innerText, parseFloat(player.fpts).toFixed(2), 2, 2);
+						var scoreAnimation = new CountUp(scoreboardPlayerPoints, parseFloat(scoreboardPlayerPoints.innerText).toFixed(2), parseFloat(player.fpts).toFixed(2), 2, 1);
 						scoreAnimation.start();
 					}
 
@@ -184,14 +184,14 @@
 
 						var objScore1 = document.getElementsByClassName('team-' + obj.level + '-score-' + obj.id1)[0];
 						if (parseFloat(objScore1.innerText).toFixed(2) != parseFloat(obj.score1).toFixed(2)) {
-							var scoreAnimation1 = new CountUp(objScore1, objScore1.innerText, parseFloat(obj.score1).toFixed(2), 2, 1);
+							var scoreAnimation1 = new CountUp(objScore1, parseFloat(objScore1.innerText).toFixed(2), parseFloat(obj.score1).toFixed(2), 2, 1);
 							scoreAnimation1.start();
 							update = 1;
 						}
 
 						var objScore2 = document.getElementsByClassName('team-' + obj.level + '-score-' + obj.id2)[0];
 						if (parseFloat(objScore2.innerText).toFixed(2) != parseFloat(obj.score2).toFixed(2)) {
-							var scoreAnimation2 = new CountUp(objScore2, objScore2.innerText, parseFloat(obj.score2), 2, 1);
+							var scoreAnimation2 = new CountUp(objScore2, parseFloat(objScore2.innerText).toFixed(2), parseFloat(obj.score2), 2, 1);
 							scoreAnimation2.start();
 							update = 1;
 						}
