@@ -5,8 +5,6 @@
 <!--#include virtual="/assets/asp/functions/sha256.asp"-->
 <%
 	thisSchmeckleTotal = 0
-	slackIsNFL = 0
-	If Session.Contents("SITE_Bet_Type") = "nfl" Then slackIsNFL = 1
 	sqlGetStatus = "SELECT * FROM Switchboard WHERE SwitchboardID = 1"
 	Set rsStatus = sqlDatabase.Execute(sqlGetStatus)
 
@@ -18,235 +16,6 @@
 
 		rsStatus.Close
 		Set rsStatus = Nothing
-
-	End If
-
-	If Request.Form("inputTicketGo") = "go" Then
-
-		sqlGetSchmeckles = "SELECT SUM(TransactionTotal) AS CurrentSchmeckleTotal FROM SchmeckleTransactions WHERE AccountID = " & Session.Contents("AccountID")
-		Set rsSchmeckles = sqlDatabase.Execute(sqlGetSchmeckles)
-
-		thisSchmeckleTotal = 0
-		If Not rsSchmeckles.Eof Then
-
-			thisSchmeckleTotal = rsSchmeckles("CurrentSchmeckleTotal")
-
-			rsSchmeckles.Close
-			Set rsSchmeckles = Nothing
-
-		End If
-
-		betTypeMoneyline = 0
-		betTypeSpread = 0
-		betTypeTotal = 0
-
-		thisTicketType = Request.Form("inputTicketType")
-		thisMatchupID = Request.Form("inputMatchupID")
-		thisNFLGameID = Request.Form("inputNFLGameID")
-		thisTeamID1 = Request.Form("inputTeamID1")
-		thisTeamID2 = Request.Form("inputTeamID2")
-
-		If thisTicketType = "1" Then
-
-			thisMoneylineValue1 = Request.Form("inputMoneylineValue1")
-			thisMoneylineValue2 = Request.Form("inputMoneylineValue2")
-			thisMoneylineTeam = Request.Form("inputMoneylineTeam")
-			thisMoneylineBetAmount = Request.Form("inputMoneylineBetAmount")
-			thisMoneylineWin = Request.Form("inputMoneylineWin")
-			thisMoneylinePayout = Request.Form("inputMoneylinePayout")
-
-			If CInt(thisMoneylineTeam) = 1 Then
-				betTeamID = thisTeamID1
-				betMoneylineValue = thisMoneylineValue1
-			Else
-				betTeamID = thisTeamID2
-				betMoneylineValue = thisMoneylineValue2
-			End If
-
-			If CDbl(thisSchmeckleTotal) >= CDbl(thisMoneylineBetAmount) Then
-
-				Set rsInsert = Server.CreateObject("ADODB.RecordSet")
-				rsInsert.CursorType = adOpenKeySet
-				rsInsert.LockType = adLockOptimistic
-				rsInsert.Open "TicketSlips", sqlDatabase, , , adCmdTable
-				rsInsert.AddNew
-
-				rsInsert("TicketTypeID") = thisTicketType
-				rsInsert("AccountID") = Session.Contents("AccountID")
-				If Session.Contents("SITE_Bet_Type") = "nfl" Then rsInsert("NFLGameID") = thisNFLGameID
-				If Session.Contents("SITE_Bet_Type") <> "nfl" Then rsInsert("MatchupID") = thisMatchupID
-				rsInsert("TeamID") = betTeamID
-				rsInsert("Moneyline") = betMoneylineValue
-				rsInsert("BetAmount") = thisMoneylineBetAmount
-				rsInsert("PayoutAmount") = thisMoneylinePayout
-
-				rsInsert.Update
-
-				thisTicketSlipID = rsInsert("TicketSlipID")
-
-				Set rsInsert = Nothing
-
-				thisTransactionTypeID = 1008
-				thisTransactionDateTime = Now()
-				thisTransactionTotal = thisMoneylineBetAmount * -1
-				thisAccountID = Session.Contents("AccountID")
-				thisTransactionDescription = ""
-
-				thisTransactionStatus = SchmeckleTransaction(thisAccountID, thisTransactionTypeID, thisTicketSlipID, thisTransactionTotal, thisTransactionDescription)
-
-				betTypeMoneyline = 1
-
-			End If
-
-		ElseIf CInt(thisTicketType) = 2 Then
-
-			thisSpreadValue1 = Request.Form("inputSpreadValue1")
-			thisSpreadValue2 = Request.Form("inputSpreadValue2")
-			thisSpreadTeam = Request.Form("inputSpreadTeam")
-			thisSpreadBetAmount = Request.Form("inputSpreadBetAmount")
-			thisSpreadWin = Request.Form("inputSpreadWin")
-			thisSpreadPayout = Request.Form("inputSpreadPayout")
-
-			If CInt(thisSpreadTeam) = 1 Then
-				betTeamID = thisTeamID1
-				betSpreadValue = thisSpreadValue1
-			Else
-				betTeamID = thisTeamID2
-				betSpreadValue = thisSpreadValue2
-			End If
-
-			If CDbl(thisSchmeckleTotal) >= CDbl(thisSpreadBetAmount) Then
-
-				Set rsInsert = Server.CreateObject("ADODB.RecordSet")
-				rsInsert.CursorType = adOpenKeySet
-				rsInsert.LockType = adLockOptimistic
-				rsInsert.Open "TicketSlips", sqlDatabase, , , adCmdTable
-				rsInsert.AddNew
-
-				rsInsert("TicketTypeID") = thisTicketType
-				rsInsert("AccountID") = Session.Contents("AccountID")
-				If Session.Contents("SITE_Bet_Type") = "nfl" Then rsInsert("NFLGameID") = thisNFLGameID
-				If Session.Contents("SITE_Bet_Type") <> "nfl" Then rsInsert("MatchupID") = thisMatchupID
-				rsInsert("TeamID") = betTeamID
-				rsInsert("Spread") = betSpreadValue
-				rsInsert("BetAmount") = thisSpreadBetAmount
-				rsInsert("PayoutAmount") = thisSpreadPayout
-
-				rsInsert.Update
-
-				thisTicketSlipID = rsInsert("TicketSlipID")
-
-				Set rsInsert = Nothing
-
-				thisTransactionTypeID = 1008
-				thisTransactionDateTime = Now()
-				thisTransactionTotal = thisSpreadBetAmount * -1
-				thisAccountID = Session.Contents("AccountID")
-				thisTransactionDescription = ""
-
-				thisTransactionStatus = SchmeckleTransaction(thisAccountID, thisTransactionTypeID, thisTicketSlipID, thisTransactionTotal, thisTransactionDescription)
-
-				betTypeSpread = 1
-
-			End If
-
-		ElseIf CInt(thisTicketType) = 3 Then
-
-			thisOverUnderAmount = Request.Form("inputOverUnderAmount")
-			thisOverUnderWin = Request.Form("inputOverUnderWin")
-			thisOverUnderPayout = Request.Form("inputOverUnderPayout")
-			thisOverUnderBet = Request.Form("inputOverUnderBet")
-			thisOverUnderBetAmount = Request.Form("inputOverUnderBetAmount")
-
-			If CInt(thisOverUnderBet) = 1 Then
-				thisOverUnderBet = "OVER"
-			Else
-				thisOverUnderBet = "UNDER"
-			End If
-
-			If CDbl(thisSchmeckleTotal) >= CDbl(thisOverUnderBetAmount) Then
-
-				Set rsInsert = Server.CreateObject("ADODB.RecordSet")
-				rsInsert.CursorType = adOpenKeySet
-				rsInsert.LockType = adLockOptimistic
-				rsInsert.Open "TicketSlips", sqlDatabase, , , adCmdTable
-				rsInsert.AddNew
-
-				rsInsert("TicketTypeID") = thisTicketType
-				rsInsert("AccountID") = Session.Contents("AccountID")
-				If Session.Contents("SITE_Bet_Type") = "nfl" Then rsInsert("NFLGameID") = thisNFLGameID
-				If Session.Contents("SITE_Bet_Type") <> "nfl" Then rsInsert("MatchupID") = thisMatchupID
-				rsInsert("TeamID") = 0
-				rsInsert("OverUnderAmount") = thisOverUnderAmount
-				rsInsert("OverUnderBet") = thisOverUnderBet
-				rsInsert("BetAmount") = thisOverUnderBetAmount
-				rsInsert("PayoutAmount") = thisOverUnderPayout
-
-				rsInsert.Update
-
-				thisTicketSlipID = rsInsert("TicketSlipID")
-
-				Set rsInsert = Nothing
-
-				thisTransactionTypeID = 1008
-				thisTransactionDateTime = Now()
-				thisTransactionTotal = thisOverUnderBetAmount * -1
-				thisAccountID = Session.Contents("AccountID")
-				thisTransactionDescription = ""
-
-				thisTransactionStatus = SchmeckleTransaction(thisAccountID, thisTransactionTypeID, thisTicketSlipID, thisTransactionTotal, thisTransactionDescription)
-
-				betTypeTotal = 1
-
-			End If
-
-		ElseIf thisTicketType = "4" Then
-
-			thisPropQuestionID = Request.Form("inputPropQuestionID")
-			thisPropAnswerID = Request.Form("inputPropAnswer" & thisPropQuestionID)
-			betMoneylineValue = Request.Form("inputPropBetMoneyline" & thisPropAnswerID)
-			thisMoneylineBetAmount = Request.Form("inputPropBetAmount" & thisPropQuestionID)
-			thisMoneylineWin = Request.Form("inputPropWin" & thisPropQuestionID)
-			thisMoneylinePayout = Request.Form("inputPropPayout" & thisPropQuestionID)
-
-			If CDbl(thisSchmeckleTotal) >= CDbl(thisMoneylineBetAmount) Then
-
-				Set rsInsert = Server.CreateObject("ADODB.RecordSet")
-				rsInsert.CursorType = adOpenKeySet
-				rsInsert.LockType = adLockOptimistic
-				rsInsert.Open "TicketSlips", sqlDatabase, , , adCmdTable
-				rsInsert.AddNew
-
-				rsInsert("TicketTypeID") = thisTicketType
-				rsInsert("AccountID") = Session.Contents("AccountID")
-				If Session.Contents("SITE_Bet_Type") = "nfl" Then rsInsert("NFLGameID") = thisNFLGameID
-				If Session.Contents("SITE_Bet_Type") <> "nfl" Then rsInsert("MatchupID") = thisMatchupID
-				rsInsert("PropQuestionID") = thisPropQuestionID
-				rsInsert("PropAnswerID") = thisPropAnswerID
-				rsInsert("TeamID") = 0
-				rsInsert("Moneyline") = betMoneylineValue
-				rsInsert("BetAmount") = thisMoneylineBetAmount
-				rsInsert("PayoutAmount") = thisMoneylinePayout
-
-				rsInsert.Update
-
-				thisTicketSlipID = rsInsert("TicketSlipID")
-
-				Set rsInsert = Nothing
-
-				thisTransactionTypeID = 1008
-				thisTransactionDateTime = Now()
-				thisTransactionTotal = thisMoneylineBetAmount * -1
-				thisAccountID = Session.Contents("AccountID")
-				thisTransactionDescription = ""
-
-				thisTransactionStatus = SchmeckleTransaction(thisAccountID, thisTransactionTypeID, thisTicketSlipID, thisTransactionTotal, thisTransactionDescription)
-
-			End If
-
-		End If
-
-		thisSlackNotificationStatus = Slack_SportsbookBet(thisTicketSlipID, 2, slackIsNFL)
 
 	End If
 
@@ -534,7 +303,7 @@
 							<div class="card">
 								<div class="card-body pb-0 pt-0">
 
-									<form action="<%= thisMatchupURL %>" method="post">
+									<form id="betMoneyline" action="/sportsbook/submit-bet/">
 										<div class="form-group">
 
 											<input type="hidden" id="inputTicketGo" name="inputTicketGo" value="go" />
@@ -592,7 +361,7 @@
 												</div>
 											</div>
 
-											<button <%= thisFormDisabled %> type="submit" class="btn btn-block btn-success mb-3">Place Bet</button>
+											<button id="moneylineButton" <%= thisFormDisabled %> type="submit" class="btn btn-block btn-success mb-3">Place Bet</button>
 
 										</div>
 									</form>
@@ -607,7 +376,7 @@
 
 								<div class="card-body pb-0 pt-0">
 
-									<form action="<%= thisMatchupURL %>" method="post">
+									<form id="betSpread" action="/sportsbook/submit-bet/">
 										<div class="form-group">
 
 											<input type="hidden" id="inputTicketGo" name="inputTicketGo" value="go" />
@@ -650,7 +419,7 @@
 											<input type="hidden" id="inputSpreadPayout" name="inputSpreadPayout" value="" />
 
 											<label class="form-check-label-lg mt-4" for="inputSpreadTeam" class="col-form-label"><b>Point Spread</b> <%= BoostText %></label>
-											<select <%= thisFormDisabled %> class="form-control form-control-lg form-check-input-lg" name="inputSpreadTeam" id="inputSpreadTeam" onchange="calculate_spread_payout('document.getElementById('inputSpreadBetAmount').value')" required>
+											<select <%= thisFormDisabled %> class="form-control form-control-lg form-check-input-lg" name="inputSpreadTeam" id="inputSpreadTeam" onchange="calculate_spread_payout(document.getElementById('inputSpreadBetAmount').value);" required>
 												<option></option>
 <%
 												If (IsNumeric(thisBoostTeamSpread1) And thisBoostTeamSpread1 > 0) Or (IsNumeric(thisBoostTeamSpread2) And thisBoostTeamSpread2 > 0) Then
@@ -702,7 +471,7 @@
 												</div>
 											</div>
 
-											<button <%= thisFormDisabled %> type="submit" class="btn btn-block btn-success mb-3">Place Bet</button>
+											<button id="spreadButton" <%= thisFormDisabled %> type="submit" class="btn btn-block btn-success mb-3">Place Bet</button>
 
 										</div>
 									</form>
@@ -717,7 +486,7 @@
 
 								<div class="card-body pb-0 pt-0">
 
-									<form action="<%= thisMatchupURL %>" method="post">
+									<form id="betTotal" action="/sportsbook/submit-bet/">
 										<div class="form-group">
 
 											<input type="hidden" id="inputTicketGo" name="inputTicketGo" value="go" />
@@ -793,7 +562,7 @@
 												</div>
 											</div>
 
-											<button <%= thisFormDisabled %> type="submit" class="btn btn-block btn-success mb-2">Place Bet</button>
+											<button id="totalButton" <%= thisFormDisabled %> type="submit" class="btn btn-block btn-success mb-2">Place Bet</button>
 
 										</div>
 									</form>
@@ -819,7 +588,7 @@
 
 									<div class="card-body pb-0 pt-0">
 
-										<form action="<%= thisMatchupURL %>" method="post">
+										<form id="betProp<%= thisPropQuestionID %>" action="/sportsbook/submit-bet/">
 
 											<div class="form-group">
 
@@ -877,7 +646,7 @@
 													</div>
 												</div>
 
-												<button <%= thisFormDisabled %> type="submit" class="btn btn-block btn-success">Place Bet</button>
+												<button id="propButton<%= thisPropQuestionID %>" <%= thisFormDisabled %> type="submit" class="btn btn-block btn-success">Place Bet</button>
 
 											</div>
 
@@ -928,6 +697,88 @@
 		<!--#include virtual="/assets/asp/framework/google.asp" -->
 
 		<script>
+
+			$("#betMoneyline").submit(function(e) {
+
+				e.preventDefault();
+				e.stopImmediatePropagation();
+				var form = $(this);
+				$(this).find(':submit').attr('disabled','disabled');
+				$("#betMoneyline").attr("disabled", true);
+				var moneylineButton = document.getElementById('moneylineButton');
+				moneylineButton.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Betting';
+
+				$.ajax({type: "POST", url: form.attr('action'), data: form.serialize(), success: function(data) {
+					window.location.reload();
+				}});
+
+			});
+
+			$("#betSpread").submit(function(e) {
+
+				e.preventDefault();
+				e.stopImmediatePropagation();
+				var form = $(this);
+				$(this).find(':submit').attr('disabled','disabled');
+				$("#betSpread").attr("disabled", true);
+				var spreadButton = document.getElementById('spreadButton');
+				spreadButton.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Betting';
+
+				$.ajax({type: "POST", url: form.attr('action'), data: form.serialize(), success: function(data) {
+					window.location.reload();
+				}});
+
+			});
+
+			$("#betTotal").submit(function(e) {
+
+				e.preventDefault();
+				e.stopImmediatePropagation();
+				var form = $(this);
+				$(this).find(':submit').attr('disabled','disabled');
+				$("#betTotal").attr("disabled", true);
+				var totalButton = document.getElementById('totalButton');
+				totalButton.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Betting';
+
+				$.ajax({type: "POST", url: form.attr('action'), data: form.serialize(), success: function(data) {
+					window.location.reload();
+				}});
+
+			});
+<%
+			sqlGetProps = "SELECT PropQuestions.PropQuestionID, PropQuestions.PropCorrectAnswerID, PropQuestions.MatchupID, PropQuestions.Question FROM PropQuestions WHERE PropQuestions.PropCorrectAnswerID IS NULL AND "
+			If Session.Contents("SITE_Bet_Type") = "nfl" Then sqlGetProps = sqlGetProps & " NFLGameID = " & thisNFLGameID
+			If Session.Contents("SITE_Bet_Type") <> "nfl" Then sqlGetProps = sqlGetProps & " MatchupID = " & thisMatchupID
+			Set rsProps = sqlDatabase.Execute(sqlGetProps)
+
+			Do While Not rsProps.Eof
+
+				thisPropQuestionID = rsProps("PropQuestionID")
+%>
+				$("#betProp<%= thisPropQuestionID %>").submit(function(e) {
+
+					e.preventDefault();
+					e.stopImmediatePropagation();
+					var form = $(this);
+					$(this).find(':submit').attr('disabled','disabled');
+					$("#betProp<%= thisPropQuestionID %>").attr("disabled", true);
+
+					var totalButton = document.getElementById('totalButton<%= thisPropQuestionID %>');
+					totalButton.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Betting';
+
+					$.ajax({type: "POST", url: form.attr('action'), data: form.serialize(), success: function(data) {
+						window.location.reload();
+					}});
+
+				});
+<%
+				rsProps.MoveNext
+
+			Loop
+
+			rsProps.Close
+			Set rsProps = Nothing
+%>
 
 			function calculate_moneyline_payout(stake) {
 
@@ -1033,6 +884,8 @@
 				}
 
 			}, 1000);
+
+
 
 		</script>
 
