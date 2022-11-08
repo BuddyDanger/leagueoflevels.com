@@ -219,7 +219,7 @@
 												<div class="col-lg-4 align-self-center text-left d-none d-lg-block text-truncate">
 													<div><i><%= thisTransactionHash %></i></div>
 												</div>
-												<div class="col-4 col-lg-3 align-self-center text-right"><span class="p-2 <%= thisTransactionDirection %> rounded"><%= thisTransactionTotal %></span><% If Len(Session.Contents("SITE_Schmeckles_AccountID")) > 0 And IsNumeric(Session.Contents("SITE_Schmeckles_AccountID")) Then %>  &nbsp; <span class="p-2 bg-light rounded"><%= thisTransactionBalance %></span><% End If %></div>
+												<div class="col-4 col-lg-3 align-self-center text-right"><span class="p-2 <%= thisTransactionDirection %> rounded"><%= thisTransactionTotal %></span><% If Len(Session.Contents("SITE_Schmeckles_AccountID")) > 0 And IsNumeric(Session.Contents("SITE_Schmeckles_AccountID")) Then %>  &nbsp; <span class="p-2 bg-light rounded d-none d-xl-inline-block"><%= thisTransactionBalance %></span><% End If %></div>
 											</div>
 										</a>
 <%
