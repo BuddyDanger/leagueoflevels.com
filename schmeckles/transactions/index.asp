@@ -153,6 +153,7 @@
 <%
 								sqlGetSchmeckles = "SELECT TOP 500 SchmeckleTransactions.TransactionID, DateAdd(hour, -5, SchmeckleTransactions.TransactionDate) AS TransactionDate, SchmeckleTransactions.TransactionTypeID, TransactionTypeTitle, SchmeckleTransactions.TransactionTotal, "
 								sqlGetSchmeckles = sqlGetSchmeckles & "SchmeckleTransactions.TransactionHash, SchmeckleTransactions.AccountID, SchmeckleTransactions.TicketSlipID, Accounts.ProfileName, Accounts.ProfileImage, SchmeckleTransactions.TransactionDescription "
+								If Len(Session.Contents("SITE_Schmeckles_AccountID")) > 0 And IsNumeric(Session.Contents("SITE_Schmeckles_AccountID")) Then sqlGetSchmeckles = sqlGetSchmeckles & ", (SELECT SUM(TransactionTotal) FROM SchmeckleTransactions S2 WHERE S2.AccountID = 1037 AND S2.TransactionID <= SchmeckleTransactions.TransactionID) AS Balance "
 								sqlGetSchmeckles = sqlGetSchmeckles & "FROM SchmeckleTransactions "
 								sqlGetSchmeckles = sqlGetSchmeckles & "INNER JOIN SchmeckleTransactionTypes ON SchmeckleTransactionTypes.TransactionTypeID = SchmeckleTransactions.TransactionTypeID "
 								sqlGetSchmeckles = sqlGetSchmeckles & "LEFT JOIN Accounts ON Accounts.AccountID = SchmeckleTransactions.AccountID "
@@ -185,6 +186,7 @@
 										thisProfileName = rsSchmeckles("ProfileName")
 										thisProfileImage = rsSchmeckles("ProfileImage")
 										thisTransactionDescription = rsSchmeckles("TransactionDescription")
+										If Len(Session.Contents("SITE_Schmeckles_AccountID")) > 0 And IsNumeric(Session.Contents("SITE_Schmeckles_AccountID")) Then thisTransactionBalance = FormatNumber(rsSchmeckles("Balance"), 0)
 										arrthisTransactionDate = Split(thisTransactionDate, " ")
 										If CDbl(thisTransactionTotal) > 0 Then
 											thisTransactionDirection = "badge-success"
@@ -217,7 +219,7 @@
 												<div class="col-lg-4 align-self-center text-left d-none d-lg-block text-truncate">
 													<div><i><%= thisTransactionHash %></i></div>
 												</div>
-												<div class="col-4 col-lg-3 align-self-center text-right"><span class="p-2 <%= thisTransactionDirection %> rounded"><%= thisTransactionTotal %></span></div>
+												<div class="col-4 col-lg-3 align-self-center text-right"><span class="p-2 <%= thisTransactionDirection %> rounded"><%= thisTransactionTotal %></span><% If Len(Session.Contents("SITE_Schmeckles_AccountID")) > 0 And IsNumeric(Session.Contents("SITE_Schmeckles_AccountID")) Then %>  &nbsp; <span class="p-2 bg-light rounded"><%= thisTransactionBalance %></span><% End If %></div>
 											</div>
 										</a>
 <%
