@@ -21,13 +21,13 @@
 		<meta property="og:site_name" content="League of Levels" />
 		<meta property="og:url" content="https://www.leagueoflevels.com/majors/" />
 		<meta property="og:title" content="Majors / Qualifying & Standings / League of Levels" />
-		<meta property="og:description" content="Majors represent represents the top-six teams from each level through the first three weeks, respectively. These teams are then squared off against each other in a four-week round-robin tournament with 10,000 schmeckles up for grabs." />
+		<meta property="og:description" content="Majors represent the top-six teams from each level through the first three weeks, respectively. These teams are then squared off against each other in a four-week round-robin tournament with 10,000 schmeckles up for grabs." />
 		<meta property="og:type" content="article" />
 
 		<meta name="twitter:site" content="samelevel" />
 		<meta name="twitter:url" content="https://www.leagueoflevels.com/majors/" />
 		<meta name="twitter:title" content="Majors / Qualifying & Standings / League of Levels" />
-		<meta name="twitter:description" content="Majors represent represents the top-six teams from each level through the first three weeks, respectively. These teams are then squared off against each other in a four-week round-robin tournament with 10,000 schmeckles up for grabs." />
+		<meta name="twitter:description" content="Majors represent the top-six teams from each level through the first three weeks, respectively. These teams are then squared off against each other in a four-week round-robin tournament with 10,000 schmeckles up for grabs." />
 
 		<meta name="title" content="Majors / Qualifying & Standings / League of Levels" />
 		<meta name="medium" content="article" />

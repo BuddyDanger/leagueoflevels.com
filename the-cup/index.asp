@@ -391,14 +391,14 @@
 							<ul class="list-group list-flush">
 								<li class="list-group-item p-0">
 									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-top">
-										<img src="https://samelevel.imgix.net/bigballers.jpg?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-2">Big Ballers
-										<div class="float-right"></div>
+										<strike style="color:red"><img src="https://samelevel.imgix.net/bigballers.jpg?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-2">Big Ballers</strike>
+										<div class="float-right" style="color:red">262.72</div>
 									</h6>
 								</li>
 								<li class="list-group-item p-0">
 									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-bottom">
 										<img src="https://samelevel.imgix.net/danger.jpg?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-2">DangercrazyDC
-										<div class="float-right"></div>
+										<div class="float-right">335.44</div>
 									</h6>
 								</li>
 							</ul>
@@ -410,14 +410,14 @@
 							<ul class="list-group list-flush">
 								<li class="list-group-item p-0">
 									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-top">
-										<img src="https://samelevel.imgix.net/icon-f5d3ff0ce4469468a958cd0d4b88aa78ea703eb69545d1a13917c80699d28bc9.PNG?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-2">4th and 9 Inches
-										<div class="float-right"></div>
+										<strike style="color:red"><img src="https://samelevel.imgix.net/icon-f5d3ff0ce4469468a958cd0d4b88aa78ea703eb69545d1a13917c80699d28bc9.PNG?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-2">4th and 9 Inches</strike>
+										<div class="float-right" style="color:red">264.98</div>
 									</h6>
 								</li>
 								<li class="list-group-item p-0">
 									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-bottom">
 										<img src="https://samelevel.imgix.net/icon-499cdf64521a9eb639138ef715d3b76ee8f04c98538b2bac44c4dea0f9d3892d.jpg?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-2">Big TD's
-										<div class="float-right"></div>
+										<div class="float-right">321.64</div>
 									</h6>
 								</li>
 							</ul>
@@ -432,14 +432,14 @@
 							<ul class="list-group list-flush">
 								<li class="list-group-item p-0">
 									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-top">
-										<img src="https://samelevel.imgix.net/smokin-jay.jpg?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-2">Smokin' Jay Cutlers
-										<div class="float-right"></div>
+										<strike style="color:red"><img src="https://samelevel.imgix.net/smokin-jay.jpg?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-2">Smokin' Jay Cutlers</strike>
+										<div class="float-right" style="color:red">186.78</div>
 									</h6>
 								</li>
 								<li class="list-group-item p-0">
 									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-bottom">
 										<img src="https://samelevel.imgix.net/icon-smokinblountz.jpg?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-2">Smokin' Blountz
-										<div class="float-right"></div>
+										<div class="float-right">260.46</div>
 									</h6>
 								</li>
 							</ul>
@@ -452,13 +452,13 @@
 								<li class="list-group-item p-0">
 									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-top">
 										<img src="https://samelevel.imgix.net/icon-31327d645150ef09d795efd3799aa41fb66791cbac553f8de61e75b82b6ae6fa.jpg?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-2">Buddy Danger
-										<div class="float-right"></div>
+										<div class="float-right">359.20</div>
 									</h6>
 								</li>
 								<li class="list-group-item p-0">
 									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-bottom">
-										<img src="https://samelevel.imgix.net/gdeep.jpg?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-2">Gone Deep
-										<div class="float-right"></div>
+										<strike style="color:red"><img src="https://samelevel.imgix.net/gdeep.jpg?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-2">Gone Deep</strike>
+										<div class="float-right" style="color:red">342.46</div>
 									</h6>
 								</li>
 							</ul>
@@ -478,10 +478,16 @@
 
 							<ul class="list-group list-flush">
 								<li class="list-group-item p-0">
-									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-top">&nbsp;</h6>
+									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-top">
+										<img src="https://samelevel.imgix.net/danger.jpg?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-2">DangercrazyDC
+										<div class="float-right"></div>
+									</h6>
 								</li>
 								<li class="list-group-item p-0">
-									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-bottom">&nbsp;</h6>
+									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-bottom">
+										<img src="https://samelevel.imgix.net/icon-499cdf64521a9eb639138ef715d3b76ee8f04c98538b2bac44c4dea0f9d3892d.jpg?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-2">Big TD's
+										<div class="float-right"></div>
+									</h6>
 								</li>
 							</ul>
 
@@ -496,10 +502,16 @@
 
 							<ul class="list-group list-flush">
 								<li class="list-group-item p-0">
-									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-top">&nbsp;</h6>
+									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-top">
+										<img src="https://samelevel.imgix.net/icon-smokinblountz.jpg?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-2">Smokin' Blountz
+										<div class="float-right"></div>
+									</h6>
 								</li>
 								<li class="list-group-item p-0">
-									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-bottom">&nbsp;</h6>
+									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-bottom">
+										<img src="https://samelevel.imgix.net/icon-31327d645150ef09d795efd3799aa41fb66791cbac553f8de61e75b82b6ae6fa.jpg?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-2">Buddy Danger
+										<div class="float-right"></div>
+									</h6>
 								</li>
 							</ul>
 
