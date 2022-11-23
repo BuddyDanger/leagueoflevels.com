@@ -60,10 +60,10 @@
 							<div class="row mb-0 pb-0">
 
 								<div class="col-12 pb-0 mb-0">
-									<div class="accordion" id="accordionExample">
+									<div class="accordion" id="accordion">
 
-										<div class="card-header bg-warning text-white py-2 rounded mb-1" id="headingOne">
-											<a href="#" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+										<div class="card-header bg-warning text-white py-2 rounded mb-1" id="heading">
+											<a href="#" data-toggle="collapse" data-target="#collapse" aria-expanded="true" aria-controls="collapse">
 											<h5 class="mb-0 text-white float-left">MAJOR EVENTS</h5>
 											<button class="btn text-white float-right"><span class="dripicons-information"></span></button>
 											<div class="clearfix"></div>
@@ -71,10 +71,10 @@
 										</div>
 
 										<div class="card rounded">
-											<div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+											<div id="collapse" class="collapse" aria-labelledby="heading" data-parent="#accordion">
 												<div class="card-body text-dark">
 													<div class="mb-3">Typical fantasy leagues set a regular-season schedule and simply hope things shake out fairly. LOL allows the season to schedule itself depending on team performance.</div>
-													<div class="mb-3">Only weeks <b>01 - 03</b> and <b>07 - 10</b> are set before the season begins and act as qualifying windows for our two Major Events. Qualifying results dynamically set the schedule the following four weeks. The top-six teams qualify for the Major and compete in a round-robin style tournament. Teams that don't qualify are scheduled primarily against each other with some overlap (5/8 in group, 3/8 out) against the top-six.</div>
+													<div class="mb-3">Only weeks <b>01 - 03</b> and <b>08 - 10</b> are set before the season begins and act as qualifying windows for our two Major Events. Qualifying results dynamically set the schedule the following four weeks. The top-six teams qualify for the Major and compete in a round-robin style tournament. Teams that don't qualify are scheduled primarily against each other with some overlap (5/8 in group, 3/8 out) against the top-six.</div>
 													<div>Major Champions are awarded <b>10,000 schmeckles</b> and (potentially beginning in 2023) a ticket to the <b>Omega Level</b>.</div>
 												</div>
 											</div>

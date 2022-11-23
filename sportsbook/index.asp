@@ -168,163 +168,101 @@
 <%
 					currentLevel = -1
 
-					sqlGetSchedules = "SELECT MatchupID, Matchups.LevelID, Year, Period, IsPlayoffs, TeamID1, TeamID2, Team1.TeamName AS TeamName1, Team2.TeamName AS TeamName2, TeamScore1, TeamScore2, TeamPMR1, TeamPMR2, Leg, TeamProjected1, TeamProjected2, TeamWinPercentage1, TeamWinPercentage2, TeamMoneyline1, TeamMoneyline2, TeamSpread1, TeamSpread2 FROM Matchups "
-					sqlGetSchedules = sqlGetSchedules & "INNER JOIN Teams AS Team1 ON Team1.TeamID = Matchups.TeamID1 "
-					sqlGetSchedules = sqlGetSchedules & "INNER JOIN Teams AS Team2 ON Team2.TeamID = Matchups.TeamID2 "
-					sqlGetSchedules = sqlGetSchedules & "WHERE Matchups.Year = " & Session.Contents("CurrentYear") & " AND Matchups.Period = " & Session.Contents("CurrentPeriod") & " AND (TeamPMR1 > 0 OR TeamPMR2 > 0) AND (TeamWinPercentage1 >= 0.30 AND TeamWinPercentage1 <= 0.70)  AND (TeamWinPercentage2 >= 0.30 AND TeamWinPercentage2 <= 0.70) AND "
-
-					If Session.Contents("switchOMEGA") = 1 Or Session.Contents("switchNEXT") = 1 Or Session.Contents("switchSLFFL") = 1 Or Session.Contents("switchFLFFL") = 1 Then
-
-						sqlGetSchedules = sqlGetSchedules & "Matchups.LevelID IN ("
-						If Session.Contents("switchOMEGA") Then sqlGetSchedules = sqlGetSchedules & "1,"
-						If Session.Contents("switchNEXT") Then sqlGetSchedules = sqlGetSchedules & "0,"
-						If Session.Contents("switchSLFFL") Then sqlGetSchedules = sqlGetSchedules & "2,"
-						If Session.Contents("switchFLFFL") Then sqlGetSchedules = sqlGetSchedules & "3,"
-						If Right(sqlGetSchedules, 1) = "," Then sqlGetSchedules = Left(sqlGetSchedules, Len(sqlGetSchedules)-1)
-						sqlGetSchedules = sqlGetSchedules & ")"
-
-					Else
-
-						sqlGetSchedules = sqlGetSchedules & " 1 = 0 "
-
+					sqlGetWeek = "SELECT * FROM ( "
+						sqlGetWeek = sqlGetWeek & "SELECT MatchupID AS LOLMatchupID, NULL AS NFLGameID, Matchups.LevelID, Year, Period, NULL AS DateTimeEST, TeamID2 AS AwayTeamID, TeamID1 AS HomeTeamID, Team2.TeamName AS AwayTeam, Team1.TeamName AS HomeTeam, TeamScore2 AS AwayScore, TeamScore1 AS HomeScore, TeamPMR2 AS AwayPMR, TeamPMR1 AS HomePMR, Leg, TeamProjected2 AS AwayProjection, TeamProjected1 AS HomeProjection, TeamWinPercentage2 AS AwayPercentage, TeamWinPercentage1 AS HomePercentage, TeamMoneyline2 AS AwayMoneyline, TeamMoneyline1 AS HomeMoneyline, TeamSpread2 AS AwaySpread, TeamSpread1 AS HomeSpread, TeamProjected1 + TeamProjected2 AS OverUnderTotal, NULL AS Boost_AwayTeamMoneyline, NULL AS Boost_HomeTeamMoneyline, NULL AS Boost_AwayTeamSpread, NULL AS Boost_HomeTeamSpread, NULL AS Boost_AwayTeamSpreadMoneyline, NULL AS Boost_HomeTeamSpreadMoneyline, NULL AS Boost_OverUnderTotal, NULL AS Boost_OverTotalMoneyline, NULL AS Boost_UnderTotalMoneyline "
+						sqlGetWeek = sqlGetWeek & "FROM Matchups "
+						sqlGetWeek = sqlGetWeek & "INNER JOIN Teams AS Team1 ON Team1.TeamID = Matchups.TeamID1 "
+						sqlGetWeek = sqlGetWeek & "INNER JOIN Teams AS Team2 ON Team2.TeamID = Matchups.TeamID2 "
+						sqlGetWeek = sqlGetWeek & "UNION ALL "
+						sqlGetWeek = sqlGetWeek & "SELECT NULL AS LOLMatchupID, NFLGameID, -1 AS LevelID, Year, Period, DateTimeEST, AwayTeamID, HomeTeamID, A.City + ' ' + A.Name AS AwayTeam, B.City + ' ' + B.Name AS HomeTeam, AwayTeamScore AS AwayScore, HomeTeamScore AS HomeScore, NULL AS HomePMR, NULL AS AwayPMR, NULL AS Leg, ((OverUnderTotal / 2) + (HomeTeamSpread / 2)) AS AwayProjection, ((OverUnderTotal / 2) + (AwayTeamSpread / 2)) AS HomeProjection, NULL AS AwayPercentage, NULL AS HomePercentage, AwayTeamMoneyline AS AwayMoneyline, HomeTeamMoneyline AS HomeMoneyline, AwayTeamSpread AS AwaySpread, HomeTeamSpread AS HomeSpread, OverUnderTotal, Boost_AwayTeamMoneyline, Boost_HomeTeamMoneyline, Boost_AwayTeamSpread, Boost_HomeTeamSpread, Boost_AwayTeamSpreadMoneyline, Boost_HomeTeamSpreadMoneyline, Boost_OverUnderTotal, Boost_OverTotalMoneyline, Boost_UnderTotalMoneyline "
+						sqlGetWeek = sqlGetWeek & "FROM NFLGames "
+						sqlGetWeek = sqlGetWeek & "INNER JOIN NFLTeams A ON A.NFLTeamID = NFLGames.AwayTeamID "
+						sqlGetWeek = sqlGetWeek & "INNER JOIN NFLTeams B ON B.NFLTeamID = NFLGames.HomeTeamID "
+					sqlGetWeek = sqlGetWeek & ") SportsbookWeek "
+					sqlGetWeek = sqlGetWeek & "WHERE Year = " & Session.Contents("CurrentYear") & " AND Period = " & Session.Contents("CurrentPeriod") & " "
+					If Session.Contents("switchNFL") = 1 Or Session.Contents("switchOMEGA") = 1 Or Session.Contents("switchNEXT") = 1 Or Session.Contents("switchSLFFL") = 1 Or Session.Contents("switchFLFFL") = 1 Then
+						sqlGetWeek = sqlGetWeek & "AND LevelID IN ("
+						If Session.Contents("switchNFL") Then sqlGetWeek = sqlGetWeek & "-1,"
+						If Session.Contents("switchOMEGA") Then sqlGetWeek = sqlGetWeek & "1,"
+						If Session.Contents("switchNEXT") Then sqlGetWeek = sqlGetWeek & "0,"
+						If Session.Contents("switchSLFFL") Then sqlGetWeek = sqlGetWeek & "2,"
+						If Session.Contents("switchFLFFL") Then sqlGetWeek = sqlGetWeek & "3,"
+						If Right(sqlGetWeek, 1) = "," Then sqlGetWeek = Left(sqlGetWeek, Len(sqlGetWeek)-1)
+						sqlGetWeek = sqlGetWeek & ")"
 					End If
+					sqlGetWeek = sqlGetWeek & "ORDER BY LevelID, DateTimeEST"
+					Set rsWeek = sqlDatabase.Execute(sqlGetWeek)
 
-					sqlGetSchedules = sqlGetSchedules & "ORDER BY CASE WHEN Matchups.LevelID = 1 THEN '1' WHEN Matchups.LevelID = 0 THEN '2' WHEN Matchups.LevelID = 2 THEN '3' WHEN Matchups.LevelID = 3 THEN '4' ELSE Matchups.LevelID END ASC, Matchups.MatchupID ASC"
-					Set rsSchedules = sqlDatabase.Execute(sqlGetSchedules)
+					Do While Not rsWeek.Eof
 
-					Do While Not rsSchedules.Eof
+						thisLOLMatchupID = rsWeek("LOLMatchupID")
+						thisNFLGameID = rsWeek("NFLGameID")
+						thisLevelID = rsWeek("LevelID")
+						thisYear = rsWeek("Year")
+						thisPeriod = rsWeek("Period")
+						thisDateTimeEST = rsWeek("DateTimeEST")
+						thisAwayTeamID = rsWeek("AwayTeamID")
+						thisHomeTeamID = rsWeek("HomeTeamID")
+						thisAwayTeam = rsWeek("AwayTeam")
+						thisHomeTeam = rsWeek("HomeTeam")
+						thisAwayScore = rsWeek("AwayScore")
+						thisHomeScore = rsWeek("HomeScore")
+						thisAwayPMR = rsWeek("AwayPMR")
+						thisHomePMR = rsWeek("HomePMR")
+						thisLeg = rsWeek("Leg")
+						thisAwayProjection = rsWeek("AwayProjection")
+						thisHomeProjection = rsWeek("HomeProjection")
+						thisAwayPercentage = rsWeek("AwayPercentage")
+						thisHomePercentage = rsWeek("HomePercentage")
+						thisAwayMoneyline = rsWeek("AwayMoneyline")
+						thisHomeMoneyline = rsWeek("HomeMoneyline")
+						thisAwaySpread = rsWeek("AwaySpread")
+						thisHomeSpread = rsWeek("HomeSpread")
+						thisOverUnderTotal = rsWeek("OverUnderTotal")
+						thisBoost_AwayTeamMoneyline = rsWeek("Boost_AwayTeamMoneyline")
+						thisBoost_HomeTeamMoneyline = rsWeek("Boost_HomeTeamMoneyline")
+						thisBoost_AwayTeamSpread = rsWeek("Boost_AwayTeamSpread")
+						thisBoost_HomeTeamSpread = rsWeek("Boost_HomeTeamSpread")
+						thisBoost_AwayTeamSpreadMoneyline = rsWeek("Boost_AwayTeamSpreadMoneyline")
+						thisBoost_HomeTeamSpreadMoneyline = rsWeek("Boost_HomeTeamSpreadMoneyline")
+						thisBoost_OverUnderTotal = rsWeek("Boost_OverUnderTotal")
+						thisBoost_OverTotalMoneyline = rsWeek("Boost_OverTotalMoneyline")
+						thisBoost_UnderTotalMoneyline = rsWeek("Boost_UnderTotalMoneyline")
 
-						thisMatchupID = rsSchedules("MatchupID")
-						thisLevelID = rsSchedules("LevelID")
-						thisTeamName1 = rsSchedules("TeamName1")
-						thisTeamName2 = rsSchedules("TeamName2")
-						thisTeamScore1 = rsSchedules("TeamScore1")
-						thisTeamScore2 = rsSchedules("TeamScore2")
-						thisTeamPMR1 = rsSchedules("TeamPMR1")
-						thisTeamPMR2 = rsSchedules("TeamPMR2")
-						thisTeamProjected1 = rsSchedules("TeamProjected1")
-						thisTeamProjected2 = rsSchedules("TeamProjected2")
-						thisTeamWinPercentage1 = rsSchedules("TeamWinPercentage1")
-						thisTeamWinPercentage2 = rsSchedules("TeamWinPercentage2")
-						thisTeamMoneyline1 = rsSchedules("TeamMoneyline1")
-						thisTeamMoneyline2 = rsSchedules("TeamMoneyline2")
-						thisTeamSpread1 = rsSchedules("TeamSpread1")
-						thisTeamSpread2 = rsSchedules("TeamSpread2")
+						If thisHomeMoneyline > 0 Then thisHomeMoneyline = "+" & thisHomeMoneyline
+						If thisAwayMoneyline > 0 Then thisAwayMoneyline = "+" & thisAwayMoneyline
 
-						thisTeamWinPercentage1 = (thisTeamWinPercentage1 * 100) & "%"
-						thisTeamWinPercentage2 = (thisTeamWinPercentage2 * 100) & "%"
+						If thisHomeSpread > 0 Then thisHomeSpread = "+" & thisHomeSpread
+						If thisAwaySpread > 0 Then thisAwaySpread = "+" & thisAwaySpread
 
-						If thisTeamMoneyline1 > 0 Then thisTeamMoneyline1 = "+" & thisTeamMoneyline1
-						If thisTeamMoneyline2 > 0 Then thisTeamMoneyline2 = "+" & thisTeamMoneyline2
+						thisMatchupLink = "/sportsbook/" & thisLOLMatchupID & "/"
 
-						If thisTeamSpread1 > 0 Then thisTeamSpread1 = "+" & thisTeamSpread1
-						If thisTeamSpread2 > 0 Then thisTeamSpread2 = "+" & thisTeamSpread2
-
-						If CInt(thisLevelID) <> currentLevel Then
-
-							currentLevel = thisLevelID
-
-							If CInt(thisLevelID) = 0 Then
-								headerBGcolor = "D00000"
-								headerTextColor = "fff"
-								headerText = "NEXT LEVEL CUP"
-								cardText = "520000"
-							End If
-							If CInt(thisLevelID) = 1 Then
-								headerBGcolor = "FFBA08"
-								headerTextColor = "fff"
-								headerText = "OMEGA LEVEL"
-								cardText = "805C04"
-							End If
-							If CInt(thisLevelID) = 2 Then
-								headerBGcolor = "136F63"
-								headerTextColor = "fff"
-								headerText = "SAME LEVEL"
-								cardText = "0F574D"
-							End If
-							If CInt(thisLevelID) = 3 Then
-								headerBGcolor = "032B43"
-								headerTextColor = "fff"
-								headerText = "FARM LEVEL"
-								cardText = "03324F"
-							End If
-
+						If CInt(thisLevelID) = 0 Then
+							headerBGcolor = "D00000"
+							headerTextColor = "fff"
+							headerText = "NEXT LEVEL CUP #" & thisLOLMatchupID
+							cardText = "520000"
 						End If
-%>
-						<div class="col-xxxl-3 col-xxl-4 col-xl-4 col-lg-6 col-md-6 col-sm-12 col-xs-12 col-xxs-12">
-							<a href="/sportsbook/<%= thisMatchupID %>/" style="text-decoration: none; display: block;">
-								<ul class="list-group mb-3">
-									<li class="list-group-item pt-1 pb-1" style="background-color: #<%= headerBGcolor %>; color: #<%= headerTextColor %>;"><small><b><%= headerText %> #<%= thisMatchupID %></b></small></li>
-									<li class="list-group-item">
-										<span class="float-right"><%= thisTeamScore1 %></span>
-										<div><b><%= thisTeamName1 %></b></div>
-										<div><%= thisTeamProjected1 %> Proj., <%= thisTeamWinPercentage1 %> Win, <%= thisTeamSpread1 %> Spread, <%= thisTeamMoneyline1 %> ML</div>
-									</li>
-									<li class="list-group-item">
-										<span class="float-right"><%= thisTeamScore2 %></span>
-										<div><b><%= thisTeamName2 %></b></div>
-										<div><%= thisTeamProjected2 %> Proj., <%= thisTeamWinPercentage2 %> Win, <%= thisTeamSpread2 %> Spread, <%= thisTeamMoneyline2 %> ML</div>
-									</li>
-								</ul>
-							</a>
-						</div>
-<%
-						rsSchedules.MoveNext
+						If CInt(thisLevelID) = 1 Then
+							headerBGcolor = "FFBA08"
+							headerTextColor = "fff"
+							headerText = "OMEGA LEVEL #" & thisLOLMatchupID
+							cardText = "805C04"
+						End If
+						If CInt(thisLevelID) = 2 Then
+							headerBGcolor = "136F63"
+							headerTextColor = "fff"
+							headerText = "SAME LEVEL #" & thisLOLMatchupID
+							cardText = "0F574D"
+						End If
+						If CInt(thisLevelID) = 3 Then
+							headerBGcolor = "032B43"
+							headerTextColor = "fff"
+							headerText = "FARM LEVEL #" & thisLOLMatchupID
+							cardText = "03324F"
+						End If
 
-					Loop
-
-					rsSchedules.Close
-					Set rsSchedules = Nothing
-
-					If Session.Contents("switchNFL") = 1 Then
-
-						sqlGetNFLGames = "SELECT NFLGameID, Year, Period, DateTimeEST, AwayTeamID, HomeTeamID, A.City + ' ' + A.Name AS AwayTeam, B.City + ' ' + B.Name AS HomeTeam, AwayTeamMoneyline, HomeTeamMoneyline, AwayTeamSpread, HomeTeamSpread, OverUnderTotal, Boost_AwayTeamMoneyline, Boost_HomeTeamMoneyline, Boost_AwayTeamSpread, Boost_HomeTeamSpread, Boost_AwayTeamSpreadMoneyline, Boost_HomeTeamSpreadMoneyline, Boost_OverUnderTotal, Boost_OverTotalMoneyline, Boost_UnderTotalMoneyline FROM NFLGames "
-						sqlGetNFLGames = sqlGetNFLGames & "INNER JOIN NFLTeams A ON A.NFLTeamID = NFLGames.AwayTeamID "
-						sqlGetNFLGames = sqlGetNFLGames & "INNER JOIN NFLTeams B ON B.NFLTeamID = NFLGames.HomeTeamID "
-						sqlGetNFLGames = sqlGetNFLGames & "WHERE NFLGames.Year = " & Session.Contents("CurrentYear") & " AND NFLGames.Period = " & Session.Contents("CurrentPeriod") & " AND NFLGames.DateTimeEST > '" & DateAdd("h", -5, Now()) & "' "
-						sqlGetNFLGames = sqlGetNFLGames & "ORDER BY NFLGames.DateTimeEST ASC"
-						Set rsSchedules = sqlDatabase.Execute(sqlGetNFLGames)
-
-						Do While Not rsSchedules.Eof
-
-							thisMatchupID = rsSchedules("NFLGameID")
-							thisDateTimeEST = rsSchedules("DateTimeEST")
-							thisTeamName1 = rsSchedules("AwayTeam")
-							thisTeamName2 = rsSchedules("HomeTeam")
-							thisTeamMoneyline1 = rsSchedules("AwayTeamMoneyline")
-							thisTeamMoneyline2 = rsSchedules("HomeTeamMoneyline")
-							thisTeamSpread1 = rsSchedules("AwayTeamSpread")
-							thisTeamSpread2 = rsSchedules("HomeTeamSpread")
-							thisOverUnderTotal = rsSchedules("OverUnderTotal")
-
-							thisBoostTeamMoneyline1 = rsSchedules("Boost_AwayTeamMoneyline")
-							thisBoostTeamMoneyline2 = rsSchedules("Boost_HomeTeamMoneyline")
-							thisBoostTeamSpread1 = rsSchedules("Boost_AwayTeamSpread")
-							thisBoostTeamSpread2 = rsSchedules("Boost_HomeTeamSpread")
-							thisBoostOverUnderTotal = rsSchedules("Boost_OverUnderTotal")
-
-							thisBoostTeamSpreadMoneyline1 = rsSchedules("Boost_AwayTeamSpreadMoneyline")
-							thisBoostTeamSpreadMoneyline2 = rsSchedules("Boost_HomeTeamSpreadMoneyline")
-							thisBoostOverTotalMoneyline = rsSchedules("Boost_OverTotalMoneyline")
-							thisBoostUnderTotalMoneyline = rsSchedules("Boost_UnderTotalMoneyline")
-
-							thisTeamProjected1 = (thisOverUnderTotal / 2) + (CDbl(thisTeamSpread1) / 2)
-							thisTeamProjected2 = (thisOverUnderTotal / 2) + (CDbl(thisTeamSpread2) / 2)
-
-							'thisCalculateWinPercentage = homeWinProbability & "/" & awayWinProbability
-							thisCalculateWinPercentage = CalculateWinPercentage(100, 100, thisTeamProjected1, thisTeamProjected2, 0, 0)
-							arrWinPercentages = Split(thisCalculateWinPercentage, "/")
-							thisTeamWinPercentage2 = arrWinPercentages(0) & "%"
-							thisTeamWinPercentage1 = arrWinPercentages(1) & "%"
-
-							If thisTeamMoneyline1 > 0 Then thisTeamMoneyline1 = "+" & thisTeamMoneyline1
-							If thisTeamMoneyline2 > 0 Then thisTeamMoneyline2 = "+" & thisTeamMoneyline2
-
-							If thisTeamSpread1 Then thisTeamProjected1 = (thisOverUnderTotal / 2) - (CDbl(thisTeamSpread1) / 2)
-							If thisTeamSpread2 Then thisTeamProjected2 = (thisOverUnderTotal / 2) - (CDbl(thisTeamSpread2) / 2)
-
-							If thisTeamSpread1 > 0 Then thisTeamSpread1 = "+" & thisTeamSpread1
-							If thisTeamSpread2 > 0 Then thisTeamSpread2 = "+" & thisTeamSpread2
+						If CInt(thisLevelID) = -1 Then
 
 							thisWeekday = WeekdayName(Weekday(CDate(thisDateTimeEST)))
 							arrThisDateTime = Split(thisDateTimeEST, " ")
@@ -354,52 +292,58 @@
 
 							headerBGcolor = "2f4686"
 							headerTextColor = "fff"
-							headerText = "NFL"
+							headerText = thisWeekday & ",&nbsp;" & thisMonthName & "&nbsp;" & thisDay & thisDayExt & " @ " & thisHour & ":" & thisMinute & "&nbsp;" & thisAMPM & " (EST)"
 							cardText = "03324F"
 
-							thisBoostTeamMoneyline1 = rsSchedules("Boost_AwayTeamMoneyline")
-							thisBoostTeamMoneyline2 = rsSchedules("Boost_HomeTeamMoneyline")
-							thisBoostTeamSpread1 = rsSchedules("Boost_AwayTeamSpread")
-							thisBoostTeamSpread2 = rsSchedules("Boost_HomeTeamSpread")
-							thisBoostOverUnderTotal = rsSchedules("Boost_OverUnderTotal")
+							thisCalculateWinPercentage = CalculateWinPercentage(100, 100, thisAwayProjection, thisHomeProjection, 0, 0)
+							arrWinPercentages = Split(thisCalculateWinPercentage, "/")
+							thisHomePercentage = arrWinPercentages(0) & "%"
+							thisAwayPercentage = arrWinPercentages(1) & "%"
 
-							thisBoostTeamSpreadMoneyline1 = rsSchedules("Boost_AwayTeamSpreadMoneyline")
-							thisBoostTeamSpreadMoneyline2 = rsSchedules("Boost_HomeTeamSpreadMoneyline")
-							thisBoostOverTotalMoneyline = rsSchedules("Boost_OverTotalMoneyline")
-							thisBoostUnderTotalMoneyline = rsSchedules("Boost_UnderTotalMoneyline")
+							'thisAwayProjection = FormatNumber(thisAwayProjection, 1)
+							'thisHomeProjection = FormatNumber(thisHomeProjection, 1)
 
+							thisMatchupLink = "/sportsbook/nfl/" & thisNFLGameID & "/"
 
-							BoostText = ""
-							If IsNumeric(thisBoostTeamMoneyline1) Or IsNumeric(thisBoostTeamMoneyline2) Or IsNumeric(thisBoostTeamSpread1) Or IsNumeric(thisBoostTeamSpread2) Or IsNumeric(thisBoostOverUnderTotal) Or IsNumeric(thisBoostOverTotalMoneyline) Or IsNumeric(thisBoostUnderTotalMoneyline) Or IsNumeric(thisBoostTeamSpreadMoneyline1) Or IsNumeric(thisBoostTeamSpreadMoneyline2) Then BoostText = "<span class=""badge badge-pill badge-warning"" title=""Boosted"">BOOSTED</span>"
+						Else
+
+							thisAwayPercentage = (thisAwayPercentage * 100) & "%"
+							thisHomePercentage = (thisHomePercentage * 100) & "%"
+
+						End If
+
+						BoostText = ""
+						If IsNumeric(thisBoost_AwayTeamMoneyline) Or IsNumeric(thisBoost_HomeTeamMoneyline) Or IsNumeric(thisBoost_AwayTeamSpread) Or IsNumeric(thisBoost_HomeTeamSpread) Or IsNumeric(thisBoost_AwayTeamSpreadMoneyline) Or IsNumeric(thisBoost_HomeTeamSpreadMoneyline) Or IsNumeric(thisBoost_OverUnderTotal) Or IsNumeric(thisBoost_OverTotalMoneyline) Or IsNumeric(thisBoost_UnderTotalMoneyline) Then
+							BoostText = "<span class=""badge badge-pill badge-warning"" title=""Boosted"">BOOSTED</span>"
+						End If
 %>
-							<div class="col-xxxl-3 col-xxl-4 col-xl-4 col-lg-6 col-md-6 col-sm-12 col-xs-12 col-xxs-12">
-								<a href="/sportsbook/nfl/<%= thisMatchupID %>/" style="text-decoration: none; display: block;">
-
-									<ul class="list-group mb-3">
-										<li class="list-group-item pt-1 pb-1" style="background-color: #<%= headerBGcolor %>; color: #<%= headerTextColor %>; position: relative;">
-											<div style="position: absolute; top: -10px; right: -10px;"><%= BoostText %></div>
-											<small><b><%= thisWeekday %>,&nbsp;<%= thisMonthName %>&nbsp;<%= thisDay & thisDayExt %> @ <%= thisHour %>:<%= thisMinute %>&nbsp;<%= thisAMPM %></b></small>
-										</li>
-										<li class="list-group-item rounded-0">
-											<div><b><%= thisTeamName1 %></b></div>
-											<div><%= thisTeamProjected1 %> Proj., <%= thisTeamWinPercentage1 %> Win, <%= thisTeamSpread1 %> Spread, <%= thisTeamMoneyline1 %> ML</div>
-										</li>
-										<li class="list-group-item">
-											<div><b><%= thisTeamName2 %></b></div>
-											<div><%= thisTeamProjected2 %> Proj., <%= thisTeamWinPercentage2 %> Win, <%= thisTeamSpread2 %> Spread, <%= thisTeamMoneyline2 %> ML</div>
-										</li>
-									</ul>
-								</a>
-							</div>
+						<div class="col-xxxl-3 col-xxl-4 col-xl-4 col-lg-6 col-md-6 col-sm-12 col-xs-12 col-xxs-12">
+							<a href="<%= thisMatchupLink %>" style="text-decoration: none; display: block;">
+								<ul class="list-group mb-3">
+									<li class="list-group-item pt-1 pb-1" style="background-color: #<%= headerBGcolor %>; color: #<%= headerTextColor %>;">
+										<div style="position: absolute; top: -10px; right: -10px;"><%= BoostText %></div>
+										<small><b><%= headerText %></b></small>
+									</li>
+									<li class="list-group-item">
+										<span class="float-right"><%= thisTeamScore1 %></span>
+										<div><b><%= thisAwayTeam %></b></div>
+										<div><%= thisAwayProjection %> Proj., <%= thisAwayPercentage %> Win, <%= thisAwaySpread %> Spread, <%= thisAwayMoneyline %> ML</div>
+									</li>
+									<li class="list-group-item">
+										<span class="float-right"><%= thisTeamScore2 %></span>
+										<div><b><%= thisHomeTeam %></b></div>
+										<div><%= thisHomeProjection %> Proj., <%= thisHomePercentage %> Win, <%= thisHomeSpread %> Spread, <%= thisHomeMoneyline %> ML</div>
+									</li>
+								</ul>
+							</a>
+						</div>
 <%
-							rsSchedules.MoveNext
+						rsWeek.MoveNext
 
-						Loop
+					Loop
 
-						rsSchedules.Close
-						Set rsSchedules = Nothing
-
-					End If
+					rsWeek.Close
+					Set rsWeek = Nothing
 %>
 				</div>
 
