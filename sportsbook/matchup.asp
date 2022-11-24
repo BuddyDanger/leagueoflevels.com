@@ -763,7 +763,7 @@
 					$(this).find(':submit').attr('disabled','disabled');
 					$("#betProp<%= thisPropQuestionID %>").attr("disabled", true);
 
-					var totalButton = document.getElementById('totalButton<%= thisPropQuestionID %>');
+					var totalButton = document.getElementById('propButton<%= thisPropQuestionID %>');
 					totalButton.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Betting';
 
 					$.ajax({type: "POST", url: form.attr('action'), data: form.serialize(), success: function(data) {
