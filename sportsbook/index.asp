@@ -297,8 +297,8 @@
 
 							thisCalculateWinPercentage = CalculateWinPercentage(100, 100, thisAwayProjection, thisHomeProjection, 0, 0)
 							arrWinPercentages = Split(thisCalculateWinPercentage, "/")
-							thisHomePercentage = arrWinPercentages(0) & "%"
-							thisAwayPercentage = arrWinPercentages(1) & "%"
+							thisHomePercentage = arrWinPercentages(1) & "%"
+							thisAwayPercentage = arrWinPercentages(0) & "%"
 
 							'thisAwayProjection = FormatNumber(thisAwayProjection, 1)
 							'thisHomeProjection = FormatNumber(thisHomeProjection, 1)
