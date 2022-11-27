@@ -7,7 +7,7 @@
 
 		thisTotalCorrectPicks = rsCorrectPicks("TotalCorrectPicks")
 
-		If thisTotalCorrectPicks < (Session.Contents("CurrentPeriod") - 4) Then thisAccountEliminated = 1
+		If thisTotalCorrectPicks < (Session.Contents("CurrentPeriod") - 12) Then thisAccountEliminated = 1
 
 		rsCorrectPicks.Close
 		Set rsCorrectPicks = Nothing
