@@ -8474,3 +8474,5 @@ hr.thick {
   color: #ffffff;
   background-color: #f1646c;
 }
+
+.overflow-hidden { overflow: hidden; }
