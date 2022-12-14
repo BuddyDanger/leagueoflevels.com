@@ -91,7 +91,7 @@
 
 						End If
 %>
-						<div class="col-xxxl-4 col-xxl-4 col-xl-4 col-lg-6 col-md-6 col-sm-12 col-xs-12 col-xxs-12">
+						<div class="col-xxxl-3 col-xxl-3 col-xl-3 col-lg-6 col-md-6 col-sm-12 col-xs-12 col-xxs-12">
 <%
 							If Request.QueryString("action") = "switch" Then
 
@@ -162,6 +162,69 @@
 
 						</div>
 
+						<!--
+						<div class="col-xxxl-3 col-xxl-3 col-xl-3 col-lg-12">
+<%
+							thisSchmeckleTotal = 0
+							sqlGetStatus = "SELECT * FROM Switchboard WHERE SwitchboardID = 1"
+							Set rsStatus = sqlDatabase.Execute(sqlGetStatus)
+
+							If Not rsStatus.Eof Then
+
+								thisSportsbookStatus = rsStatus("Sportsbook")
+
+								If thisSportsbookStatus = False Then thisFormDisabled = "disabled"
+
+								rsStatus.Close
+								Set rsStatus = Nothing
+
+							End If
+
+							If Len(Session.Contents("AccountID")) > 0 Then
+
+								sqlGetSchmeckles = "SELECT SUM(TransactionTotal) AS CurrentSchmeckleTotal FROM SchmeckleTransactions WHERE AccountID = " & Session.Contents("AccountID")
+								Set rsSchmeckles = sqlDatabase.Execute(sqlGetSchmeckles)
+
+								If Not rsSchmeckles.Eof Then
+
+									thisSchmeckleTotal = rsSchmeckles("CurrentSchmeckleTotal")
+
+									rsSchmeckles.Close
+									Set rsSchmeckles = Nothing
+
+								End If
+
+							End If
+%>
+							<ul class="list-group mb-4">
+								<li class="list-group-item p-0">
+									<h4 class="text-left bg-dark text-white p-3 mt-0 mb-0 rounded-top"><b>WHEEL ROUTES</b><span class="float-right dripicons-graph-pie"></i></h4>
+								</li>
+								<li class="list-group-item p-0">
+
+										<div class="card-body pb-0 pt-0">
+
+											<form id="betWheelRoute" action="/sportsbook/submit-bet/">
+												<div class="form-group">
+
+													<input type="hidden" id="inputWheelRouteGo" name="inputWheelRouteGo" value="go" />
+
+													<label for="inputWheelRouteBetAmount" class="col-form-label mt-1"><b>Bet Amount (Schmeckles)</b></label>
+													<input <%= thisFormDisabled %> type="number" class="form-control form-control-lg" min="0" max="<%= thisSchmeckleTotal %>" id="inputWheelRouteBetAmount" name="inputWheelRouteBetAmount" required>
+
+													<button id="WheelRouteButton" <%= thisFormDisabled %> type="submit" class="btn btn-sm btn-success">Run Wheel Route</button>
+
+												</div>
+											</form>
+
+										</div>
+
+								</li>
+							</ul>
+
+						</div>
+						-->
+						
 					</div>
 
 					<div class="row mb-3">
@@ -188,8 +251,9 @@
 						If Session.Contents("switchSLFFL") Then sqlGetWeek = sqlGetWeek & "2,"
 						If Session.Contents("switchFLFFL") Then sqlGetWeek = sqlGetWeek & "3,"
 						If Right(sqlGetWeek, 1) = "," Then sqlGetWeek = Left(sqlGetWeek, Len(sqlGetWeek)-1)
-						sqlGetWeek = sqlGetWeek & ")"
+						sqlGetWeek = sqlGetWeek & ") "
 					End If
+					sqlGetWeek = sqlGetWeek & "AND (DateTimeEST IS NULL OR DateTimeEST > '" & DateAdd("h", -5, Now()) & "') AND (AwayPercentage IS NULL OR (AwayPercentage < 0.7 AND HomePercentage < 0.7)) "
 					sqlGetWeek = sqlGetWeek & "ORDER BY LevelID, DateTimeEST"
 					Set rsWeek = sqlDatabase.Execute(sqlGetWeek)
 

@@ -22,7 +22,7 @@
 	sqlGetMatchup = sqlGetMatchup & "T1.TeamName AS TeamName1, T2.TeamName AS TeamName2, "
 	sqlGetMatchup = sqlGetMatchup & "T1.LevelID AS TeamLevel1, T2.LevelID AS TeamLevel2 "
 	sqlGetMatchup = sqlGetMatchup & "FROM Matchups LEFT JOIN Teams T1 ON T1.TeamID = Matchups.TeamID1 LEFT JOIN Teams T2 ON T2.TeamID = Matchups.TeamID2 WHERE Year = (SELECT TOP 1 Year FROM YearPeriods WHERE StartDate < GetDate() ORDER BY StartDate DESC) AND Period = (SELECT TOP 1 Period FROM YearPeriods WHERE StartDate < GetDate() ORDER BY StartDate DESC);"
-
+Response.Write(sqlGetMatchup)
 	Set rsMatchup = sqlDatabase.Execute(sqlGetMatchup)
 
 	slackJSON = slackJSON & "{"
