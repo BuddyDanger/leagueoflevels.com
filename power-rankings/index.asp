@@ -160,7 +160,7 @@
 												If Len(thisRank) = 1 Then thisRank = "0" & thisRank
 %>
 												<tr style="<%= thisBorderBottom %>">
-													<td class="pl-3"><img src="https://samelevel.imgix.net/<%= rsLeaderboard("ProfileImage") %>?w=40&h=40&fit=crop&crop=focalpoint" class="rounded-circle hidden d-none d-sm-none d-md-inline mr-1 pr-1"><b><%= thisRank %>.</b> &nbsp;<%= rsLeaderboard("ProfileName") %>&nbsp;&nbsp;<%= thisRankChangeDisplay %></td>
+													<td class="pl-3"><img src="https://samelevel.imgix.net/<%= rsLeaderboard("ProfileImage") %>?w=40&h=40&fit=crop&crop=focalpoint" class="rounded-circle hidden d-none d-sm-none d-md-inline mr-2"><b><%= thisRank %>.</b> &nbsp;<%= rsLeaderboard("ProfileName") %>&nbsp;&nbsp;<%= thisRankChangeDisplay %></td>
 													<td class="text-right d-none d-md-table-cell"><%= FormatNumber(rsLeaderboard("TotalPoints"), 2) %></td>
 													<td class="text-right d-none d-sm-table-cell"><%= thisRecord %></td>
 													<td class="text-right d-none d-md-table-cell"><%= thisBreakdown %></td>
