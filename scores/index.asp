@@ -356,17 +356,14 @@
 											If TeamPMRPercent2 < 66.66 Then TeamPMRColor2 = "warning"
 											If TeamPMRPercent2 < 33.33 Then TeamPMRColor2 = "danger"
 
-											If MatchupID = 4370 Then MatchupTitle = "SLFFL PLAYOFFS (BYE)"
-											If MatchupID = 4371 Then MatchupTitle = "SLFFL PLAYOFFS (BYE)"
-											If MatchupID = 4372 Then MatchupTitle = "SLFFL PLAYOFFS (WILDCARD)"
-											If MatchupID = 4373 Then MatchupTitle = "SLFFL PLAYOFFS (WILDCARD)"
-											If MatchupID = 4374 Then MatchupTitle = "SLFFL AOL (WILDCARD)"
-											If MatchupID = 4375 Then MatchupTitle = "SLFFL AOL (WILDCARD)"
-											If MatchupID = 4376 Then MatchupTitle = "SLFFL AOL (BYE)"
-											If MatchupID = 4377 Then MatchupTitle = "SLFFL AOL (BYE)"
+											If MatchupID = 4388 Then MatchupTitle = "SLFFL SEMI-FINAL"
+											If MatchupID = 4389 Then MatchupTitle = "SLFFL SEMI-FINAL"
+											If MatchupID = 4390 Then MatchupTitle = "SLFFL SECOND-CHANCE"
+											If MatchupID = 4391 Then MatchupTitle = "SLFFL SECOND-CHANCE"
+											If MatchupID = 4392 Then MatchupTitle = "SLFFL AOL SEMI-FINAL"
+											If MatchupID = 4393 Then MatchupTitle = "SLFFL AOL SEMI-FINAL"
 
 											MatchupURL = "/scores/" & MatchupID & "/"
-											If (MatchupID = 4370) Or (MatchupID = 4371) Or (MatchupID = 4376) Or (MatchupID = 4377) Then MatchupURL = "#"
 
 											MajorText = ""
 											If IsMajor Then MajorText = "<span class=""badge badge-pill badge-warning"" title=""Major Matchup""><i class=""fa fa-star-of-life p-1""></i></span>"
@@ -468,17 +465,14 @@
 													MajorText = ""
 													If IsMajor Then MajorText = "<span class=""badge badge-pill badge-warning"" title=""Major Matchup""><i class=""fa fa-star-of-life p-1""></i></span>"
 
-													If MatchupID = 4378 Then MatchupTitle = "FARM PLAYOFFS (BYE)"
-													If MatchupID = 4379 Then MatchupTitle = "FARM PLAYOFFS (BYE)"
-													If MatchupID = 4380 Then MatchupTitle = "FARM PLAYOFFS (WILDCARD)"
-													If MatchupID = 4381 Then MatchupTitle = "FARM PLAYOFFS (WILDCARD)"
-													If MatchupID = 4382 Then MatchupTitle = "FARM AOL (WILDCARD)"
-													If MatchupID = 4383 Then MatchupTitle = "FARM AOL (WILDCARD)"
-													If MatchupID = 4384 Then MatchupTitle = "FARM AOL (BYE)"
-													If MatchupID = 4385 Then MatchupTitle = "FARM AOL (BYE)"
+													If MatchupID = 4394 Then MatchupTitle = "FARM SEMI-FINAL"
+													If MatchupID = 4395 Then MatchupTitle = "FARM SEMI-FINAL"
+													If MatchupID = 4396 Then MatchupTitle = "FARM SECOND-CHANCE"
+													If MatchupID = 4397 Then MatchupTitle = "FARM SECOND-CHANCE"
+													If MatchupID = 4398 Then MatchupTitle = "FARM AOL SEMI-FINAL"
+													If MatchupID = 4399 Then MatchupTitle = "FARM AOL SEMI-FINAL"
 
 													MatchupURL = "/scores/" & MatchupID & "/"
-													If (MatchupID = 4378) Or (MatchupID = 4379) Or (MatchupID = 4384) Or (MatchupID = 4385) Then MatchupURL = "#"
 
 													Response.Write("<div class=""col-6 col-xl-6 pl-1 pr-1 pl-lg-3 pr-lg-0"">")
 %>
