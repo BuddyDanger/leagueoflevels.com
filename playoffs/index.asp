@@ -143,14 +143,14 @@
 
 							<ul class="list-group list-flush">
 								<li class="list-group-item p-0 text-nowrap overflow-hidden">
-									<h6 class="text-xl-left bg-white p-3 mt-0 mb-0 rounded-top">
-										<div style="height: 17px;"></div>
+									<h6 class="text-xl-right bg-white p-3 mt-0 mb-0 rounded-top">
+										BOOYAAHH (10)<img src="https://samelevel.imgix.net/icon-booyaahh.jpg?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline ml-2">
 										<div class="float-right"></div>
 									</h6>
 								</li>
 								<li class="list-group-item p-0 text-nowrap overflow-hidden">
-									<h6 class="text-xl-left bg-white p-3 mt-0 mb-0 rounded-bottom">
-										<div style="height: 17px;"></div>
+									<h6 class="text-xl-right bg-white p-3 mt-0 mb-0 rounded-bottom">
+										Proper Football (9)<img src="https://samelevel.imgix.net/icon-proper.jpg?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline ml-2">
 										<div class="float-right"></div>
 									</h6>
 								</li>
@@ -168,13 +168,13 @@
 							<ul class="list-group list-flush">
 								<li class="list-group-item p-0 text-nowrap overflow-hidden">
 									<h6 class="text-xl-right bg-white p-3 mt-0 mb-0 rounded-top">
-										BOOYAAHH (10)<img src="https://samelevel.imgix.net/icon-booyaahh.jpg?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline ml-2">
+										<span style="color: #f1646c;">BOOYAAHH (10)</span><img src="https://samelevel.imgix.net/icon-booyaahh.jpg?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline ml-2">
 										<div class="float-right"></div>
 									</h6>
 								</li>
 								<li class="list-group-item p-0 text-nowrap overflow-hidden">
 									<h6 class="text-xl-right bg-white p-3 mt-0 mb-0 rounded-bottom">
-										Bapes (12)<img src="https://samelevel.imgix.net/icon-ecbca3a708e649f570d9ba624841e19cefb4d74cc2df9f7bf3011282ab980d57.JPG?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline ml-2">
+										<strike style="color: #1ecab8;">Bapes (12)</strike><img src="https://samelevel.imgix.net/icon-ecbca3a708e649f570d9ba624841e19cefb4d74cc2df9f7bf3011282ab980d57.JPG?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline ml-2">
 										<div class="float-right"></div>
 									</h6>
 								</li>
@@ -185,13 +185,13 @@
 							<ul class="list-group list-flush">
 								<li class="list-group-item p-0 text-nowrap overflow-hidden">
 									<h6 class="text-xl-right bg-white p-3 mt-0 mb-0 rounded-top">
-										AOL 4 Life (11)<img src="https://samelevel.imgix.net/icon-f5a662fa05a36b423d1747c9c1d98b75fcf1505bba5fd5aa3d9c32b1efea04a7.jpg?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline ml-2">
+										<strike style="color: #1ecab8;">AOL 4 Life (11)</strike><img src="https://samelevel.imgix.net/icon-f5a662fa05a36b423d1747c9c1d98b75fcf1505bba5fd5aa3d9c32b1efea04a7.jpg?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline ml-2">
 										<div class="float-left"></div>
 									</h6>
 								</li>
 								<li class="list-group-item p-0 text-nowrap overflow-hidden">
 									<h6 class="text-xl-right bg-white p-3 mt-0 mb-0 rounded-bottom">
-										Proper Football (9)<img src="https://samelevel.imgix.net/icon-proper.jpg?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline ml-2">
+										<span style="color: #f1646c;">Proper Football (9)</span><img src="https://samelevel.imgix.net/icon-proper.jpg?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline ml-2">
 										<div class="float-right"></div>
 									</h6>
 								</li>
@@ -291,13 +291,13 @@
 							<ul class="list-group list-flush">
 								<li class="list-group-item p-0 text-nowrap overflow-hidden">
 									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-top">
-										<img src="https://samelevel.imgix.net/gdeep.jpg?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-2">(5) Gone Deep
+										<img src="https://samelevel.imgix.net/gdeep.jpg?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-2"><strike style="color: #f1646c;">(5) Gone Deep</strike>
 										<div class="float-right"></div>
 									</h6>
 								</li>
 								<li class="list-group-item p-0 text-nowrap overflow-hidden">
 									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-bottom">
-										<img src="https://samelevel.imgix.net/icon-6e5505b514c25680f5f712b79c908ed28fee241cfa943bb4d6ce42189b79ee53.jpg?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-2">(1) High Decibels
+										<img src="https://samelevel.imgix.net/icon-6e5505b514c25680f5f712b79c908ed28fee241cfa943bb4d6ce42189b79ee53.jpg?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-2"><span style="color: #1ecab8;">(1) High Decibels</span>
 										<div class="float-right"></div>
 									</h6>
 								</li>
@@ -308,13 +308,13 @@
 							<ul class="list-group list-flush">
 								<li class="list-group-item p-0 text-nowrap overflow-hidden">
 									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-top">
-										<img src="https://samelevel.imgix.net/icon-munchen.jpg?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-2">(2) Munchen on Bundchen
+										<img src="https://samelevel.imgix.net/icon-munchen.jpg?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-2"><strike style="color: #f1646c;">(2) Munchen on Bundchen</strike>
 										<div class="float-right"></div>
 									</h6>
 								</li>
 								<li class="list-group-item p-0 text-nowrap overflow-hidden">
 									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-bottom">
-										<img src="https://samelevel.imgix.net/tfm.jpg?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-2">(3) Ten Foot Midget
+										<img src="https://samelevel.imgix.net/tfm.jpg?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-2"><span style="color: #1ecab8;">(3) Ten Foot Midget</span>
 										<div class="float-right"></div>
 									</h6>
 								</li>
@@ -332,14 +332,14 @@
 
 							<ul class="list-group list-flush">
 								<li class="list-group-item p-0 text-nowrap overflow-hidden">
-									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-top">
-										<div style="height: 17px;"></div>
+									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-bottom">
+										<img src="https://samelevel.imgix.net/icon-6e5505b514c25680f5f712b79c908ed28fee241cfa943bb4d6ce42189b79ee53.jpg?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-2">(1) High Decibels
 										<div class="float-right"></div>
 									</h6>
 								</li>
 								<li class="list-group-item p-0 text-nowrap overflow-hidden">
 									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-bottom">
-										<div style="height: 17px;"></div>
+										<img src="https://samelevel.imgix.net/tfm.jpg?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-2">(3) Ten Foot Midget
 										<div class="float-right"></div>
 									</h6>
 								</li>
@@ -370,15 +370,15 @@
 
 							<ul class="list-group list-flush">
 								<li class="list-group-item p-0 text-nowrap overflow-hidden">
-									<h6 class="text-xl-left bg-white p-3 mt-0 mb-0 rounded-top">
-										<div style="height: 17px;"></div>
-										<div class="float-right"></div>
+									<h6 class="text-xl-right bg-white p-3 mt-0 mb-0 rounded-bottom">
+										Holding Court (12)<img src="https://samelevel.imgix.net/icon-8efe9b8e038ecc474a00fe1ddb9bdeeb90d99b943ef13acee63cfc06ec882b0c.jpeg?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline ml-2">
+										<div class="float-left"></div>
 									</h6>
 								</li>
 								<li class="list-group-item p-0 text-nowrap overflow-hidden">
-									<h6 class="text-xl-left bg-white p-3 mt-0 mb-0 rounded-bottom">
-										<div style="height: 17px;"></div>
-										<div class="float-right"></div>
+									<h6 class="text-xl-right bg-white p-3 mt-0 mb-0 rounded-top">
+										Coheeds (11)<img src="https://samelevel.imgix.net/icon-4733557fd47f6eac9130ad27db36e6bca5590b8df4cd05458265e3746cc92548.jpeg?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline ml-2">
+										<div class="float-left"></div>
 									</h6>
 								</li>
 							</ul>
@@ -395,13 +395,13 @@
 							<ul class="list-group list-flush">
 								<li class="list-group-item p-0 text-nowrap overflow-hidden">
 									<h6 class="text-xl-right bg-white p-3 mt-0 mb-0 rounded-top">
-										Fournette Caters (7)<img src="https://samelevel.imgix.net/icon-caters.jpg?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline ml-2">
+										<strike style="color: #1ecab8;">Fournette Caters (7)</strike><img src="https://samelevel.imgix.net/icon-caters.jpg?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline ml-2">
 										<div class="float-right"></div>
 									</h6>
 								</li>
 								<li class="list-group-item p-0 text-nowrap overflow-hidden">
 									<h6 class="text-xl-right bg-white p-3 mt-0 mb-0 rounded-bottom">
-										Holding Court (12)<img src="https://samelevel.imgix.net/icon-8efe9b8e038ecc474a00fe1ddb9bdeeb90d99b943ef13acee63cfc06ec882b0c.jpeg?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline ml-2">
+										<span style="color: #f1646c;">Holding Court (12)</span><img src="https://samelevel.imgix.net/icon-8efe9b8e038ecc474a00fe1ddb9bdeeb90d99b943ef13acee63cfc06ec882b0c.jpeg?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline ml-2">
 										<div class="float-left"></div>
 									</h6>
 								</li>
@@ -412,13 +412,13 @@
 							<ul class="list-group list-flush">
 								<li class="list-group-item p-0 text-nowrap overflow-hidden">
 									<h6 class="text-xl-right bg-white p-3 mt-0 mb-0 rounded-top">
-										Coheeds (11)<img src="https://samelevel.imgix.net/icon-4733557fd47f6eac9130ad27db36e6bca5590b8df4cd05458265e3746cc92548.jpeg?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline ml-2">
+										<span style="color: #f1646c;">Coheeds (11)</span><img src="https://samelevel.imgix.net/icon-4733557fd47f6eac9130ad27db36e6bca5590b8df4cd05458265e3746cc92548.jpeg?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline ml-2">
 										<div class="float-left"></div>
 									</h6>
 								</li>
 								<li class="list-group-item p-0 text-nowrap overflow-hidden">
 									<h6 class="text-xl-right bg-white p-3 mt-0 mb-0 rounded-bottom">
-										Sacks in the City (8)<img src="https://samelevel.imgix.net/icon-9aad698267bff349d84ee940906149280f61c71c745848f1749a13336a331d0b.png?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline ml-2">
+										<strike style="color: #1ecab8;">Sacks in the City (8)</strike><img src="https://samelevel.imgix.net/icon-9aad698267bff349d84ee940906149280f61c71c745848f1749a13336a331d0b.png?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline ml-2">
 										<div class="float-right"></div>
 									</h6>
 								</li>
@@ -518,13 +518,13 @@
 							<ul class="list-group list-flush">
 								<li class="list-group-item p-0 text-nowrap overflow-hidden">
 									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-top">
-										<img src="https://samelevel.imgix.net/icon-31327d645150ef09d795efd3799aa41fb66791cbac553f8de61e75b82b6ae6fa.jpg?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-2">(4) Buddy Danger
+										<img src="https://samelevel.imgix.net/icon-31327d645150ef09d795efd3799aa41fb66791cbac553f8de61e75b82b6ae6fa.jpg?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-2"><strike style="color: #f1646c;">(4) Buddy Danger</strike>
 										<div class="float-right"></div>
 									</h6>
 								</li>
 								<li class="list-group-item p-0 text-nowrap overflow-hidden">
 									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-bottom">
-										<img src="https://samelevel.imgix.net/icon-499cdf64521a9eb639138ef715d3b76ee8f04c98538b2bac44c4dea0f9d3892d.jpg?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-2">(1) Big TD's
+										<img src="https://samelevel.imgix.net/icon-499cdf64521a9eb639138ef715d3b76ee8f04c98538b2bac44c4dea0f9d3892d.jpg?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-2"><span style="color: #1ecab8;">(1) Big TD's</span>
 										<div class="float-right"></div>
 									</h6>
 								</li>
@@ -535,13 +535,13 @@
 							<ul class="list-group list-flush">
 								<li class="list-group-item p-0 text-nowrap overflow-hidden">
 									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-top">
-										<img src="https://samelevel.imgix.net/danger.jpg?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-2">(2) DangercrazyDC
+										<img src="https://samelevel.imgix.net/danger.jpg?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-2"><span style="color: #1ecab8;">(2) DangercrazyDC</span>
 										<div class="float-right"></div>
 									</h6>
 								</li>
 								<li class="list-group-item p-0 text-nowrap overflow-hidden">
 									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-bottom">
-										<img src="https://samelevel.imgix.net/bigballers.jpg?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-2">(3) Big Ballers
+										<img src="https://samelevel.imgix.net/bigballers.jpg?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-2"><strike style="color: #f1646c;">(3) Big Ballers</strike>
 										<div class="float-right"></div>
 									</h6>
 								</li>
@@ -559,14 +559,14 @@
 
 							<ul class="list-group list-flush">
 								<li class="list-group-item p-0 text-nowrap overflow-hidden">
-									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-top">
-										<div style="height: 17px;"></div>
+									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-bottom">
+										<img src="https://samelevel.imgix.net/icon-499cdf64521a9eb639138ef715d3b76ee8f04c98538b2bac44c4dea0f9d3892d.jpg?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-2">(1) Big TD's
 										<div class="float-right"></div>
 									</h6>
 								</li>
 								<li class="list-group-item p-0 text-nowrap overflow-hidden">
-									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-bottom">
-										<div style="height: 17px;"></div>
+									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-top">
+										<img src="https://samelevel.imgix.net/danger.jpg?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-2">(2) DangercrazyDC
 										<div class="float-right"></div>
 									</h6>
 								</li>
