@@ -278,15 +278,15 @@
 									If TeamPMRPercent2 < 66.66 Then TeamPMRColor2 = "warning"
 									If TeamPMRPercent2 < 33.33 Then TeamPMRColor2 = "danger"
 
-									If MatchupID = 3709 Then MatchupTitle = "OMEGA CHAMPIONSHIP"
-									If MatchupID = 3710 Then MatchupTitle = "OMEGA 3RD PLACE"
-									If MatchupID = 3711 Then MatchupTitle = "OMEGA 5TH PLACE"
+									If MatchupID = 4403 Then MatchupTitle = "OMEGA CHAMPIONSHIP"
+									If MatchupID = 4404 Then MatchupTitle = "OMEGA 3RD PLACE"
+									If MatchupID = 4405 Then MatchupTitle = "OMEGA 5TH PLACE"
 
 									Response.Write("<div class=""col-6 col-xl-4 col-xxxl-2 pl-1 pr-1 pl-lg-3 pr-lg-0"">")
 %>
 										<a href="/scores/<%= MatchupID %>/" class="matchup-<%= MatchupID %>" style="text-decoration: none; display: block;">
 											<ul class="list-group" style="margin-bottom: 1rem;">
-												<li class="list-group-item" style="padding-top: 0.25rem; padding-bottom: 0.25rem; font-size: 0.75rem; text-align: center; background-color: #FFBA08; color: #fff;"><strong>OMEGA WEEK 15</strong></li>
+												<li class="list-group-item" style="padding-top: 0.25rem; padding-bottom: 0.25rem; font-size: 0.75rem; text-align: center; background-color: #FFBA08; color: #fff;"><strong><%= MatchupTitle %></strong></li>
 												<li class="list-group-item px-3 team-omega-box-<%= TeamID1 %>">
 													<span class="team-omega-score-<%= TeamID1 %>" style="font-size: 1em; background-color: #fff; color: #805C04; float: right;"><%= TeamScore1 %></span>
 													<img src="https://samelevel.imgix.net/<%= TeamLogo1 %>?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-none d-lg-inline mr-2" /><span class="d-none d-lg-inline" style="font-size: 13px; color: #805C04;"><%= TeamName1 %></span><span class="d-inline d-lg-none" style="font-size: 13px; color: #805C04;"><%= TeamAbbreviatedName1 %></span>
@@ -356,12 +356,12 @@
 											If TeamPMRPercent2 < 66.66 Then TeamPMRColor2 = "warning"
 											If TeamPMRPercent2 < 33.33 Then TeamPMRColor2 = "danger"
 
-											If MatchupID = 4388 Then MatchupTitle = "SLFFL SEMI-FINAL"
-											If MatchupID = 4389 Then MatchupTitle = "SLFFL SEMI-FINAL"
-											If MatchupID = 4390 Then MatchupTitle = "SLFFL SECOND-CHANCE"
-											If MatchupID = 4391 Then MatchupTitle = "SLFFL SECOND-CHANCE"
-											If MatchupID = 4392 Then MatchupTitle = "SLFFL AOL SEMI-FINAL"
-											If MatchupID = 4393 Then MatchupTitle = "SLFFL AOL SEMI-FINAL"
+											If MatchupID = 4406 Then MatchupTitle = "SLFFL CHAMPIONSHIP"
+											If MatchupID = 4407 Then MatchupTitle = "SLFFL 3RD PLACE"
+											If MatchupID = 4408 Then MatchupTitle = "SLFFL SECOND-CHANCE"
+											If MatchupID = 4409 Then MatchupTitle = "SLFFL 7TH PLACE"
+											If MatchupID = 4410 Then MatchupTitle = "SLFFL 9TH PLACE"
+											If MatchupID = 4411 Then MatchupTitle = "SLFFL AOL FINAL"
 
 											MatchupURL = "/scores/" & MatchupID & "/"
 
@@ -465,12 +465,12 @@
 													MajorText = ""
 													If IsMajor Then MajorText = "<span class=""badge badge-pill badge-warning"" title=""Major Matchup""><i class=""fa fa-star-of-life p-1""></i></span>"
 
-													If MatchupID = 4394 Then MatchupTitle = "FARM SEMI-FINAL"
-													If MatchupID = 4395 Then MatchupTitle = "FARM SEMI-FINAL"
-													If MatchupID = 4396 Then MatchupTitle = "FARM SECOND-CHANCE"
-													If MatchupID = 4397 Then MatchupTitle = "FARM SECOND-CHANCE"
-													If MatchupID = 4398 Then MatchupTitle = "FARM AOL SEMI-FINAL"
-													If MatchupID = 4399 Then MatchupTitle = "FARM AOL SEMI-FINAL"
+													If MatchupID = 4412 Then MatchupTitle = "FARM CHAMPIONSHIP"
+													If MatchupID = 4413 Then MatchupTitle = "FARM 3RD PLACE"
+													If MatchupID = 4414 Then MatchupTitle = "FARM SECOND-CHANCE"
+													If MatchupID = 4415 Then MatchupTitle = "FARM 7TH PLACE"
+													If MatchupID = 4416 Then MatchupTitle = "FARM 9TH PLACE"
+													If MatchupID = 4417 Then MatchupTitle = "FARM AOL FINAL"
 
 													MatchupURL = "/scores/" & MatchupID & "/"
 
