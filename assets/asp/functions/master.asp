@@ -48,7 +48,7 @@
 
 		If isNFL Then
 
-			sqlGetBetInfo = "SELECT TicketSlipID, TicketTypes.TicketTypeID, TicketTypes.TypeTitle, Accounts.SlackHandle, Accounts.SlackEmoji, A.Name AS AwayTeam, B.Name AS HomeTeam, C.Name AS BetTeam, TicketSlips.TeamID, Moneyline, Spread, OverUnderAmount, OverUnderBet, BetAmount, PayoutAmount FROM TicketSlips "
+			sqlGetBetInfo = "SELECT TicketSlipID, TicketTypes.TicketTypeID, TicketTypes.TypeTitle, Accounts.SlackHandle, Accounts.SlackEmoji, A.Name AS AwayTeam, B.Name AS HomeTeam, C.Name AS BetTeam, TicketSlips.TeamID, Moneyline, Spread, OverUnderAmount, OverUnderBet, PropQuestionID, PropAnswerID, BetAmount, PayoutAmount FROM TicketSlips "
 			sqlGetBetInfo = sqlGetBetInfo & "INNER JOIN NFLGames ON NFLGames.NFLGameID = TicketSlips.NFLGameID "
 			sqlGetBetInfo = sqlGetBetInfo & "INNER JOIN NFLTeams A ON A.NFLTeamID = NFLGames.AwayTeamID "
 			sqlGetBetInfo = sqlGetBetInfo & "INNER JOIN NFLTeams B ON B.NFLTeamID = NFLGames.HomeTeamID "
@@ -59,7 +59,7 @@
 
 		Else
 
-			sqlGetBetInfo = "SELECT TicketSlipID, TicketTypes.TicketTypeID, TicketTypes.TypeTitle, Accounts.SlackHandle, Accounts.SlackEmoji, A.TeamName AS AwayTeam, B.TeamName AS HomeTeam, C.TeamName AS BetTeam, TicketSlips.TeamID, Moneyline, Spread, OverUnderAmount, OverUnderBet, BetAmount, PayoutAmount FROM TicketSlips "
+			sqlGetBetInfo = "SELECT TicketSlipID, TicketTypes.TicketTypeID, TicketTypes.TypeTitle, Accounts.SlackHandle, Accounts.SlackEmoji, A.TeamName AS AwayTeam, B.TeamName AS HomeTeam, C.TeamName AS BetTeam, TicketSlips.TeamID, Moneyline, Spread, OverUnderAmount, OverUnderBet, PropQuestionID, PropAnswerID, BetAmount, PayoutAmount FROM TicketSlips "
 			sqlGetBetInfo = sqlGetBetInfo & "INNER JOIN Matchups ON Matchups.MatchupID = TicketSlips.MatchupID "
 			sqlGetBetInfo = sqlGetBetInfo & "INNER JOIN Teams A ON A.TeamID = Matchups.TeamID2 "
 			sqlGetBetInfo = sqlGetBetInfo & "INNER JOIN Teams B ON B.TeamID = Matchups.TeamID1 "
@@ -74,6 +74,8 @@
 
 		If Not rsBetInfo.Eof Then
 
+			thisTicketSlipID = rsBetInfo("TicketSlipID")
+			thisTicketTypeID = rsBetInfo("TicketTypeID")
 			thisSlackHandle = rsBetInfo("SlackHandle")
 			thisSlackEmoji = rsBetInfo("SlackEmoji")
 			thisAwayTeam = rsBetInfo("AwayTeam")
@@ -82,6 +84,8 @@
 			thisMoneyline = rsBetInfo("Moneyline")
 			thisSpread = rsBetInfo("Spread")
 			thisOverUnderAmount = rsBetInfo("OverUnderAmount")
+			thisPropQuestionID = rsBetInfo("PropQuestionID")
+			thisPropAnswerID = rsBetInfo("PropAnswerID")
 			thisOverUnderBet = rsBetInfo("OverUnderBet")
 			thisBetAmount = rsBetInfo("BetAmount")
 			thisPayoutAmount = rsBetInfo("PayoutAmount")
@@ -97,6 +101,25 @@
 				thisBetLine = "(" & thisBetTeam & " " & thisMoneyline & "ML)"
 			Else
 				thisBetLine = "(" & thisBetTeam & " " & thisSpread & ")"
+			End If
+
+			If thisTicketTypeID = 4 Then
+
+				sqlGetBetInfo = "SELECT PropQuestions.Question, PropAnswers.Answer, PropAnswers.Moneyline FROM PropQuestions "
+				sqlGetBetInfo = sqlGetBetInfo & "INNER JOIN PropAnswers ON PropAnswers.PropQuestionID = PropQuestions.PropQuestionID "
+				sqlGetBetInfo = sqlGetBetInfo & "WHERE PropQuestions.PropQuestionID = " & thisPropQuestionID & " AND PropAnswers.PropAnswerID = " & thisPropAnswerID
+
+				Set rsBetInfo = sqlDatabase.Execute(sqlGetBetInfo)
+				thisPropQuestion = rsBetInfo("Question")
+				thisPropAnswer = rsBetInfo("Answer")
+				thisPropMoneyline = rsBetInfo("Moneyline")
+
+				If Not rsBetInfo.Eof Then
+
+					thisBetLine = thisPropQuestion & "\n>" & thisPropAnswer & " (" & thisPropMoneyline & "ML)"
+
+				End If
+
 			End If
 
 			JSON = "{"
