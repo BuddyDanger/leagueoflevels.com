@@ -114,9 +114,11 @@
 				thisPropAnswer = rsBetInfo("Answer")
 				thisPropMoneyline = rsBetInfo("Moneyline")
 
+				If Left(thisPropMoneyline, 1) <> "-" Then thisPropMoneyline = "+" & thisPropMoneyline
+
 				If Not rsBetInfo.Eof Then
 
-					thisBetLine = thisPropQuestion & "\n>" & thisPropAnswer & " (" & thisPropMoneyline & "ML)"
+					thisBetLine = thisPropQuestion & "`\n>:crystal_ball: `" & thisPropAnswer & " (" & thisPropMoneyline & "ML)"
 
 				End If
 
