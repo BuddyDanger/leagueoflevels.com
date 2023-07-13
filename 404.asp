@@ -642,11 +642,60 @@
 
 	End If
 
+	If Session.Contents("SITE_Level_1") = "chronicle" Then
+
+		'CHECK FOR LEVEL'
+		If MatchFound = 0 Then
+
+			sqlGetLevel = "SELECT * FROM Levels WHERE Abbreviation = '" & UCase(Session.Contents("SITE_Level_2")) & "'"
+			Set rsLevel = sqlDatabase.Execute(sqlGetLevel)
+
+			If Not rsLevel.Eof Then
+
+				Session.Contents("SITE_Chronicle_LevelID") = rsLevel("LevelID")
+				Session.Contents("SITE_Chronicle_LevelTitle") = rsLevel("Title")
+				Session.Contents("SITE_Chronicle_LevelAbbreviation") = rsLevel("Abbreviation")
+				Session.Contents("SITE_Chronicle_LevelLogo") = rsLevel("Logo")
+
+				sTransferURL = "level.asp"
+				MatchFound = 1 : DeadPage = 0
+				rsLevel.Close
+				Set rsLevel = Nothing
+
+			End If
+
+		End If
+
+		'CHECK FOR ACCOUNT'
+		If MatchFound = 0 Then
+
+			sqlGetProfile = "SELECT * FROM Accounts WHERE ProfileURL = '" & LCase(Session.Contents("SITE_Level_2")) & "'"
+			Set rsProfile = sqlDatabase.Execute(sqlGetProfile)
+
+			If Not rsProfile.Eof Then
+
+				Session.Contents("SITE_Chronicle_AccountID") = rsProfile("AccountID")
+				Session.Contents("SITE_Chronicle_AccountName") = rsProfile("ProfileName")
+				Session.Contents("SITE_Chronicle_AccountImage") = rsProfile("ProfileImage")
+				Session.Contents("SITE_Chronicle_AccountBallCount") = rsProfile("Balls")
+				Session.Contents("SITE_Chronicle_AccountLockCount") = rsProfile("Locks")
+
+				sTransferURL = "account.asp"
+				MatchFound = 1 : DeadPage = 0
+				rsProfile.Close
+				Set rsProfile = Nothing
+
+			End If
+
+		End If
+
+	End If
+
 	If DeadPage = 0 Then
 
 		sFinalTransfer = "/" & Session.Contents("SITE_Level_1") & "/" & sTransferURL
 		Server.Transfer(sFinalTransfer)
-		'Response.Write(sFinalTransfer)
+
 	Else
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
