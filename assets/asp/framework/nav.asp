@@ -35,12 +35,12 @@
 
 				<ul class="nav">
 					<li class="nav-item"><a class="nav-link" href="/"><i class="dripicons-meter"></i>Dashboard</a></li>
-					<!--<li class="nav-item"><a class="nav-link" href="/lottery/"><i class="dripicons-network-3"></i>Lottery</a></li>
+					<li class="nav-item"><a class="nav-link" href="/omega/"><i class="dripicons-network-3"></i>Omega Lottery</a></li>
+					<!--
 					<li class="nav-item"><a class="nav-link" href="/chronicle/"><i class="dripicons-archive"></i>Chronicle</a></li>
-					
-						<li class="nav-item"><a class="nav-link" href="/chronicle/omega-level/"><i class="dripicons-chevron-right ml-4"></i>OLFFL</a></li>
-						<li class="nav-item"><a class="nav-link" href="/chronicle/same-level/"><i class="dripicons-chevron-right ml-4"></i>SLFFL</a></li>
-						<li class="nav-item"><a class="nav-link" href="/chronicle/farm-level/"><i class="dripicons-chevron-right ml-4"></i>FLFFL</a></li>
+					<li class="nav-item"><a class="nav-link" href="/chronicle/omega-level/"><i class="dripicons-chevron-right ml-4"></i>OLFFL</a></li>
+					<li class="nav-item"><a class="nav-link" href="/chronicle/same-level/"><i class="dripicons-chevron-right ml-4"></i>SLFFL</a></li>
+					<li class="nav-item"><a class="nav-link" href="/chronicle/farm-level/"><i class="dripicons-chevron-right ml-4"></i>FLFFL</a></li>
 					-->
 					<li class="nav-item"><a class="nav-link" href="/sportsbook/"><i class="dripicons-ticket"></i>Sportsbook</a></li>
 					<li class="nav-item"><a class="nav-link" href="/scores/"><i class="dripicons-rocket"></i>Live Scoring</a></li>
