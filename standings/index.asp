@@ -6,8 +6,8 @@
 	If Len(ParseForAbsolutePath(Right(Request.ServerVariables("QUERY_STRING"), Len(Request.ServerVariables("QUERY_STRING")) - Instr(Request.ServerVariables("QUERY_STRING"),";")))) < 1 Then
 
 		Session.Contents("SITE_Standings_LevelID") = ""
-		Session.Contents("SITE_Standings_Start_Year") = "2022"
-		Session.Contents("SITE_Standings_End_Year") = "2022"
+		Session.Contents("SITE_Standings_Start_Year") = "2023"
+		Session.Contents("SITE_Standings_End_Year") = "2023"
 		Session.Contents("SITE_Standings_Start_Period") = "1"
 		Session.Contents("SITE_Standings_End_Period") = Session.Contents("CurrentPeriod")
 
@@ -245,7 +245,7 @@
 
 					<div class="row">
 <%
-						If Len(Session.Contents("SITE_Standings_LevelID")) = 0 Or CStr(Session.Contents("SITE_Standings_LevelID")) = "2" Then
+						If (Len(Session.Contents("SITE_Standings_LevelID")) = 0 Or CStr(Session.Contents("SITE_Standings_LevelID")) = "2") And Not rsStandings.Eof Then
 %>
 							<div Class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-6">
 
@@ -378,7 +378,7 @@
 
 						Set rsStandings = rsStandings.NextRecordset
 
-						If Len(Session.Contents("SITE_Standings_LevelID")) = 0 Or CStr(Session.Contents("SITE_Standings_LevelID")) = "3" Then
+						If (Len(Session.Contents("SITE_Standings_LevelID")) = 0 Or CStr(Session.Contents("SITE_Standings_LevelID")) = "3") And Not rsStandings.Eof Then
 %>
 							<div Class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-6">
 
@@ -512,7 +512,7 @@
 
 						Set rsStandings = rsStandings.NextRecordset
 
-						If Len(Session.Contents("SITE_Standings_LevelID")) = 0 Or CStr(Session.Contents("SITE_Standings_LevelID")) = "1" Then
+						If (Len(Session.Contents("SITE_Standings_LevelID")) = 0 Or CStr(Session.Contents("SITE_Standings_LevelID")) = "1") And Not rsStandings.Eof Then
 %>
 							<div Class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-6">
 

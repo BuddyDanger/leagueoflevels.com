@@ -6,7 +6,7 @@
 <%
 	MatchupID = Session.Contents("Scores_Matchup_ID")
 
-	sqlGetMatchup = sqlGetMatchup & "SELECT Matchups.MatchupID, Matchups.LevelID, Levels.Title, Matchups.Year, Matchups.Period, Matchups.IsPlayoffs, Matchups.IsCup, Matchups.TeamID1, Matchups.TeamID2, Teams1.CBSID AS TeamCBSID1,Teams2.CBSID AS TeamCBSID2, Accounts1.ProfileImage AS TeamCBSLogo1, Accounts2.ProfileImage AS TeamCBSLogo2, Teams1.TeamName AS TeamName1, Teams2.TeamName AS TeamName2, Matchups.TeamScore1, Matchups.TeamScore2, Matchups.Leg, Teams1.AbbreviatedName AS AbbreviatedName1, Teams2.AbbreviatedName AS AbbreviatedName2 "
+	sqlGetMatchup = sqlGetMatchup & "SELECT Matchups.MatchupID, Matchups.LevelID, Levels.Title, Matchups.Year, Matchups.Period, Matchups.IsPlayoffs, Matchups.IsCup, Matchups.TeamID1, Matchups.TeamID2, Teams1.CBSID AS TeamCBSID1,Teams2.CBSID AS TeamCBSID2, Accounts1.ProfileImage AS TeamCBSLogo1, Accounts2.ProfileImage AS TeamCBSLogo2, Teams1.TeamName AS TeamName1, Teams2.TeamName AS TeamName2, Matchups.TeamScore1, Matchups.TeamScore2, Matchups.Leg, Teams1.AbbreviatedName AS AbbreviatedName1, Teams2.AbbreviatedName AS AbbreviatedName2, Matchups.TeamOmegaTravel1, Matchups.TeamOmegaTravel2 "
 	sqlGetMatchup = sqlGetMatchup & "FROM Matchups "
 	sqlGetMatchup = sqlGetMatchup & "LEFT JOIN Levels ON Levels.LevelID = Matchups.LevelID "
 	sqlGetMatchup = sqlGetMatchup & "INNER JOIN Teams AS Teams1 ON Teams1.TeamID = Matchups.TeamID1 "
@@ -18,7 +18,7 @@
 	sqlGetMatchup = sqlGetMatchup & "WHERE Matchups.Year = " & Session.Contents("CurrentYear") & " AND Matchups.Period = " & Session.Contents("CurrentPeriod") & " "
 	sqlGetMatchup = sqlGetMatchup & "ORDER BY CASE WHEN Matchups.LevelID = 1 THEN 1 WHEN Matchups.LevelID = 0 THEN 2 WHEN Matchups.LevelID = 2 THEN 3 WHEN Matchups.LevelID = 3 THEN 4 ELSE 5 END;"
 
-	sqlGetSchedules = "SELECT MatchupID, Matchups.LevelID, Year, Period, IsPlayoffs, TeamID1, TeamID2, Team1.LevelID AS TeamLevelID1, Team2.LevelID AS TeamLevelID2, Team1.CBSID AS TeamCBSID1, Team2.CBSID AS TeamCBSID2, Account1.ProfileImage AS ProfileImage1, Account2.ProfileImage AS ProfileImage2, Team1.TeamName AS TeamName1, Team2.TeamName AS TeamName2, TeamScore1, TeamScore2, TeamPMR1, TeamPMR2, Leg, TeamProjected1, TeamProjected2, TeamWinPercentage1, TeamWinPercentage2, TeamMoneyline1, TeamMoneyline2, TeamSpread1, TeamSpread2 FROM Matchups "
+	sqlGetSchedules = "SELECT MatchupID, Matchups.LevelID, Year, Period, IsPlayoffs, TeamID1, TeamID2, Team1.LevelID AS TeamLevelID1, Team2.LevelID AS TeamLevelID2, Team1.CBSID AS TeamCBSID1, Team2.CBSID AS TeamCBSID2, Account1.ProfileImage AS ProfileImage1, Account2.ProfileImage AS ProfileImage2, Team1.TeamName AS TeamName1, Team2.TeamName AS TeamName2, TeamScore1, TeamScore2, TeamPMR1, TeamPMR2, Leg, TeamProjected1, TeamProjected2, TeamWinPercentage1, TeamWinPercentage2, TeamMoneyline1, TeamMoneyline2, TeamSpread1, TeamSpread2, Matchups.TeamOmegaTravel1, Matchups.TeamOmegaTravel2 FROM Matchups "
 	sqlGetSchedules = sqlGetSchedules & "INNER JOIN Teams AS Team1 ON Team1.TeamID = Matchups.TeamID1 "
 	sqlGetSchedules = sqlGetSchedules & "INNER JOIN Teams AS Team2 ON Team2.TeamID = Matchups.TeamID2 "
 	sqlGetSchedules = sqlGetSchedules & "INNER JOIN Levels AS Level1 ON Level1.LevelID = Team1.LevelID "
@@ -64,6 +64,8 @@
 		thisTeamSpread1 = rsSchedules("TeamSpread1")
 		thisTeamSpread2 = rsSchedules("TeamSpread2")
 		thisLeg = rsSchedules("Leg")
+		thisTeamOmegaTravel1 = rsSchedules("TeamOmegaTravel1")
+		thisTeamOmegaTravel2 = rsSchedules("TeamOmegaTravel2")
 		thisOverUnderTotal = thisTeamProjected1 + thisTeamProjected2
 
 		If thisTeamLevelID1 = 1 Then thisTeamLevelTitle1 = "omega"
@@ -204,10 +206,14 @@
 												<span><img src="https://samelevel.imgix.net/<%= thisProfileImage1 %>?w=40&h=40&fit=crop&crop=focalpoint" width="40" alt="<%= thisTeamName1 %>" class="rounded-circle ml-3 ml-lg-2" /></span>
 											</div>
 											<div class="col-7 text-center d-none d-lg-block pt-1">
-												<div class="py-2 px-2 bg-primary rounded" style="margin-top: 2px;"><b><%= thisTeamName1 %></b></div>
+												<div class="py-2 px-2 bg-primary rounded" style="margin-top: 2px;"><b><%= thisTeamName1 %></b><% If thisTeamOmegaTravel1 <> 0 Then %> (<%= thisTeamOmegaTravel1 %>)<% End If %></div>
 											</div>
 											<div class="col-6 col-lg-3 pr-1 pt-2 text-right">
-												<div><span class="badge team-1-score pt-0 text-right" style="font-size: 20px; color: #fff;"><%= FormatNumber(thisTeamScore1, 2) %></span></div>
+												<% If thisTeamLevelID1 = 1 Then %>
+													<div><span class="badge team-1-score pt-0 text-right" style="font-size: 20px; color: #fff;"><%= FormatNumber(thisTeamScore1 + thisTeamOmegaTravel1, 2) %></span></div>
+												<% Else %>
+													<div><span class="badge team-1-score pt-0 text-right" style="font-size: 20px; color: #fff;"><%= FormatNumber(thisTeamScore1, 2) %></span></div>
+												<% End If %>
 												<div><span class="badge team-1-progress pt-0 text-right" style="font-size: 10px; color: #fff;"><%= thisTeamPMR1 %> PMR</span></div>
 											</div>
 										</div>
@@ -281,7 +287,7 @@
 
 									TeamLevelTitle2 = LevelTitle
 									TeamName2 = objTeamName2.item(0).text
-									TeamScore2 = FormatNumber(CDbl(objTeamScore2.item(0).text) + BaseScore2, 2)
+									TeamScore2 = FormatNumber(CDbl(objTeamScore2.item(0).text), 2)
 									TeamPMR2 = CInt(objTeamPMR2.item(0).text)
 %>
 									<li class="list-group-item team-2-box m-0 p-0 bg-dark" style="color: #fff; border-radius: 0; border-top-right-radius: 5px;">
@@ -381,10 +387,15 @@
 										oTeamAbbreviatedName1 = arrMatchups(18, i)
 										oTeamAbbreviatedName2 = arrMatchups(19, i)
 
+										oTeamOmegaTravel1 = arrMatchups(20, i)
+										oTeamOmegaTravel2 = arrMatchups(21, i)
+
 										If oLevelID = 0 Then LevelCSS = "cup"
 										If oLevelID = 1 Then LevelCSS = "omega"
 										If oLevelID = 2 Then LevelCSS = "slffl"
 										If oLevelID = 3 Then LevelCSS = "flffl"
+
+										If oLevelID = 1 Then oTeamScore1 = FormatNumber(oTeamScore1 + oTeamOmegaTravel1, 2)
 	%>
 										<div class="col-6 col-lg-3">
 											<a href="/scores/<%= oMatchupID %>/" style="text-decoration: none; display: block;">

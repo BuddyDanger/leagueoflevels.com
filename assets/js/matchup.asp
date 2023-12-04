@@ -1,4 +1,4 @@
-<script>
+ <script>
 
 	var MATCHUPS = [0]
 
@@ -51,8 +51,8 @@
 
 		loopThroughArray([0], function (arrayElement, loopTime) {
 
-			var team1 = $.param({"version":"3.0","response_format":"json","league_id":"<%= thisTeamLevelTitle1 %>","team_id":"<%= thisTeamCBSID1 %>","period":"<%= Session.Contents("CurrentPeriod") %>","access_token":"<%= GetToken(thisTeamLevelTitle1) %>"});
-			var team2 = $.param({"version":"3.0","response_format":"json","league_id":"<%= thisTeamLevelTitle2 %>","team_id":"<%= thisTeamCBSID2 %>","period":"<%= Session.Contents("CurrentPeriod") %>","access_token":"<%= GetToken(thisTeamLevelTitle2) %>"});
+			var team1 = $.param({"version":"3.0","response_format":"json","league_id":"<%= thisTeamLevelTitle1 %>","team_id":"<%= thisTeamCBSID1 %>","period":"<%= Session.Contents("CurrentPeriod") %>","pen":"<%= thisTeamOmegaTravel1 %>","access_token":"<%= GetToken(thisTeamLevelTitle1) %>"});
+			var team2 = $.param({"version":"3.0","response_format":"json","league_id":"<%= thisTeamLevelTitle2 %>","team_id":"<%= thisTeamCBSID2 %>","period":"<%= Session.Contents("CurrentPeriod") %>","pen":"<%= thisTeamOmegaTravel2 %>","access_token":"<%= GetToken(thisTeamLevelTitle2) %>"});
 			$.ajax({ cache: false, type: "GET", dataType: "json", url: "https://api.cbssports.com/fantasy/league/scoring/live", data: team1, success: function(team1) { setPlayers(team1, 1); } });
 			$.ajax({ cache: false, type: "GET", dataType: "json", url: "https://api.cbssports.com/fantasy/league/scoring/live", data: team2, success: function(team2) { setPlayers(team2, 2); } });
 
@@ -63,7 +63,7 @@
 			let body = data["body"];
 			let teams = body.live_scoring.teams;
 			let players = teams[0].players;
-			let pts = teams[0].pts;
+			let pts = teams[0].pts + data["pen"];
 			let pmr = teams[0].pmr;
 			let weekday = ["SUN","MON","TUE","WED","THU","FRI","SAT"];
 
@@ -143,7 +143,7 @@
 
 					var live_GameInfo_Gameline = new Date('1970-01-01 00:00:00');
 					live_GameInfo_Gameline.setSeconds(live_GameInfo_Gameline.getSeconds() + live_GameInfo_GameTimestamp);
-					live_GameInfo_Gameline.setHours(live_GameInfo_Gameline.getHours() - 5);
+					live_GameInfo_Gameline.setHours(live_GameInfo_Gameline.getHours() - 4);
 					let live_GameInfo_Gameday = weekday[live_GameInfo_Gameline.getDay()];
 
 					scoreboardPlayerGameLine.innerHTML = live_GameInfo_Matchup + ' - ' + live_GameInfo_Gameday + ' ' + live_GameInfo_GameStartTime;

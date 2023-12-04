@@ -1,7 +1,7 @@
 <%
 	arrTeams = Split(Session.Contents("AccountTeams"), ",")
 
-	sqlGetRecentHistory = "SELECT TOP 10 M.MatchupID, L.LevelID, L.Title, M.Year, M.Period, M.IsPlayoffs, T1.TeamName AS Team1, M.TeamScore1, T2.TeamName AS Team2, M.TeamScore2, T1.TeamID AS TeamID1, T2.TeamID AS TeamID2, M.TeamPMR1, M.TeamPMR2 FROM Matchups M "
+	sqlGetRecentHistory = "SELECT TOP 15 M.MatchupID, L.LevelID, L.Title, M.Year, M.Period, M.IsPlayoffs, T1.TeamName AS Team1, M.TeamScore1, M.TeamOmegaTravel1, T2.TeamName AS Team2, M.TeamScore2, M.TeamOmegaTravel2, T1.TeamID AS TeamID1, T2.TeamID AS TeamID2, M.TeamPMR1, M.TeamPMR2 FROM Matchups M "
 	sqlGetRecentHistory = sqlGetRecentHistory & "LEFT OUTER JOIN Levels L ON L.LevelID = M.LevelID "
 	sqlGetRecentHistory = sqlGetRecentHistory & "INNER JOIN Teams T1 ON T1.TeamID = M.TeamID1 "
 	sqlGetRecentHistory = sqlGetRecentHistory & "INNER JOIN Teams T2 ON T2.TeamID = M.TeamID2 "
@@ -37,6 +37,7 @@
 
 						thisYear = rsRecentHistory("Year")
 						thisPeriod = rsRecentHistory("Period")
+						thisLevelID = rsRecentHistory("LevelID")
 						thisLevel = rsRecentHistory("Title")
 						thisTeam1 = rsRecentHistory("Team1")
 						thisTeam2 = rsRecentHistory("Team2")
@@ -44,8 +45,15 @@
 						thisTeamID2 = rsRecentHistory("TeamID2")
 						thisTeamScore1 = rsRecentHistory("TeamScore1")
 						thisTeamScore2 = rsRecentHistory("TeamScore2")
+						thisTeamOmegaTravel1 = rsRecentHistory("TeamOmegaTravel1")
+						thisTeamOmegaTravel2 = rsRecentHistory("TeamOmegaTravel2")
 						thisTeamPMR1 = CInt(rsRecentHistory("TeamPMR1"))
 						thisTeamPMR2 = CInt(rsRecentHistory("TeamPMR2"))
+
+						If thisLevelID = 1 And Not IsNull(thisTeamOmegaTravel1) Then
+							thisTeamScore1 = thisTeamScore1 + thisTeamOmegaTravel1
+							thisTeamScore2 = thisTeamScore2 + thisTeamOmegaTravel2
+						End If
 
 						If IsNull(thisLevel) Then thisLevel = "Next Level Cup"
 

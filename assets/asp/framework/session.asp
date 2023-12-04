@@ -1,13 +1,15 @@
 <%
 	If Len(Session.Contents("CurrentYear")) = 0 Then
 
-		sqlGetYearPeriod = "SELECT TOP 1 Year, Period FROM YearPeriods WHERE StartDate < GetDate() ORDER BY StartDate DESC"
+		sqlGetYearPeriod = "SELECT TOP 1 Year, Period, StartDate, DateAdd(Day, 6, StartDate) AS OmegaSelectionsOpening FROM YearPeriods WHERE StartDate < GetDate() ORDER BY StartDate DESC"
 		Set rsYearPeriod = sqlDatabase.Execute(sqlGetYearPeriod)
 
 		If Not rsYearPeriod.Eof Then
 
 			Session.Contents("CurrentYear") = rsYearPeriod("Year")
 			Session.Contents("CurrentPeriod") = rsYearPeriod("Period")
+			Session.Contents("CurrentPeriodStart") = rsYearPeriod("StartDate")
+			Session.Contents("OmegaSelectionsOpening") = rsYearPeriod("OmegaSelectionsOpening")
 
 			rsYearPeriod.Close
 			Set rsYearPeriod = Nothing

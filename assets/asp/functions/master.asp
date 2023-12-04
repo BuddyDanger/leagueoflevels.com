@@ -28,6 +28,7 @@
 		rsInsert("TransactionTotal") = thisTotal
 		rsInsert("TransactionHash") = thisTransactionHash
 		rsInsert("TransactionLastHash") = rsLastHash("TransactionHash")
+		rsInsert("TransactionDescription") = thisTransactionDescription
 		rsInsert("AccountID") = thisAccountID
 		If Len(thisTicketSlipID) > 0 Then rsInsert("TicketSlipID") = thisTicketSlipID
 
@@ -41,6 +42,92 @@
 		Set rsLastHash = Nothing
 
 		SchmeckleTransaction = 1
+
+	End Function
+
+	Function Slack_SendSchmeckles (thisSenderID, thisRecipientID, thisAmount, thisMemo, thisSlackChannel)
+
+		sqlGetRecipient = "SELECT ProfileName FROM Accounts WHERE AccountID = " & thisRecipientID
+		Set rsRecipient = sqlDatabase.Execute(sqlGetRecipient)
+
+		If Not rsRecipient.Eof Then
+
+			thisRecipientName = rsRecipient("ProfileName")
+
+			rsRecipient.Close
+			Set rsRecipient = Nothing
+
+			quickText = "Schmeckles"
+			If thisAmount = 1 Then quickText = "Schmeckle"
+
+			JSON = "{"
+				JSON = JSON & """text"": """ & Session.Contents("AccountName") & " paid " & thisRecipientName & """, "
+				JSON = JSON & """blocks"": [ "
+
+					JSON = JSON & "{"
+						JSON = JSON & """type"": ""section"", "
+						JSON = JSON & """text"": { "
+							JSON = JSON & """type"": ""mrkdwn"", "
+							JSON = JSON & """text"": "":money_with_wings: " & Session.Contents("AccountName") & " paid " & thisRecipientName & "\n>*" & thisAmount & " " & quickText & "*\n>`" & thisMemo & "`"""
+						JSON = JSON & "} "
+					JSON = JSON & "} "
+
+				JSON = JSON & "] "
+			JSON = JSON & "}"
+
+			sqlGetChannel = "SELECT URL FROM SlackHooks WHERE SlackHookID = " & thisSlackChannel
+			Set rsChannel = sqlDatabase.Execute(sqlGetChannel)
+			slackHookURL = rsChannel("URL")
+			rsChannel.Close
+			Set rsChannel = Nothing
+
+			Set httpPOST = Server.CreateObject("Microsoft.XMLHTTP")
+			httpPOST.Open "POST", slackHookURL, false
+			httpPOST.setRequestHeader "Content-Type","Application/JSON"
+			httpPOST.Send JSON
+
+		End If
+
+	End Function
+
+	Function Slack_OmegaAttack (thisMatchupID, thisSlackChannel)
+
+		'GET MATCHUP DETAILS'
+		sqlGetMatchup = "SELECT MatchupID, A.TeamName AS Away, B.TeamName AS Home FROM Matchups INNER JOIN Teams A ON A.TeamID = Matchups.TeamID1 INNER JOIN Teams B ON B.TeamID = Matchups.TeamID2 WHERE Matchups.MatchupID = " & thisMatchupID
+		Set rsMatchup = sqlDatabase.Execute(sqlGetMatchup)
+
+		If Not rsMatchup.Eof Then
+
+			thisAwayTeam = rsMatchup("Away")
+			thisHomeTeam = rsMatchup("Home")
+
+			JSON = "{"
+				JSON = JSON & """text"": """ & UCase(thisAwayTeam) & " ATTACKED " & UCase(thisHomeTeam) & "!"", "
+				JSON = JSON & """blocks"": [ "
+
+					JSON = JSON & "{"
+						JSON = JSON & """type"": ""section"", "
+						JSON = JSON & """text"": { "
+							JSON = JSON & """type"": ""mrkdwn"", "
+							JSON = JSON & """text"": ""_" & UCase(thisAwayTeam) & " ATTACKED " & UCase(thisHomeTeam) & "!_ :rotating_light:"""
+						JSON = JSON & "} "
+					JSON = JSON & "} "
+
+				JSON = JSON & "] "
+			JSON = JSON & "}"
+
+			sqlGetChannel = "SELECT URL FROM SlackHooks WHERE SlackHookID = " & thisSlackChannel
+			Set rsChannel = sqlDatabase.Execute(sqlGetChannel)
+			slackHookURL = rsChannel("URL")
+			rsChannel.Close
+			Set rsChannel = Nothing
+
+			Set httpPOST = Server.CreateObject("Microsoft.XMLHTTP")
+			httpPOST.Open "POST", slackHookURL, false
+			httpPOST.setRequestHeader "Content-Type","Application/JSON"
+			httpPOST.Send JSON
+
+		End If
 
 	End Function
 
@@ -190,12 +277,12 @@
 		Response.Write("<div class=""row"">")
 
 			If ticketsDashboard Then
-				thisTop = "TOP 4"
+				thisTop = "TOP 5"
 			Else
 				thisTop = ""
 			End If
 
-			sqlGetTicketSlips = "SELECT " & thisTop & " TicketSlips.TicketSlipID, TicketSlips.TicketTypeID, TicketSlips.AccountID, TicketSlips.MatchupID, TicketSlips.NFLGameID, TicketSlips.PropQuestionID, TicketSlips.PropAnswerID, Accounts.ProfileName, DATEADD(hour, -5, TicketSlips.InsertDateTime) AS InsertDateTime, "
+			sqlGetTicketSlips = "SELECT " & thisTop & " TicketSlips.TicketSlipID, TicketSlips.TicketTypeID, TicketSlips.AccountID, TicketSlips.MatchupID, TicketSlips.NFLGameID, TicketSlips.PropQuestionID, TicketSlips.PropAnswerID, Accounts.ProfileName, DATEADD(hour, -4, TicketSlips.InsertDateTime) AS InsertDateTime, "
 			sqlGetTicketSlips = sqlGetTicketSlips & "NFLGames.AwayTeamID AS NFLTeamID1, NFLGames.HomeTeamID AS NFLTeamID2, NFLTeam1.City + ' ' + NFLTeam1.Name AS NFLTeamName1, NFLTeam2.City + ' ' + NFLTeam2.Name AS NFLTeamName2, NFLTeam3.City + ' ' + NFLTeam3.Name AS NFLBetTeamName, "
 			sqlGetTicketSlips = sqlGetTicketSlips & "Matchups.TeamID1 AS LOLTeamID1, Matchups.TeamID2 AS LOLTeamID2, LOLTeam1.TeamName AS LOLTeamName1, LOLTeam2.TeamName AS LOLTeamName2, LOLTeam3.TeamName AS LOLBetTeamName, "
 			sqlGetTicketSlips = sqlGetTicketSlips & "PQ.Question, PA.Answer, TicketSlips.TeamID, TicketSlips.Moneyline, TicketSlips.Spread, TicketSlips.OverUnderAmount, TicketSlips.OverUnderBet, TicketSlips.BetAmount, TicketSlips.PayoutAmount, TicketSlips.IsWinner FROM TicketSlips "
@@ -343,11 +430,11 @@
 	Function GetToken (League)
 
 		If UCase(League) = "SLFFL" Or UCase(League) = "SAMELEVEL" Then
-			thisToken = "U2FsdGVkX1-nLiU_Ohv2rB2SaenbXwpQylBie1tQNoBTZOnUpFFdLDV5OUgc3vmFrMKwDDYb7m3qQo9ibt3sJJBqwOc_sTeToX5k68OaIN0syDyxnNK55k6p4tHLlggE8RhkO1lg8HrIpytn-fl1iQ"
+			thisToken = "U2FsdGVkX19HjilmaIZ0QG0F-Hht398x0-RCiz9Z538CIdoypu6os-T1x10-j__mrWkF0T9phXv7aKAYgcebbDmz95joI5XV_78ne9ba_hjkJtM-QtQ8w_gUBSyJoKJieJ5lbbaVfOLK5353TA5ZUg"
 		ElseIf UCase(League) = "OMEGA" Then
-			thisToken = "U2FsdGVkX1_qjmv9BNf7THPpaUam02iQhwXpqOpq4shkjBli6JKBx6jTkoLtjr9O-vpLxUlbrMYeG_oYthVZ-LyvmlxbYT2GM60aSUzvZ65ptKQoW5aXQLHypxM4zkS7XVfxPK1QricXvAKx03EPvg"
+			thisToken = "U2FsdGVkX19jTc6WufjB3c7jo9ZMra0Q4NMJR0YMMe5MWdJaI5p9RnBx38OhuJtE-EU1uMw6mszSKOiUzEo_Pgmgdt3YDJnviXqoGkb4uwnLTnzrTwigv9zJfgx5V2rKanspBciaNZ1sXvCoVycKug"
 		Else
-			thisToken = "U2FsdGVkX18SKm91VpVXfO9uNx9RYniWaNBh1gqk-7NPji49ceBLJHbZO4mddgm6ooiVrhSYqxFkEIzIy9mCoE3L_ZyAGA9zPnKWUOIsfF-xSXvnaeKtrEejU-V-OZVSTnQvC9r2N_PdA3E3nE9lYw"
+			thisToken = "U2FsdGVkX1-7amnLc9CJgadPydhZMA4tqGTug-7q0YuU5_sGv1TnUv62ilCVGE9ezoT-82M7qwW7OhTb4ByL2WFoG4vc6NMe5Z9fLzoGRoZtAZ85lP6-f_BZxB_QWw6RrHWoJZU7fIyu-wOxAEEjSg"
 		End If
 
 		GetToken = thisToken

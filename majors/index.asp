@@ -88,7 +88,7 @@
 
 						<div class="col-6"></div>
 <%
-						sqlGetMajors = "SELECT MajorID, Majors.LevelID, Levels.Title, MajorTitle FROM Majors INNER JOIN Levels ON Levels.LevelID = Majors.LevelID WHERE Year = 2022 AND StartPeriod = 11 ORDER BY StartPeriod DESC, LevelID ASC"
+						sqlGetMajors = "SELECT MajorID, Majors.LevelID, Levels.Title, MajorTitle FROM Majors INNER JOIN Levels ON Levels.LevelID = Majors.LevelID WHERE Year = 2023 AND StartPeriod = 11 ORDER BY StartPeriod DESC, LevelID ASC"
 						Set rsMajors = sqlDatabase.Execute(sqlGetMajors)
 
 						Do While Not rsMajors.Eof
@@ -165,7 +165,7 @@
 									sqlGetMajorMatchups = sqlGetMajorMatchups & "INNER JOIN LinkAccountsTeams L2 ON L2.TeamID = T2.TeamID "
 									sqlGetMajorMatchups = sqlGetMajorMatchups & "INNER JOIN Accounts A1 ON A1.AccountID = L1.AccountID "
 									sqlGetMajorMatchups = sqlGetMajorMatchups & "INNER JOIN Accounts A2 ON A2.AccountID = L2.AccountID "
-									sqlGetMajorMatchups = sqlGetMajorMatchups & "WHERE Year = 2022 AND (Period >= 11 AND Period <= 14) AND (Matchups.LevelID = " & thisLevelID & ") AND IsMajor = 1 "
+									sqlGetMajorMatchups = sqlGetMajorMatchups & "WHERE Year = 2023 AND (Period >= 11 AND Period <= 14) AND (Matchups.LevelID = " & thisLevelID & ") AND IsMajor = 1 "
 									sqlGetMajorMatchups = sqlGetMajorMatchups & "ORDER BY Period ASC, LevelID ASC"
 
 									Set rsMajorMatchups = sqlDatabase.Execute(sqlGetMajorMatchups)
@@ -230,7 +230,7 @@
 														sqlGetMajorTwo = sqlGetMajorTwo & "INNER JOIN Teams ON Teams.TeamID = Standings.TeamID "
 														sqlGetMajorTwo = sqlGetMajorTwo & "INNER JOIN Levels ON Levels.LevelID = Standings.LevelID "
 														sqlGetMajorTwo = sqlGetMajorTwo & "WHERE Levels.LevelID = " & thisLevelID & " "
-														sqlGetMajorTwo = sqlGetMajorTwo & "AND Standings.Year = 2022 "
+														sqlGetMajorTwo = sqlGetMajorTwo & "AND Standings.Year = 2023 "
 														sqlGetMajorTwo = sqlGetMajorTwo & "AND Standings.Period >= 8 "
 														sqlGetMajorTwo = sqlGetMajorTwo & "AND Standings.Period <= 10 "
 														sqlGetMajorTwo = sqlGetMajorTwo & "GROUP BY Levels.LevelID, Levels.Title, Teams.TeamName, Standings.TeamID ORDER BY Levels.LevelID ASC, WinTotal DESC, PointsScored DESC; "
@@ -280,7 +280,7 @@
 							<div class="alert alert-success"><b>MAJOR ONE RESULTS</b></div>
 						</div>
 <%
-						sqlGetMajors = "SELECT MajorID, Majors.LevelID, Levels.Title, MajorTitle FROM Majors INNER JOIN Levels ON Levels.LevelID = Majors.LevelID WHERE Year = 2022 AND StartPeriod = 4 ORDER BY StartPeriod DESC, LevelID ASC"
+						sqlGetMajors = "SELECT MajorID, Majors.LevelID, Levels.Title, MajorTitle FROM Majors INNER JOIN Levels ON Levels.LevelID = Majors.LevelID WHERE Year = 2023 AND StartPeriod = 4 ORDER BY StartPeriod DESC, LevelID ASC"
 						Set rsMajors = sqlDatabase.Execute(sqlGetMajors)
 
 						Do While Not rsMajors.Eof
@@ -357,7 +357,7 @@
 									sqlGetMajorMatchups = sqlGetMajorMatchups & "INNER JOIN LinkAccountsTeams L2 ON L2.TeamID = T2.TeamID "
 									sqlGetMajorMatchups = sqlGetMajorMatchups & "INNER JOIN Accounts A1 ON A1.AccountID = L1.AccountID "
 									sqlGetMajorMatchups = sqlGetMajorMatchups & "INNER JOIN Accounts A2 ON A2.AccountID = L2.AccountID "
-									sqlGetMajorMatchups = sqlGetMajorMatchups & "WHERE Year = 2022 AND (Period >= 4 AND Period <= 7) AND (Matchups.LevelID = " & thisLevelID & ") AND IsMajor = 1 "
+									sqlGetMajorMatchups = sqlGetMajorMatchups & "WHERE Year = 2023 AND (Period >= 4 AND Period <= 7) AND (Matchups.LevelID = " & thisLevelID & ") AND IsMajor = 1 "
 									sqlGetMajorMatchups = sqlGetMajorMatchups & "ORDER BY Period ASC, LevelID ASC"
 
 									Set rsMajorMatchups = sqlDatabase.Execute(sqlGetMajorMatchups)
@@ -422,7 +422,7 @@
 														sqlGetMajorTwo = sqlGetMajorTwo & "INNER JOIN Teams ON Teams.TeamID = Standings.TeamID "
 														sqlGetMajorTwo = sqlGetMajorTwo & "INNER JOIN Levels ON Levels.LevelID = Standings.LevelID "
 														sqlGetMajorTwo = sqlGetMajorTwo & "WHERE Levels.LevelID = " & thisLevelID & " "
-														sqlGetMajorTwo = sqlGetMajorTwo & "AND Standings.Year = 2022 "
+														sqlGetMajorTwo = sqlGetMajorTwo & "AND Standings.Year = 2023 "
 														sqlGetMajorTwo = sqlGetMajorTwo & "AND Standings.Period >= 1 "
 														sqlGetMajorTwo = sqlGetMajorTwo & "AND Standings.Period <= 3 "
 														sqlGetMajorTwo = sqlGetMajorTwo & "GROUP BY Levels.LevelID, Levels.Title, Teams.TeamName, Standings.TeamID ORDER BY Levels.LevelID ASC, WinTotal DESC, PointsScored DESC; "

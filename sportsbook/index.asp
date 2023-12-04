@@ -114,6 +114,8 @@
 								If thisNEXT = 1 Then Session.Contents("switchNEXT") = 1
 
 							End If
+
+							Session.Contents("switchOMEGA") = 0
 %>
 							<form action="/sportsbook/" method="get">
 								<input type="hidden" name="action" value="switch" />
@@ -224,7 +226,7 @@
 
 						</div>
 						-->
-						
+
 					</div>
 
 					<div class="row mb-3">

@@ -35,8 +35,9 @@
 %>
 					</select>
 
+					<input type="text" class="form-control form-control-lg mb-3" id="inputMemo" name="inputMemo" placeholder="Memo" />
+					
 					<div class="row m-0 p-0">
-
 						<div class="col-8 pl-0">
 							<input type="number" min="1" max="<%= thisSchmeckleSackBalance %>" step="1" onkeypress="return event.charCode >= 48 && event.charCode <= 57" class="form-control form-control-lg" id="inputTotalSchmeckles" name="inputTotalSchmeckles" placeholder="Enter Amount" required />
 						</div>

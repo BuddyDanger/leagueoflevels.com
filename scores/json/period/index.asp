@@ -13,6 +13,7 @@
 	sqlGetMatchup = "SELECT MatchupID, Matchups.LevelID AS MatchupLevel, Leg, "
 	sqlGetMatchup = sqlGetMatchup & "TeamID1, TeamID2, "
 	sqlGetMatchup = sqlGetMatchup & "Matchups.TeamScore1, Matchups.TeamScore2, "
+	sqlGetMatchup = sqlGetMatchup & "Matchups.TeamOmegaTravel1, Matchups.TeamOmegaTravel2, "
 	sqlGetMatchup = sqlGetMatchup & "Matchups.TeamPMR1, Matchups.TeamPMR2, "
 	sqlGetMatchup = sqlGetMatchup & "Matchups.TeamProjected1, Matchups.TeamProjected2, "
 	sqlGetMatchup = sqlGetMatchup & "Matchups.TeamWinPercentage1, Matchups.TeamWinPercentage2, "
@@ -22,7 +23,7 @@
 	sqlGetMatchup = sqlGetMatchup & "T1.TeamName AS TeamName1, T2.TeamName AS TeamName2, "
 	sqlGetMatchup = sqlGetMatchup & "T1.LevelID AS TeamLevel1, T2.LevelID AS TeamLevel2 "
 	sqlGetMatchup = sqlGetMatchup & "FROM Matchups LEFT JOIN Teams T1 ON T1.TeamID = Matchups.TeamID1 LEFT JOIN Teams T2 ON T2.TeamID = Matchups.TeamID2 WHERE Year = (SELECT TOP 1 Year FROM YearPeriods WHERE StartDate < GetDate() ORDER BY StartDate DESC) AND Period = (SELECT TOP 1 Period FROM YearPeriods WHERE StartDate < GetDate() ORDER BY StartDate DESC);"
-Response.Write(sqlGetMatchup)
+'Response.Write(sqlGetMatchup)
 	Set rsMatchup = sqlDatabase.Execute(sqlGetMatchup)
 
 	slackJSON = slackJSON & "{"
@@ -38,6 +39,8 @@ Response.Write(sqlGetMatchup)
 				thisTeamID2 = rsMatchup("TeamID2")
 				thisTeamScore1 = rsMatchup("TeamScore1")
 				thisTeamScore2 = rsMatchup("TeamScore2")
+				thisTeamOmegaTravel1 = rsMatchup("TeamOmegaTravel1")
+				thisTeamOmegaTravel2 = rsMatchup("TeamOmegaTravel2")
 				thisTeamPMR1 = CInt(rsMatchup("TeamPMR1"))
 				thisTeamPMR2 = CInt(rsMatchup("TeamPMR2"))
 				thisTeamProjected1 = rsMatchup("TeamProjected1")
@@ -96,8 +99,10 @@ Response.Write(sqlGetMatchup)
 					End If
 
 					If thisMatchupLevel = 1 Then
-						thisTeamPMRPercent1 = (thisTeamPMR1 * 100) / 600
-						thisTeamPMRPercent2 = (thisTeamPMR2 * 100) / 600
+						thisTeamPMRPercent1 = (thisTeamPMR1 * 100) / 420
+						thisTeamPMRPercent2 = (thisTeamPMR2 * 100) / 420
+						thisTeamScore1 = thisTeamScore1 + thisTeamOmegaTravel1
+						thisTeamScore2 = thisTeamScore2 + thisTeamOmegaTravel2
 					Else
 						thisTeamPMRPercent1 = (thisTeamPMR1 * 100) / 420
 						thisTeamPMRPercent2 = (thisTeamPMR2 * 100) / 420

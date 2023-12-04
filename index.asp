@@ -4,6 +4,64 @@
 <!--#include virtual="/assets/asp/functions/master.asp" -->
 <!--#include virtual="/assets/asp/functions/sha256.asp"-->
 <%
+	If Request.Form("action") = "omega" Then
+
+		thisOmegaPathID = Request.Form("inputOmegaPathID")
+		thisPeriod = Request.Form("inputPeriod")
+
+		sqlGetPathDetails = "SELECT OmegaPathID, StartingLocationID, EndingLocationID, LandDistance, WaterDistance, TotalDistance, TravelPenalty, PathLocationID1, PathLocationID2, PathLocationID3, Teams.TeamID AS OpponentID, Teams.TeamName AS OpponentName FROM OmegaPaths "
+		sqlGetPathDetails = sqlGetPathDetails & "INNER JOIN OmegaLinkLocationsTeams ON OmegaLinkLocationsTeams.LocationID = OmegaPaths.EndingLocationID "
+		sqlGetPathDetails = sqlGetPathDetails & "INNER JOIN Teams ON Teams.TeamID = OmegaLinkLocationsTeams.TeamID "
+		sqlGetPathDetails = sqlGetPathDetails & "WHERE OmegaPathID = " & thisOmegaPathID
+
+		Set rsPathDetails = sqlDatabase.Execute(sqlGetPathDetails)
+
+		If Not rsPathDetails.Eof Then
+
+			thisOmegaPathID = rsPathDetails("OmegaPathID")
+			thisStartingLocationID = rsPathDetails("StartingLocationID")
+			thisEndingLocationID = rsPathDetails("EndingLocationID")
+			thisLandDistance = rsPathDetails("LandDistance")
+			thisWaterDistance = rsPathDetails("WaterDistance")
+			thisTotalDistance = rsPathDetails("TotalDistance")
+			thisTravelPenalty = rsPathDetails("TravelPenalty")
+			thisPathLocationID1 = rsPathDetails("PathLocationID1")
+			thisPathLocationID2 = rsPathDetails("PathLocationID2")
+			thisPathLocationID3 = rsPathDetails("PathLocationID3")
+			thisOpponentID = rsPathDetails("OpponentID")
+			thisOpponentName = rsPathDetails("OpponentName")
+
+			sqlInsertMove = "INSERT INTO OmegaMoves (Year, Period, TeamID, OmegaPathID, EndingLocationID) "
+			sqlInsertMove = sqlInsertMove & "VALUES (" & Session.Contents("CurrentYear") & ", " & thisPeriod & ", " & Session.Contents("Account_OmegaTeamID") & ", " & thisOmegaPathID & ", " & thisEndingLocationID & ")"
+
+			Set rsInsertMove = sqlDatabase.Execute(sqlInsertMove)
+
+		End If
+
+		If thisOpponentID > 0 Then
+
+			sqlInsertMatchup = "INSERT INTO Matchups (LevelID, Year, Period, IsPlayoffs, IsCup, IsMajor, TeamID1, TeamID2, TeamScore1, TeamScore2, TeamPMR1, TeamPMR2, Leg, TeamOmegaTravel1, TeamOmegaTravel2) "
+			sqlInsertMatchup = sqlInsertMatchup & "VALUES (1, " & Session.Contents("CurrentYear") & ", " & thisPeriod & ", 0, 0, 0, " & Session.Contents("Account_OmegaTeamID") & ", " & thisOpponentID & ", 0, 0, 420, 420, 1, " & thisTravelPenalty & ", 0)"
+
+			Set rsInsertMatchup = sqlDatabase.Execute(sqlInsertMatchup)
+
+		End If
+
+		sqlGetMatchup = "SELECT MatchupID FROM Matchups WHERE Matchups.Year = " & Session.Contents("CurrentYear") & " AND Matchups.TeamID1 = " & Session.Contents("Account_OmegaTeamID") & " AND Matchups.TeamID2 = " & thisOpponentID & " ORDER BY MatchupID DESC"
+		Set rsMatchup = sqlDatabase.Execute(sqlGetMatchup)
+
+		If Not rsMatchup.Eof Then
+
+			thisSlackNotificationStatus = Slack_OmegaAttack (rsMatchup("MatchupID"), 1)
+			rsMatchup.Close
+			Set rsMatchup = Nothing
+
+		End If
+
+		Response.Redirect("/")
+
+	End If
+
 	If Request.Form("action") = "lock" Then
 
 		thisMatchupID = Request.Form("inputMatchupID")
@@ -81,6 +139,7 @@
 
 		thisRecipientID = Request.Form("inputRecipientID")
 		thisTotalSchmeckles = Request.Form("inputTotalSchmeckles")
+		thisMemo = Request.Form("inputMemo")
 
 		If thisTotalSchmeckles > 0 Then
 
@@ -97,7 +156,7 @@
 				thisAccountID = Session.Contents("AccountID")
 				thisTransactionDescription = ""
 
-				thisTransactionStatus = SchmeckleTransaction(thisAccountID, thisTransactionTypeID, NULL, thisTransactionTotal, thisTransactionDescription)
+				thisTransactionStatus = SchmeckleTransaction(thisAccountID, thisTransactionTypeID, NULL, thisTransactionTotal, thisMemo)
 
 				thisTransactionTypeID = 1015
 				thisTransactionDateTime = Now()
@@ -105,7 +164,9 @@
 				thisAccountID = thisRecipientID
 				thisTransactionDescription = ""
 
-				thisTransactionStatus = SchmeckleTransaction(thisAccountID, thisTransactionTypeID, NULL, thisTransactionTotal, thisTransactionDescription)
+				thisTransactionStatus = SchmeckleTransaction(thisAccountID, thisTransactionTypeID, NULL, thisTransactionTotal, NULL)
+
+				thisSlackNotificationStatus = Slack_SendSchmeckles(thisAccountID, thisRecipientID, thisTransactionTotal, thisMemo, 1)
 
 			End If
 
@@ -206,7 +267,11 @@
 
 								<!--#include virtual="/assets/asp/dashboard/account.asp" -->
 
-								<!--#include virtual="/assets/asp/dashboard/balls-omega.asp" -->
+								<!--#include virtual="/assets/asp/dashboard/omega.asp" -->
+
+								<!--#include virtual="/assets/asp/dashboard/eliminator.asp" -->
+
+								<!--#include virtual="/assets/asp/dashboard/locks.asp" -->
 
 								<!--#include virtual="/assets/asp/dashboard/sender.asp" -->
 
@@ -248,7 +313,7 @@
 
 		<!--#include virtual="/assets/asp/framework/google.asp" -->
 
-		<script>
+		<!--<script>
 
 			function numberWithCommas(x) { return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","); }
 
@@ -280,7 +345,7 @@
 					}
 				});
 			});
-		</script>
+		</script>-->
 
 	</body>
 
