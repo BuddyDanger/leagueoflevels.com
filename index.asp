@@ -259,41 +259,31 @@
 
 				<div class="container-fluid pl-0 pl-lg-2 pr-0 pr-lg-2">
 
-					<div class="row mt-4">
+					<% If Session.Contents("LoggedIn") = "yes" Then %>
+						<div class="row mt-4">
 
-						<% If Session.Contents("LoggedIn") = "yes" Then %>
-
-							<div class="col-12 col-lg-6 col-xl-6 col-xxl-4">
+							<div class="col-12 col-lg-6 col-xl-5">
 
 								<!--#include virtual="/assets/asp/dashboard/account.asp" -->
 
-								<!--#include virtual="/assets/asp/dashboard/omega.asp" -->
-
-								<!--#include virtual="/assets/asp/dashboard/eliminator.asp" -->
-
-								<!--#include virtual="/assets/asp/dashboard/locks.asp" -->
+								<!--#include virtual="/assets/asp/dashboard/balls-omega.asp" -->
 
 								<!--#include virtual="/assets/asp/dashboard/sender.asp" -->
 
 							</div>
 
-							<div class="col-12 col-lg-6 col-xl-6 col-xxl-5">
+							<div class="col-12 col-lg-6 col-xl-7 col-xxl-5">
 
 								<!--#include virtual="/assets/asp/dashboard/timeline.asp" -->
 
 							</div>
 
-							<div class="col-12 col-lg-6 col-xl-6 col-xxl-3">
-
-								<!--#include virtual="/assets/asp/dashboard/active-tickets.asp" -->
-
-							</div>
-
-						<% End If %>
-
-						<!--#include virtual="/assets/asp/dashboard/login.asp" -->
-
-					</div>
+						</div>
+					<% Else %>
+						<div class="row mt-4">
+							<!--#include virtual="/assets/asp/dashboard/login.asp" -->
+						</div>
+					<% End If %>
 
 				</div>
 

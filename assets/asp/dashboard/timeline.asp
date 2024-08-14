@@ -1,7 +1,7 @@
 <%
 	arrTeams = Split(Session.Contents("AccountTeams"), ",")
 
-	sqlGetRecentHistory = "SELECT TOP 15 M.MatchupID, L.LevelID, L.Title, M.Year, M.Period, M.IsPlayoffs, T1.TeamName AS Team1, M.TeamScore1, M.TeamOmegaTravel1, T2.TeamName AS Team2, M.TeamScore2, M.TeamOmegaTravel2, T1.TeamID AS TeamID1, T2.TeamID AS TeamID2, M.TeamPMR1, M.TeamPMR2 FROM Matchups M "
+	sqlGetRecentHistory = "SELECT TOP 8 M.MatchupID, L.LevelID, L.Title, M.Year, M.Period, M.IsPlayoffs, T1.TeamName AS Team1, M.TeamScore1, M.TeamOmegaTravel1, T2.TeamName AS Team2, M.TeamScore2, M.TeamOmegaTravel2, T1.TeamID AS TeamID1, T2.TeamID AS TeamID2, M.TeamPMR1, M.TeamPMR2 FROM Matchups M "
 	sqlGetRecentHistory = sqlGetRecentHistory & "LEFT OUTER JOIN Levels L ON L.LevelID = M.LevelID "
 	sqlGetRecentHistory = sqlGetRecentHistory & "INNER JOIN Teams T1 ON T1.TeamID = M.TeamID1 "
 	sqlGetRecentHistory = sqlGetRecentHistory & "INNER JOIN Teams T2 ON T2.TeamID = M.TeamID2 "
