@@ -303,7 +303,7 @@
 
 		<!--#include virtual="/assets/asp/framework/google.asp" -->
 
-		<!--<script>
+		<script>
 
 			function numberWithCommas(x) { return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","); }
 
@@ -335,7 +335,7 @@
 					}
 				});
 			});
-		</script>-->
+		</script>
 
 	</body>
 

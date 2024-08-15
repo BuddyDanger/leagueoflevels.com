@@ -89,8 +89,7 @@
 
 	If Session.Contents("LoggedIn") = "yes" And Session.Contents("AccountVerified") <> 1 Then
 
-		blockSuccess = ""
-		blockLogin = "d-none"
+		Response.Redirect("/")
 
 	End If
 %>

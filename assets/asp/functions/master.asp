@@ -368,7 +368,7 @@
 				End If
 
 				If ticketsDashboard Then
-					Response.Write("<div class=""col-12 p-0"">")
+					Response.Write("<div class=""col-xl-4 col-lg-4 col-md-4 col-sm-6 col-xs-12 col-xxs-12"">")
 				Else
 					Response.Write("<div class=""col-xxxl-3 col-xxl-3 col-xl-4 col-lg-4 col-md-4 col-sm-6 col-xs-12 col-xxs-12"">")
 				End If
@@ -430,11 +430,11 @@
 	Function GetToken (League)
 
 		If UCase(League) = "SLFFL" Or UCase(League) = "SAMELEVEL" Then
-			thisToken = "U2FsdGVkX19HjilmaIZ0QG0F-Hht398x0-RCiz9Z538CIdoypu6os-T1x10-j__mrWkF0T9phXv7aKAYgcebbDmz95joI5XV_78ne9ba_hjkJtM-QtQ8w_gUBSyJoKJieJ5lbbaVfOLK5353TA5ZUg"
+			thisToken = "U2FsdGVkX1-T5Pa4Ol_ioAeILmT8diJ8nDNeL7F_N-qABc3P6pArfgobrRSIZXVqIzlYtXIRJ6hOJBfeQNvS94C6_28A3rdANUClwwLMsZNKP-wp4Q8kGvEXDY3_FvxTTv4jVfMXXVad_MqyUrUfeQ"
 		ElseIf UCase(League) = "OMEGA" Then
-			thisToken = "U2FsdGVkX19jTc6WufjB3c7jo9ZMra0Q4NMJR0YMMe5MWdJaI5p9RnBx38OhuJtE-EU1uMw6mszSKOiUzEo_Pgmgdt3YDJnviXqoGkb4uwnLTnzrTwigv9zJfgx5V2rKanspBciaNZ1sXvCoVycKug"
+			thisToken = "U2FsdGVkX19NO2xotYwY1m0u6OwH-jpGQJetGUTVgLLVW4c8lhLaQTbZE56b97s5C6UMGCDi9BeiriTAqFMKVERtqvZRz9XnH8PsUnjBKlctGtWb3gXpF8jSTF1Eas_aRGI3ljO6BHBqXZ4g1YxNIQ"
 		Else
-			thisToken = "U2FsdGVkX1-7amnLc9CJgadPydhZMA4tqGTug-7q0YuU5_sGv1TnUv62ilCVGE9ezoT-82M7qwW7OhTb4ByL2WFoG4vc6NMe5Z9fLzoGRoZtAZ85lP6-f_BZxB_QWw6RrHWoJZU7fIyu-wOxAEEjSg"
+			thisToken = "U2FsdGVkX1_mthNo2VzFwWZ27uS1-hMft0VdEELjfd6y6jJb8e5nddXHcckXZ0WLe-prJx0C8U_RLvDFTsnA7wxhKNHlnZtwfENRDDjJclirQH1Rgb4RCOS6foc8Jl0ShgKSaK9kg89y9-1nPOz6fg"
 		End If
 
 		GetToken = thisToken

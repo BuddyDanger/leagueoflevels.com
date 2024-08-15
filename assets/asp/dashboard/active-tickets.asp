@@ -1,5 +1,4 @@
 <% If Session.Contents("LoggedIn") = "yes" Then %>
-<div class="col-12">
 <%
 	ticketsAccountID = ""
 	ticketsTypeID = ""
@@ -11,5 +10,4 @@
 
 	Call TicketRow (ticketsNFLGameID, ticketsMatchupID, ticketsAccountID, ticketsTypeID, ticketsProcessed, 1)
 %>
-</div>
 <% End If %>
