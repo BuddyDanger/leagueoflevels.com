@@ -26,7 +26,8 @@
 			thisName = rsAccount("ProfileName")
 			thisImage = rsAccount("ProfileImage")
 			thisProfileURL = rsAccount("ProfileURL")
-			thisBalls = rsAccount("Balls")
+			thisBalls_Standard = rsAccount("Balls_Standard")
+			thisBalls_Omega = rsAccount("Balls_Omega")
 			thisLocks = rsAccount("Locks")
 
 			rsAccount.Close
@@ -53,7 +54,8 @@
 			Session.Contents("AccountName") = thisName
 			Session.Contents("AccountImage") = thisImage
 			Session.Contents("AccountProfileURL") = thisProfileURL
-			Session.Contents("AccountBalls") = thisBalls
+			Session.Contents("AccountBalls_Standard") = thisBalls_Standard
+			Session.Contents("AccountBalls_Omega") = thisBalls_Omega
 			Session.Contents("AccountLocks") = thisLocks
 
 			sqlCheckTeams = "SELECT Teams.TeamID FROM LinkAccountsTeams INNER JOIN Teams ON Teams.TeamID = LinkAccountsTeams.TeamID WHERE LinkAccountsTeams.AccountID = " & Session.Contents("AccountID")

@@ -210,7 +210,7 @@
 													<%= thisProfileImage %>
 													<div class="float-left pl-2">
 														<div><b><%= thisProfileName %></b></div>
-														<div><%= Month(thisTransactionDate) %>/<%= Day(thisTransactionDate) %>&nbsp;<%= arrthisTransactionDate(1) %>&nbsp;<%= arrthisTransactionDate(2) %></div>
+														<div><%= Month(thisTransactionDate) %>/<%= Day(thisTransactionDate) %>/<%= Year(thisTransactionDate) %>&nbsp;<%= arrthisTransactionDate(1) %>&nbsp;<%= arrthisTransactionDate(2) %></div>
 													</div>
 												</div>
 												<div class="col-lg-2 align-self-center text-left d-none d-lg-block">

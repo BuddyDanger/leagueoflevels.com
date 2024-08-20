@@ -176,7 +176,7 @@
 
 	End If
 
-	If Request.Form("action") = "buy" Then
+	If Request.Form("action") = "buy-standard" Then
 
 		thisBallPurchase = Request.Form("inputBallPurchase")
 
@@ -190,8 +190,42 @@
 			If CDbl(thisCurrentSchmeckleTotal) >= CDbl(thisBallPurchase * 2500) Then
 
 				'UPDATE BALL TOTAL ON ACCOUNT'
-				Session.Contents("AccountBalls") = Session.Contents("AccountBalls") + thisBallPurchase
-				sqlUpdateBalls = "UPDATE Accounts SET Balls = " & Session.Contents("AccountBalls") & " WHERE AccountID = " & Session.Contents("AccountID")
+				Session.Contents("AccountBalls_Standard") = Session.Contents("AccountBalls_Standard") + thisBallPurchase
+				sqlUpdateBalls = "UPDATE Accounts SET Balls_Standard = " & Session.Contents("AccountBalls_Standard") & " WHERE AccountID = " & Session.Contents("AccountID")
+				Set rsUpdate   = sqlDatabase.Execute(sqlUpdateBalls)
+
+				thisTransactionTypeID = 1001
+				thisTransactionDateTime = Now()
+				thisTransactionTotal = thisBallPurchase * -2500
+				thisAccountID = Session.Contents("AccountID")
+				thisTransactionDescription = ""
+
+				thisTransactionStatus = SchmeckleTransaction(thisAccountID, thisTransactionTypeID, NULL, thisTransactionTotal, thisTransactionDescription)
+
+			End If
+
+			Response.Redirect("/")
+
+		End If
+
+	End If
+
+	If Request.Form("action") = "buy-omega" Then
+
+		thisBallPurchase = Request.Form("inputBallPurchase")
+
+		If thisBallPurchase > 0 Then
+
+			sqlGetSchmeckles = "SELECT SUM(TransactionTotal) AS CurrentSchmeckleTotal FROM SchmeckleTransactions WHERE AccountID = " & Session.Contents("AccountID")
+			Set rsSchmeckles = sqlDatabase.Execute(sqlGetSchmeckles)
+
+			thisCurrentSchmeckleTotal = rsSchmeckles("CurrentSchmeckleTotal")
+
+			If CDbl(thisCurrentSchmeckleTotal) >= CDbl(thisBallPurchase * 2500) Then
+
+				'UPDATE BALL TOTAL ON ACCOUNT'
+				Session.Contents("AccountBalls_Omega") = Session.Contents("AccountBalls_Omega") + thisBallPurchase
+				sqlUpdateBalls = "UPDATE Accounts SET Balls_Omega = " & Session.Contents("AccountBalls_Omega") & " WHERE AccountID = " & Session.Contents("AccountID")
 				Set rsUpdate   = sqlDatabase.Execute(sqlUpdateBalls)
 
 				thisTransactionTypeID = 1001
@@ -266,6 +300,8 @@
 
 								<!--#include virtual="/assets/asp/dashboard/account.asp" -->
 
+								<!--#include virtual="/assets/asp/dashboard/balls-standard.asp" -->
+
 								<!--#include virtual="/assets/asp/dashboard/balls-omega.asp" -->
 
 								<!--#include virtual="/assets/asp/dashboard/sender.asp" -->
@@ -307,31 +343,57 @@
 
 			function numberWithCommas(x) { return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","); }
 
-			function calculate_ball_cost(balls) {
+			function calculate_omega_ball_cost(balls) {
 
-				document.getElementById("inputTotalSchmeckles").value = numberWithCommas(parseInt(balls * 2500));
+				document.getElementById("inputTotalSchmeckles_Omega").value = numberWithCommas(parseInt(balls * 2500));
+				return 0;
+
+			}
+
+			function calculate_standard_ball_cost(balls) {
+
+				document.getElementById("inputTotalSchmeckles_Standard").value = numberWithCommas(parseInt(balls * 2500));
 				return 0;
 
 			}
 
 			$(function(){
-				$(".quantity-input-up").click(function(){
+				$(".quantity-input-up-omega").click(function(){
 					var inpt = $(this).parents(".quantity-input").find("[name=inputBallPurchase]");
 					var val = parseInt(inpt.val());
 					if ( val < 0 ) inpt.val(val=0);
 					if (val+1 <= <%= maxBallPurchase %>) {
 						inpt.val(val+1);
-						calculate_ball_cost(val+1);
+						calculate_omega_ball_cost(val+1);
 					}
 				});
-				$(".quantity-input-down").click(function(){
+				$(".quantity-input-down-omega").click(function(){
 					var inpt = $(this).parents(".quantity-input").find("[name=inputBallPurchase]");
 					var val = parseInt(inpt.val());
 					if ( val < 0 ) inpt.val(val=0);
 					if ( val == 0 ) return;
 					if (val-1 >= 0) {
 						inpt.val(val-1);
-						calculate_ball_cost(val-1);
+						calculate_omega_ball_cost(val-1);
+					}
+				});
+				$(".quantity-input-up-standard").click(function(){
+					var inpt = $(this).parents(".quantity-input").find("[name=inputBallPurchase]");
+					var val = parseInt(inpt.val());
+					if ( val < 0 ) inpt.val(val=0);
+					if (val+1 <= <%= maxBallPurchase %>) {
+						inpt.val(val+1);
+						calculate_standard_ball_cost(val+1);
+					}
+				});
+				$(".quantity-input-down-standard").click(function(){
+					var inpt = $(this).parents(".quantity-input").find("[name=inputBallPurchase]");
+					var val = parseInt(inpt.val());
+					if ( val < 0 ) inpt.val(val=0);
+					if ( val == 0 ) return;
+					if (val-1 >= 0) {
+						inpt.val(val-1);
+						calculate_standard_ball_cost(val-1);
 					}
 				});
 			});
