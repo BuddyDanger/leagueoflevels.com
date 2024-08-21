@@ -29,66 +29,133 @@
 
 	If Len(thisLevel) > 0 Then
 
-		If Len(thisSelected) > 0 Then
-			sqlGetTotal = "SELECT LevelID, SUM(Balls) AS TotalBalls FROM Teams INNER JOIN LinkAccountsTeams ON LinkAccountsTeams.TeamID = Teams.TeamID INNER JOIN Accounts ON Accounts.AccountID = LinkAccountsTeams.AccountID WHERE EndYear = 0 AND LevelID = " & thisLevel & " AND Teams.TeamID NOT IN (" & thisSelected & ") GROUP BY LevelID"
-		Else
-			sqlGetTotal = "SELECT LevelID, SUM(Balls) AS TotalBalls FROM Teams INNER JOIN LinkAccountsTeams ON LinkAccountsTeams.TeamID = Teams.TeamID INNER JOIN Accounts ON Accounts.AccountID = LinkAccountsTeams.AccountID WHERE EndYear = 0 AND LevelID = " & thisLevel & " GROUP BY LevelID"
-		End If
+		If thisLevel > 1 Then
 
-		Set rsTotal = sqlDatabase.Execute(sqlGetTotal)
+			If Len(thisSelected) > 0 Then
+				sqlGetTotal = "SELECT LevelID, SUM(Balls_Standard) AS TotalBalls FROM Teams INNER JOIN LinkAccountsTeams ON LinkAccountsTeams.TeamID = Teams.TeamID INNER JOIN Accounts ON Accounts.AccountID = LinkAccountsTeams.AccountID WHERE EndYear = 0 AND LevelID = " & thisLevel & " AND Teams.TeamID NOT IN (" & thisSelected & ") GROUP BY LevelID"
+			Else
+				sqlGetTotal = "SELECT LevelID, SUM(Balls_Standard) AS TotalBalls FROM Teams INNER JOIN LinkAccountsTeams ON LinkAccountsTeams.TeamID = Teams.TeamID INNER JOIN Accounts ON Accounts.AccountID = LinkAccountsTeams.AccountID WHERE EndYear = 0 AND LevelID = " & thisLevel & " GROUP BY LevelID"
+			End If
 
-		If Not rsTotal.Eof Then
-			thisTotal = rsTotal("TotalBalls")
-			rsTotal.Close
-			Set rsTotal = Nothing
-		Else
-			thisTotal = 0
-		End If
+			Set rsTotal = sqlDatabase.Execute(sqlGetTotal)
 
-		If Len(thisSelected) > 0 Then
-			sqlGetBalls = "SELECT Teams.TeamID, Teams.TeamName, Balls FROM Teams INNER JOIN LinkAccountsTeams ON LinkAccountsTeams.TeamID = Teams.TeamID INNER JOIN Accounts ON Accounts.AccountID = LinkAccountsTeams.AccountID WHERE EndYear = 0 AND LevelID = " & thisLevel & " AND Teams.TeamID NOT IN (" & thisSelected & ")"
-		Else
-			sqlGetBalls = "SELECT Teams.TeamID, Teams.TeamName, Balls FROM Teams INNER JOIN LinkAccountsTeams ON LinkAccountsTeams.TeamID = Teams.TeamID INNER JOIN Accounts ON Accounts.AccountID = LinkAccountsTeams.AccountID WHERE EndYear = 0 AND LevelID = " & thisLevel
-		End If
+			If Not rsTotal.Eof Then
+				thisTotal = rsTotal("TotalBalls")
+				rsTotal.Close
+				Set rsTotal = Nothing
+			Else
+				thisTotal = 0
+			End If
 
-		Set rsBalls = sqlDatabase.Execute(sqlGetBalls)
+			If Len(thisSelected) > 0 Then
+				sqlGetBalls = "SELECT Teams.TeamID, Teams.TeamName, Balls_Standard FROM Teams INNER JOIN LinkAccountsTeams ON LinkAccountsTeams.TeamID = Teams.TeamID INNER JOIN Accounts ON Accounts.AccountID = LinkAccountsTeams.AccountID WHERE EndYear = 0 AND LevelID = " & thisLevel & " AND Teams.TeamID NOT IN (" & thisSelected & ")"
+			Else
+				sqlGetBalls = "SELECT Teams.TeamID, Teams.TeamName, Balls_Standard FROM Teams INNER JOIN LinkAccountsTeams ON LinkAccountsTeams.TeamID = Teams.TeamID INNER JOIN Accounts ON Accounts.AccountID = LinkAccountsTeams.AccountID WHERE EndYear = 0 AND LevelID = " & thisLevel
+			End If
 
-		thisLotteryBallString = ""
+			Set rsBalls = sqlDatabase.Execute(sqlGetBalls)
 
-		Do While Not rsBalls.Eof
+			thisLotteryBallString = ""
 
-			thisTeamID = rsBalls("TeamID")
-			thisTeamName = rsBalls("TeamName")
-			thisBallCount = rsBalls("Balls")
+			Do While Not rsBalls.Eof
 
-			If thisBallCount > 0 Then
+				thisTeamID = rsBalls("TeamID")
+				thisTeamName = rsBalls("TeamName")
+				thisBallCount = rsBalls("Balls_Standard")
 
-				For i = 1 To thisBallCount
+				If thisBallCount > 0 Then
+
+					For i = 1 To thisBallCount
+						thisLotteryBallString = thisLotteryBallString & thisTeamID & "|" & thisTeamName & ","
+					Next
+
+				End If
+
+				thisNewTotal = thisTotal
+				If thisTotal = 0 Then
+
 					thisLotteryBallString = thisLotteryBallString & thisTeamID & "|" & thisTeamName & ","
-				Next
+					thisNewTotal = thisNewTotal + 1
 
+				End If
+
+				rsBalls.MoveNext
+
+			Loop
+
+			rsBalls.Close
+			Set rsBalls = Nothing
+
+			thisTotal = thisNewTotal
+
+			If Right(thisLotteryBallString, 1) = "," Then thisLotteryBallString = Left(thisLotteryBallString, Len(thisLotteryBallString)-1)
+			arrLottery = Split(thisLotteryBallString, ",")
+			arrLottery = QuickReorder(arrLottery)
+
+		Else
+
+			If Len(thisSelected) > 0 Then
+				sqlGetTotal = "SELECT SUM(Balls_Omega) AS TotalBalls FROM Teams INNER JOIN LinkAccountsTeams ON LinkAccountsTeams.TeamID = Teams.TeamID INNER JOIN Accounts ON Accounts.AccountID = LinkAccountsTeams.AccountID WHERE EndYear = 0 AND LevelID > 1 AND Balls_Omega > 0 AND Teams.TeamID NOT IN (" & thisSelected & ") GROUP BY LevelID"
+			Else
+				sqlGetTotal = "SELECT SUM(Balls_Omega) AS TotalBalls FROM Teams INNER JOIN LinkAccountsTeams ON LinkAccountsTeams.TeamID = Teams.TeamID INNER JOIN Accounts ON Accounts.AccountID = LinkAccountsTeams.AccountID WHERE EndYear = 0 AND LevelID > 1 AND Balls_Omega > 0"
 			End If
 
-			thisNewTotal = thisTotal
-			If thisTotal = 0 Then
+			Set rsTotal = sqlDatabase.Execute(sqlGetTotal)
 
-				thisLotteryBallString = thisLotteryBallString & thisTeamID & "|" & thisTeamName & ","
-				thisNewTotal = thisNewTotal + 1
-
+			If Not rsTotal.Eof Then
+				thisTotal = rsTotal("TotalBalls")
+				rsTotal.Close
+				Set rsTotal = Nothing
+			Else
+				thisTotal = 0
 			End If
 
-			rsBalls.MoveNext
+			If Len(thisSelected) > 0 Then
+				sqlGetBalls = "SELECT Teams.TeamID, Teams.TeamName, Balls_Omega FROM Teams INNER JOIN LinkAccountsTeams ON LinkAccountsTeams.TeamID = Teams.TeamID INNER JOIN Accounts ON Accounts.AccountID = LinkAccountsTeams.AccountID WHERE EndYear = 0 AND LevelID > 1 AND Balls_Omega > 0 AND Teams.TeamID NOT IN (" & thisSelected & ")"
+			Else
+				sqlGetBalls = "SELECT Teams.TeamID, Teams.TeamName, Balls_Omega FROM Teams INNER JOIN LinkAccountsTeams ON LinkAccountsTeams.TeamID = Teams.TeamID INNER JOIN Accounts ON Accounts.AccountID = LinkAccountsTeams.AccountID WHERE EndYear = 0 AND LevelID > 1 AND Balls_Omega > 0"
+			End If
 
-		Loop
+			Set rsBalls = sqlDatabase.Execute(sqlGetBalls)
 
-		rsBalls.Close
-		Set rsBalls = Nothing
+			thisLotteryBallString = ""
 
-		thisTotal = thisNewTotal
+			Do While Not rsBalls.Eof
 
-		If Right(thisLotteryBallString, 1) = "," Then thisLotteryBallString = Left(thisLotteryBallString, Len(thisLotteryBallString)-1)
-		arrLottery = Split(thisLotteryBallString, ",")
-		arrLottery = QuickReorder(arrLottery)
+				thisTeamID = rsBalls("TeamID")
+				thisTeamName = rsBalls("TeamName")
+				thisBallCount = rsBalls("Balls_Omega")
+
+				If thisBallCount > 0 Then
+
+					For i = 1 To thisBallCount
+						thisLotteryBallString = thisLotteryBallString & thisTeamID & "|" & thisTeamName & ","
+					Next
+
+				End If
+
+				thisNewTotal = thisTotal
+				If thisTotal = 0 Then
+
+					thisLotteryBallString = thisLotteryBallString & thisTeamID & "|" & thisTeamName & ","
+					thisNewTotal = thisNewTotal + 1
+
+				End If
+
+				rsBalls.MoveNext
+
+			Loop
+
+			rsBalls.Close
+			Set rsBalls = Nothing
+
+			thisTotal = thisNewTotal
+
+			If Right(thisLotteryBallString, 1) = "," Then thisLotteryBallString = Left(thisLotteryBallString, Len(thisLotteryBallString)-1)
+			arrLottery = Split(thisLotteryBallString, ",")
+			arrLottery = QuickReorder(arrLottery)
+
+		End If
 
 	End If
 %>
@@ -147,6 +214,7 @@
 
 							If CInt(thisLevel) = 2 Then thisHeader = "SAME LEVEL"
 							If CInt(thisLevel) = 3 Then thisHeader = "FARM LEVEL"
+							If CInt(thisLevel) = 4 Then thisHeader = "BEST LEVEL"
 %>
 							<div class="col-12 col-xl-4 mb-4">
 
@@ -157,7 +225,11 @@
 									thisTotalExistingPulls = 0
 									If Len(thisSelected) > 0 Then
 
-										sqlGetExistingPulls = "SELECT Teams.TeamID, Teams.TeamName, Accounts.ProfileImage FROM Teams INNER JOIN LinkAccountsTeams ON LinkAccountsTeams.TeamID = Teams.TeamID INNER JOIN Accounts ON Accounts.AccountID = LinkAccountsTeams.AccountID WHERE EndYear = 0 AND Teams.LevelID = " & thisLevel & " AND Teams.TeamID IN (" & thisSelected & ") ORDER BY CASE Teams.TeamID "
+										If LevelID > 1 Then
+											sqlGetExistingPulls = "SELECT Teams.TeamID, Teams.TeamName, Accounts.ProfileImage FROM Teams INNER JOIN LinkAccountsTeams ON LinkAccountsTeams.TeamID = Teams.TeamID INNER JOIN Accounts ON Accounts.AccountID = LinkAccountsTeams.AccountID WHERE EndYear = 0 AND Teams.LevelID = " & thisLevel & " AND Teams.TeamID IN (" & thisSelected & ") ORDER BY CASE Teams.TeamID "
+										Else
+											sqlGetExistingPulls = "SELECT Teams.TeamID, Teams.TeamName, Accounts.ProfileImage FROM Teams INNER JOIN LinkAccountsTeams ON LinkAccountsTeams.TeamID = Teams.TeamID INNER JOIN Accounts ON Accounts.AccountID = LinkAccountsTeams.AccountID WHERE EndYear = 0 AND Teams.LevelID > 1 AND Teams.TeamID IN (" & thisSelected & ") ORDER BY CASE Teams.TeamID "
+										End If
 
 										arrSelected = Split(thisSelected, ",")
 										quickCount = 1
@@ -191,8 +263,10 @@
 									End If
 
 									thisDrawButton = 1
+									thisTotal = 12
+									If thisLevel = 1 Then thisTotal = 5
 
-									For i = thisTotalExistingPulls + 1 To 12
+									For i = thisTotalExistingPulls + 1 To thisTotal
 
 										thisDisplayCount = i
 										If Len(thisDisplayCount) = 1 Then thisDisplayCount = "0" & thisDisplayCount
@@ -209,7 +283,7 @@
 <%
 										Else
 %>
-											<li class="list-group-item"><b><%= thisDisplayCount %>.)</b> &nbsp; <img src="https://samelevel.imgix.net/user.jpg?w=40&h=40&fit=crop&crop=focalpoint" class="rounded-circle"> &nbsp; </li>
+											<li class="list-group-item"><b><%= thisDisplayCount %>.)</b> &nbsp; <img src="https://samelevel.imgix.net/user.jpg?w=40&h=40&fit=crop&crop=focalpoint" class="rounded-circle" style="opacity:0;"> &nbsp; </li>
 <%
 										End If
 
@@ -219,14 +293,30 @@
 
 							</div>
 <%
-							If Len(thisSelected) > 0 Then
-								sqlGetChances = "SELECT Teams.TeamID, Teams.TeamName, Accounts.ProfileImage, Balls FROM Teams INNER JOIN LinkAccountsTeams ON LinkAccountsTeams.TeamID = Teams.TeamID INNER JOIN Accounts ON Accounts.AccountID = LinkAccountsTeams.AccountID WHERE EndYear = 0 AND LevelID = " & thisLevel & " AND Teams.TeamID NOT IN (" & thisSelected & ") ORDER BY Balls DESC, TeamName ASC;"
-								sqlGetTotal = "SELECT Teams.LevelID, SUM(Accounts.Balls) AS TotalBalls FROM Teams INNER JOIN LinkAccountsTeams ON LinkAccountsTeams.TeamID = Teams.TeamID INNER JOIN Accounts ON Accounts.AccountID = LinkAccountsTeams.AccountID WHERE EndYear = 0 AND LinkAccountsTeams.TeamID NOT IN (" & thisSelected & ") AND LevelID = " & thisLevel & " GROUP BY LevelID;"
-								sqlGetTeams = "SELECT COUNT(Teams.TeamID) AS TotalTeams FROM Teams INNER JOIN LinkAccountsTeams ON LinkAccountsTeams.TeamID = Teams.TeamID INNER JOIN Accounts ON Accounts.AccountID = LinkAccountsTeams.AccountID WHERE EndYear = 0 AND LevelID = " & thisLevel & " AND Teams.TeamID NOT IN (" & thisSelected & ");"
+							If thisLevel > 1 Then
+
+								If Len(thisSelected) > 0 Then
+									sqlGetChances = "SELECT Teams.TeamID, Teams.TeamName, Accounts.ProfileImage, Balls_Standard FROM Teams INNER JOIN LinkAccountsTeams ON LinkAccountsTeams.TeamID = Teams.TeamID INNER JOIN Accounts ON Accounts.AccountID = LinkAccountsTeams.AccountID WHERE EndYear = 0 AND LevelID = " & thisLevel & " AND Teams.TeamID NOT IN (" & thisSelected & ") ORDER BY Balls_Standard DESC, TeamName ASC;"
+									sqlGetTotal = "SELECT Teams.LevelID, SUM(Accounts.Balls_Standard) AS TotalBalls FROM Teams INNER JOIN LinkAccountsTeams ON LinkAccountsTeams.TeamID = Teams.TeamID INNER JOIN Accounts ON Accounts.AccountID = LinkAccountsTeams.AccountID WHERE EndYear = 0 AND LinkAccountsTeams.TeamID NOT IN (" & thisSelected & ") AND LevelID = " & thisLevel & " GROUP BY LevelID;"
+									sqlGetTeams = "SELECT COUNT(Teams.TeamID) AS TotalTeams FROM Teams INNER JOIN LinkAccountsTeams ON LinkAccountsTeams.TeamID = Teams.TeamID INNER JOIN Accounts ON Accounts.AccountID = LinkAccountsTeams.AccountID WHERE EndYear = 0 AND LevelID = " & thisLevel & " AND Teams.TeamID NOT IN (" & thisSelected & ");"
+								Else
+									sqlGetChances = "SELECT Teams.TeamID, Teams.TeamName, Accounts.ProfileImage, Balls_Standard FROM Teams INNER JOIN LinkAccountsTeams ON LinkAccountsTeams.TeamID = Teams.TeamID INNER JOIN Accounts ON Accounts.AccountID = LinkAccountsTeams.AccountID WHERE EndYear = 0 AND LevelID = " & thisLevel & " ORDER BY Balls_Standard DESC, TeamName ASC;"
+									sqlGetTotal = "SELECT Teams.LevelID, SUM(Accounts.Balls_Standard) AS TotalBalls FROM Teams INNER JOIN LinkAccountsTeams ON LinkAccountsTeams.TeamID = Teams.TeamID INNER JOIN Accounts ON Accounts.AccountID = LinkAccountsTeams.AccountID WHERE EndYear = 0 AND LevelID = " & thisLevel & " GROUP BY LevelID;"
+									sqlGetTeams = "SELECT COUNT(Teams.TeamID) AS TotalTeams FROM Teams INNER JOIN LinkAccountsTeams ON LinkAccountsTeams.TeamID = Teams.TeamID INNER JOIN Accounts ON Accounts.AccountID = LinkAccountsTeams.AccountID WHERE EndYear = 0 AND LevelID = " & thisLevel & ";"
+								End If
+
 							Else
-								sqlGetChances = "SELECT Teams.TeamID, Teams.TeamName, Accounts.ProfileImage, Balls FROM Teams INNER JOIN LinkAccountsTeams ON LinkAccountsTeams.TeamID = Teams.TeamID INNER JOIN Accounts ON Accounts.AccountID = LinkAccountsTeams.AccountID WHERE EndYear = 0 AND LevelID = " & thisLevel & " ORDER BY Balls DESC, TeamName ASC;"
-								sqlGetTotal = "SELECT Teams.LevelID, SUM(Accounts.Balls) AS TotalBalls FROM Teams INNER JOIN LinkAccountsTeams ON LinkAccountsTeams.TeamID = Teams.TeamID INNER JOIN Accounts ON Accounts.AccountID = LinkAccountsTeams.AccountID WHERE EndYear = 0 AND LevelID = " & thisLevel & " GROUP BY LevelID;"
-								sqlGetTeams = "SELECT COUNT(Teams.TeamID) AS TotalTeams FROM Teams INNER JOIN LinkAccountsTeams ON LinkAccountsTeams.TeamID = Teams.TeamID INNER JOIN Accounts ON Accounts.AccountID = LinkAccountsTeams.AccountID WHERE EndYear = 0 AND LevelID = " & thisLevel & ";"
+
+								If Len(thisSelected) > 0 Then
+									sqlGetChances = "SELECT Teams.TeamID, Teams.TeamName, Accounts.ProfileImage, Balls_Omega FROM Teams INNER JOIN LinkAccountsTeams ON LinkAccountsTeams.TeamID = Teams.TeamID INNER JOIN Accounts ON Accounts.AccountID = LinkAccountsTeams.AccountID WHERE EndYear = 0 AND LevelID > 1 AND Balls_Omega > 0 AND Teams.TeamID NOT IN (" & thisSelected & ") ORDER BY Balls_Omega DESC, TeamName ASC;"
+									sqlGetTotal = "SELECT SUM(Accounts.Balls_Omega) AS TotalBalls FROM Teams INNER JOIN LinkAccountsTeams ON LinkAccountsTeams.TeamID = Teams.TeamID INNER JOIN Accounts ON Accounts.AccountID = LinkAccountsTeams.AccountID WHERE EndYear = 0 AND LinkAccountsTeams.TeamID NOT IN (" & thisSelected & ") AND LevelID > 1 AND Balls_Omega > 0;"
+									sqlGetTeams = "SELECT COUNT(Teams.TeamID) AS TotalTeams FROM Teams INNER JOIN LinkAccountsTeams ON LinkAccountsTeams.TeamID = Teams.TeamID INNER JOIN Accounts ON Accounts.AccountID = LinkAccountsTeams.AccountID WHERE EndYear = 0 AND LevelID > 1 AND Balls_Omega > 0 AND Teams.TeamID NOT IN (" & thisSelected & ");"
+								Else
+									sqlGetChances = "SELECT Teams.TeamID, Teams.TeamName, Accounts.ProfileImage, Balls_Omega FROM Teams INNER JOIN LinkAccountsTeams ON LinkAccountsTeams.TeamID = Teams.TeamID INNER JOIN Accounts ON Accounts.AccountID = LinkAccountsTeams.AccountID WHERE EndYear = 0 AND LevelID > 1 AND Balls_Omega > 0 ORDER BY Balls_Omega DESC, TeamName ASC;"
+									sqlGetTotal = "SELECT SUM(Accounts.Balls_Omega) AS TotalBalls FROM Teams INNER JOIN LinkAccountsTeams ON LinkAccountsTeams.TeamID = Teams.TeamID INNER JOIN Accounts ON Accounts.AccountID = LinkAccountsTeams.AccountID WHERE EndYear = 0 AND LevelID > 1 AND Balls_Omega > 0;"
+									sqlGetTeams = "SELECT COUNT(Teams.TeamID) AS TotalTeams FROM Teams INNER JOIN LinkAccountsTeams ON LinkAccountsTeams.TeamID = Teams.TeamID INNER JOIN Accounts ON Accounts.AccountID = LinkAccountsTeams.AccountID WHERE EndYear = 0 AND LevelID > 1 AND Balls_Omega > 0;"
+								End If
+
 							End If
 
 							Set rsNumbers = sqlDatabase.Execute(sqlGetTeams & sqlGetTotal & sqlGetChances)
@@ -249,7 +339,12 @@
 <%
 										Do While Not rsNumbers.Eof
 
-											thisCount = rsNumbers("Balls")
+											If thisLevel = 1 Then
+												thisCount = rsNumbers("Balls_Omega")
+											Else
+												thisCount = rsNumbers("Balls_Standard")
+											End If
+
 											If thisTotal = 0 Then
 												thisChance = 100 * (1 / thisTeamsTotal)
 											Else
@@ -273,7 +368,7 @@
 
 						Else
 
-							sqlGetTotals = "SELECT LevelID, SUM(Balls) AS TotalBalls FROM Teams INNER JOIN LinkAccountsTeams ON LinkAccountsTeams.TeamID = Teams.TeamID INNER JOIN Accounts ON Accounts.AccountID = LinkAccountsTeams.AccountID WHERE EndYear = 0 AND LevelID > 1 GROUP BY LevelID"
+							sqlGetTotals = "SELECT LevelID, SUM(Balls_Standard) AS TotalBalls FROM Teams INNER JOIN LinkAccountsTeams ON LinkAccountsTeams.TeamID = Teams.TeamID INNER JOIN Accounts ON Accounts.AccountID = LinkAccountsTeams.AccountID WHERE EndYear = 0 AND LevelID > 1 GROUP BY LevelID"
 							Set rsTotals = sqlDatabase.Execute(sqlGetTotals)
 
 							If Not rsTotals.Eof Then
@@ -281,6 +376,19 @@
 								thisSLFFLTotal = rsTotals("TotalBalls")
 								rsTotals.MoveNext
 								thisFLFFLTotal = rsTotals("TotalBalls")
+								rsTotals.MoveNext
+								thisBLFFLTotal = rsTotals("TotalBalls")
+								rsTotals.Close
+								Set rsTotals = Nothing
+
+							End If
+
+							sqlGetOmega = "SELECT SUM(Balls_Omega) AS TotalBalls FROM Teams INNER JOIN LinkAccountsTeams ON LinkAccountsTeams.TeamID = Teams.TeamID INNER JOIN Accounts ON Accounts.AccountID = LinkAccountsTeams.AccountID WHERE EndYear = 0 AND LevelID > 1"
+							Set rsTotals = sqlDatabase.Execute(sqlGetOmega)
+
+							If Not rsTotals.Eof Then
+
+								thisOMEGATotal = rsTotals("TotalBalls")
 								rsTotals.Close
 								Set rsTotals = Nothing
 
@@ -304,6 +412,20 @@
 										<span class="float-right"><a href="/lottery/?level=3" class="btn btn-warning" style="text-decoration: none; display: block;">RUN</a></span>
 										<div><b>FARM LEVEL — <%= thisFLFFLTotal %> BALLS</b></div>
 										<div><%= FormatNumber(thisFLFFLTotal * 2500, 0) %> Schmeckles</div>
+
+									</li>
+									<li class="list-group-item rounded-0">
+
+										<span class="float-right"><a href="/lottery/?level=4" class="btn btn-warning" style="text-decoration: none; display: block;">RUN</a></span>
+										<div><b>BEST LEVEL — <%= thisBLFFLTotal %> BALLS</b></div>
+										<div><%= FormatNumber(thisBLFFLTotal * 2500, 0) %> Schmeckles</div>
+
+									</li>
+									<li class="list-group-item rounded-0">
+
+										<span class="float-right"><a href="/lottery/?level=1" class="btn btn-warning" style="text-decoration: none; display: block;">RUN</a></span>
+										<div><b>OMEGA LEVEL — <%= thisOMEGATotal %> BALLS</b></div>
+										<div><%= FormatNumber(thisOMEGATotal * 2500, 0) %> Schmeckles</div>
 
 									</li>
 								</ul>
