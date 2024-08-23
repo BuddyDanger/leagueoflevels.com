@@ -12,7 +12,7 @@
 			If IsNull(thisSchmeckleTotal) Then thisSchmeckleTotal = 0
 
 			maxBallPurchase = CDbl(thisSchmeckleTotal)
-			maxBallPurchase = Int(maxBallPurchase / 2500)
+			maxBallPurchase = Int(maxBallPurchase / 500)
 
 			rsSchmeckles.Close
 			Set rsSchmeckles = Nothing

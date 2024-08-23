@@ -221,7 +221,7 @@
 
 			thisCurrentSchmeckleTotal = rsSchmeckles("CurrentSchmeckleTotal")
 
-			If CDbl(thisCurrentSchmeckleTotal) >= CDbl(thisBallPurchase * 2500) Then
+			If CDbl(thisCurrentSchmeckleTotal) >= CDbl(thisBallPurchase * 500) Then
 
 				'UPDATE BALL TOTAL ON ACCOUNT'
 				Session.Contents("AccountBalls_Omega") = Session.Contents("AccountBalls_Omega") + thisBallPurchase
@@ -230,7 +230,7 @@
 
 				thisTransactionTypeID = 1001
 				thisTransactionDateTime = Now()
-				thisTransactionTotal = thisBallPurchase * -2500
+				thisTransactionTotal = thisBallPurchase * -500
 				thisAccountID = Session.Contents("AccountID")
 				thisTransactionDescription = ""
 
@@ -345,7 +345,7 @@
 
 			function calculate_omega_ball_cost(balls) {
 
-				document.getElementById("inputTotalSchmeckles_Omega").value = numberWithCommas(parseInt(balls * 2500));
+				document.getElementById("inputTotalSchmeckles_Omega").value = numberWithCommas(parseInt(balls * 500));
 				return 0;
 
 			}
