@@ -78,6 +78,7 @@
 					<span class="float-right"><%= FormatNumber(thisSchmeckleSackBalance, 0) %></span>
 					<div><b><i class="fas fa-fw fa-wallet"></i> &nbsp;SCHMECKLE SACK</b></div>
 				</li>
+				<!--
 				<li class="list-group-item rounded-0">
 					<span class="float-right"><%= Session.Contents("AccountBalls_Standard") %></span>
 					<div><b><i class="fas fa-fw fa-wallet"></i> &nbsp;STANDARD BALLS</b></div>
@@ -86,7 +87,7 @@
 					<span class="float-right"><%= Session.Contents("AccountBalls_Omega") %></span>
 					<div><b><i class="fas fa-fw fa-wallet"></i> &nbsp;OMEGA BALLS</b></div>
 				</li>
-				<!--
+				-->
 				<li class="list-group-item">
 					<span class="float-right"><%= thisCurrentWins %>-<%= thisCurrentLosses %>-<%= thisCurrentTies %></span>
 					<div><b><i class="fas fa-fw fa-table"></i> &nbsp;CURRENT RECORD</b></div>
@@ -99,7 +100,6 @@
 					<span class="float-right"><%= thisCurrentPowerRanking & ordsuffix %> (<%= thisPowerRankPoints %>/96)</span>
 					<div><b><i class="fas fa-fw fa-star"></i> &nbsp;POWER RANKING</b></div>
 				</li>
-				-->
 			</ul>
 		</a>
 <%

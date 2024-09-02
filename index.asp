@@ -300,9 +300,9 @@
 
 								<!--#include virtual="/assets/asp/dashboard/account.asp" -->
 
-								<!--#include virtual="/assets/asp/dashboard/balls-standard.asp" -->
+								<!--#include virtual="/assets/asp/dashboard/eliminator.asp" -->
 
-								<!--#include virtual="/assets/asp/dashboard/balls-omega.asp" -->
+								<!--#include virtual="/assets/asp/dashboard/locks.asp" -->
 
 								<!--#include virtual="/assets/asp/dashboard/sender.asp" -->
 
