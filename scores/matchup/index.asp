@@ -71,10 +71,12 @@
 		If thisTeamLevelID1 = 1 Then thisTeamLevelTitle1 = "omega"
 		If thisTeamLevelID1 = 2 Then thisTeamLevelTitle1 = "samelevel"
 		If thisTeamLevelID1 = 3 Then thisTeamLevelTitle1 = "farmlevel"
+		If thisTeamLevelID1 = 4 Then thisTeamLevelTitle1 = "bestlevel"
 
 		If thisTeamLevelID2 = 1 Then thisTeamLevelTitle2 = "omega"
 		If thisTeamLevelID2 = 2 Then thisTeamLevelTitle2 = "samelevel"
 		If thisTeamLevelID2 = 3 Then thisTeamLevelTitle2 = "farmlevel"
+		If thisTeamLevelID2 = 4 Then thisTeamLevelTitle2 = "bestlevel"
 
 		thisMatchupURL = "/scores/" & thisMatchupID & "/"
 
@@ -394,6 +396,7 @@
 										If oLevelID = 1 Then LevelCSS = "omega"
 										If oLevelID = 2 Then LevelCSS = "slffl"
 										If oLevelID = 3 Then LevelCSS = "flffl"
+										If oLevelID = 4 Then LevelCSS = "blffl"
 
 										If oLevelID = 1 Then oTeamScore1 = FormatNumber(oTeamScore1 + oTeamOmegaTravel1, 2)
 	%>

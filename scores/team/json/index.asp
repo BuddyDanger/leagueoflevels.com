@@ -51,6 +51,7 @@
 
 	If thisLevelID = 2 Then leagueTitle = "SLFFL"
 	If thisLevelID = 3 Then leagueTitle = "FLFFL"
+	If thisLevelID = 4 Then leagueTitle = "BLFFL"
 
 	rsLeague.Close
 	Set rsLeague = Nothing
@@ -69,21 +70,10 @@
 	TeamScore1 = CDbl(objTeamScore.item(0).text) + BaseScore
 	TeamPMR1 = CInt(objTeamPMR.item(0).text)
 
-	If leagueTitle = "OMEGA" Then
-
-		TeamPMRColor1 = "success"
-		If TeamPMR1 < 396 Then TeamPMRColor1 = "warning"
-		If TeamPMR1 < 198 Then TeamPMRColor1 = "danger"
-		TeamPMRPercent1 = (TeamPMR1 * 100) / 600
-
-	Else
-
-		TeamPMRColor1 = "success"
-		If TeamPMR1 < 321 Then TeamPMRColor1 = "warning"
-		If TeamPMR1 < 161 Then TeamPMRColor1 = "danger"
-		TeamPMRPercent1 = (TeamPMR1 * 100) / 420
-
-	End If
+	TeamPMRColor1 = "success"
+	If TeamPMR1 < 321 Then TeamPMRColor1 = "warning"
+	If TeamPMR1 < 161 Then TeamPMRColor1 = "danger"
+	TeamPMRPercent1 = (TeamPMR1 * 100) / 420
 
 	If CInt(teamID) = 38 Then TeamName1 = "München on Bündchen"
 

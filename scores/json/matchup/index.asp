@@ -61,7 +61,7 @@
 				Set rsLastWeek = Nothing
 
 			End If
-			
+
 			thisTeamScore1 = FormatNumber(thisTeamScore1 + thisTeamBaseScore1, 2)
 			thisTeamScore2 = FormatNumber(thisTeamScore2 + thisTeamBaseScore2, 2)
 
@@ -99,6 +99,7 @@
 	If thisMatchupLevel = 1 Then leagueTitle = "omega"
 	If thisMatchupLevel = 2 Then leagueTitle = "slffl"
 	If thisMatchupLevel = 3 Then leagueTitle = "flffl"
+	If thisMatchupLevel = 4 Then leagueTitle = "blffl"
 
 	slackJSON = slackJSON & "{"
 

@@ -431,8 +431,10 @@
 
 		If UCase(League) = "SLFFL" Or UCase(League) = "SAMELEVEL" Then
 			thisToken = "U2FsdGVkX19ZBd8YhZqmh1NL1zpkauYC_XbwunSePKwqV37gwfpFQlhXxWQhpuyz_E9hTuIEoXfPi5_qYoR7XEndFDBETaWJE_5lLUxLucwNYBs6guEARajjFvzl6NrMYJX57wuVxhH_A83VkT9KTg"
-		ElseIf UCase(League) = "OMEGA" Then
+		ElseIf UCase(League) = "OMEGA" Or UCase(League) = "OMEGALEVEL" Then
 			thisToken = "U2FsdGVkX18XysGpV7y4cVKL40lykH1b41UZV64WTeIrt8fhscq40sjPgACpP-povMawHhQZpQjyajTiYAB1DBC-xgrOHgAw-WVq52sm4a2IWXueFm4I5LuWVKpeGkvWaSZ5wbphCEu4PBYhAZZHrQ"
+		ElseIf UCase(League) = "BLFFL" Or UCase(League) = "BESTLEVEL" Then
+			thisToken = "U2FsdGVkX1-jLwTGnJpgPfIYnIw7KMwo1YSuwkb36OkEmTgcgBuEbrvCCHhDAHP_py8ldVpFZm7HXMgrPzvrufKJfA3IFBxCBVQMBl_9d04ijV8zz7HpvILkH_t7JtGEm0JL-XRqpwBGD7MQFZz0fA"
 		Else
 			thisToken = "U2FsdGVkX19TbNaT9eoncsWLkC8RxfpZKKSf353z06x9XO-j9-FuSTwXVxMZ4tve5KtG0uceH2CLiAzQ3vjfBGJo-KW7ZPgc--tJjW522w8_xKRQHLONygFWyTMm-H2_hLtjtE9ITDRQmSE3Ef0U9g"
 		End If
@@ -446,6 +448,7 @@
 		If UCase(League) = "SLFFL" Then LeagueID = "samelevel"
 		If UCase(League) = "FLFFL" Then LeagueID = "farmlevel"
 		If UCase(League) = "OLFFL" Then LeagueID = "omegalevel"
+		If UCase(League) = "BLFFL" Then LeagueID = "bestlevel"
 
 		liveMatchups = "https://api.cbssports.com/fantasy/league/scoring/live?version=3.0&response_format=xml&league_id=" & LeagueID & "&period=" & Period & "&access_token=" & GetToken(League)
 		Set xmlhttpMatchups = Server.CreateObject("Microsoft.XMLHTTP")
@@ -462,6 +465,7 @@
 		If UCase(League) = "SLFFL" Then LeagueID = "samelevel"
 		If UCase(League) = "FLFFL" Then LeagueID = "farmlevel"
 		If UCase(League) = "OLFFL" Then LeagueID = "omegalevel"
+		If UCase(League) = "BLFFL" Then LeagueID = "bestlevel"
 
 		liveRoster = "https://api.cbssports.com/fantasy/league/scoring/live?version=3.0&response_format=xml&league_id=" & LeagueID & "&period=" & Period & "&team_id=" & TeamID & "&access_token=" & GetToken(League)
 		Set xmlhttpRoster = Server.CreateObject("Microsoft.XMLHTTP")
@@ -494,6 +498,16 @@
 		If UCase(League) = "FLFFL" Or UCase(League) = "FARMLEVEL" Then
 
 			liveSLFFL = "https://api.cbssports.com/fantasy/league/scoring/live?version=3.0&response_format=xml&league_id=farmlevel&period=" & Period & "&access_token=" & GetToken("FARM")
+			Set xmlhttpSLFFL = Server.CreateObject("MSXML2.ServerXMLHTTP.6.0")
+
+			xmlhttpSLFFL.open "GET", liveSLFFL, false
+			xmlhttpSLFFL.send ""
+
+		End If
+
+		If UCase(League) = "BLFFL" Or UCase(League) = "BESTLEVEL" Then
+
+			liveSLFFL = "https://api.cbssports.com/fantasy/league/scoring/live?version=3.0&response_format=xml&league_id=bestlevel&period=" & Period & "&access_token=" & GetToken("BLFFL")
 			Set xmlhttpSLFFL = Server.CreateObject("MSXML2.ServerXMLHTTP.6.0")
 
 			xmlhttpSLFFL.open "GET", liveSLFFL, false
