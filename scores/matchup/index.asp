@@ -228,7 +228,8 @@
 									</li>
 <%
 									HitReserves = 0
-									For i = 0 to (objTeamPlayers1.length - 1)
+									'For i = 0 to (objTeamPlayers1.length - 1)'
+									For i = 0 to (12)
 
 										Set objPlayer = objTeamPlayers1.item(i)
 
@@ -314,7 +315,8 @@
 									</li>
 <%
 									HitReserves = 0
-									For i = 0 to (objTeamPlayers2.length - 1)
+									'For i = 0 to (objTeamPlayers2.length - 1)
+									For i = 0 to (12)
 
 										Set objPlayer = objTeamPlayers2.item(i)
 

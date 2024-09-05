@@ -256,6 +256,12 @@
 								headerText = "FARM LEVEL"
 								cardText = "03324F"
 							End If
+							If CInt(thisMatchupLevelID) = 4 Then
+								headerBGcolor = "4A90E2"
+								headerTextColor = "fff"
+								headerText = "BEST LEVEL"
+								cardText = "03324F"
+							End If
 
 						End If
 %>

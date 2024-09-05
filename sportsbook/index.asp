@@ -100,25 +100,25 @@
 								Session.Contents("switchSLFFL") = 0
 								Session.Contents("switchFLFFL") = 0
 								Session.Contents("switchNEXT") = 0
+								Session.Contents("switchBLFFL") = 0
 
 								thisNFL = Request.QueryString("NFL")
 								thisOMEGA = Request.QueryString("OMEGA")
 								thisSLFFL = Request.QueryString("SLFFL")
 								thisFLFFL = Request.QueryString("FLFFL")
 								thisNEXT = Request.QueryString("NEXT")
+								thisBLFFL = Request.QueryString("BLFFL")
 
 								If thisNFL = 1 Then Session.Contents("switchNFL") = 1
 								If thisOMEGA = 1 Then Session.Contents("switchOMEGA") = 1
 								If thisSLFFL = 1 Then Session.Contents("switchSLFFL") = 1
 								If thisFLFFL = 1 Then Session.Contents("switchFLFFL") = 1
 								If thisNEXT = 1 Then Session.Contents("switchNEXT") = 1
+								If thisBLFFL = 1 Then Session.Contents("switchBLFFL") = 1
 
 							End If
 
-							Session.Contents("switchOMEGA") = 0
-							Session.Contents("switchSLFFL") = 0
-							Session.Contents("switchFLFFL") = 0
-							Session.Contents("switchNEXT") = 0
+
 %>
 							<form action="/sportsbook/" method="get">
 								<input type="hidden" name="action" value="switch" />
@@ -126,7 +126,7 @@
 									<div class="btn btn-dark mb-3">
 										<div class="custom-control custom-switch">
 											<input type="checkbox" class="custom-control-input" id="switchNFL" name="NFL" value="1" <% If Session.Contents("switchNFL") = 1 Then %>checked<% End If %>>
-											<label class="custom-control-label text-white" for="switchNFL">NFL LEVEL</label>
+											<label class="custom-control-label text-white" for="switchNFL">NFL</label>
 										</div>
 									</div>
 								</div>
@@ -134,7 +134,7 @@
 									<div class="btn btn-dark mb-3">
 										<div class="custom-control custom-switch">
 											<input type="checkbox" class="custom-control-input" id="switchOMEGA" name="OMEGA" value="1" <% If Session.Contents("switchOMEGA") = 1 Then %>checked<% End If %>>
-											<label class="custom-control-label text-white" for="switchOMEGA">OMEGA LEVEL</label>
+											<label class="custom-control-label text-white" for="switchOMEGA">OMEGA</label>
 										</div>
 									</div>
 								</div>
@@ -142,7 +142,7 @@
 									<div class="btn btn-dark mb-3">
 										<div class="custom-control custom-switch">
 											<input type="checkbox" class="custom-control-input" id="switchSLFFL" name="SLFFL" value="1" <% If Session.Contents("switchSLFFL") = 1 Then %>checked<% End If %>>
-											<label class="custom-control-label text-white" for="switchSLFFL">SAME LEVEL</label>
+											<label class="custom-control-label text-white" for="switchSLFFL">SLFFL</label>
 										</div>
 									</div>
 								</div>
@@ -150,7 +150,15 @@
 									<div class="btn btn-dark mb-3">
 										<div class="custom-control custom-switch">
 											<input type="checkbox" class="custom-control-input" id="switchFLFFL" name="FLFFL" value="1" <% If Session.Contents("switchFLFFL") = 1 Then %>checked<% End If %>>
-											<label class="custom-control-label text-white" for="switchFLFFL">FARM LEVEL</label>
+											<label class="custom-control-label text-white" for="switchFLFFL">FLFFL</label>
+										</div>
+									</div>
+								</div>
+								<div class="form-check form-check-inline">
+									<div class="btn btn-dark mb-3">
+										<div class="custom-control custom-switch">
+											<input type="checkbox" class="custom-control-input" id="switchBLFFL" name="BLFFL" value="1" <% If Session.Contents("switchBLFFL") = 1 Then %>checked<% End If %>>
+											<label class="custom-control-label text-white" for="switchBLFFL">BLFFL</label>
 										</div>
 									</div>
 								</div>
@@ -158,7 +166,7 @@
 									<div class="btn btn-dark mb-4">
 										<div class="custom-control custom-switch">
 											<input type="checkbox" class="custom-control-input" id="switchNEXT" name="NEXT" value="1" <% If Session.Contents("switchNEXT") = 1 Then %>checked<% End If %>>
-											<label class="custom-control-label text-white" for="switchNEXT">NEXT LEVEL CUP</label>
+											<label class="custom-control-label text-white" for="switchNEXT">CUP</label>
 										</div>
 									</div>
 								</div>
@@ -255,10 +263,11 @@
 						If Session.Contents("switchNEXT") Then sqlGetWeek = sqlGetWeek & "0,"
 						If Session.Contents("switchSLFFL") Then sqlGetWeek = sqlGetWeek & "2,"
 						If Session.Contents("switchFLFFL") Then sqlGetWeek = sqlGetWeek & "3,"
+						If Session.Contents("switchBLFFL") Then sqlGetWeek = sqlGetWeek & "4,"
 						If Right(sqlGetWeek, 1) = "," Then sqlGetWeek = Left(sqlGetWeek, Len(sqlGetWeek)-1)
 						sqlGetWeek = sqlGetWeek & ") "
 					End If
-					sqlGetWeek = sqlGetWeek & "AND (DateTimeEST IS NULL OR DateTimeEST > '" & DateAdd("h", -5, Now()) & "') AND (AwayPercentage IS NULL OR (AwayPercentage < 0.7 AND HomePercentage < 0.7)) "
+					sqlGetWeek = sqlGetWeek & "AND (DateTimeEST IS NULL OR DateTimeEST > '" & DateAdd("h", -4, Now()) & "') AND (AwayPercentage IS NULL OR (AwayPercentage < 0.7 AND HomePercentage < 0.7)) "
 					sqlGetWeek = sqlGetWeek & "ORDER BY LevelID, DateTimeEST"
 					Set rsWeek = sqlDatabase.Execute(sqlGetWeek)
 
@@ -328,6 +337,12 @@
 							headerBGcolor = "032B43"
 							headerTextColor = "fff"
 							headerText = "FARM LEVEL #" & thisLOLMatchupID
+							cardText = "03324F"
+						End If
+						If CInt(thisLevelID) = 4 Then
+							headerBGcolor = "4A90E2"
+							headerTextColor = "fff"
+							headerText = "BEST LEVEL #" & thisLOLMatchupID
 							cardText = "03324F"
 						End If
 

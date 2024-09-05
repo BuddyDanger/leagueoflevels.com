@@ -41,6 +41,7 @@
 	If Len(Session.Contents("switchSLFFL")) = 0 Then Session.Contents("switchSLFFL") = 1
 	If Len(Session.Contents("switchFLFFL")) = 0 Then Session.Contents("switchFLFFL") = 1
 	If Len(Session.Contents("switchNEXT")) = 0 Then Session.Contents("switchNEXT") = 1
+	If Len(Session.Contents("switchBLFFL")) = 0 Then Session.Contents("switchBLFFL") = 1
 
 	If Session.Contents("LoggedIn") <> "yes" Then
 
