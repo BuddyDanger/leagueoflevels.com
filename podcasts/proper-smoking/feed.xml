@@ -22,19 +22,6 @@
 <itunes:category text="Football"/>
 <itunes:category text="Fantasy Sports"/>
 </itunes:category>
-<item>
-<title><![CDATA[Episode #1]]></title>
-<description><![CDATA[On the inaugural episode of the Proper Smoking Podcast, Proper talks over Blountz with his overly loud mic as they discuss some LOL history, the Draft, our own lineups, Toxic Hollow’s inevitable resurgence and Titans running backs. Time to boo the Comissioner.]]></description>
-<guid isPermaLink="false">E0001</guid>
-<pubDate>Fri, 06 Sep 2024 09:55:00 GMT</pubDate>
-<enclosure url="https://www.leagueoflevels.com/podcasts/proper-smoking/downloads/S01E01.mp3" length="29380792" type="audio/mpeg"/>
-<itunes:author></itunes:author>
-<itunes:explicit>yes</itunes:explicit>
-<itunes:subtitle><![CDATA[On the inaugural episode of the Proper Smoking Podcast, Proper talks over Blountz with his overly loud mic as they discuss some LOL history, the Draft, our own lineups, Toxic Hollow’s inevitable resurgence and Titans running backs. Time to boo the Comissioner.]]></itunes:subtitle>
-<itunes:summary><![CDATA[On the inaugural episode of the Proper Smoking Podcast, Proper talks over Blountz with his overly loud mic as they discuss some LOL history, the Draft, our own lineups, Toxic Hollow’s inevitable resurgence and Titans running backs. Time to boo the Comissioner.]]></itunes:summary>
-<itunes:duration>0:30:50</itunes:duration>
-<itunes:length>29380792</itunes:length>
-<itunes:keywords></itunes:keywords>
-</item>
+
 </channel>
 </rss>
