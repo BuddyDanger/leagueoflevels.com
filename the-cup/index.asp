@@ -54,7 +54,7 @@
 					<div class="row mt-4">
 
 						<!-- ROUND ONE -->
-						<div class="col-xl-2 col-12 pb-4">
+						<div class="col-xxxl-2 col-lg-4 col-12 pb-4">
 
 							<div class="bg-dark text-white p-2 mb-3 rounded"><b>ROUND ONE</b> (1-2)</div>
 
@@ -150,7 +150,7 @@
 						</div>
 
 						<!-- ROUND TWO -->
-						<div class="col-xl-2 col-12 pb-4">
+						<div class="col-xxxl-2 col-lg-4 col-12 pb-4">
 
 							<div class="bg-dark text-white p-2 mb-3 rounded"><b>ROUND TWO</b> (3-5)</div>
 
@@ -445,11 +445,10 @@
 						</div>
 
 						<!-- ROUND THREE -->
-						<div class="col-xl-2 col-12 pb-4">
+						<div class="col-xxxl-2 col-lg-4 col-12 pb-4">
 
 							<div class="bg-dark text-white p-2 mb-3 rounded"><b>ROUND THREE</b> (6-8)</div>
 
-							<div class="py-2 py-xl-0"></div>
 							<div class="py-xl-4"></div>
 							<div class="py-xl-4"></div>
 							<div class="py-xl-2"></div>
@@ -626,11 +625,10 @@
 						</div>
 
 						<!-- ROUND FOUR -->
-						<div class="col-xl-2 col-12 pb-4">
+						<div class="col-xxxl-2 col-lg-4 col-12 pb-4">
 
 							<div class="bg-dark text-white p-2 mb-3 rounded"><b>ROUND FOUR</b> (9-11)</div>
 
-							<div class="py-2 py-xl-0"></div>
 							<div class="py-xl-5"></div>
 							<div class="py-xl-5"></div>
 							<div class="py-xl-3"></div>
@@ -725,7 +723,7 @@
 						</div>
 
 						<!-- ROUND FIVE -->
-						<div class="col-xl-2 col-12 pb-4">
+						<div class="col-xxxl-2 col-lg-4 col-12 pb-4">
 
 							<div class="bg-dark text-white p-2 mb-3 rounded"><b>ROUND FIVE</b> (12-14)</div>
 
@@ -785,7 +783,7 @@
 						</div>
 
 						<!-- ROUND SIX -->
-						<div class="col-xl-2 col-12 pb-4">
+						<div class="col-xxxl-2 col-lg-4 col-12 pb-4">
 
 							<div class="bg-dark text-white p-2 mb-3 rounded"><b>ROUND SIX</b> (15-17)</div>
 

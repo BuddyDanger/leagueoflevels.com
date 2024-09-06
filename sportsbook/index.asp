@@ -67,7 +67,7 @@
 							If IsNull(thisTotalPotentialPayout) Then thisTotalPotentialPayout = 0
 %>
 							<div class="col-xxxl-4 col-xxl-4 col-xl-4 col-lg-6 col-md-6 col-sm-12 col-xs-12 col-xxs-12">
-								<a href="/sportsbook/tickets/" style="text-decoration: none; display: block;">
+								<a href="/sportsbook/tickets/active/" style="text-decoration: none; display: block;">
 									<ul class="list-group mb-4">
 										<li class="list-group-item p-0">
 											<h4 class="text-left bg-dark text-white p-3 mt-0 mb-0 rounded-top"><b>ACTIVE BOOK STATS</b><span class="float-right dripicons-graph-pie"></i></h4>
