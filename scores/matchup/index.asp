@@ -18,7 +18,7 @@
 	sqlGetMatchup = sqlGetMatchup & "WHERE Matchups.Year = " & Session.Contents("CurrentYear") & " AND Matchups.Period = " & Session.Contents("CurrentPeriod") & " "
 	sqlGetMatchup = sqlGetMatchup & "ORDER BY CASE WHEN Matchups.LevelID = 1 THEN 1 WHEN Matchups.LevelID = 0 THEN 2 WHEN Matchups.LevelID = 2 THEN 3 WHEN Matchups.LevelID = 3 THEN 4 ELSE 5 END;"
 
-	sqlGetSchedules = "SELECT MatchupID, Matchups.LevelID, Year, Period, IsPlayoffs, TeamID1, TeamID2, Team1.LevelID AS TeamLevelID1, Team2.LevelID AS TeamLevelID2, Team1.CBSID AS TeamCBSID1, Team2.CBSID AS TeamCBSID2, Account1.ProfileImage AS ProfileImage1, Account2.ProfileImage AS ProfileImage2, Team1.TeamName AS TeamName1, Team2.TeamName AS TeamName2, TeamScore1, TeamScore2, TeamPMR1, TeamPMR2, Leg, TeamProjected1, TeamProjected2, TeamWinPercentage1, TeamWinPercentage2, TeamMoneyline1, TeamMoneyline2, TeamSpread1, TeamSpread2, Matchups.TeamOmegaTravel1, Matchups.TeamOmegaTravel2 FROM Matchups "
+	sqlGetSchedules = "SELECT MatchupID, Matchups.LevelID, Year, Period, IsPlayoffs, TeamID1, TeamID2, Team1.LevelID AS TeamLevelID1, Team2.LevelID AS TeamLevelID2, Team1.CBSID AS TeamCBSID1, Team2.CBSID AS TeamCBSID2, Account1.ProfileImage AS ProfileImage1, Account2.ProfileImage AS ProfileImage2, Team1.TeamName AS TeamName1, Team2.TeamName AS TeamName2, Team1.AbbreviatedName AS AbbreviatedName1, Team2.AbbreviatedName AS AbbreviatedName2, TeamScore1, TeamScore2, TeamPMR1, TeamPMR2, Leg, TeamProjected1, TeamProjected2, TeamWinPercentage1, TeamWinPercentage2, TeamMoneyline1, TeamMoneyline2, TeamSpread1, TeamSpread2, Matchups.TeamOmegaTravel1, Matchups.TeamOmegaTravel2 FROM Matchups "
 	sqlGetSchedules = sqlGetSchedules & "INNER JOIN Teams AS Team1 ON Team1.TeamID = Matchups.TeamID1 "
 	sqlGetSchedules = sqlGetSchedules & "INNER JOIN Teams AS Team2 ON Team2.TeamID = Matchups.TeamID2 "
 	sqlGetSchedules = sqlGetSchedules & "INNER JOIN Levels AS Level1 ON Level1.LevelID = Team1.LevelID "
@@ -51,6 +51,8 @@
 		thisTeamCBSID2 = rsSchedules("TeamCBSID2")
 		thisTeamName1 = rsSchedules("TeamName1")
 		thisTeamName2 = rsSchedules("TeamName2")
+		thisAbbreviatedName1 = rsSchedules("AbbreviatedName1")
+		thisAbbreviatedName2 = rsSchedules("AbbreviatedName2")
 		thisTeamScore1 = rsSchedules("TeamScore1")
 		thisTeamScore2 = rsSchedules("TeamScore2")
 		thisTeamPMR1 = rsSchedules("TeamPMR1")
@@ -79,6 +81,9 @@
 		If thisTeamLevelID2 = 4 Then thisTeamLevelTitle2 = "bestlevel"
 
 		thisMatchupURL = "/scores/" & thisMatchupID & "/"
+
+		If thisTeamName1 = "The District of Columbia(n) Neckties" Then thisTeamName1 = thisAbbreviatedName1
+		If thisTeamName2 = "The District of Columbia(n) Neckties" Then thisTeamName2 = thisAbbreviatedName2
 
 		rsSchedules.Close
 		Set rsSchedules = Nothing
