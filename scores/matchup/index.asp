@@ -407,7 +407,7 @@
 
 										If oLevelID = 1 Then oTeamScore1 = FormatNumber(oTeamScore1 + oTeamOmegaTravel1, 2)
 	%>
-										<div class="col-6 col-lg-3">
+										<div class="col-6 col-xl-6 col-xxxl-3">
 											<a href="/scores/<%= oMatchupID %>/" style="text-decoration: none; display: block;">
 												<ul class="list-group matchup-<%= oMatchupID %>" id="matchup-<%= oMatchupID %>" style="margin-bottom: 1rem;">
 													<li class="list-group-item team-<%= LevelCSS %>-box-<%= oTeamID1 %>" style="position: relative;">

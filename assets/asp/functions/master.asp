@@ -283,7 +283,7 @@
 			End If
 
 			sqlGetTicketSlips = "SELECT " & thisTop & " TicketSlips.TicketSlipID, TicketSlips.TicketTypeID, TicketSlips.AccountID, TicketSlips.MatchupID, TicketSlips.NFLGameID, TicketSlips.PropQuestionID, TicketSlips.PropAnswerID, Accounts.ProfileName, DATEADD(hour, -4, TicketSlips.InsertDateTime) AS InsertDateTime, "
-			sqlGetTicketSlips = sqlGetTicketSlips & "NFLGames.AwayTeamID AS NFLTeamID1, NFLGames.HomeTeamID AS NFLTeamID2, NFLTeam1.City + ' ' + NFLTeam1.Name AS NFLTeamName1, NFLTeam2.City + ' ' + NFLTeam2.Name AS NFLTeamName2, NFLTeam3.City + ' ' + NFLTeam3.Name AS NFLBetTeamName, "
+			sqlGetTicketSlips = sqlGetTicketSlips & "NFLGames.AwayTeamID AS NFLTeamID1, NFLGames.HomeTeamID AS NFLTeamID2, NFLTeam1.Name AS NFLTeamName1, NFLTeam2.Name AS NFLTeamName2, NFLTeam3.City + ' ' + NFLTeam3.Name AS NFLBetTeamName, "
 			sqlGetTicketSlips = sqlGetTicketSlips & "Matchups.TeamID1 AS LOLTeamID1, Matchups.TeamID2 AS LOLTeamID2, LOLTeam1.TeamName AS LOLTeamName1, LOLTeam2.TeamName AS LOLTeamName2, LOLTeam3.TeamName AS LOLBetTeamName, "
 			sqlGetTicketSlips = sqlGetTicketSlips & "PQ.Question, PA.Answer, TicketSlips.TeamID, TicketSlips.Moneyline, TicketSlips.Spread, TicketSlips.OverUnderAmount, TicketSlips.OverUnderBet, TicketSlips.BetAmount, TicketSlips.PayoutAmount, TicketSlips.IsWinner FROM TicketSlips "
 			sqlGetTicketSlips = sqlGetTicketSlips & "INNER JOIN Accounts ON Accounts.AccountID = TicketSlips.AccountID "
@@ -370,7 +370,7 @@
 				If ticketsDashboard Then
 					Response.Write("<div class=""col-xl-4 col-lg-4 col-md-4 col-sm-6 col-xs-12 col-xxs-12"">")
 				Else
-					Response.Write("<div class=""col-xxxl-3 col-xxl-3 col-xl-4 col-lg-4 col-md-4 col-sm-6 col-xs-12 col-xxs-12"">")
+					Response.Write("<div class=""col-xxxl-3 col-xl-4 col-lg-4 col-md-4 col-sm-6 col-xs-12 col-xxs-12"">")
 				End If
 
 					Response.Write("<ul class=""list-group mb-4"">")

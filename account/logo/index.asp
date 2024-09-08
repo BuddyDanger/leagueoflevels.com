@@ -14,7 +14,7 @@
 	Set objFileUpload = Server.CreateObject("aspSmartUpload.SmartUpload")
 	objFileUpload.Upload
 
-	objFileUpload.AllowedFilesList = "jpg,gif,png"
+	objFileUpload.AllowedFilesList = "jpg,gif,png,jpeg,bmp"
 
 	If objFileUpload.Files("AccountImage").FileName <> "" Then
 

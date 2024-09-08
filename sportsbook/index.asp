@@ -91,7 +91,7 @@
 
 						End If
 %>
-						<div class="col-xxxl-3 col-xxl-3 col-xl-3 col-lg-6 col-md-6 col-sm-12 col-xs-12 col-xxs-12">
+						<div class="col-xxxl-3 col-xxl-4 col-xl-4 col-lg-6 col-md-6 col-sm-12 col-xs-12 col-xxs-12">
 <%
 							If Request.QueryString("action") = "switch" Then
 
@@ -122,55 +122,62 @@
 %>
 							<form action="/sportsbook/" method="get">
 								<input type="hidden" name="action" value="switch" />
-								<div class="form-check form-check-inline">
-									<div class="btn btn-dark mb-3">
-										<div class="custom-control custom-switch">
-											<input type="checkbox" class="custom-control-input" id="switchNFL" name="NFL" value="1" <% If Session.Contents("switchNFL") = 1 Then %>checked<% End If %>>
-											<label class="custom-control-label text-white" for="switchNFL">NFL</label>
+								<div class="row">
+									<div class="col-12">
+										<div class="form-check form-check-inline">
+											<div class="btn btn-dark mb-3">
+												<div class="custom-control custom-switch">
+													<input type="checkbox" class="custom-control-input" id="switchNFL" name="NFL" value="1" <% If Session.Contents("switchNFL") = 1 Then %>checked<% End If %>>
+													<label class="custom-control-label text-white" for="switchNFL">NFL</label>
+												</div>
+											</div>
+										</div>
+										<div class="form-check form-check-inline">
+											<div class="btn btn-dark mb-3">
+												<div class="custom-control custom-switch">
+													<input type="checkbox" class="custom-control-input" id="switchOMEGA" name="OMEGA" value="1" <% If Session.Contents("switchOMEGA") = 1 Then %>checked<% End If %>>
+													<label class="custom-control-label text-white" for="switchOMEGA">OMEGA</label>
+												</div>
+											</div>
+										</div>
+										<div class="form-check form-check-inline">
+											<div class="btn btn-dark mb-3">
+												<div class="custom-control custom-switch">
+													<input type="checkbox" class="custom-control-input" id="switchSLFFL" name="SLFFL" value="1" <% If Session.Contents("switchSLFFL") = 1 Then %>checked<% End If %>>
+													<label class="custom-control-label text-white" for="switchSLFFL">SLFFL</label>
+												</div>
+											</div>
+										</div>
+										<div class="form-check form-check-inline">
+											<div class="btn btn-dark mb-3">
+												<div class="custom-control custom-switch">
+													<input type="checkbox" class="custom-control-input" id="switchFLFFL" name="FLFFL" value="1" <% If Session.Contents("switchFLFFL") = 1 Then %>checked<% End If %>>
+													<label class="custom-control-label text-white" for="switchFLFFL">FLFFL</label>
+												</div>
+											</div>
+										</div>
+										<div class="form-check form-check-inline">
+											<div class="btn btn-dark mb-3">
+												<div class="custom-control custom-switch">
+													<input type="checkbox" class="custom-control-input" id="switchBLFFL" name="BLFFL" value="1" <% If Session.Contents("switchBLFFL") = 1 Then %>checked<% End If %>>
+													<label class="custom-control-label text-white" for="switchBLFFL">BLFFL</label>
+												</div>
+											</div>
+										</div>
+										<div class="form-check form-check-inline">
+											<div class="btn btn-dark mb-3">
+												<div class="custom-control custom-switch">
+													<input type="checkbox" class="custom-control-input" id="switchNEXT" name="NEXT" value="1" <% If Session.Contents("switchNEXT") = 1 Then %>checked<% End If %>>
+													<label class="custom-control-label text-white" for="switchNEXT">CUP</label>
+												</div>
+											</div>
 										</div>
 									</div>
-								</div>
-								<div class="form-check form-check-inline">
-									<div class="btn btn-dark mb-3">
-										<div class="custom-control custom-switch">
-											<input type="checkbox" class="custom-control-input" id="switchOMEGA" name="OMEGA" value="1" <% If Session.Contents("switchOMEGA") = 1 Then %>checked<% End If %>>
-											<label class="custom-control-label text-white" for="switchOMEGA">OMEGA</label>
-										</div>
+									<div class="col-12">
+										<button class="btn btn-info mb-3 mr-2">UPDATE FILTERS</button>
+										<a href="/sportsbook/tickets/" class="btn btn-info mb-3">VIEW ALL TICKETS</a>
 									</div>
 								</div>
-								<div class="form-check form-check-inline">
-									<div class="btn btn-dark mb-3">
-										<div class="custom-control custom-switch">
-											<input type="checkbox" class="custom-control-input" id="switchSLFFL" name="SLFFL" value="1" <% If Session.Contents("switchSLFFL") = 1 Then %>checked<% End If %>>
-											<label class="custom-control-label text-white" for="switchSLFFL">SLFFL</label>
-										</div>
-									</div>
-								</div>
-								<div class="form-check form-check-inline">
-									<div class="btn btn-dark mb-3">
-										<div class="custom-control custom-switch">
-											<input type="checkbox" class="custom-control-input" id="switchFLFFL" name="FLFFL" value="1" <% If Session.Contents("switchFLFFL") = 1 Then %>checked<% End If %>>
-											<label class="custom-control-label text-white" for="switchFLFFL">FLFFL</label>
-										</div>
-									</div>
-								</div>
-								<div class="form-check form-check-inline">
-									<div class="btn btn-dark mb-3">
-										<div class="custom-control custom-switch">
-											<input type="checkbox" class="custom-control-input" id="switchBLFFL" name="BLFFL" value="1" <% If Session.Contents("switchBLFFL") = 1 Then %>checked<% End If %>>
-											<label class="custom-control-label text-white" for="switchBLFFL">BLFFL</label>
-										</div>
-									</div>
-								</div>
-								<div class="form-check form-check-inline">
-									<div class="btn btn-dark mb-4">
-										<div class="custom-control custom-switch">
-											<input type="checkbox" class="custom-control-input" id="switchNEXT" name="NEXT" value="1" <% If Session.Contents("switchNEXT") = 1 Then %>checked<% End If %>>
-											<label class="custom-control-label text-white" for="switchNEXT">CUP</label>
-										</div>
-									</div>
-								</div>
-								<button class="btn btn-info">UPDATE</button>
                             </form>
 
 						</div>
