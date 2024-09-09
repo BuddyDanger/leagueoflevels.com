@@ -72,7 +72,7 @@
 
 						sqlMatchups = sqlMatchups & "SELECT Matchups.MatchupID, Matchups.LevelID, Matchups.TeamID1, Teams1.TeamName AS TeamName1, Accounts1.ProfileImage AS Logo1, Teams1.CBSID AS CBSID1, Matchups.TeamID2, Teams2.TeamName, Accounts2.ProfileImage AS Logo2, Teams2.CBSID AS CBSID2, Matchups.TeamScore1, Matchups.TeamScore2, Matchups.TeamPMR1, Matchups.TeamPMR2, Matchups.IsPlayoffs, Matchups.IsMajor, Power1.PowerPoints_Total + Power2.PowerPoints_Total AS PowerMatchup, Power1.PowerPoints_Total AS PowerPoints1, Power2.PowerPoints_Total AS PowerPoints2, Teams1.AbbreviatedName, Teams2.AbbreviatedName FROM Matchups INNER JOIN Teams AS Teams1 ON Teams1.TeamID = Matchups.TeamID1 LEFT JOIN Teams AS Teams2 ON Teams2.TeamID = Matchups.TeamID2 INNER JOIN LinkAccountsTeams AS Link1 ON Link1.TeamID = Teams1.TeamID LEFT JOIN LinkAccountsTeams AS Link2 ON Link2.TeamID = Teams2.TeamID INNER JOIN Accounts AS Accounts1 ON Accounts1.AccountID = Link1.AccountID LEFT JOIN Accounts AS Accounts2 ON Accounts2.AccountID = Link2.AccountID LEFT JOIN PowerRankings AS Power1 ON Power1.TeamID = Teams1.TeamID LEFT JOIN PowerRankings AS Power2 ON Power2.TeamID = Teams2.TeamID WHERE Matchups.Year = " & Session.Contents("CurrentYear") & " AND Matchups.Period = " & Session.Contents("CurrentPeriod") & " AND Matchups.LevelID = 4 ORDER BY (Power1.PowerPoints_Total + Power2.PowerPoints_Total) DESC;"
 
-						sqlMatchups = sqlMatchups & "SELECT distinct Matchups.MatchupID, Matchups.LevelID, Matchups.TeamID1, Teams1.TeamName AS TeamName1, '' AS Logo1, Teams1.CBSID AS CBSID1, Matchups.TeamID2, Teams2.TeamName, '' AS Logo2, Teams2.CBSID, Matchups.TeamScore1, Matchups.TeamScore2, Matchups.TeamPMR1, Matchups.TeamPMR2, Matchups.Leg FROM Matchups INNER JOIN Teams AS Teams1 ON Teams1.TeamID = Matchups.TeamID1 INNER JOIN Teams AS Teams2 ON Teams2.TeamID = Matchups.TeamID2 INNER JOIN LinkAccountsTeams AS Link1 ON Link1.TeamID = Teams1.TeamID INNER JOIN LinkAccountsTeams AS Link2 ON Link2.TeamID = Teams2.TeamID INNER JOIN Accounts AS Accounts1 ON Accounts1.AccountID = Link1.AccountID INNER JOIN Accounts AS Accounts2 ON Accounts2.AccountID = Link2.AccountID WHERE Matchups.Year = " & Session.Contents("CurrentYear") & " AND Matchups.Period = " & Session.Contents("CurrentPeriod") & " AND Matchups.LevelID = 5 ORDER BY MatchupID;"
+						sqlMatchups = sqlMatchups & "SELECT distinct Matchups.MatchupID, Matchups.LevelID, Matchups.TeamID1, Teams1.TeamName AS TeamName1, '' AS Logo1, Teams1.CBSID AS CBSID1, Matchups.TeamID2, Teams2.TeamName, '' AS Logo2, Teams2.CBSID, Matchups.TeamScore1, Matchups.TeamScore2, Matchups.TeamPMR1, Matchups.TeamPMR2, Matchups.Leg, Teams1.AbbreviatedName, Teams2.AbbreviatedName FROM Matchups INNER JOIN Teams AS Teams1 ON Teams1.TeamID = Matchups.TeamID1 INNER JOIN Teams AS Teams2 ON Teams2.TeamID = Matchups.TeamID2 INNER JOIN LinkAccountsTeams AS Link1 ON Link1.TeamID = Teams1.TeamID INNER JOIN LinkAccountsTeams AS Link2 ON Link2.TeamID = Teams2.TeamID INNER JOIN Accounts AS Accounts1 ON Accounts1.AccountID = Link1.AccountID INNER JOIN Accounts AS Accounts2 ON Accounts2.AccountID = Link2.AccountID WHERE Matchups.Year = " & Session.Contents("CurrentYear") & " AND Matchups.Period = " & Session.Contents("CurrentPeriod") & " AND Matchups.LevelID = 5 ORDER BY MatchupID;"
 
 						Set rsMatchups = sqlDatabase.Execute(sqlMatchups)
 
@@ -606,7 +606,8 @@
 				TeamScore2 = FormatNumber(arrTAG(11, i), 2)
 				TeamPMR1 = arrTAG(12, i)
 				TeamPMR2 = arrTAG(13, i)
-
+				TeamAbbreviatedName1 = arrTAG(15, i)
+				TeamAbbreviatedName2 = arrTAG(16, i)
 				'thisWeeklyMatchups = thisWeeklyMatchups & MatchupID & ","
 
 				TeamPMRColor1 = "success"
@@ -619,14 +620,14 @@
 				If TeamPMRPercent2 < 66.66 Then TeamPMRColor2 = "warning"
 				If TeamPMRPercent2 < 33.33 Then TeamPMRColor2 = "danger"
 
-				Response.Write("<div class=""col-6 col-xxl-4 pl-1 pr-1 pl-lg-3 pr-lg-0"">")
+				Response.Write("<div class=""col-12 col-md-6 col-xxl-4 pl-1 pr-1 pl-lg-3 pr-lg-0"">")
 %>
 
 						<ul class="list-group" style="margin-bottom: 1rem;">
 							<li class="list-group-item" style="padding-top: 0.25rem; padding-bottom: 0.25rem; font-size: 0.75rem; text-align: center; background-color: #4CAF50; color: #fff;"><strong><%= MatchupTitle %></strong></li>
 							<li class="list-group-item px-3 team-omega-box-<%= TeamID1 %>">
 								<span class="team-omega-score-<%= TeamID1 %>" style="font-size: 1em; background-color: #fff; color: #244717; float: right;"><%= TeamScore1 %></span>
-								<span class="d-none d-lg-inline" style="font-size: 13px; color: #244717;"><%= TeamName1 %></span><span class="d-inline d-lg-none" style="font-size: 13px; color: #244717;"><%= TeamAbbreviatedName1 %></span><% If TeamOmegaTravel1 <> 0 Then %><span style="font-size: 13px; color: #805C04;"> (<%= TeamOmegaTravel1 %>)</span><% End If %>
+								<span style="font-size: 13px; color: #244717;"><%= TeamName1 %></span>
 								<div class="progress team-omega-progress-<%= TeamID1 %>" style="height: 1px; margin-top: 6px; margin-bottom: 0; padding-bottom: 0;">
 									<div class="progress-bar progress-bar-<%= TeamPMRColor1 %>" role="progressbar" aria-valuenow="<%= TeamPMRPercent1 %>" aria-valuemin="0" aria-valuemax="100" style="width: <%= TeamPMRPercent1 %>%">
 										<span class="sr-only team-omega-progress-sr-<%= TeamID1 %>"><%= TeamPMRPercent1 %>%</span>
@@ -635,7 +636,7 @@
 							</li>
 							<li class="list-group-item px-3 team-omega-box-<%= TeamID2 %>">
 								<span class="team-omega-score-<%= TeamID2 %>" style="font-size: 1em; background-color: #fff; color: #244717; float: right;"><%= TeamScore2 %></span>
-								<span class="d-none d-lg-inline" style="font-size: 13px; color: #244717;"><%= TeamName2 %></span><span class="d-inline d-lg-none" style="font-size: 13px; color: #244717;"><%= TeamAbbreviatedName2 %></span>
+								<span style="font-size: 13px; color: #244717;"><%= TeamName2 %></span>
 								<div class="progress team-omega-progress-<%= TeamID2 %>" style="height: 1px; margin-top: 4px; margin-bottom: 0; padding-bottom: 0;">
 									<div class="progress-bar progress-bar-<%= TeamPMRColor2 %>" role="progressbar" aria-valuenow="<%= TeamPMRPercent2 %>" aria-valuemin="0" aria-valuemax="<%= TeamPMRPercent2 %>" style="width: <%= TeamPMRPercent2 %>%">
 										<span class="sr-only team-omega-progress-sr-<%= TeamID2 %>"><%= TeamPMRPercent2 %>%</span>
