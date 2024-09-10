@@ -6,8 +6,8 @@
 	If Len(ParseForAbsolutePath(Right(Request.ServerVariables("QUERY_STRING"), Len(Request.ServerVariables("QUERY_STRING")) - Instr(Request.ServerVariables("QUERY_STRING"),";")))) < 1 Then
 
 		Session.Contents("SITE_Standings_LevelID") = ""
-		Session.Contents("SITE_Standings_Start_Year") = "2023"
-		Session.Contents("SITE_Standings_End_Year") = "2023"
+		Session.Contents("SITE_Standings_Start_Year") = "2024"
+		Session.Contents("SITE_Standings_End_Year") = "2024"
 		Session.Contents("SITE_Standings_Start_Period") = "1"
 		Session.Contents("SITE_Standings_End_Period") = Session.Contents("CurrentPeriod")
 
@@ -99,6 +99,10 @@
 
 
 	sqlGetFLFFL = Replace(sqlGetSLFFL, "LevelID = 2", "LevelID = 3")
+	sqlGetBLFFL = Replace(sqlGetSLFFL, "LevelID = 2", "LevelID = 4")
+	sqlGetTagTeam = Replace(sqlGetSLFFL, "LevelID = 2", "LevelID = 5")
+	sqlGetTagTeam = Replace(sqlGetTagTeam, "TOP 6", "TOP 12")
+	sqlGetTagTeam = Replace(sqlGetTagTeam, ", (SELECT ProfileImage FROM Accounts WHERE Accounts.AccountID IN (SELECT AccountID FROM LinkAccountsTeams WHERE LinkAccountsTeams.TeamID = Standings.TeamID)) AS ProfileImage", "")
 
 	sqlGetOmega = "SELECT Levels.Title, Teams.TeamName, SUM([ActualWins]) AS WinTotal, SUM([ActualLosses]) AS LossTotal, SUM([ActualTies]) AS TieTotal, SUM([PointsScored]) AS PointsScored, SUM([PointsAgainst]) AS PointsAgainst, SUM([BreakdownWins]) AS BreakdownWins, SUM([BreakdownLosses]) AS BreakdownLosses, SUM([BreakdownTies]) AS BreakdownTies, CAST(AVG([Position]) AS DECIMAL(10,2)) AS AveragePositionYTD, "
 	sqlGetOmega = sqlGetOmega & "(SELECT ProfileImage FROM Accounts WHERE Accounts.AccountID IN (SELECT AccountID FROM LinkAccountsTeams WHERE LinkAccountsTeams.TeamID = Standings.TeamID)) AS ProfileImage FROM Standings "
@@ -111,6 +115,7 @@
 	sqlGetOmega = sqlGetOmega & "AND Standings.Period <= " & Session.Contents("SITE_Standings_End_Period") & " "
 	sqlGetOmega = sqlGetOmega & "GROUP BY Levels.LevelID, Levels.Title, Teams.TeamName, Standings.TeamID ORDER BY Levels.LevelID ASC, WinTotal DESC, PointsScored DESC; "
 
+
 	sqlGetPoints = "SELECT Levels.Title, Teams.TeamName, SUM([ActualWins]) AS WinTotal, SUM([ActualLosses]) AS LossTotal, SUM([ActualTies]) AS TieTotal, SUM([PointsScored]) AS PointsScored, SUM([PointsAgainst]) AS PointsAgainst, SUM([BreakdownWins]) AS BreakdownWins, SUM([BreakdownLosses]) AS BreakdownLosses, SUM([BreakdownTies]) AS BreakdownTies, CAST(AVG([Position]) AS DECIMAL(10,2)) AS AveragePositionYTD, "
 	sqlGetPoints = sqlGetPoints & "(SELECT ProfileImage FROM Accounts WHERE Accounts.AccountID IN (SELECT AccountID FROM LinkAccountsTeams WHERE LinkAccountsTeams.TeamID = Standings.TeamID)) AS ProfileImage FROM Standings "
 	sqlGetPoints = sqlGetPoints & "INNER JOIN Teams ON Teams.TeamID = Standings.TeamID "
@@ -122,12 +127,14 @@
 	sqlGetPoints = sqlGetPoints & "AND Standings.Period <= " & Session.Contents("SITE_Standings_End_Period") & " "
 	sqlGetPoints = sqlGetPoints & "GROUP BY Levels.LevelID, Levels.Title, Teams.TeamName, Standings.TeamID ORDER BY PointsScored DESC; "
 
-	Set rsStandings = sqlDatabase.Execute(sqlGetSLFFL & sqlGetFLFFL & sqlGetOmega & sqlGetPoints)
+	Set rsStandings = sqlDatabase.Execute(sqlGetSLFFL & sqlGetFLFFL & sqlGetBLFFL & sqlGetOmega & sqlGetTagTeam & sqlGetPoints)
 
-	If CStr(Session.Contents("SITE_Standings_LevelID")) = "1" Or CStr(Session.Contents("SITE_Standings_LevelID")) = "2" Or CStr(Session.Contents("SITE_Standings_LevelID")) = "3" Then
+	If CStr(Session.Contents("SITE_Standings_LevelID")) = "1" Or CStr(Session.Contents("SITE_Standings_LevelID")) = "2" Or CStr(Session.Contents("SITE_Standings_LevelID")) = "3" Or CStr(Session.Contents("SITE_Standings_LevelID")) = "4" Or CStr(Session.Contents("SITE_Standings_LevelID")) = "5" Then
 		If CStr(Session.Contents("SITE_Standings_LevelID")) = "1" Then PageTitle = "Omega Level "
 		If CStr(Session.Contents("SITE_Standings_LevelID")) = "2" Then PageTitle = "Same Level "
 		If CStr(Session.Contents("SITE_Standings_LevelID")) = "3" Then PageTitle = "Farm Level "
+		If CStr(Session.Contents("SITE_Standings_LevelID")) = "4" Then PageTitle = "Best Level "
+		If CStr(Session.Contents("SITE_Standings_LevelID")) = "5" Then PageTitle = "Tag Team Division "
 	End If
 
 	PageTitle = PageTitle & "Standings / " & Session.Contents("SITE_Standings_Start_Year") & " "
@@ -232,6 +239,8 @@
 									<option value="omega-level" <% If CStr(Session.Contents("SITE_Standings_LevelID")) = "1" Then %>selected<% End If %>>OMEGA LEVEL</option>
 									<option value="same-level" <% If CStr(Session.Contents("SITE_Standings_LevelID")) = "2" Then %>selected<% End If %>>SAME LEVEL</option>
 									<option value="farm-level" <% If CStr(Session.Contents("SITE_Standings_LevelID")) = "3" Then %>selected<% End If %>>FARM LEVEL</option>
+									<option value="best-level" <% If CStr(Session.Contents("SITE_Standings_LevelID")) = "4" Then %>selected<% End If %>>BEST LEVEL</option>
+									<option value="tag-team" <% If CStr(Session.Contents("SITE_Standings_LevelID")) = "5" Then %>selected<% End If %>>TAG TEAM DIVISION</option>
 								</select>
 
 								<button <%= thisFormDisabled %> type="submit" class="btn btn-block btn-success mb-4">UPDATE</button>
@@ -512,6 +521,139 @@
 
 						Set rsStandings = rsStandings.NextRecordset
 
+						If (Len(Session.Contents("SITE_Standings_LevelID")) = 0 Or CStr(Session.Contents("SITE_Standings_LevelID")) = "4") And Not rsStandings.Eof Then
+%>
+							<div Class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-6">
+
+								<div class="card">
+
+									<div class="card-body p-0">
+
+										<table class="table mb-1">
+											<thead>
+												<tr>
+													<th class="pl-3"><b>BEST LEVEL</b></th>
+													<th class="text-center">W-L-T</th>
+													<th class="text-center d-none d-sm-table-cell">PF</th>
+													<th class="text-center d-none d-sm-table-cell">PA</th>
+													<th class="text-center d-none d-md-table-cell">BKDN</th>
+												</tr>
+											</thead>
+											<tbody>
+<%
+												thisPosition = 1
+												Do While Not rsStandings.Eof
+
+													thisTeamName = rsStandings("TeamName")
+													thisWinTotal = rsStandings("WinTotal")
+													thisLossTotal = rsStandings("LossTotal")
+													thisTieTotal = rsStandings("TieTotal")
+													thisPointsScored = rsStandings("PointsScored")
+													thisPointsAgainst = rsStandings("PointsAgainst")
+													thisBreakdownWins = rsStandings("BreakdownWins")
+													thisBreakdownLosses = rsStandings("BreakdownLosses")
+													thisBreakdownTies = rsStandings("BreakdownTies")
+													thisAveragePositionYTD = rsStandings("AveragePositionYTD")
+
+													thisProfileImage = rsStandings("ProfileImage")
+													If IsNull(thisProfileImage) Then thisProfileImage = "user.jpg"
+
+													thisBorderBottom = ""
+													If thisPosition = 4 Then thisBorderBottom = "border-bottom: 2px dashed #eaf0f7;"
+%>
+													<tr style="<%= thisBorderBottom %>">
+														<td class="pl-3"><img src="https://samelevel.imgix.net/<%= thisProfileImage %>?w=40&h=40&fit=crop&crop=focalpoint" class="rounded-circle hidden d-none d-sm-none d-md-inline mr-2"><b><%= thisPosition %>.</b> &nbsp;<%= thisTeamName %></td>
+														<td class="text-center"><%= thisWinTotal %>-<%= thisLossTotal %>-<%= thisTieTotal %></td>
+														<td class="text-center d-none d-sm-table-cell"><%= FormatNumber(thisPointsScored, 2) %></td>
+														<td class="text-center d-none d-sm-table-cell"><%= FormatNumber(thisPointsAgainst, 2) %></td>
+														<td class="text-center d-none d-md-table-cell"><%= thisBreakdownWins %>-<%= thisBreakdownLosses %>-<%= thisBreakdownTies %></td>
+													</tr>
+<%
+													thisPosition = thisPosition + 1
+													rsStandings.MoveNext
+
+												Loop
+												Set rsStandings = rsStandings.NextRecordset
+												Do While Not rsStandings.Eof
+
+													thisTeamName = rsStandings("TeamName")
+													thisWinTotal = rsStandings("WinTotal")
+													thisLossTotal = rsStandings("LossTotal")
+													thisTieTotal = rsStandings("TieTotal")
+													thisPointsScored = rsStandings("PointsScored")
+													thisPointsAgainst = rsStandings("PointsAgainst")
+													thisBreakdownWins = rsStandings("BreakdownWins")
+													thisBreakdownLosses = rsStandings("BreakdownLosses")
+													thisBreakdownTies = rsStandings("BreakdownTies")
+													thisAveragePositionYTD = rsStandings("AveragePositionYTD")
+
+													thisProfileImage = rsStandings("ProfileImage")
+													If IsNull(thisProfileImage) Then thisProfileImage = "user.jpg"
+
+													thisBorderBottom = ""
+													If thisPosition = 6 Then thisBorderBottom = "border-bottom: 5px solid #eaf0f7;"
+%>
+													<tr style="<%= thisBorderBottom %>">
+														<td class="pl-3"><img src="https://samelevel.imgix.net/<%= thisProfileImage %>?w=40&h=40&fit=crop&crop=focalpoint" class="rounded-circle hidden d-none d-sm-none d-md-inline mr-2"><b><%= thisPosition %>.</b> &nbsp;<%= thisTeamName %></td>
+														<td class="text-center"><%= thisWinTotal %>-<%= thisLossTotal %>-<%= thisTieTotal %></td>
+														<td class="text-center d-none d-sm-table-cell"><%= FormatNumber(thisPointsScored, 2) %></td>
+														<td class="text-center d-none d-sm-table-cell"><%= FormatNumber(thisPointsAgainst, 2) %></td>
+														<td class="text-center d-none d-md-table-cell"><%= thisBreakdownWins %>-<%= thisBreakdownLosses %>-<%= thisBreakdownTies %></td>
+													</tr>
+<%
+													thisPosition = thisPosition + 1
+													rsStandings.MoveNext
+
+												Loop
+
+												Set rsStandings = rsStandings.NextRecordset
+
+												Do While Not rsStandings.Eof
+
+													thisTeamName = rsStandings("TeamName")
+													thisWinTotal = rsStandings("WinTotal")
+													thisLossTotal = rsStandings("LossTotal")
+													thisTieTotal = rsStandings("TieTotal")
+													thisPointsScored = rsStandings("PointsScored")
+													thisPointsAgainst = rsStandings("PointsAgainst")
+													thisBreakdownWins = rsStandings("BreakdownWins")
+													thisBreakdownLosses = rsStandings("BreakdownLosses")
+													thisBreakdownTies = rsStandings("BreakdownTies")
+													thisAveragePositionYTD = rsStandings("AveragePositionYTD")
+
+													thisProfileImage = rsStandings("ProfileImage")
+													If IsNull(thisProfileImage) Then thisProfileImage = "user.jpg"
+
+													thisBorderBottom = ""
+													'If thisPosition = 4 Then thisBorderBottom = "border-bottom: 5px solid #eaf0f7;"
+%>
+													<tr style="<%= thisBorderBottom %>">
+														<td class="pl-3"><img src="https://samelevel.imgix.net/<%= thisProfileImage %>?w=40&h=40&fit=crop&crop=focalpoint" class="rounded-circle hidden d-none d-sm-none d-md-inline mr-2"><b><%= thisPosition %>.</b> &nbsp;<%= thisTeamName %></td>
+														<td class="text-center"><%= thisWinTotal %>-<%= thisLossTotal %>-<%= thisTieTotal %></td>
+														<td class="text-center d-none d-sm-table-cell"><%= FormatNumber(thisPointsScored, 2) %></td>
+														<td class="text-center d-none d-sm-table-cell"><%= FormatNumber(thisPointsAgainst, 2) %></td>
+														<td class="text-center d-none d-md-table-cell"><%= thisBreakdownWins %>-<%= thisBreakdownLosses %>-<%= thisBreakdownTies %></td>
+													</tr>
+<%
+													thisPosition = thisPosition + 1
+													rsStandings.MoveNext
+
+												Loop
+
+%>
+											</tbody>
+										</table>
+
+									</div>
+
+								</div>
+
+							</div>
+<%
+						End If
+
+						Set rsStandings = rsStandings.NextRecordset
+
 						If (Len(Session.Contents("SITE_Standings_LevelID")) = 0 Or CStr(Session.Contents("SITE_Standings_LevelID")) = "1") And Not rsStandings.Eof Then
 %>
 							<div Class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-6">
@@ -565,6 +707,132 @@
 
 												Loop
 %>
+											</tbody>
+										</table>
+
+									</div>
+
+								</div>
+
+							</div>
+<%
+						End If
+
+						Set rsStandings = rsStandings.NextRecordset
+
+						If (Len(Session.Contents("SITE_Standings_LevelID")) = 0 Or CStr(Session.Contents("SITE_Standings_LevelID")) = "5") And Not rsStandings.Eof Then
+%>
+							<div Class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-6">
+
+								<div class="card">
+
+									<div class="card-body p-0">
+
+										<table class="table mb-1">
+											<thead>
+												<tr>
+													<th><b>TAG TEAM DIVISION</b></th>
+													<th class="text-center">W-L-T</th>
+													<th class="text-center d-none d-sm-table-cell">PF</th>
+													<th class="text-center d-none d-sm-table-cell">PA</th>
+													<th class="text-center d-none d-md-table-cell">BKDN</th>
+												</tr>
+											</thead>
+											<tbody>
+							<%
+												thisPosition = 1
+												Do While Not rsStandings.Eof
+
+													thisTeamName = rsStandings("TeamName")
+													thisWinTotal = rsStandings("WinTotal")
+													thisLossTotal = rsStandings("LossTotal")
+													thisTieTotal = rsStandings("TieTotal")
+													thisPointsScored = rsStandings("PointsScored")
+													thisPointsAgainst = rsStandings("PointsAgainst")
+													thisBreakdownWins = rsStandings("BreakdownWins")
+													thisBreakdownLosses = rsStandings("BreakdownLosses")
+													thisBreakdownTies = rsStandings("BreakdownTies")
+													thisAveragePositionYTD = rsStandings("AveragePositionYTD")
+
+
+													thisBorderBottom = ""
+													If thisPosition = 4 Then thisBorderBottom = "border-bottom: 2px dashed #eaf0f7;"
+							%>
+													<tr style="<%= thisBorderBottom %>">
+														<td><b><%= thisPosition %>.</b> &nbsp;<%= thisTeamName %></td>
+														<td class="text-center"><%= thisWinTotal %>-<%= thisLossTotal %>-<%= thisTieTotal %></td>
+														<td class="text-center d-none d-sm-table-cell"><%= FormatNumber(thisPointsScored, 2) %></td>
+														<td class="text-center d-none d-sm-table-cell"><%= FormatNumber(thisPointsAgainst, 2) %></td>
+														<td class="text-center d-none d-md-table-cell"><%= thisBreakdownWins %>-<%= thisBreakdownLosses %>-<%= thisBreakdownTies %></td>
+													</tr>
+							<%
+													thisPosition = thisPosition + 1
+													rsStandings.MoveNext
+
+												Loop
+
+												Set rsStandings = rsStandings.NextRecordset
+
+												Do While Not rsStandings.Eof
+
+													thisTeamName = rsStandings("TeamName")
+													thisWinTotal = rsStandings("WinTotal")
+													thisLossTotal = rsStandings("LossTotal")
+													thisTieTotal = rsStandings("TieTotal")
+													thisPointsScored = rsStandings("PointsScored")
+													thisPointsAgainst = rsStandings("PointsAgainst")
+													thisBreakdownWins = rsStandings("BreakdownWins")
+													thisBreakdownLosses = rsStandings("BreakdownLosses")
+													thisBreakdownTies = rsStandings("BreakdownTies")
+													thisAveragePositionYTD = rsStandings("AveragePositionYTD")
+
+													thisBorderBottom = ""
+													If thisPosition = 6 Then thisBorderBottom = "border-bottom: 5px solid #eaf0f7;"
+							%>
+													<tr style="<%= thisBorderBottom %>">
+														<td><b><%= thisPosition %>.</b> &nbsp;<%= thisTeamName %></td>
+														<td class="text-center"><%= thisWinTotal %>-<%= thisLossTotal %>-<%= thisTieTotal %></td>
+														<td class="text-center d-none d-sm-table-cell"><%= FormatNumber(thisPointsScored, 2) %></td>
+														<td class="text-center d-none d-sm-table-cell"><%= FormatNumber(thisPointsAgainst, 2) %></td>
+														<td class="text-center d-none d-md-table-cell"><%= thisBreakdownWins %>-<%= thisBreakdownLosses %>-<%= thisBreakdownTies %></td>
+													</tr>
+							<%
+													thisPosition = thisPosition + 1
+													rsStandings.MoveNext
+
+												Loop
+
+												Set rsStandings = rsStandings.NextRecordset
+
+												Do While Not rsStandings.Eof
+
+													thisTeamName = rsStandings("TeamName")
+													thisWinTotal = rsStandings("WinTotal")
+													thisLossTotal = rsStandings("LossTotal")
+													thisTieTotal = rsStandings("TieTotal")
+													thisPointsScored = rsStandings("PointsScored")
+													thisPointsAgainst = rsStandings("PointsAgainst")
+													thisBreakdownWins = rsStandings("BreakdownWins")
+													thisBreakdownLosses = rsStandings("BreakdownLosses")
+													thisBreakdownTies = rsStandings("BreakdownTies")
+													thisAveragePositionYTD = rsStandings("AveragePositionYTD")
+
+													thisBorderBottom = ""
+													'If thisPosition = 4 Then thisBorderBottom = "border-bottom: 3px dashed #eaf0f7;"
+							%>
+													<tr style="<%= thisBorderBottom %>">
+														<td><b><%= thisPosition %>.</b> &nbsp;<%= thisTeamName %></td>
+														<td class="text-center"><%= thisWinTotal %>-<%= thisLossTotal %>-<%= thisTieTotal %></td>
+														<td class="text-center d-none d-sm-table-cell"><%= FormatNumber(thisPointsScored, 2) %></td>
+														<td class="text-center d-none d-sm-table-cell"><%= FormatNumber(thisPointsAgainst, 2) %></td>
+														<td class="text-center d-none d-md-table-cell"><%= thisBreakdownWins %>-<%= thisBreakdownLosses %>-<%= thisBreakdownTies %></td>
+													</tr>
+							<%
+													thisPosition = thisPosition + 1
+													rsStandings.MoveNext
+
+												Loop
+							%>
 											</tbody>
 										</table>
 
