@@ -81,31 +81,34 @@
 											sqlGetCurrentPeriod = "SELECT TOP (1) Period FROM Standings ORDER BY YEAR DESC, PERIOD DESC"
 											Set rsCurrentPeriod = sqlDatabase.Execute(sqlGetCurrentPeriod)
 
-											'thisCurrentPeriod = rsCurrentPeriod("Period") + 1
-											thisLastPeriod = rsCurrentPeriod("Period") - 1
+											thisCurrentPeriod = rsCurrentPeriod("Period")
+											thisLastPeriod = rsCurrentPeriod("Period")
 
 											rsCurrentPeriod.Close
 											Set rsCurrentPeriod = Nothing
 
 											sqlGetLeaderboard = "SELECT ROW_NUMBER() OVER (ORDER BY SUM(PowerPoints_Points) + SUM(PowerPoints_Wins) + SUM(PowerPoints_Break) + SUM(PowerPoints_LOLBreak) DESC, SUM(PowerPoints_Points) DESC) AS PowerRanking, "
-											sqlGetLeaderboard = sqlGetLeaderboard & "Accounts.ProfileName, SUM(PowerPoints_Points) + SUM(PowerPoints_Wins) + SUM(PowerPoints_Break) + SUM(PowerPoints_LOLBreak) AS PowerPoints_Total, SUM(PowerPoints_Points) AS PowerPoints_Points, "
-											sqlGetLeaderboard = sqlGetLeaderboard & "SUM(PowerPoints_Wins) AS PowerPoints_Wins, SUM(PowerPoints_Break) AS PowerPoints_Break, SUM(PowerPoints_LOLBreak) AS PowerPoints_LOLBreak, SUM(TotalPoints) AS TotalPoints, SUM(TotalWins) AS TotalWins, SUM(TotalLosses) AS TotalLosses, SUM(TotalTies) AS TotalTies, "
-											sqlGetLeaderboard = sqlGetLeaderboard & "SUM(TotalBreakdownWins) AS TotalBreakdownWins, SUM(TotalBreakdownLosses) AS TotalBreakdownLosses, SUM(TotalBreakdownTies) AS TotalBreakdownTies, "
-											sqlGetLeaderboard = sqlGetLeaderboard & "SUM(TotalLOLBreakdownWins) AS TotalLOLBreakdownWins, SUM(TotalLOLBreakdownLosses) AS TotalLOLBreakdownLosses, SUM(TotalLOLBreakdownTies) AS TotalLOLBreakdownTies, "
-											sqlGetLeaderboard = sqlGetLeaderboard & "((CAST(SUM(TotalWins) AS DECIMAL) / (CAST(SUM(TotalWins) AS DECIMAL) + CAST(SUM(TotalLosses) AS DECIMAL))) * 100) / ((CAST(SUM(TotalLOLBreakdownWins) AS DECIMAL) / (CAST(SUM(TotalLOLBreakdownWins) AS DECIMAL) + CAST(SUM(TotalLOLBreakdownLosses) AS DECIMAL)))) - 100 AS LuckRate, "
-											sqlGetLeaderboard = sqlGetLeaderboard & "A.TeamID, Accounts.AccountID, Accounts.ProfileImage FROM ( "
-												sqlGetLeaderboard = sqlGetLeaderboard & "SELECT TeamID, ROW_NUMBER() OVER (ORDER BY SUM(PointsScored), SUM(ActualWins)) AS PowerPoints_Points, NULL AS PowerPoints_Wins, NULL AS PowerPoints_Break, NULL AS PowerPoints_LOLBreak, NULL AS TotalWins, NULL AS TotalLosses, NULL AS TotalTies, SUM(PointsScored) AS TotalPoints, NULL AS TotalBreakdownWins, NULL AS TotalBreakdownLosses, NULL AS TotalBreakdownTies, NULL AS TotalLOLBreakdownWins, NULL AS TotalLOLBreakdownLosses, NULL AS TotalLOLBreakdownTies FROM Standings "
-												sqlGetLeaderboard = sqlGetLeaderboard & "WHERE (LevelID = 2 OR LevelID = 3) AND Year = 2023 GROUP BY TeamID UNION ALL "
-												sqlGetLeaderboard = sqlGetLeaderboard & "SELECT TeamID, NULL AS PowerPoints_Points, ROW_NUMBER() OVER (ORDER BY SUM(ActualWins), SUM(BreakdownWins), SUM(PointsScored)) AS PowerPoints_Wins, NULL AS PowerPoints_Break, NULL AS PowerPoints_LOLBreak, SUM(ActualWins) AS TotalWins, SUM(ActualLosses) AS TotalLosses, SUM(ActualTies) AS TotalTies, NULL AS TotalPoints, NULL AS TotalBreakdownWins, NULL AS TotalBreakdownLosses, NULL AS TotalBreakdownTies, NULL AS TotalLOLBreakdownWins, NULL AS TotalLOLBreakdownLosses, NULL AS TotalLOLBreakdownTies FROM Standings "
-												sqlGetLeaderboard = sqlGetLeaderboard & "WHERE (LevelID = 2 OR LevelID = 3) AND Year = 2023 GROUP BY TeamID UNION ALL "
-												sqlGetLeaderboard = sqlGetLeaderboard & "SELECT TeamID, NULL AS PowerPoints_Points, NULL AS PowerPoints_Wins, ROW_NUMBER() OVER (ORDER BY SUM(BreakdownWins), SUM(ActualWins), SUM(PointsScored)) AS PowerPoints_Break, NULL AS PowerPoints_LOLBreak, NULL AS TotalWins, NULL AS TotalLosses, NULL AS TotalTies, NULL AS TotalPoints, SUM(BreakdownWins) AS TotalBreakdownWins, SUM(BreakdownLosses) AS TotalBreakdownLosses, SUM(BreakdownTies) AS TotalBreakdownTies, NULL AS TotalLOLBreakdownWins, NULL AS TotalLOLBreakdownLosses, NULL AS TotalLOLBreakdownTies FROM Standings "
-												sqlGetLeaderboard = sqlGetLeaderboard & "WHERE (LevelID = 2 OR LevelID = 3) AND Year = 2023 GROUP BY TeamID UNION ALL "
-												sqlGetLeaderboard = sqlGetLeaderboard & "SELECT TeamID, NULL AS PowerPoints_Points, NULL AS PowerPoints_Wins, NULL AS PowerPoints_Break, ROW_NUMBER() OVER (ORDER BY SUM(LOLBreakdownWins), SUM(ActualWins), SUM(PointsScored)) AS PowerPoints_LOLBreak, NULL AS TotalWins, NULL AS TotalLosses, NULL AS TotalTies, NULL AS TotalPoints, NULL AS TotalBreakdownWins, NULL AS TotalBreakdownLosses, NULL AS TotalBreakdownTies, SUM(LOLBreakdownWins) AS TotalLOLBreakdownWins, SUM(LOLBreakdownLosses) AS TotalLOLBreakdownLosses, SUM(LOLBreakdownTies) AS TotalLOLBreakdownTies FROM Standings "
-												sqlGetLeaderboard = sqlGetLeaderboard & "WHERE (LevelID = 2 OR LevelID = 3) AND Year = 2023 GROUP BY TeamID "
-											sqlGetLeaderboard = sqlGetLeaderboard & ") A "
-											sqlGetLeaderboard = sqlGetLeaderboard & "INNER JOIN LinkAccountsTeams ON LinkAccountsTeams.TeamID = A.TeamID "
-											sqlGetLeaderboard = sqlGetLeaderboard & "INNER JOIN Accounts ON Accounts.AccountID = LinkAccountsTeams.AccountID "
-											sqlGetLeaderboard = sqlGetLeaderboard & "WHERE Accounts.Active = 1 GROUP BY A.TeamID, Accounts.AccountID, Accounts.ProfileName, Accounts.ProfileImage ORDER BY PowerRanking ASC"
+sqlGetLeaderboard = sqlGetLeaderboard & "Accounts.ProfileName, SUM(PowerPoints_Points) + SUM(PowerPoints_Wins) + SUM(PowerPoints_Break) + SUM(PowerPoints_LOLBreak) AS PowerPoints_Total, SUM(PowerPoints_Points) AS PowerPoints_Points, "
+sqlGetLeaderboard = sqlGetLeaderboard & "SUM(PowerPoints_Wins) AS PowerPoints_Wins, SUM(PowerPoints_Break) AS PowerPoints_Break, SUM(PowerPoints_LOLBreak) AS PowerPoints_LOLBreak, SUM(TotalPoints) AS TotalPoints, SUM(TotalWins) AS TotalWins, SUM(TotalLosses) AS TotalLosses, SUM(TotalTies) AS TotalTies, "
+sqlGetLeaderboard = sqlGetLeaderboard & "SUM(TotalBreakdownWins) AS TotalBreakdownWins, SUM(TotalBreakdownLosses) AS TotalBreakdownLosses, SUM(TotalBreakdownTies) AS TotalBreakdownTies, "
+sqlGetLeaderboard = sqlGetLeaderboard & "SUM(TotalLOLBreakdownWins) AS TotalLOLBreakdownWins, SUM(TotalLOLBreakdownLosses) AS TotalLOLBreakdownLosses, SUM(TotalLOLBreakdownTies) AS TotalLOLBreakdownTies, "
+sqlGetLeaderboard = sqlGetLeaderboard & "CASE WHEN (ISNULL(SUM(TotalWins), 0) + ISNULL(SUM(TotalLosses), 0)) = 0 OR (ISNULL(SUM(TotalLOLBreakdownWins), 0) + ISNULL(SUM(TotalLOLBreakdownLosses), 0)) = 0 THEN 0 "
+sqlGetLeaderboard = sqlGetLeaderboard & "WHEN ISNULL(SUM(TotalLOLBreakdownWins), 0) = 0 THEN 0 "
+sqlGetLeaderboard = sqlGetLeaderboard & "ELSE (((CAST(SUM(TotalWins) AS DECIMAL(10, 2)) / NULLIF((CAST(SUM(TotalWins) AS DECIMAL(10, 2)) + CAST(SUM(TotalLosses) AS DECIMAL(10, 2))), 0)) * 100) / "
+sqlGetLeaderboard = sqlGetLeaderboard & "(NULLIF(CAST(SUM(TotalLOLBreakdownWins) AS DECIMAL(10, 2)), 0) / NULLIF((CAST(SUM(TotalLOLBreakdownWins) AS DECIMAL(10, 2)) + CAST(SUM(TotalLOLBreakdownLosses) AS DECIMAL(10, 2))), 0))) - 100 END AS LuckRate, "
+sqlGetLeaderboard = sqlGetLeaderboard & "A.TeamID, Accounts.AccountID, Accounts.ProfileImage FROM ( "
+sqlGetLeaderboard = sqlGetLeaderboard & "SELECT TeamID, ROW_NUMBER() OVER (ORDER BY SUM(PointsScored), SUM(ActualWins)) AS PowerPoints_Points, NULL AS PowerPoints_Wins, NULL AS PowerPoints_Break, NULL AS PowerPoints_LOLBreak, NULL AS TotalWins, NULL AS TotalLosses, NULL AS TotalTies, SUM(PointsScored) AS TotalPoints, NULL AS TotalBreakdownWins, NULL AS TotalBreakdownLosses, NULL AS TotalBreakdownTies, NULL AS TotalLOLBreakdownWins, NULL AS TotalLOLBreakdownLosses, NULL AS TotalLOLBreakdownTies FROM Standings "
+sqlGetLeaderboard = sqlGetLeaderboard & "WHERE (LevelID = 2 OR LevelID = 3 OR LevelID = 4) AND Year = 2024 GROUP BY TeamID UNION ALL "
+sqlGetLeaderboard = sqlGetLeaderboard & "SELECT TeamID, NULL AS PowerPoints_Points, ROW_NUMBER() OVER (ORDER BY SUM(ActualWins), SUM(BreakdownWins), SUM(PointsScored)) AS PowerPoints_Wins, NULL AS PowerPoints_Break, NULL AS PowerPoints_LOLBreak, SUM(ActualWins) AS TotalWins, SUM(ActualLosses) AS TotalLosses, SUM(ActualTies) AS TotalTies, NULL AS TotalPoints, NULL AS TotalBreakdownWins, NULL AS TotalBreakdownLosses, NULL AS TotalBreakdownTies, NULL AS TotalLOLBreakdownWins, NULL AS TotalLOLBreakdownLosses, NULL AS TotalLOLBreakdownTies FROM Standings "
+sqlGetLeaderboard = sqlGetLeaderboard & "WHERE (LevelID = 2 OR LevelID = 3 OR LevelID = 4) AND Year = 2024 GROUP BY TeamID UNION ALL "
+sqlGetLeaderboard = sqlGetLeaderboard & "SELECT TeamID, NULL AS PowerPoints_Points, NULL AS PowerPoints_Wins, ROW_NUMBER() OVER (ORDER BY SUM(BreakdownWins), SUM(ActualWins), SUM(PointsScored)) AS PowerPoints_Break, NULL AS PowerPoints_LOLBreak, NULL AS TotalWins, NULL AS TotalLosses, NULL AS TotalTies, NULL AS TotalPoints, SUM(BreakdownWins) AS TotalBreakdownWins, SUM(BreakdownLosses) AS TotalBreakdownLosses, SUM(BreakdownTies) AS TotalBreakdownTies, NULL AS TotalLOLBreakdownWins, NULL AS TotalLOLBreakdownLosses, NULL AS TotalLOLBreakdownTies FROM Standings "
+sqlGetLeaderboard = sqlGetLeaderboard & "WHERE (LevelID = 2 OR LevelID = 3 OR LevelID = 4) AND Year = 2024 GROUP BY TeamID UNION ALL "
+sqlGetLeaderboard = sqlGetLeaderboard & "SELECT TeamID, NULL AS PowerPoints_Points, NULL AS PowerPoints_Wins, NULL AS PowerPoints_Break, ROW_NUMBER() OVER (ORDER BY SUM(LOLBreakdownWins), SUM(ActualWins), SUM(PointsScored)) AS PowerPoints_LOLBreak, NULL AS TotalWins, NULL AS TotalLosses, NULL AS TotalTies, NULL AS TotalPoints, NULL AS TotalBreakdownWins, NULL AS TotalBreakdownLosses, NULL AS TotalBreakdownTies, SUM(LOLBreakdownWins) AS TotalLOLBreakdownWins, SUM(LOLBreakdownLosses) AS TotalLOLBreakdownLosses, SUM(LOLBreakdownTies) AS TotalLOLBreakdownTies FROM Standings "
+sqlGetLeaderboard = sqlGetLeaderboard & "WHERE (LevelID = 2 OR LevelID = 3 OR LevelID = 4) AND Year = 2024 GROUP BY TeamID "
+sqlGetLeaderboard = sqlGetLeaderboard & ") A "
+sqlGetLeaderboard = sqlGetLeaderboard & "INNER JOIN LinkAccountsTeams ON LinkAccountsTeams.TeamID = A.TeamID "
+sqlGetLeaderboard = sqlGetLeaderboard & "INNER JOIN Accounts ON Accounts.AccountID = LinkAccountsTeams.AccountID "
+sqlGetLeaderboard = sqlGetLeaderboard & "WHERE Accounts.Active = 1 GROUP BY A.TeamID, Accounts.AccountID, Accounts.ProfileName, Accounts.ProfileImage ORDER BY PowerRanking ASC"
 
 											sqlGetLastWeek = "SELECT ROW_NUMBER() OVER (ORDER BY SUM(PowerPoints_Points) + SUM(PowerPoints_Wins) + SUM(PowerPoints_Break) + SUM(PowerPoints_LOLBreak) DESC, SUM(PowerPoints_Points) DESC) AS PowerRanking, "
 											sqlGetLastWeek = sqlGetLastWeek & "Accounts.ProfileName, SUM(PowerPoints_Points) + SUM(PowerPoints_Wins) + SUM(PowerPoints_Break) + SUM(PowerPoints_LOLBreak) AS PowerPoints_Total, SUM(PowerPoints_Points) AS PowerPoints_Points, "
@@ -115,13 +118,13 @@
 											'sqlGetLastWeek = sqlGetLastWeek & "((CAST(SUM(TotalWins) AS DECIMAL) / (CAST(SUM(TotalWins) AS DECIMAL) + CAST(SUM(TotalLosses) AS DECIMAL))) * 100) / ((CAST(SUM(TotalLOLBreakdownWins) AS DECIMAL) / (CAST(SUM(TotalLOLBreakdownWins) AS DECIMAL) + CAST(SUM(TotalLOLBreakdownLosses) AS DECIMAL)))) - 100 AS LuckRate, "
 											sqlGetLastWeek = sqlGetLastWeek & "A.TeamID, Accounts.AccountID, Accounts.ProfileImage FROM ( "
 												sqlGetLastWeek = sqlGetLastWeek & "SELECT TeamID, ROW_NUMBER() OVER (ORDER BY SUM(PointsScored), SUM(ActualWins)) AS PowerPoints_Points, NULL AS PowerPoints_Wins, NULL AS PowerPoints_Break, NULL AS PowerPoints_LOLBreak, NULL AS TotalWins, NULL AS TotalLosses, NULL AS TotalTies, SUM(PointsScored) AS TotalPoints, NULL AS TotalBreakdownWins, NULL AS TotalBreakdownLosses, NULL AS TotalBreakdownTies, NULL AS TotalLOLBreakdownWins, NULL AS TotalLOLBreakdownLosses, NULL AS TotalLOLBreakdownTies FROM Standings "
-												sqlGetLastWeek = sqlGetLastWeek & "WHERE (LevelID = 2 OR LevelID = 3) AND Year = 2023 AND Period <= " & thisLastPeriod & " GROUP BY TeamID UNION ALL "
+												sqlGetLastWeek = sqlGetLastWeek & "WHERE (LevelID = 2 OR LevelID = 3 OR LevelID = 4) AND Year = 2024 AND Period <= " & thisLastPeriod & " GROUP BY TeamID UNION ALL "
 												sqlGetLastWeek = sqlGetLastWeek & "SELECT TeamID, NULL AS PowerPoints_Points, ROW_NUMBER() OVER (ORDER BY SUM(ActualWins), SUM(BreakdownWins), SUM(PointsScored)) AS PowerPoints_Wins, NULL AS PowerPoints_Break, NULL AS PowerPoints_LOLBreak, SUM(ActualWins) AS TotalWins, SUM(ActualLosses) AS TotalLosses, SUM(ActualTies) AS TotalTies, NULL AS TotalPoints, NULL AS TotalBreakdownWins, NULL AS TotalBreakdownLosses, NULL AS TotalBreakdownTies, NULL AS TotalLOLBreakdownWins, NULL AS TotalLOLBreakdownLosses, NULL AS TotalLOLBreakdownTies FROM Standings "
-												sqlGetLastWeek = sqlGetLastWeek & "WHERE (LevelID = 2 OR LevelID = 3) AND Year = 2023 AND Period <= " & thisLastPeriod & " GROUP BY TeamID UNION ALL "
+												sqlGetLastWeek = sqlGetLastWeek & "WHERE (LevelID = 2 OR LevelID = 3 OR LevelID = 4) AND Year = 2024 AND Period <= " & thisLastPeriod & " GROUP BY TeamID UNION ALL "
 												sqlGetLastWeek = sqlGetLastWeek & "SELECT TeamID, NULL AS PowerPoints_Points, NULL AS PowerPoints_Wins, ROW_NUMBER() OVER (ORDER BY SUM(BreakdownWins), SUM(ActualWins), SUM(PointsScored)) AS PowerPoints_Break, NULL AS PowerPoints_LOLBreak, NULL AS TotalWins, NULL AS TotalLosses, NULL AS TotalTies, NULL AS TotalPoints, SUM(BreakdownWins) AS TotalBreakdownWins, SUM(BreakdownLosses) AS TotalBreakdownLosses, SUM(BreakdownTies) AS TotalBreakdownTies, NULL AS TotalLOLBreakdownWins, NULL AS TotalLOLBreakdownLosses, NULL AS TotalLOLBreakdownTies FROM Standings "
-												sqlGetLastWeek = sqlGetLastWeek & "WHERE (LevelID = 2 OR LevelID = 3) AND Year = 2023 AND Period <= " & thisLastPeriod & " GROUP BY TeamID UNION ALL "
+												sqlGetLastWeek = sqlGetLastWeek & "WHERE (LevelID = 2 OR LevelID = 3 OR LevelID = 4) AND Year = 2024 AND Period <= " & thisLastPeriod & " GROUP BY TeamID UNION ALL "
 												sqlGetLastWeek = sqlGetLastWeek & "SELECT TeamID, NULL AS PowerPoints_Points, NULL AS PowerPoints_Wins, NULL AS PowerPoints_Break, ROW_NUMBER() OVER (ORDER BY SUM(LOLBreakdownWins), SUM(ActualWins), SUM(PointsScored)) AS PowerPoints_LOLBreak, NULL AS TotalWins, NULL AS TotalLosses, NULL AS TotalTies, NULL AS TotalPoints, NULL AS TotalBreakdownWins, NULL AS TotalBreakdownLosses, NULL AS TotalBreakdownTies, SUM(LOLBreakdownWins) AS TotalLOLBreakdownWins, SUM(LOLBreakdownLosses) AS TotalLOLBreakdownLosses, SUM(LOLBreakdownTies) AS TotalLOLBreakdownTies FROM Standings "
-												sqlGetLastWeek = sqlGetLastWeek & "WHERE (LevelID = 2 OR LevelID = 3) AND Year = 2023 AND Period <= " & thisLastPeriod & " GROUP BY TeamID "
+												sqlGetLastWeek = sqlGetLastWeek & "WHERE (LevelID = 2 OR LevelID = 3 OR LevelID = 4) AND Year = 2024 AND Period <= " & thisLastPeriod & " GROUP BY TeamID "
 											sqlGetLastWeek = sqlGetLastWeek & ") A "
 											sqlGetLastWeek = sqlGetLastWeek & "INNER JOIN LinkAccountsTeams ON LinkAccountsTeams.TeamID = A.TeamID "
 											sqlGetLastWeek = sqlGetLastWeek & "INNER JOIN Accounts ON Accounts.AccountID = LinkAccountsTeams.AccountID "
@@ -193,7 +196,7 @@
 %>
 										</tbody>
 									</table>
-									
+
 								</div>
 
 							</div>
