@@ -226,7 +226,8 @@
 %>
 						<div class="row bg-light rounded mt-3 mb-2 pb-2 pt-2">
 							<div class="col-12 text-left">
-								<div><b>OPENS <%= thisNextOpenSelect_EST %></b></div>
+								<div><b>WINNERS <%= thisWinnersSelect_EST %></b></div>
+								<div><b>OPEN ATTACK <%= thisNextOpenSelect_EST %></b></div>
 							</div>
 						</div>
 <%
