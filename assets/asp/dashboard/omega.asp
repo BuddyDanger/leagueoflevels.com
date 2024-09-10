@@ -16,7 +16,7 @@
 				rsOmega.Close
 				Set rsOmega = Nothing
 
-				sqlCheckPreviousWeek = "SELECT MatchupID, TeamID1, TeamID2, TeamScore1, TeamScore2, (CASE WHEN (TeamScore1 + TeamOmegaTravel1) > TeamScore2 THEN TeamID1 WHEN TeamScore2 > (TeamScore1 + TeamOmegaTravel1) THEN TeamID2 ELSE NULL END) AS WinnerID, (CASE WHEN (TeamScore1 + TeamOmegaTravel1) > TeamScore2 THEN TeamID2 WHEN TeamScore2 > (TeamScore1 + TeamOmegaTravel1) THEN TeamID1 ELSE NULL END) AS LoserID FROM Matchups WHERE LEVELID = 1 AND YEAR = 2023 AND PERIOD = " & Session.Contents("CurrentPeriod") - 1 & " AND ((CASE WHEN (TeamScore1 + TeamOmegaTravel1) > TeamScore2 THEN TeamID1 WHEN TeamScore2 > (TeamScore1 + TeamOmegaTravel1) THEN TeamID2 ELSE NULL END) = " & Session.Contents("Account_OmegaTeamID") & " OR (CASE WHEN (TeamScore1 + TeamOmegaTravel1) > TeamScore2 THEN TeamID2 WHEN TeamScore2 > (TeamScore1 + TeamOmegaTravel1) THEN TeamID1 ELSE NULL END) = " & Session.Contents("Account_OmegaTeamID") & ")"
+				sqlCheckPreviousWeek = "SELECT MatchupID, TeamID1, TeamID2, TeamScore1, TeamScore2, (CASE WHEN (TeamScore1 + TeamOmegaTravel1) > TeamScore2 THEN TeamID1 WHEN TeamScore2 > (TeamScore1 + TeamOmegaTravel1) THEN TeamID2 ELSE NULL END) AS WinnerID, (CASE WHEN (TeamScore1 + TeamOmegaTravel1) > TeamScore2 THEN TeamID2 WHEN TeamScore2 > (TeamScore1 + TeamOmegaTravel1) THEN TeamID1 ELSE NULL END) AS LoserID FROM Matchups WHERE LEVELID = 1 AND YEAR = 2024 AND PERIOD = " & Session.Contents("CurrentPeriod") - 1 & " AND ((CASE WHEN (TeamScore1 + TeamOmegaTravel1) > TeamScore2 THEN TeamID1 WHEN TeamScore2 > (TeamScore1 + TeamOmegaTravel1) THEN TeamID2 ELSE NULL END) = " & Session.Contents("Account_OmegaTeamID") & " OR (CASE WHEN (TeamScore1 + TeamOmegaTravel1) > TeamScore2 THEN TeamID2 WHEN TeamScore2 > (TeamScore1 + TeamOmegaTravel1) THEN TeamID1 ELSE NULL END) = " & Session.Contents("Account_OmegaTeamID") & ")"
 				Set rsPreviousWeek = sqlDatabase.Execute(sqlCheckPreviousWeek)
 
 				Session.Contents("Account_PreviousOutcome") = ""
@@ -32,7 +32,7 @@
 
 				End If
 
-				sqlCheckThisWeek = "SELECT MatchupID, TeamID1, TeamID2, TeamScore1, TeamScore2, (CASE WHEN (TeamScore1 + TeamOmegaTravel1) > TeamScore2 THEN TeamID1 WHEN TeamScore2 > (TeamScore1 + TeamOmegaTravel1) THEN TeamID2 ELSE NULL END) AS WinnerID, (CASE WHEN (TeamScore1 + TeamOmegaTravel1) > TeamScore2 THEN TeamID2 WHEN TeamScore2 > (TeamScore1 + TeamOmegaTravel1) THEN TeamID1 ELSE NULL END) AS LoserID FROM Matchups WHERE LEVELID = 1 AND YEAR = 2023 AND PERIOD = " & Session.Contents("CurrentPeriod") & " AND ((CASE WHEN (TeamScore1 + TeamOmegaTravel1) > TeamScore2 THEN TeamID1 WHEN TeamScore2 > (TeamScore1 + TeamOmegaTravel1) THEN TeamID2 ELSE NULL END) = " & Session.Contents("Account_OmegaTeamID") & " OR (CASE WHEN (TeamScore1 + TeamOmegaTravel1) > TeamScore2 THEN TeamID2 WHEN TeamScore2 > (TeamScore1 + TeamOmegaTravel1) THEN TeamID1 ELSE NULL END) = " & Session.Contents("Account_OmegaTeamID") & ")"
+				sqlCheckThisWeek = "SELECT MatchupID, TeamID1, TeamID2, TeamScore1, TeamScore2, (CASE WHEN (TeamScore1 + TeamOmegaTravel1) > TeamScore2 THEN TeamID1 WHEN TeamScore2 > (TeamScore1 + TeamOmegaTravel1) THEN TeamID2 ELSE NULL END) AS WinnerID, (CASE WHEN (TeamScore1 + TeamOmegaTravel1) > TeamScore2 THEN TeamID2 WHEN TeamScore2 > (TeamScore1 + TeamOmegaTravel1) THEN TeamID1 ELSE NULL END) AS LoserID FROM Matchups WHERE LEVELID = 1 AND YEAR = 2024 AND PERIOD = " & Session.Contents("CurrentPeriod") & " AND ((CASE WHEN (TeamScore1 + TeamOmegaTravel1) > TeamScore2 THEN TeamID1 WHEN TeamScore2 > (TeamScore1 + TeamOmegaTravel1) THEN TeamID2 ELSE NULL END) = " & Session.Contents("Account_OmegaTeamID") & " OR (CASE WHEN (TeamScore1 + TeamOmegaTravel1) > TeamScore2 THEN TeamID2 WHEN TeamScore2 > (TeamScore1 + TeamOmegaTravel1) THEN TeamID1 ELSE NULL END) = " & Session.Contents("Account_OmegaTeamID") & ")"
 				Set rsThisWeek = sqlDatabase.Execute(sqlCheckThisWeek)
 
 				Session.Contents("Account_ThisOutcome") = ""
@@ -63,11 +63,11 @@
 
 				End If
 
-				thisDateTime_EST = DateAdd("h", -5, Now())
-				thisWinnersSelect_EST = DateAdd("h", -5, Session.Contents("OmegaSelectionsOpening"))
+				thisDateTime_EST = DateAdd("h", -4, Now())
+				thisWinnersSelect_EST = DateAdd("h", -4, Session.Contents("OmegaSelectionsOpening"))
 				thissWinnersSelectCloses_EST = DateAdd("d", 1, thisWinnersSelect_EST)
-				thisNextOpenSelect_EST = DateAdd("h", -5, DateAdd("d", 7, Session.Contents("CurrentPeriodStart")))
-				thisOpenSelect_EST = DateAdd("h", -5, Session.Contents("CurrentPeriodStart"))
+				thisNextOpenSelect_EST = DateAdd("h", -4, DateAdd("d", 7, Session.Contents("CurrentPeriodStart")))
+				thisOpenSelect_EST = DateAdd("h", -4, Session.Contents("CurrentPeriodStart"))
 				thisOpenSelectCloses_EST = DateAdd("d", 1, thisOpenSelect_EST)
 %>
 				<div class="card-body pt-2 pb-2">
