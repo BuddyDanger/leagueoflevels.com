@@ -6,10 +6,10 @@
 
 		If Not rsYearPeriod.Eof Then
 
-			Session.Contents("CurrentYear") = 2024
-			Session.Contents("CurrentPeriod") = 1
-			'Session.Contents("CurrentYear") = rsYearPeriod("Year")
-			'Session.Contents("CurrentPeriod") = rsYearPeriod("Period")
+			'Session.Contents("CurrentYear") = 2024
+			'Session.Contents("CurrentPeriod") = 1
+			Session.Contents("CurrentYear") = rsYearPeriod("Year")
+			Session.Contents("CurrentPeriod") = rsYearPeriod("Period")
 			Session.Contents("CurrentPeriodStart") = rsYearPeriod("StartDate")
 			Session.Contents("OmegaSelectionsOpening") = rsYearPeriod("OmegaSelectionsOpening")
 
