@@ -68,7 +68,7 @@
 				thissWinnersSelectCloses_EST = DateAdd("d", 1, thisWinnersSelect_EST)
 				thisNextOpenSelect_EST = DateAdd("h", -4, DateAdd("d", 7, Session.Contents("CurrentPeriodStart")))
 				thisOpenSelect_EST = DateAdd("h", -4, Session.Contents("CurrentPeriodStart"))
-				thisOpenSelectCloses_EST = DateAdd("d", 1, thisOpenSelect_EST)
+				thisOpenSelectCloses_EST = DateAdd("h", 10, DateAdd("d", 1, thisOpenSelect_EST))
 %>
 				<div class="card-body pt-2 pb-2">
 
@@ -235,7 +235,7 @@
 %>
 					<div class="row bg-light rounded py-3 px-1">
 						<div class="col-12">
-							<a href="https://samelevel.imgix.net/omega-battleworld.jpg" target="_blank"><img src="https://samelevel.imgix.net/omega-battleworld.jpg?fm=webp&auto=format&w=500&h=auto" class="img-fluid rounded" /></a>
+							<a href="https://samelevel.imgix.net/omega-battleworld.jpg" target="_blank"><img src="https://samelevel.imgix.net/omega-battleworld.jpg?fm=webp&auto=format&w=700&h=auto" class="img-fluid rounded" /></a>
 						</div>
 					</div>
 
