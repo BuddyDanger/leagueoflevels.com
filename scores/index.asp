@@ -549,11 +549,11 @@
 %>
 <a href="<%= MatchupURL %>" class="matchup-<%= MatchupID %>" style="text-decoration: none; display: block;">
 <ul class="list-group" style="margin-bottom: 1rem;">
-	<li class="list-group-item" style="padding-top: 0.25rem; padding-bottom: 0.25rem; font-size: 0.75rem; text-align: center; background-color: #4A90E2; color: #fff;"><strong><%= MatchupTitle %></strong></li>
+	<li class="list-group-item" style="padding-top: 0.25rem; padding-bottom: 0.25rem; font-size: 0.75rem; text-align: center; background-color: #7E85AC; color: #fff;"><strong><%= MatchupTitle %></strong></li>
 	<li class="list-group-item team-blffl-box-<%= TeamID1 %>" style="position: relative;">
 		<div style="position: absolute; top: -18px; right: -10px;"><%= MajorText %></div>
-		<span class="team-blffl-score-<%= TeamID1 %>" style="font-size: 1em; background-color: #fff; color: #003366; float: right;"><%= TeamScore1 %></span>
-		<img src="https://samelevel.imgix.net/<%= TeamLogo1 %>?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-none d-lg-inline mr-2" /><span class="d-none d-lg-inline" style="font-size: 13px; color: #003366;"><%= TeamAbbreviatedName1 %></span><span class="d-inline d-lg-none" style="font-size: 13px; color: #003366;"><%= TeamAbbreviatedName1 %></span>
+		<span class="team-blffl-score-<%= TeamID1 %>" style="font-size: 1em; background-color: #fff; color: #282A36; float: right;"><%= TeamScore1 %></span>
+		<img src="https://samelevel.imgix.net/<%= TeamLogo1 %>?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-none d-lg-inline mr-2" /><span class="d-none d-lg-inline" style="font-size: 13px; color: #282A36;"><%= TeamAbbreviatedName1 %></span><span class="d-inline d-lg-none" style="font-size: 13px; color: #282A36;"><%= TeamAbbreviatedName1 %></span>
 		<div class="progress team-blffl-progress-<%= TeamID1 %>" style="height: 1px; margin-top: 6px; margin-bottom: 0; padding-bottom: 0;">
 			<div class="progress-bar progress-bar-<%= TeamPMRColor1 %>" role="progressbar" aria-valuenow="<%= TeamPMRPercent1 %>" aria-valuemin="0" aria-valuemax="100" style="width: <%= TeamPMRPercent1 %>%">
 				<span class="sr-only team-blffl-progress-sr-<%= TeamID1 %>"><%= TeamPMRPercent1 %>%</span>
@@ -561,15 +561,15 @@
 		</div>
 	</li>
 	<li class="list-group-item team-blffl-box-<%= TeamID2 %>">
-		<span class="team-blffl-score-<%= TeamID2 %>" style="font-size: 1em; background-color: #fff; color: #003366; float: right;"><%= TeamScore2 %></span>
+		<span class="team-blffl-score-<%= TeamID2 %>" style="font-size: 1em; background-color: #fff; color: #282A36; float: right;"><%= TeamScore2 %></span>
 		<%
 			If TeamID2 = 99999 Then
 		%>
-			<img src="https://samelevel.imgix.net/blffl-logo-icon.png?w=16&h=16" class="rounded-circle d-none d-lg-inline mr-2" /><span class="d-none d-lg-inline" style="font-size: 13px; color: #003366;">BYE</span><span class="d-inline d-lg-none" style="font-size: 13px; color: #003366;">BYE</span>
+			<img src="https://samelevel.imgix.net/blffl-logo-icon.png?w=16&h=16" class="rounded-circle d-none d-lg-inline mr-2" /><span class="d-none d-lg-inline" style="font-size: 13px; color: #282A36;">BYE</span><span class="d-inline d-lg-none" style="font-size: 13px; color: #003366;">BYE</span>
 		<%
 			Else
 		%>
-			<img src="https://samelevel.imgix.net/<%= TeamLogo2 %>?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-none d-lg-inline mr-2" /><span class="d-none d-lg-inline" style="font-size: 13px; color: #003366;"><%= TeamAbbreviatedName2 %></span><span class="d-inline d-lg-none" style="font-size: 13px; color: #003366;"><%= TeamAbbreviatedName2 %></span>
+			<img src="https://samelevel.imgix.net/<%= TeamLogo2 %>?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-none d-lg-inline mr-2" /><span class="d-none d-lg-inline" style="font-size: 13px; color: #282A36;"><%= TeamAbbreviatedName2 %></span><span class="d-inline d-lg-none" style="font-size: 13px; color: #282A36;"><%= TeamAbbreviatedName2 %></span>
 		<%
 			End If
 		%>
@@ -611,12 +611,12 @@
 				'thisWeeklyMatchups = thisWeeklyMatchups & MatchupID & ","
 
 				TeamPMRColor1 = "success"
-				TeamPMRPercent1 = (TeamPMR1 * 100) / 420
+				TeamPMRPercent1 = (TeamPMR1 * 100) / 840
 				If TeamPMRPercent1 < 66.66 Then TeamPMRColor1 = "warning"
 				If TeamPMRPercent1 < 33.33 Then TeamPMRColor1 = "danger"
 
 				TeamPMRColor2 = "success"
-				TeamPMRPercent2 = (TeamPMR2 * 100) / 420
+				TeamPMRPercent2 = (TeamPMR2 * 100) / 840
 				If TeamPMRPercent2 < 66.66 Then TeamPMRColor2 = "warning"
 				If TeamPMRPercent2 < 33.33 Then TeamPMRColor2 = "danger"
 
@@ -624,10 +624,10 @@
 %>
 
 						<ul class="list-group" style="margin-bottom: 1rem;">
-							<li class="list-group-item" style="padding-top: 0.25rem; padding-bottom: 0.25rem; font-size: 0.75rem; text-align: center; background-color: #4CAF50; color: #fff;"><strong><%= MatchupTitle %></strong></li>
+							<li class="list-group-item" style="padding-top: 0.25rem; padding-bottom: 0.25rem; font-size: 0.75rem; text-align: center; background-color: #BBF1BB; color: #fff;"><strong><%= MatchupTitle %></strong></li>
 							<li class="list-group-item px-3 team-omega-box-<%= TeamID1 %>">
-								<span class="team-omega-score-<%= TeamID1 %>" style="font-size: 1em; background-color: #fff; color: #244717; float: right;"><%= TeamScore1 %></span>
-								<span style="font-size: 13px; color: #244717;"><%= TeamName1 %></span>
+								<span class="team-omega-score-<%= TeamID1 %>" style="font-size: 1em; background-color: #fff; color: #354335; float: right;"><%= TeamScore1 %></span>
+								<span style="font-size: 13px; color: #354335;"><%= TeamName1 %></span>
 								<div class="progress team-omega-progress-<%= TeamID1 %>" style="height: 1px; margin-top: 6px; margin-bottom: 0; padding-bottom: 0;">
 									<div class="progress-bar progress-bar-<%= TeamPMRColor1 %>" role="progressbar" aria-valuenow="<%= TeamPMRPercent1 %>" aria-valuemin="0" aria-valuemax="100" style="width: <%= TeamPMRPercent1 %>%">
 										<span class="sr-only team-omega-progress-sr-<%= TeamID1 %>"><%= TeamPMRPercent1 %>%</span>
@@ -635,8 +635,8 @@
 								</div>
 							</li>
 							<li class="list-group-item px-3 team-omega-box-<%= TeamID2 %>">
-								<span class="team-omega-score-<%= TeamID2 %>" style="font-size: 1em; background-color: #fff; color: #244717; float: right;"><%= TeamScore2 %></span>
-								<span style="font-size: 13px; color: #244717;"><%= TeamName2 %></span>
+								<span class="team-omega-score-<%= TeamID2 %>" style="font-size: 1em; background-color: #fff; color: #354335; float: right;"><%= TeamScore2 %></span>
+								<span style="font-size: 13px; color: #354335;"><%= TeamName2 %></span>
 								<div class="progress team-omega-progress-<%= TeamID2 %>" style="height: 1px; margin-top: 4px; margin-bottom: 0; padding-bottom: 0;">
 									<div class="progress-bar progress-bar-<%= TeamPMRColor2 %>" role="progressbar" aria-valuenow="<%= TeamPMRPercent2 %>" aria-valuemin="0" aria-valuemax="<%= TeamPMRPercent2 %>" style="width: <%= TeamPMRPercent2 %>%">
 										<span class="sr-only team-omega-progress-sr-<%= TeamID2 %>"><%= TeamPMRPercent2 %>%</span>
