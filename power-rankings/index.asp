@@ -82,7 +82,7 @@
 											Set rsCurrentPeriod = sqlDatabase.Execute(sqlGetCurrentPeriod)
 
 											thisCurrentPeriod = rsCurrentPeriod("Period")
-											thisLastPeriod = rsCurrentPeriod("Period")
+											thisLastPeriod = rsCurrentPeriod("Period")-1
 
 											rsCurrentPeriod.Close
 											Set rsCurrentPeriod = Nothing
