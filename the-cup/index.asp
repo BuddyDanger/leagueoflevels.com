@@ -62,13 +62,13 @@
 								<li class="list-group-item p-0">
 									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-top">
 										<img src="https://samelevel.imgix.net/user.jpg?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-2">Columbian Neckties
-										<div class="float-right"></div>
+										<div class="float-right">217.56</div>
 									</h6>
 								</li>
 								<li class="list-group-item p-0">
-									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-bottom">
+									<h6 class="text-left bg-white p-3 mt-0 mb-0 text-danger rounded-bottom">
 										<img src="https://samelevel.imgix.net/user.jpg?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-2">Gridiron Deficiency
-										<div class="float-right"></div>
+										<div class="float-right">157.06</div>
 									</h6>
 								</li>
 							</ul>
@@ -88,15 +88,15 @@
 
 							<ul class="list-group list-flush">
 								<li class="list-group-item p-0">
-									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-top">
+									<h6 class="text-left bg-white p-3 mt-0 mb-0 text-danger rounded-top">
 										<img src="https://samelevel.imgix.net/user.jpg?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-2">Naptown Wife Bandits
-										<div class="float-right"></div>
+										<div class="float-right">170.90</div>
 									</h6>
 								</li>
 								<li class="list-group-item p-0">
 									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-bottom">
-										<img src="https://samelevel.imgix.net/user.jpg?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-2">Maaty Ice Squad
-										<div class="float-right"></div>
+										<img src="https://samelevel.imgix.net/user.jpg?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-2">Matty Ice Squad
+										<div class="float-right">225.84</div>
 									</h6>
 								</li>
 							</ul>
@@ -108,13 +108,13 @@
 								<li class="list-group-item p-0">
 									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-top">
 										<img src="https://samelevel.imgix.net/user.jpg?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-2">Master Baiters
-										<div class="float-right"></div>
+										<div class="float-right">171.56</div>
 									</h6>
 								</li>
 								<li class="list-group-item p-0">
-									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-bottom">
-										<img src="https://samelevel.imgix.net/user.jpg?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-2">G.O.A.T. Cheese
-										<div class="float-right"></div>
+									<h6 class="text-left bg-white p-3 mt-0 mb-0 text-danger rounded-bottom">
+										<img src="https://samelevel.imgix.net/goatcheese.png?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-2">G.O.A.T. Cheese
+										<div class="float-right">150.00</div>
 									</h6>
 								</li>
 							</ul>
@@ -136,13 +136,13 @@
 								<li class="list-group-item p-0">
 									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-top">
 										<img src="https://samelevel.imgix.net/user.jpg?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-2">Toad Venom
-										<div class="float-right"></div>
+										<div class="float-right">194.40</div>
 									</h6>
 								</li>
 								<li class="list-group-item p-0">
-									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-bottom">
+									<h6 class="text-left bg-white p-3 mt-0 mb-0 text-danger rounded-bottom">
 										<img src="https://samelevel.imgix.net/user.jpg?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-2">Vinegar Strokes
-										<div class="float-right"></div>
+										<div class="float-right">185.04</div>
 									</h6>
 								</li>
 							</ul>
@@ -159,7 +159,7 @@
 							<ul class="list-group list-flush">
 								<li class="list-group-item p-0">
 									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-top">
-										&nbsp;
+										<img src="https://samelevel.imgix.net/user.jpg?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-2">Columbian Neckties
 										<div class="float-right"></div>
 									</h6>
 								</li>
@@ -177,7 +177,7 @@
 							<ul class="list-group list-flush">
 								<li class="list-group-item p-0">
 									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-top">
-										<img src="https://samelevel.imgix.net/user.jpg?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-2">Death by a Thousand Punts
+										<img src="https://samelevel.imgix.net/punts.jpg?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-2">Death by a Thousand Punts
 										<div class="float-right"></div>
 									</h6>
 								</li>
@@ -273,7 +273,7 @@
 								</li>
 								<li class="list-group-item p-0">
 									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-bottom">
-										<img src="https://samelevel.imgix.net/user.jpg?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-2">Settlers of Catanzaro
+										<img src="https://samelevel.imgix.net/settlers_new.jpg?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-2">Settlers of Catanzaro
 										<div class="float-right"></div>
 									</h6>
 								</li>
@@ -291,7 +291,7 @@
 								</li>
 								<li class="list-group-item p-0">
 									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-bottom">
-										&nbsp;
+										<img src="https://samelevel.imgix.net/user.jpg?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-2">Matty Ice Squad
 										<div class="float-right"></div>
 									</h6>
 								</li>
@@ -304,7 +304,7 @@
 							<ul class="list-group list-flush">
 								<li class="list-group-item p-0">
 									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-top">
-										&nbsp;
+										<img src="https://samelevel.imgix.net/user.jpg?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-2">Master Baiters
 										<div class="float-right"></div>
 									</h6>
 								</li>
@@ -322,7 +322,7 @@
 							<ul class="list-group list-flush">
 								<li class="list-group-item p-0">
 									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-top">
-										<img src="https://samelevel.imgix.net/user.jpg?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-2">Marcus Divinius
+										<img src="https://samelevel.imgix.net/icon-dbdf03186135dc90929f7c5364115ad7d6e541c951cd3981fc48f91d28ce06fe.png?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-2">Marcus Divinius
 										<div class="float-right"></div>
 									</h6>
 								</li>
@@ -358,7 +358,7 @@
 							<ul class="list-group list-flush">
 								<li class="list-group-item p-0">
 									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-top">
-										<img src="https://samelevel.imgix.net/tuddies.png?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-2">Tuddies
+										<img src="https://samelevel.imgix.net/tuddies_new.png?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-2">Tuddies
 										<div class="float-right"></div>
 									</h6>
 								</li>
@@ -418,7 +418,7 @@
 								</li>
 								<li class="list-group-item p-0">
 									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-bottom">
-										<img src="https://samelevel.imgix.net/user.jpg?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-2">Darryl Talleywacker
+										<img src="https://samelevel.imgix.net/wacker_new.jpg?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-2">Darryl Talleywacker
 										<div class="float-right"></div>
 									</h6>
 								</li>
@@ -436,7 +436,7 @@
 								</li>
 								<li class="list-group-item p-0">
 									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-bottom">
-										&nbsp;
+										<img src="https://samelevel.imgix.net/toadvenom.jpg?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-2">Toad Venom
 										<div class="float-right"></div>
 									</h6>
 								</li>
