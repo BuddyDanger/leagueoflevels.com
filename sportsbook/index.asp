@@ -118,7 +118,7 @@
 
 							End If
 
-
+							Session.Contents("switchOMEGA") = 0
 %>
 							<form action="/sportsbook/" method="get">
 								<input type="hidden" name="action" value="switch" />
