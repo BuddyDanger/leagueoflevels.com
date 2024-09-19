@@ -18,13 +18,13 @@
 		<meta property="og:site_name" content="LeagueOfLevels.com" />
 		<meta property="og:url" content="https://www.leagueoflevels.com/the-cup/" />
 		<meta property="og:title" content="The Next Level Cup / The League of Levels" />
-		<meta property="og:description" content="This is the official playoff bracket for the 2024 Next Level Cup. The winner of this competition will not only be awarded plenty of nonsense, they will also advance to the Omega Level in 2024." />
+		<meta property="og:description" content="This is the official playoff bracket for the 2024 Next Level Cup. The winner of this competition will not only be awarded plenty of nonsense, they will also advance to the Omega Level in 2025." />
 		<meta property="og:type" content="article" />
 
 		<meta name="twitter:site" content="samelevel" />
 		<meta name="twitter:url" content="https://www.leagueoflevels.com/the-cup/" />
 		<meta name="twitter:title" content="The Next Level Cup / The League of Levels" />
-		<meta name="twitter:description" content="This is the official playoff bracket for the 2024 Next Level Cup. The winner of this competition will not only be awarded plenty of nonsense, they will also advance to the Omega Level in 2024." />
+		<meta name="twitter:description" content="This is the official playoff bracket for the 2024 Next Level Cup. The winner of this competition will not only be awarded plenty of nonsense, they will also advance to the Omega Level in 2025." />
 
 		<meta name="title" content="The Next Level Cup - The League of Levels" />
 		<meta name="medium" content="article" />
