@@ -72,7 +72,7 @@
 
 						sqlMatchups = sqlMatchups & "SELECT Matchups.MatchupID, Matchups.LevelID, Matchups.TeamID1, Teams1.TeamName AS TeamName1, Accounts1.ProfileImage AS Logo1, Teams1.CBSID AS CBSID1, Matchups.TeamID2, Teams2.TeamName, Accounts2.ProfileImage AS Logo2, Teams2.CBSID AS CBSID2, Matchups.TeamScore1, Matchups.TeamScore2, Matchups.TeamPMR1, Matchups.TeamPMR2, Matchups.IsPlayoffs, Matchups.IsMajor, Power1.PowerPoints_Total + Power2.PowerPoints_Total AS PowerMatchup, Power1.PowerPoints_Total AS PowerPoints1, Power2.PowerPoints_Total AS PowerPoints2, Teams1.AbbreviatedName, Teams2.AbbreviatedName FROM Matchups INNER JOIN Teams AS Teams1 ON Teams1.TeamID = Matchups.TeamID1 LEFT JOIN Teams AS Teams2 ON Teams2.TeamID = Matchups.TeamID2 INNER JOIN LinkAccountsTeams AS Link1 ON Link1.TeamID = Teams1.TeamID LEFT JOIN LinkAccountsTeams AS Link2 ON Link2.TeamID = Teams2.TeamID INNER JOIN Accounts AS Accounts1 ON Accounts1.AccountID = Link1.AccountID LEFT JOIN Accounts AS Accounts2 ON Accounts2.AccountID = Link2.AccountID LEFT JOIN PowerRankings AS Power1 ON Power1.TeamID = Teams1.TeamID LEFT JOIN PowerRankings AS Power2 ON Power2.TeamID = Teams2.TeamID WHERE Matchups.Year = " & Session.Contents("CurrentYear") & " AND Matchups.Period = " & Session.Contents("CurrentPeriod") & " AND Matchups.LevelID = 4 ORDER BY (Power1.PowerPoints_Total + Power2.PowerPoints_Total) DESC;"
 
-						sqlMatchups = sqlMatchups & "SELECT distinct Matchups.MatchupID, Matchups.LevelID, Matchups.TeamID1, Teams1.TeamName AS TeamName1, '' AS Logo1, Teams1.CBSID AS CBSID1, Matchups.TeamID2, Teams2.TeamName, '' AS Logo2, Teams2.CBSID, Matchups.TeamScore1, Matchups.TeamScore2, Matchups.TeamPMR1, Matchups.TeamPMR2, Matchups.Leg, Teams1.AbbreviatedName, Teams2.AbbreviatedName FROM Matchups INNER JOIN Teams AS Teams1 ON Teams1.TeamID = Matchups.TeamID1 INNER JOIN Teams AS Teams2 ON Teams2.TeamID = Matchups.TeamID2 INNER JOIN LinkAccountsTeams AS Link1 ON Link1.TeamID = Teams1.TeamID INNER JOIN LinkAccountsTeams AS Link2 ON Link2.TeamID = Teams2.TeamID INNER JOIN Accounts AS Accounts1 ON Accounts1.AccountID = Link1.AccountID INNER JOIN Accounts AS Accounts2 ON Accounts2.AccountID = Link2.AccountID WHERE Matchups.Year = " & Session.Contents("CurrentYear") & " AND Matchups.Period = " & Session.Contents("CurrentPeriod") & " AND Matchups.LevelID = 5 ORDER BY MatchupID;"
+						sqlMatchups = sqlMatchups & "SELECT DISTINCT Matchups.MatchupID, Matchups.LevelID, Matchups.TeamID1, Matchups.TeamID2, Teams1.TeamName AS TeamName1, Teams2.TeamName, Matchups.TeamScore1, Matchups.TeamScore2, Matchups.TeamPMR1, Matchups.TeamPMR2, Matchups.Leg, Teams1.AbbreviatedName, Teams2.AbbreviatedName FROM Matchups INNER JOIN Teams AS Teams1 ON Teams1.TeamID = Matchups.TeamID1 INNER JOIN Teams AS Teams2 ON Teams2.TeamID = Matchups.TeamID2 WHERE Matchups.Year = " & Session.Contents("CurrentYear") & " AND Matchups.Period = " & Session.Contents("CurrentPeriod") & " AND Matchups.LevelID = 5 ORDER BY MatchupID;"
 
 						Set rsMatchups = sqlDatabase.Execute(sqlMatchups)
 
@@ -595,20 +595,42 @@
 
 				MatchupID = arrTAG(0, i)
 				TeamID1 = arrTAG(2, i)
-				TeamName1 = arrTAG(3, i)
-				TeamLogo1 = arrTAG(4, i)
-				TeamCBSID1 = arrTAG(5, i)
-				TeamID2 = arrTAG(6, i)
-				TeamName2 = arrTAG(7, i)
-				TeamLogo2 = arrTAG(8, i)
-				TeamCBSID2 = arrTAG(9, i)
-				TeamScore1 = FormatNumber(arrTAG(10, i), 2)
-				TeamScore2 = FormatNumber(arrTAG(11, i), 2)
-				TeamPMR1 = arrTAG(12, i)
-				TeamPMR2 = arrTAG(13, i)
-				TeamAbbreviatedName1 = arrTAG(15, i)
-				TeamAbbreviatedName2 = arrTAG(16, i)
-				'thisWeeklyMatchups = thisWeeklyMatchups & MatchupID & ","
+				TeamID2 = arrTAG(3, i)
+				TeamName1 = arrTAG(4, i)
+				TeamName2 = arrTAG(5, i)
+				TeamScore1 = FormatNumber(arrTAG(6, i), 2)
+				TeamScore2 = FormatNumber(arrTAG(7, i), 2)
+				TeamPMR1 = arrTAG(8, i)
+				TeamPMR2 = arrTAG(9, i)
+				TeamAbbreviatedName1 = arrTAG(11, i)
+				TeamAbbreviatedName2 = arrTAG(12, i)
+
+				sqlGetTeam1 = "SELECT Accounts.AccountID, ProfileName, ProfileURL, ProfileImage FROM Accounts INNER JOIN LinkAccountsTeams ON Accounts.AccountID = LinkAccountsTeams.AccountID WHERE LinkAccountsTeams.TeamID = " & TeamID1 & ";"
+				sqlGetTeam2 = "SELECT Accounts.AccountID, ProfileName, ProfileURL, ProfileImage FROM Accounts INNER JOIN LinkAccountsTeams ON Accounts.AccountID = LinkAccountsTeams.AccountID WHERE LinkAccountsTeams.TeamID = " & TeamID2 & ";"
+
+				Set rsTeams = sqlDatabase.Execute(sqlGetTeam1 & sqlGetTeam2)
+				Team1Partner1_AccountID = rsTeams("AccountID")
+				Team1Partner1_ProfileName = rsTeams("ProfileName")
+				Team1Partner1_ProfileURL = rsTeams("ProfileURL")
+				Team1Partner1_ProfileImage = rsTeams("ProfileImage")
+				rsTeams.MoveNext
+				Team1Partner2_AccountID = rsTeams("AccountID")
+				Team1Partner2_ProfileName = rsTeams("ProfileName")
+				Team1Partner2_ProfileURL = rsTeams("ProfileURL")
+				Team1Partner2_ProfileImage = rsTeams("ProfileImage")
+				Set rsTeams = rsTeams.NextRecordset()
+				Team2Partner1_AccountID = rsTeams("AccountID")
+				Team2Partner1_ProfileName = rsTeams("ProfileName")
+				Team2Partner1_ProfileURL = rsTeams("ProfileURL")
+				Team2Partner1_ProfileImage = rsTeams("ProfileImage")
+				rsTeams.MoveNext
+				Team2Partner2_AccountID = rsTeams("AccountID")
+				Team2Partner2_ProfileName = rsTeams("ProfileName")
+				Team2Partner2_ProfileURL = rsTeams("ProfileURL")
+				Team2Partner2_ProfileImage = rsTeams("ProfileImage")
+
+				rsTeams.Close
+				Set rsTeams = Nothing
 
 				TeamPMRColor1 = "success"
 				TeamPMRPercent1 = (TeamPMR1 * 100) / 840
@@ -625,21 +647,26 @@
 
 						<ul class="list-group" style="margin-bottom: 1rem;">
 							<li class="list-group-item" style="padding-top: 0.25rem; padding-bottom: 0.25rem; font-size: 0.75rem; text-align: center; background-color: #BBF1BB; color: #fff;"><strong><%= MatchupTitle %></strong></li>
-							<li class="list-group-item px-3 team-omega-box-<%= TeamID1 %>">
-								<span class="team-omega-score-<%= TeamID1 %>" style="font-size: 1em; background-color: #fff; color: #354335; float: right;"><%= TeamScore1 %></span>
-								<span style="font-size: 13px; color: #354335;"><%= TeamName1 %></span>
-								<div class="progress team-omega-progress-<%= TeamID1 %>" style="height: 1px; margin-top: 6px; margin-bottom: 0; padding-bottom: 0;">
+							<li class="list-group-item px-3 team-tag-box-<%= TeamID1 %>">
+								<img src="https://samelevel.imgix.net/<%= Team1Partner1_ProfileImage %>?w=32&h=32&fit=crop&crop=focalpoint" class="rounded-circle" title="<%= Team1Partner1_ProfileName %>" style="position: relative; z-index: 1; border: 2px solid #fff;" />
+								<img src="https://samelevel.imgix.net/<%= Team1Partner2_ProfileImage %>?w=32&h=32&fit=crop&crop=focalpoint" class="rounded-circle" title="<%= Team1Partner2_ProfileName %>" style="position: relative; z-index: 0; border: 2px solid #fff; left: -15px;" />
+								<span class="team-tag-score-<%= TeamID1 %>" style="font-size: 13px; background-color: #fff; color: #354335; float: right;"><%= TeamScore1 %></span>
+								<span style="font-size: 13px; color: #354335;"><b><%= TeamName1 %></b></span>
+								<div class="progress team-tag-progress-<%= TeamID1 %>" style="height: 1px; margin-top: 6px; margin-bottom: 0; padding-bottom: 0;">
 									<div class="progress-bar progress-bar-<%= TeamPMRColor1 %>" role="progressbar" aria-valuenow="<%= TeamPMRPercent1 %>" aria-valuemin="0" aria-valuemax="100" style="width: <%= TeamPMRPercent1 %>%">
-										<span class="sr-only team-omega-progress-sr-<%= TeamID1 %>"><%= TeamPMRPercent1 %>%</span>
+										<span class="sr-only team-tag-progress-sr-<%= TeamID1 %>"><%= TeamPMRPercent1 %>%</span>
 									</div>
 								</div>
 							</li>
-							<li class="list-group-item px-3 team-omega-box-<%= TeamID2 %>">
-								<span class="team-omega-score-<%= TeamID2 %>" style="font-size: 1em; background-color: #fff; color: #354335; float: right;"><%= TeamScore2 %></span>
-								<span style="font-size: 13px; color: #354335;"><%= TeamName2 %></span>
-								<div class="progress team-omega-progress-<%= TeamID2 %>" style="height: 1px; margin-top: 4px; margin-bottom: 0; padding-bottom: 0;">
+
+							<li class="list-group-item px-3 team-tag-box-<%= TeamID2 %>">
+								<img src="https://samelevel.imgix.net/<%= Team2Partner1_ProfileImage %>?w=32&h=32&fit=crop&crop=focalpoint" class="rounded-circle" title="<%= Team2Partner1_ProfileName %>" style="position: relative; z-index: 1; border: 2px solid #fff;" />
+								<img src="https://samelevel.imgix.net/<%= Team2Partner2_ProfileImage %>?w=32&h=32&fit=crop&crop=focalpoint" class="rounded-circle" title="<%= Team2Partner2_ProfileName %>" style="position: relative; z-index: 0; border: 2px solid #fff; left: -15px;" />
+								<span class="team-tag-score-<%= TeamID2 %>" style="font-size: 13px; background-color: #fff; color: #354335; float: right;"><%= TeamScore2 %></span>
+								<span style="font-size: 13px; color: #354335;"><b><%= TeamName2 %></b></span>
+								<div class="progress team-tag-progress-<%= TeamID2 %>" style="height: 1px; margin-top: 4px; margin-bottom: 0; padding-bottom: 0;">
 									<div class="progress-bar progress-bar-<%= TeamPMRColor2 %>" role="progressbar" aria-valuenow="<%= TeamPMRPercent2 %>" aria-valuemin="0" aria-valuemax="<%= TeamPMRPercent2 %>" style="width: <%= TeamPMRPercent2 %>%">
-										<span class="sr-only team-omega-progress-sr-<%= TeamID2 %>"><%= TeamPMRPercent2 %>%</span>
+										<span class="sr-only team-tag-progress-sr-<%= TeamID2 %>"><%= TeamPMRPercent2 %>%</span>
 									</div>
 								</div>
 							</li>
