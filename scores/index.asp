@@ -650,7 +650,7 @@
 							<li class="list-group-item px-3 team-tag-box-<%= TeamID1 %>">
 								<img src="https://samelevel.imgix.net/<%= Team1Partner1_ProfileImage %>?w=32&h=32&fit=crop&crop=focalpoint" class="rounded-circle" title="<%= Team1Partner1_ProfileName %>" style="position: relative; z-index: 1; border: 2px solid #fff;" />
 								<img src="https://samelevel.imgix.net/<%= Team1Partner2_ProfileImage %>?w=32&h=32&fit=crop&crop=focalpoint" class="rounded-circle" title="<%= Team1Partner2_ProfileName %>" style="position: relative; z-index: 0; border: 2px solid #fff; left: -15px;" />
-								<span class="team-tag-score-<%= TeamID1 %>" style="font-size: 13px; background-color: #fff; color: #354335; float: right;"><%= TeamScore1 %></span>
+								<span class="team-tag-score-<%= TeamID1 %>" style="font-size: 13px; line-height: 32px; background-color: #fff; color: #354335; float: right;"><%= TeamScore1 %></span>
 								<span style="font-size: 13px; color: #354335;"><b><%= TeamName1 %></b></span>
 								<div class="progress team-tag-progress-<%= TeamID1 %>" style="height: 1px; margin-top: 6px; margin-bottom: 0; padding-bottom: 0;">
 									<div class="progress-bar progress-bar-<%= TeamPMRColor1 %>" role="progressbar" aria-valuenow="<%= TeamPMRPercent1 %>" aria-valuemin="0" aria-valuemax="100" style="width: <%= TeamPMRPercent1 %>%">
@@ -662,7 +662,7 @@
 							<li class="list-group-item px-3 team-tag-box-<%= TeamID2 %>">
 								<img src="https://samelevel.imgix.net/<%= Team2Partner1_ProfileImage %>?w=32&h=32&fit=crop&crop=focalpoint" class="rounded-circle" title="<%= Team2Partner1_ProfileName %>" style="position: relative; z-index: 1; border: 2px solid #fff;" />
 								<img src="https://samelevel.imgix.net/<%= Team2Partner2_ProfileImage %>?w=32&h=32&fit=crop&crop=focalpoint" class="rounded-circle" title="<%= Team2Partner2_ProfileName %>" style="position: relative; z-index: 0; border: 2px solid #fff; left: -15px;" />
-								<span class="team-tag-score-<%= TeamID2 %>" style="font-size: 13px; background-color: #fff; color: #354335; float: right;"><%= TeamScore2 %></span>
+								<span class="team-tag-score-<%= TeamID2 %>" style="font-size: 13px; line-height: 32px; background-color: #fff; color: #354335; float: right;"><%= TeamScore2 %></span>
 								<span style="font-size: 13px; color: #354335;"><b><%= TeamName2 %></b></span>
 								<div class="progress team-tag-progress-<%= TeamID2 %>" style="height: 1px; margin-top: 4px; margin-bottom: 0; padding-bottom: 0;">
 									<div class="progress-bar progress-bar-<%= TeamPMRColor2 %>" role="progressbar" aria-valuenow="<%= TeamPMRPercent2 %>" aria-valuemin="0" aria-valuemax="<%= TeamPMRPercent2 %>" style="width: <%= TeamPMRPercent2 %>%">
