@@ -544,6 +544,9 @@
 				TeamAbbreviatedName1 = arrBLFFL(19, i)
 				TeamAbbreviatedName2 = arrBLFFL(20, i)
 				MatchupURL = "/scores/" & MatchupID & "/"
+
+				MajorText = ""
+				If IsMajor Then MajorText = "<span class=""badge badge-pill badge-warning"" title=""Major Matchup""><i class=""fa fa-star-of-life p-1""></i></span>"
 	            ' Display matchups for BLFFL
 	            Response.Write("<div class=""col-6 col-xl-4 col-xxl-3 col-xxxl-2 pl-1 pr-1 pl-lg-3 pr-lg-0"">")
 %>
