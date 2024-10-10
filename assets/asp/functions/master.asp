@@ -430,13 +430,13 @@
 	Function GetToken (League)
 
 		If UCase(League) = "SLFFL" Or UCase(League) = "SAMELEVEL" Then
-			thisToken = "U2FsdGVkX1-ys0PplbzDzgJOeqa7ubx3AFrfNiaLbnnHfWoUY2h4B0kEeV4ys2Mg3Lxlg8fNgBUdAH4oq7A2xlydCn7QZ7W1GCE2Zsw9sAv1nLCoP3Dk-pQmevfnHhC3wZl0NThT0-bILgFw9UEhrg"
+			thisToken = "U2FsdGVkX19AeY7GNFenRRRdR4JdgTSJ_c9MLFmJZ7hTFpkRJCSrUDxvyWarQyuz7-SMT2XeplYn6iAZ7I8ABCEJjkA-nyhJ56Grk82rlp7e63_RfGoTrbL-69CXWUuB_jZQVkpKGa5febw3kzrnOA"
 		ElseIf UCase(League) = "OMEGA" Or UCase(League) = "OMEGALEVEL" Then
-			thisToken = "U2FsdGVkX1_W--MbQX8lTWzWngicxP7QgPwFiEArQehKihjKS5kMzxOcw25FVpL3-w0qRDNMtD1Zt6q8RPChcos_z5MwtiTljUJn3JHDLlidIHDNKRSorjWNHmKmeSf3_A7bikwJh39cjB4FaECYQw"
+			thisToken = "U2FsdGVkX1_79HilKs_Apz6WFSwirtALS6bN8gEmRbsIjKFyhESAurCVkDFlCMFTXKdh2JwiN4liAGKSAIV5Zd6JX69uKTvtJVf8BuOnjZBmXdYQCQPITBqgJ-WjLMpF_74h4bp26YNfxbKpydM0fQ"
 		ElseIf UCase(League) = "BLFFL" Or UCase(League) = "BESTLEVEL" Then
-			thisToken = "U2FsdGVkX19tc1MrRCeR-KC5ckVVdU0AsxYgxMA17vjtWzO-V6I8I2caTj6J2qNEMLwk2dtAZw1Q3f9YKGQiJBbH6hb6PKDp6mfea3inSfQeINzqGqW-IibWrnGdV-VReCZvpL8GhoRcOE42XANC4A"
+			thisToken = "U2FsdGVkX189DSDBw6N6VEaqLzh3NhNO9tX9EGrId4lENvxowNgVtLjZnt3SL_J4oOmDcyjBWlWEmAAUoN0qXumUcTqXnaQqZtYu2c-Ll48Xq3lnFg7DQnasB5oQlSXjG1HWUJVHAghHzhGWg54pvg"
 		Else
-			thisToken = "U2FsdGVkX198e_7c-gMZ332TmWENJ-cbeqW5KTgk2hIt_Ipmqrw5_mqgts58p2J337py7ez5QVSWL3fuHSwcwuFpHpLGdXxxXV9VncLYshsnkImWNMDzCm188CmQVqdU5OppPzYsEQaSYbUfQygd4Q"
+			thisToken = "U2FsdGVkX191WmBvqyRNfLGhsYdS2_eYMTzw7ld81BDaPEWSpwsz35tjoDUVIAewkD4VY3pGStwo-Rf6rOnXP_R-0C9WixKzbYe0G-U12xwNV38tROD-LqWX8NzDtGBS8GdJ0D3wSYkfnqsqnJH22A"
 		End If
 
 		GetToken = thisToken
