@@ -545,7 +545,7 @@
 	End If
 
 	'*****************************************************
-	'*** BLOG ********************************************
+	'*** STANDINGS ***************************************
 	'*****************************************************
 	If Session.Contents("SITE_Level_1") = "standings" Then
 
@@ -639,6 +639,74 @@
 		Next
 
 		If IsSingleBlog = 0 Then sTransferURL = "index.asp"
+
+	End If
+
+	'*****************************************************
+	'*** SCHEDULE ****************************************
+	'*****************************************************
+	If Session.Contents("SITE_Level_1") = "schedule" Then
+
+		Session.Contents("SITE_Schedule_LevelID") = ""
+		Session.Contents("SITE_Schedule_TeamID") = ""
+		Session.Contents("SITE_Schedule_Year") = ""
+		Session.Contents("SITE_Schedule_Period") = ""
+
+		arLevels = Split(LevelString, "||")
+		IsSingleTeam = 0
+		LevelCount = 1
+
+		For Each Level In arLevels
+
+			MatchFound = 0
+			StrippedLevel = Level
+			If InStr(StrippedLevel, "-") Then StrippedLevel = Replace(StrippedLevel, "-", " ")
+
+			If MatchFound = 0 Then
+
+				sqlGetLevel = "SELECT LevelID, Title FROM Levels WHERE Title = '" & StrippedLevel & "'"
+				Set rsLevel = sqlDatabase.Execute(sqlGetLevel)
+
+				If Not rsLevel.Eof Then
+
+					Session.Contents("SITE_Schedule_LevelID") = rsLevel("LevelID")
+					Session.Contents("SITE_Schedule_LevelTitle") = rsLevel("Title")
+					MatchFound = 1 : DeadPage = 0
+
+					rsLevel.Close
+					Set rsLevel = Nothing
+
+				End If
+
+			End If
+
+			If MatchFound = 0 Then
+
+				If IsNumeric(Level) Then
+
+					If CInt(Level) >= 2008 And CInt(Level) <= Year(Now()) Then
+
+						Session.Contents("SITE_Schedule_Year") = Level
+						MatchFound = 1 : DeadPage = 0
+
+					End If
+
+					If MatchFound = 0 And CInt(Level) >= 1 And CInt(Level) <= 18 Then
+
+						Session.Contents("SITE_Schedule_Period") = Level
+						MatchFound = 1 : DeadPage = 0
+
+					End If
+
+				End If
+
+			End If
+
+			LevelCount = LevelCount + 1
+
+		Next
+
+		sTransferURL = "index.asp"
 
 	End If
 
