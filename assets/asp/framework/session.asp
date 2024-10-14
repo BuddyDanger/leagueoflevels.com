@@ -36,6 +36,24 @@
 
 	End If
 
+	If Len(Session.Contents("OmegaLevelToken")) = 0 Then
+
+        sqlGetTokens = "SELECT LevelID, Token FROM Levels WHERE LevelID IN (1, 2, 3, 4)"
+        Set rsTokens = sqlDatabase.Execute(sqlGetTokens)
+
+        Do While Not rsTokens.Eof
+            If rsTokens("LevelID") = 1 Then Session.Contents("OmegaLevelToken") = rsTokens("Token")
+            If rsTokens("LevelID") = 2 Then Session.Contents("SameLevelToken") = rsTokens("Token")
+			If rsTokens("LevelID") = 3 Then Session.Contents("FarmLevelToken") = rsTokens("Token")
+			If rsTokens("LevelID") = 4 Then Session.Contents("BestLevelToken") = rsTokens("Token")
+            rsTokens.MoveNext
+        Loop
+
+        rsTokens.Close
+        Set rsTokens = Nothing
+
+    End If
+
 	If Len(Session.Contents("switchNFL")) = 0 Then Session.Contents("switchNFL") = 1
 	If Len(Session.Contents("switchOMEGA")) = 0 Then Session.Contents("switchOMEGA") = 1
 	If Len(Session.Contents("switchSLFFL")) = 0 Then Session.Contents("switchSLFFL") = 1

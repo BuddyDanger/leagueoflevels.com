@@ -429,19 +429,20 @@
 
 	Function GetToken (League)
 
-		If UCase(League) = "SLFFL" Or UCase(League) = "SAMELEVEL" Then
-			thisToken = "U2FsdGVkX1-k3BqfBlqP9YLzHib6LBpN5l0jyGzdp_jYwUzvP9TqJ2l-Bvj_0tWwgVMx4wDJ9v_wgDzKXHjlHfFQMH_FBhU1yY4Y3DVsVW7r91vM0x6ySS0vtlvvGB-EUjNZWCmfQMGv0CHmeI47yw"
-		ElseIf UCase(League) = "OMEGA" Or UCase(League) = "OMEGALEVEL" Then
-			thisToken = "U2FsdGVkX19zpQrWgUbIcpObbxUj2H_G8_pSx-kE7yGGFbQs2oFswwNa0qRGlG0Zh8T45Ubok7SjOZi9rf5aOj29h6QlrI1eoMhBtW1Cm7HCjwqLLCjKpjdzLk_epW73SU4OSACaSRcTeTz03386Rg"
-		ElseIf UCase(League) = "BLFFL" Or UCase(League) = "BESTLEVEL" Then
-			thisToken = "U2FsdGVkX18hXYzjv-jb3GWYZunVksTwIMqUzZWqboFkjZ0sbaHEC1UkJAlMFdwFMFW4NHFNu2h6grz0WJC7P_5Cm4_53MLgiUTvO5GQL7AoykDRCpajPAFXb6xLoh_96MvqghjZfJRvQP8opCS9tQ"
-		Else
-			thisToken = "U2FsdGVkX1_Dy3I4PpBU6ps9FB91B9CFKHPBjfXQ2ilI9bMcG3p9A4zHoyWDdRAIGxXV0Ig5DkNKGonfJ_in3bYDzcyFAV4nvAMvuoUwo7_OmtjPWNM8H0DwYlDzRoMW8q1uhEmmANGKOWxSZmUzXA"
-		End If
+	    If UCase(League) = "SLFFL" Or UCase(League) = "SAMELEVEL" Then
+	        thisToken = Session.Contents("SameLevelToken")
+	    ElseIf UCase(League) = "OMEGA" Or UCase(League) = "OMEGALEVEL" Then
+	        thisToken = Session.Contents("OmegaLevelToken")
+	    ElseIf UCase(League) = "BLFFL" Or UCase(League) = "BESTLEVEL" Then
+	        thisToken = Session.Contents("BestLevelToken")
+	    Else
+	        thisToken = Session.Contents("FarmLevelToken")
+	    End If
 
-		GetToken = thisToken
+	    GetToken = thisToken
 
 	End Function
+
 
 	Function GetMatchups (League, Period)
 
