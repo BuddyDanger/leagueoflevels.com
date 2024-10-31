@@ -96,21 +96,21 @@
 							If Request.QueryString("action") = "switch" Then
 
 								Session.Contents("switchNFL") = 0
-								Session.Contents("switchOMEGA") = 0
+								Session.Contents("switchTAG") = 0
 								Session.Contents("switchSLFFL") = 0
 								Session.Contents("switchFLFFL") = 0
 								Session.Contents("switchNEXT") = 0
 								Session.Contents("switchBLFFL") = 0
 
 								thisNFL = Request.QueryString("NFL")
-								thisOMEGA = Request.QueryString("OMEGA")
+								thisTAG = Request.QueryString("TAG")
 								thisSLFFL = Request.QueryString("SLFFL")
 								thisFLFFL = Request.QueryString("FLFFL")
 								thisNEXT = Request.QueryString("NEXT")
 								thisBLFFL = Request.QueryString("BLFFL")
 
 								If thisNFL = 1 Then Session.Contents("switchNFL") = 1
-								If thisOMEGA = 1 Then Session.Contents("switchOMEGA") = 1
+								If thisTAG = 1 Then Session.Contents("switchTAG") = 1
 								If thisSLFFL = 1 Then Session.Contents("switchSLFFL") = 1
 								If thisFLFFL = 1 Then Session.Contents("switchFLFFL") = 1
 								If thisNEXT = 1 Then Session.Contents("switchNEXT") = 1
@@ -133,12 +133,12 @@
 											</div>
 										</div>
 										<div class="form-check form-check-inline">
-											<div class="btn btn-dark mb-3">
-												<div class="custom-control custom-switch">
-													<input type="checkbox" class="custom-control-input" id="switchOMEGA" name="OMEGA" value="1" <% If Session.Contents("switchOMEGA") = 1 Then %>checked<% End If %>>
-													<label class="custom-control-label text-white" for="switchOMEGA">OMEGA</label>
-												</div>
-											</div>
+										    <div class="btn btn-dark mb-3">
+										        <div class="custom-control custom-switch">
+										            <input type="checkbox" class="custom-control-input" id="switchTAG" name="TAG" value="1" <% If Session.Contents("switchTAG") = 1 Then %>checked<% End If %>>
+										            <label class="custom-control-label text-white" for="switchTAG">TAG TEAM</label>
+										        </div>
+										    </div>
 										</div>
 										<div class="form-check form-check-inline">
 											<div class="btn btn-dark mb-3">
@@ -175,75 +175,12 @@
 									</div>
 									<div class="col-12">
 										<button class="btn btn-info mb-3 mr-2">UPDATE FILTERS</button>
-										<a href="/sportsbook/tickets/" class="btn btn-info mb-3">VIEW ALL TICKETS</a>
+										<a href="/sportsbook/tickets/active/" class="btn btn-info mb-3">VIEW ALL TICKETS</a>
 									</div>
 								</div>
                             </form>
 
 						</div>
-
-						<!--
-						<div class="col-xxxl-3 col-xxl-3 col-xl-3 col-lg-12">
-<%
-							thisSchmeckleTotal = 0
-							sqlGetStatus = "SELECT * FROM Switchboard WHERE SwitchboardID = 1"
-							Set rsStatus = sqlDatabase.Execute(sqlGetStatus)
-
-							If Not rsStatus.Eof Then
-
-								thisSportsbookStatus = rsStatus("Sportsbook")
-
-								If thisSportsbookStatus = False Then thisFormDisabled = "disabled"
-
-								rsStatus.Close
-								Set rsStatus = Nothing
-
-							End If
-
-							If Len(Session.Contents("AccountID")) > 0 Then
-
-								sqlGetSchmeckles = "SELECT SUM(TransactionTotal) AS CurrentSchmeckleTotal FROM SchmeckleTransactions WHERE AccountID = " & Session.Contents("AccountID")
-								Set rsSchmeckles = sqlDatabase.Execute(sqlGetSchmeckles)
-
-								If Not rsSchmeckles.Eof Then
-
-									thisSchmeckleTotal = rsSchmeckles("CurrentSchmeckleTotal")
-
-									rsSchmeckles.Close
-									Set rsSchmeckles = Nothing
-
-								End If
-
-							End If
-%>
-							<ul class="list-group mb-4">
-								<li class="list-group-item p-0">
-									<h4 class="text-left bg-dark text-white p-3 mt-0 mb-0 rounded-top"><b>WHEEL ROUTES</b><span class="float-right dripicons-graph-pie"></i></h4>
-								</li>
-								<li class="list-group-item p-0">
-
-										<div class="card-body pb-0 pt-0">
-
-											<form id="betWheelRoute" action="/sportsbook/submit-bet/">
-												<div class="form-group">
-
-													<input type="hidden" id="inputWheelRouteGo" name="inputWheelRouteGo" value="go" />
-
-													<label for="inputWheelRouteBetAmount" class="col-form-label mt-1"><b>Bet Amount (Schmeckles)</b></label>
-													<input <%= thisFormDisabled %> type="number" class="form-control form-control-lg" min="0" max="<%= thisSchmeckleTotal %>" id="inputWheelRouteBetAmount" name="inputWheelRouteBetAmount" required>
-
-													<button id="WheelRouteButton" <%= thisFormDisabled %> type="submit" class="btn btn-sm btn-success">Run Wheel Route</button>
-
-												</div>
-											</form>
-
-										</div>
-
-								</li>
-							</ul>
-
-						</div>
-						-->
 
 					</div>
 
@@ -262,11 +199,11 @@
 						sqlGetWeek = sqlGetWeek & "INNER JOIN NFLTeams A ON A.NFLTeamID = NFLGames.AwayTeamID "
 						sqlGetWeek = sqlGetWeek & "INNER JOIN NFLTeams B ON B.NFLTeamID = NFLGames.HomeTeamID "
 					sqlGetWeek = sqlGetWeek & ") SportsbookWeek "
-					sqlGetWeek = sqlGetWeek & "WHERE Year = " & Session.Contents("CurrentYear") & " AND Period = " & Session.Contents("CurrentPeriod") & " "
-					If Session.Contents("switchNFL") = 1 Or Session.Contents("switchOMEGA") = 1 Or Session.Contents("switchNEXT") = 1 Or Session.Contents("switchSLFFL") = 1 Or Session.Contents("switchFLFFL") = 1 Then
+					sqlGetWeek = sqlGetWeek & "WHERE Year = " & Session.Contents("CurrentYear") & " AND Period = " & Session.Contents("CurrentPeriod") & " AND LevelID <> 1 "
+					If Session.Contents("switchNFL") = 1 Or Session.Contents("switchTAG") = 1 Or Session.Contents("switchNEXT") = 1 Or Session.Contents("switchSLFFL") = 1 Or Session.Contents("switchFLFFL") = 1 Or Session.Contents("switchBLFFL") = 1 Then
 						sqlGetWeek = sqlGetWeek & "AND LevelID IN ("
 						If Session.Contents("switchNFL") Then sqlGetWeek = sqlGetWeek & "-1,"
-						If Session.Contents("switchOMEGA") Then sqlGetWeek = sqlGetWeek & "1,"
+						If Session.Contents("switchTAG") Then sqlGetWeek = sqlGetWeek & "5,"
 						If Session.Contents("switchNEXT") Then sqlGetWeek = sqlGetWeek & "0,"
 						If Session.Contents("switchSLFFL") Then sqlGetWeek = sqlGetWeek & "2,"
 						If Session.Contents("switchFLFFL") Then sqlGetWeek = sqlGetWeek & "3,"
@@ -332,7 +269,7 @@
 							headerBGcolor = "FFBA08"
 							headerTextColor = "fff"
 							headerText = "OMEGA LEVEL #" & thisLOLMatchupID
-							cardText = "805C04"
+							cardText = "520000"
 						End If
 						If CInt(thisLevelID) = 2 Then
 							headerBGcolor = "136F63"
@@ -341,16 +278,22 @@
 							cardText = "0F574D"
 						End If
 						If CInt(thisLevelID) = 3 Then
-							headerBGcolor = "032B43"
+							headerBGcolor = "995D81"
 							headerTextColor = "fff"
 							headerText = "FARM LEVEL #" & thisLOLMatchupID
 							cardText = "03324F"
 						End If
 						If CInt(thisLevelID) = 4 Then
-							headerBGcolor = "4A90E2"
+							headerBGcolor = "39A9DB"
 							headerTextColor = "fff"
 							headerText = "BEST LEVEL #" & thisLOLMatchupID
 							cardText = "03324F"
+						End If
+						If CInt(thisLevelID) = 5 Then
+							headerBGcolor = "CDE7B0"
+							headerTextColor = "003985"
+							headerText = "TAG TEAM DIVISION #" & thisLOLMatchupID
+							cardText = "84DD63"
 						End If
 
 						If CInt(thisLevelID) = -1 Then

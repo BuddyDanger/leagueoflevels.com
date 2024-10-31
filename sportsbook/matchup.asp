@@ -235,14 +235,14 @@
 							If CInt(thisMatchupLevelID) = 0 Then
 								headerBGcolor = "D00000"
 								headerTextColor = "fff"
-								headerText = "CUP"
+								headerText = "NEXT LEVEL CUP"
 								cardText = "520000"
 							End If
 							If CInt(thisMatchupLevelID) = 1 Then
 								headerBGcolor = "FFBA08"
 								headerTextColor = "fff"
-								headerText = "OMEGA"
-								cardText = "805C04"
+								headerText = "OMEGA LEVEL"
+								cardText = "520000"
 							End If
 							If CInt(thisMatchupLevelID) = 2 Then
 								headerBGcolor = "136F63"
@@ -251,16 +251,22 @@
 								cardText = "0F574D"
 							End If
 							If CInt(thisMatchupLevelID) = 3 Then
-								headerBGcolor = "032B43"
+								headerBGcolor = "995D81"
 								headerTextColor = "fff"
 								headerText = "FARM LEVEL"
 								cardText = "03324F"
 							End If
 							If CInt(thisMatchupLevelID) = 4 Then
-								headerBGcolor = "4A90E2"
+								headerBGcolor = "39A9DB"
 								headerTextColor = "fff"
 								headerText = "BEST LEVEL"
 								cardText = "03324F"
+							End If
+							If CInt(thisMatchupLevelID) = 5 Then
+								headerBGcolor = "CDE7B0"
+								headerTextColor = "003985"
+								headerText = "TAG TEAM DIVISION"
+								cardText = "84DD63"
 							End If
 
 						End If
@@ -872,7 +878,7 @@
 			function numberWithCommas(x) { return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","); }
 
 			var countdownTimer = new Date();
-			countdownTimer.setSeconds( countdownTimer.getSeconds() + 600 );
+			countdownTimer.setSeconds( countdownTimer.getSeconds() + 180 );
 
 			var x = setInterval(function() {
 

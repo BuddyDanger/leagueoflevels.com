@@ -484,7 +484,7 @@
 %>
 														<a href="<%= MatchupURL %>" class="matchup-<%= MatchupID %>" style="text-decoration: none; display: block;">
 															<ul class="list-group" style="margin-bottom: 1rem;">
-																<li class="list-group-item" style="padding-top: 0.25rem; padding-bottom: 0.25rem; font-size: 0.75rem; text-align: center; background-color: #032B43; color: #fff;"><strong><%= MatchupTitle %></strong></li>
+																<li class="list-group-item" style="padding-top: 0.25rem; padding-bottom: 0.25rem; font-size: 0.75rem; text-align: center; background-color: #995D81; color: #fff;"><strong><%= MatchupTitle %></strong></li>
 																<li class="list-group-item team-flffl-box-<%= TeamID1 %>" style="position: relative;">
 																	<div style="position: absolute; top: -18px; right: -10px;"><%= MajorText %></div>
 																	<span class="team-flffl-score-<%= TeamID1 %>" style="font-size: 1em; background-color: #fff; color: #0F574D; float: right;"><%= TeamScore1 %></span>
@@ -545,6 +545,8 @@
 				TeamAbbreviatedName2 = arrBLFFL(20, i)
 				MatchupURL = "/scores/" & MatchupID & "/"
 
+				thisWeeklyMatchups = thisWeeklyMatchups & MatchupID & ","
+
 				MajorText = ""
 				If IsMajor Then MajorText = "<span class=""badge badge-pill badge-warning"" title=""Major Matchup""><i class=""fa fa-star-of-life p-1""></i></span>"
 	            ' Display matchups for BLFFL
@@ -552,7 +554,7 @@
 %>
 					<a href="<%= MatchupURL %>" class="matchup-<%= MatchupID %>" style="text-decoration: none; display: block;">
 					<ul class="list-group" style="margin-bottom: 1rem;">
-						<li class="list-group-item" style="padding-top: 0.25rem; padding-bottom: 0.25rem; font-size: 0.75rem; text-align: center; background-color: #7E85AC; color: #fff;"><strong><%= MatchupTitle %></strong></li>
+						<li class="list-group-item" style="padding-top: 0.25rem; padding-bottom: 0.25rem; font-size: 0.75rem; text-align: center; background-color: #39A9DB; color: #fff;"><strong><%= MatchupTitle %></strong></li>
 						<li class="list-group-item team-blffl-box-<%= TeamID1 %>" style="position: relative;">
 							<div style="position: absolute; top: -18px; right: -10px;"><%= MajorText %></div>
 							<span class="team-blffl-score-<%= TeamID1 %>" style="font-size: 1em; background-color: #fff; color: #282A36; float: right;"><%= TeamScore1 %></span>
@@ -607,7 +609,7 @@
 				TeamPMR2 = arrTAG(9, i)
 				TeamAbbreviatedName1 = arrTAG(11, i)
 				TeamAbbreviatedName2 = arrTAG(12, i)
-
+				thisWeeklyMatchups = thisWeeklyMatchups & MatchupID & ","
 				sqlGetTeam1 = "SELECT Accounts.AccountID, ProfileName, ProfileURL, ProfileImage FROM Accounts INNER JOIN LinkAccountsTeams ON Accounts.AccountID = LinkAccountsTeams.AccountID WHERE LinkAccountsTeams.TeamID = " & TeamID1 & ";"
 				sqlGetTeam2 = "SELECT Accounts.AccountID, ProfileName, ProfileURL, ProfileImage FROM Accounts INNER JOIN LinkAccountsTeams ON Accounts.AccountID = LinkAccountsTeams.AccountID WHERE LinkAccountsTeams.TeamID = " & TeamID2 & ";"
 
@@ -649,7 +651,7 @@
 %>
 
 						<ul class="list-group" style="margin-bottom: 1rem;">
-							<li class="list-group-item" style="padding-top: 0.25rem; padding-bottom: 0.25rem; font-size: 0.75rem; text-align: center; background-color: #BBF1BB; color: #fff;"><strong><%= MatchupTitle %></strong></li>
+							<li class="list-group-item" style="padding-top: 0.25rem; padding-bottom: 0.25rem; font-size: 0.75rem; text-align: center; background-color: #CDE7B0; color: #003985;"><strong><%= MatchupTitle %></strong></li>
 							<li class="list-group-item px-3 team-tag-box-<%= TeamID1 %>">
 								<img src="https://samelevel.imgix.net/<%= Team1Partner1_ProfileImage %>?w=32&h=32&fit=crop&crop=focalpoint" class="rounded-circle" title="<%= Team1Partner1_ProfileName %>" style="position: relative; z-index: 1; border: 2px solid #fff;" />
 								<img src="https://samelevel.imgix.net/<%= Team1Partner2_ProfileImage %>?w=32&h=32&fit=crop&crop=focalpoint" class="rounded-circle" title="<%= Team1Partner2_ProfileName %>" style="position: relative; z-index: 0; border: 2px solid #fff; left: -15px;" />
