@@ -303,7 +303,7 @@
 										<div><b>Available Schmeckles</b></div>
 									</li>
 									<li class="list-group-item">
-										<span id="countdownTimer" class="float-right">600</span>
+										<span id="countdownTimer" class="float-right">180</span>
 										<div><b>Refresh Countdown</b></div>
 									</li>
 								</ul>
