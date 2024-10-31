@@ -649,7 +649,7 @@
 
 				Response.Write("<div class=""col-12 col-md-6 col-xxl-4 pl-1 pr-1 pl-lg-3 pr-lg-0"">")
 %>
-
+					<a href="#" class="matchup-<%= MatchupID %>" style="text-decoration: none; display: block;">
 						<ul class="list-group" style="margin-bottom: 1rem;">
 							<li class="list-group-item" style="padding-top: 0.25rem; padding-bottom: 0.25rem; font-size: 0.75rem; text-align: center; background-color: #CDE7B0; color: #003985;"><strong><%= MatchupTitle %></strong></li>
 							<li class="list-group-item px-3 team-tag-box-<%= TeamID1 %>">
@@ -676,6 +676,7 @@
 								</div>
 							</li>
 						</ul>
+					</a>
 <%
 				Response.Write("</div>")
 

@@ -103,6 +103,9 @@
 						thisTeamPMRPercent2 = (thisTeamPMR2 * 100) / 420
 						thisTeamScore1 = thisTeamScore1 + thisTeamOmegaTravel1
 						thisTeamScore2 = thisTeamScore2 + thisTeamOmegaTravel2
+					ElseIf thisMatchupLevel = 5 Then
+						thisTeamPMRPercent1 = (thisTeamPMR1 * 100) / 840
+						thisTeamPMRPercent2 = (thisTeamPMR2 * 100) / 840
 					Else
 						thisTeamPMRPercent1 = (thisTeamPMR1 * 100) / 420
 						thisTeamPMRPercent2 = (thisTeamPMR2 * 100) / 420
@@ -118,7 +121,7 @@
 					If thisTeamMoneyline2 > 0 Then thisTeamMoneyline2 = "+" & thisTeamMoneyline2
 					If thisTeamSpread1 > 0 Then thisTeamSpread1 = "+" & thisTeamSpread1
 					If thisTeamSpread2 > 0 Then thisTeamSpread2 = "+" & thisTeamSpread2
-
+					
 					slackJSON = slackJSON & """id"":""" & thisMatchupID & ""","
 					slackJSON = slackJSON & """level"":""" & leagueTitle & ""","
 					slackJSON = slackJSON & """id1"":""" & thisTeamID1 & ""","
