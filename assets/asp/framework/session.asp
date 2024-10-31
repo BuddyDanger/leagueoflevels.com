@@ -55,7 +55,7 @@
     End If
 
 	If Len(Session.Contents("switchNFL")) = 0 Then Session.Contents("switchNFL") = 1
-	If Len(Session.Contents("switchOMEGA")) = 0 Then Session.Contents("switchOMEGA") = 1
+	If Len(Session.Contents("switchTAG")) = 0 Then Session.Contents("switchTAG") = 1
 	If Len(Session.Contents("switchSLFFL")) = 0 Then Session.Contents("switchSLFFL") = 1
 	If Len(Session.Contents("switchFLFFL")) = 0 Then Session.Contents("switchFLFFL") = 1
 	If Len(Session.Contents("switchNEXT")) = 0 Then Session.Contents("switchNEXT") = 1

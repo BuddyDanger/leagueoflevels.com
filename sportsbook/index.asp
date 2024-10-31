@@ -117,17 +117,15 @@
 								If thisBLFFL = 1 Then Session.Contents("switchBLFFL") = 1
 
 							End If
-
-							Session.Contents("switchOMEGA") = 0
 %>
-							<form action="/sportsbook/" method="get">
+							<form action="/sportsbook/" method="get" id="filterForm">
 								<input type="hidden" name="action" value="switch" />
 								<div class="row">
 									<div class="col-12">
 										<div class="form-check form-check-inline">
 											<div class="btn btn-dark mb-3">
 												<div class="custom-control custom-switch">
-													<input type="checkbox" class="custom-control-input" id="switchNFL" name="NFL" value="1" <% If Session.Contents("switchNFL") = 1 Then %>checked<% End If %>>
+													<input type="checkbox" class="custom-control-input" id="switchNFL" name="NFL" value="1" onchange="document.getElementById('filterForm').submit();" <% If Session.Contents("switchNFL") = 1 Then %>checked<% End If %>>
 													<label class="custom-control-label text-white" for="switchNFL">NFL</label>
 												</div>
 											</div>
@@ -135,7 +133,7 @@
 										<div class="form-check form-check-inline">
 										    <div class="btn btn-dark mb-3">
 										        <div class="custom-control custom-switch">
-										            <input type="checkbox" class="custom-control-input" id="switchTAG" name="TAG" value="1" <% If Session.Contents("switchTAG") = 1 Then %>checked<% End If %>>
+										            <input type="checkbox" class="custom-control-input" id="switchTAG" name="TAG" value="1" onchange="document.getElementById('filterForm').submit();" <% If Session.Contents("switchTAG") = 1 Then %>checked<% End If %>>
 										            <label class="custom-control-label text-white" for="switchTAG">TAG TEAM</label>
 										        </div>
 										    </div>
@@ -143,7 +141,15 @@
 										<div class="form-check form-check-inline">
 											<div class="btn btn-dark mb-3">
 												<div class="custom-control custom-switch">
-													<input type="checkbox" class="custom-control-input" id="switchSLFFL" name="SLFFL" value="1" <% If Session.Contents("switchSLFFL") = 1 Then %>checked<% End If %>>
+													<input type="checkbox" class="custom-control-input" id="switchNEXT" name="NEXT" value="1" onchange="document.getElementById('filterForm').submit();" <% If Session.Contents("switchNEXT") = 1 Then %>checked<% End If %>>
+													<label class="custom-control-label text-white" for="switchNEXT">CUP</label>
+												</div>
+											</div>
+										</div>
+										<div class="form-check form-check-inline">
+											<div class="btn btn-dark mb-3">
+												<div class="custom-control custom-switch">
+													<input type="checkbox" class="custom-control-input" id="switchSLFFL" name="SLFFL" value="1" onchange="document.getElementById('filterForm').submit();" <% If Session.Contents("switchSLFFL") = 1 Then %>checked<% End If %>>
 													<label class="custom-control-label text-white" for="switchSLFFL">SLFFL</label>
 												</div>
 											</div>
@@ -151,7 +157,7 @@
 										<div class="form-check form-check-inline">
 											<div class="btn btn-dark mb-3">
 												<div class="custom-control custom-switch">
-													<input type="checkbox" class="custom-control-input" id="switchFLFFL" name="FLFFL" value="1" <% If Session.Contents("switchFLFFL") = 1 Then %>checked<% End If %>>
+													<input type="checkbox" class="custom-control-input" id="switchFLFFL" name="FLFFL" value="1" onchange="document.getElementById('filterForm').submit();" <% If Session.Contents("switchFLFFL") = 1 Then %>checked<% End If %>>
 													<label class="custom-control-label text-white" for="switchFLFFL">FLFFL</label>
 												</div>
 											</div>
@@ -159,23 +165,15 @@
 										<div class="form-check form-check-inline">
 											<div class="btn btn-dark mb-3">
 												<div class="custom-control custom-switch">
-													<input type="checkbox" class="custom-control-input" id="switchBLFFL" name="BLFFL" value="1" <% If Session.Contents("switchBLFFL") = 1 Then %>checked<% End If %>>
+													<input type="checkbox" class="custom-control-input" id="switchBLFFL" name="BLFFL" value="1" onchange="document.getElementById('filterForm').submit();" <% If Session.Contents("switchBLFFL") = 1 Then %>checked<% End If %>>
 													<label class="custom-control-label text-white" for="switchBLFFL">BLFFL</label>
-												</div>
-											</div>
-										</div>
-										<div class="form-check form-check-inline">
-											<div class="btn btn-dark mb-3">
-												<div class="custom-control custom-switch">
-													<input type="checkbox" class="custom-control-input" id="switchNEXT" name="NEXT" value="1" <% If Session.Contents("switchNEXT") = 1 Then %>checked<% End If %>>
-													<label class="custom-control-label text-white" for="switchNEXT">CUP</label>
 												</div>
 											</div>
 										</div>
 									</div>
 									<div class="col-12">
-										<button class="btn btn-info mb-3 mr-2">UPDATE FILTERS</button>
-										<a href="/sportsbook/tickets/active/" class="btn btn-info mb-3">VIEW ALL TICKETS</a>
+										<a href="/sportsbook/tickets/active/" class="btn btn-info mb-3 mr-3">ALL ACTIVE</a>
+										<a href="/sportsbook/tickets/<%= Session.Contents("AccountProfileURL") %>/active/" class="btn btn-info mb-3">MY BETS</a>
 									</div>
 								</div>
                             </form>
