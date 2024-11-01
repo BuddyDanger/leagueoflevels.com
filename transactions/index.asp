@@ -79,47 +79,150 @@
 
 				<div class="container-fluid pl-0 pl-lg-2 pr-0 pr-lg-2">
 
-					<form method="post" action="/transactions/index.asp">
+					<div class="row mt-4">
+<%
+						If Request.QueryString("action") = "switch" Then
 
-						<input type="hidden" name="action" value="update" />
+							Session.Contents("switchSLFFL") = 0
+							Session.Contents("switchFLFFL") = 0
+							Session.Contents("switchOMEGA") = 0
+							Session.Contents("switchBLFFL") = 0
 
-						<div class="row mt-4">
+							thisSLFFL = Request.QueryString("SLFFL")
+							thisFLFFL = Request.QueryString("FLFFL")
+							thisOMEGA = Request.QueryString("OMEGA")
+							thisBLFFL = Request.QueryString("BLFFL")
 
-							<div class="col-6 col-sm-6 col-md-6 col-lg-6 col-xl-2">
+							If thisSLFFL = 1 Then Session.Contents("switchSLFFL") = 1
+							If thisFLFFL = 1 Then Session.Contents("switchFLFFL") = 1
+							If thisOMEGA = 1 Then Session.Contents("switchOMEGA") = 1
+							If thisBLFFL = 1 Then Session.Contents("switchBLFFL") = 1
 
-								<select class="form-control form-control-lg form-check-input-lg mb-3" name="level" id="level">
-									<option value="">ALL LEVELS</option>
-									<option value="omega-level" <% If Session.Contents("SITE_Transactions_LevelID") = 1 Then %>selected<% End If %>>Omega Level</option>
-									<option value="same-level" <% If Session.Contents("SITE_Transactions_LevelID") = 2 Then %>selected<% End If %>>Same Level</option>
-									<option value="farm-level" <% If Session.Contents("SITE_Transactions_LevelID") = 3 Then %>selected<% End If %>>Farm Level</option>
-								</select>
+						End If
 
+						sqlGetTransactionData = "SELECT SUM(CAST(REPLACE([MoveAction], 'Signed for $', '') AS INT)) AS TotalSpent FROM [dbo].[Transactions] WHERE Year = 2024 AND LEFT([MoveAction], 12) = 'Signed for $' AND "
+						If Session.Contents("switchOMEGA") = 1 Or Session.Contents("switchSLFFL") = 1 Or Session.Contents("switchFLFFL") = 1 Or Session.Contents("switchBLFFL") = 1 Then
+							sqlGetTransactionData = sqlGetTransactionData & "Transactions.LevelID IN ("
+							If Session.Contents("switchOMEGA") Then sqlGetTransactionData = sqlGetTransactionData & "1,"
+							If Session.Contents("switchSLFFL") Then sqlGetTransactionData = sqlGetTransactionData & "2,"
+							If Session.Contents("switchFLFFL") Then sqlGetTransactionData = sqlGetTransactionData & "3,"
+							If Session.Contents("switchBLFFL") Then sqlGetTransactionData = sqlGetTransactionData & "4,"
+							If Right(sqlGetTransactionData, 1) = "," Then sqlGetTransactionData = Left(sqlGetTransactionData, Len(sqlGetTransactionData)-1)
+							sqlGetTransactionData = sqlGetTransactionData & ") AND "
+						End If
+						sqlGetTransactionData = Left(sqlGetTransactionData, Len(sqlGetTransactionData) - 4) & ";"
+						sqlGetTransactionData = sqlGetTransactionData & "SELECT COUNT(COUNT) AS TotalCount FROM (SELECT count(TransactionCBSID) AS COUNT FROM [dbo].[Transactions] WHERE Year = 2024 AND "
+						If Session.Contents("switchOMEGA") = 1 Or Session.Contents("switchSLFFL") = 1 Or Session.Contents("switchFLFFL") = 1 Or Session.Contents("switchBLFFL") = 1 Then
+							sqlGetTransactionData = sqlGetTransactionData & "Transactions.LevelID IN ("
+							If Session.Contents("switchOMEGA") Then sqlGetTransactionData = sqlGetTransactionData & "1,"
+							If Session.Contents("switchSLFFL") Then sqlGetTransactionData = sqlGetTransactionData & "2,"
+							If Session.Contents("switchFLFFL") Then sqlGetTransactionData = sqlGetTransactionData & "3,"
+							If Session.Contents("switchBLFFL") Then sqlGetTransactionData = sqlGetTransactionData & "4,"
+							If Right(sqlGetTransactionData, 1) = "," Then sqlGetTransactionData = Left(sqlGetTransactionData, Len(sqlGetTransactionData)-1)
+							sqlGetTransactionData = sqlGetTransactionData & ") AND "
+						End If
+						sqlGetTransactionData = Left(sqlGetTransactionData, Len(sqlGetTransactionData) - 4) & " "
+						sqlGetTransactionData = sqlGetTransactionData & "GROUP BY TransactionCBSID) A;"
+						Set rsTransactionData = sqlDatabase.Execute(sqlGetTransactionData)
+
+						If Not rsTransactionData.Eof Then
+
+							thisTotalSpentAmount = rsTransactionData("TotalSpent")
+							Set rsTransactionData = rsTransactionData.NextRecordset
+							thisTotalCount = rsTransactionData("TotalCount")
+
+							If IsNull(thisTotalSpentAmount) Then thisTotalSpentAmount = 0
+%>
+							<div class="col-xl-4 col-md-6 col-12">
+								<a href="#" style="text-decoration: none; display: block;">
+									<ul class="list-group mb-4">
+										<li class="list-group-item p-0">
+											<h4 class="text-left bg-dark text-white p-3 mt-0 mb-0 rounded-top"><b>TRANSACTION STATS</b><span class="float-right dripicons-graph-pie"></i></h4>
+										</li>
+										<li class="list-group-item">
+											<span class="float-right">$<%= FormatNumber(thisTotalSpentAmount, 0) %></span>
+											<div><b>TOTAL FAAB SPENT</b></div>
+											<div>Across <%= thisTotalCount %> Individual Transactions</div>
+										</li>
+									</ul>
+								</a>
 							</div>
+<%
+							rsTransactionData.Close
+							Set rsTransactionData = Nothing
 
-							<div class="col-12 col-xl-2">
+						End If
+%>
+						<div class="col-lg-6 col-md-6 col-12">
 
-								<button <%= thisFormDisabled %> type="submit" class="btn btn-block btn-success mb-3">UPDATE</button>
-
-							</div>
+							<form action="/transactions/" method="get" id="filterForm">
+								<input type="hidden" name="action" value="switch" />
+								<div class="row">
+									<div class="col-12">
+										<div class="form-check form-check-inline">
+											<div class="btn btn-dark mb-3">
+												<div class="custom-control custom-switch">
+													<input type="checkbox" class="custom-control-input" id="switchOMEGA" name="OMEGA" value="1" onchange="document.getElementById('filterForm').submit();" <% If Session.Contents("switchOMEGA") = 1 Then %>checked<% End If %>>
+													<label class="custom-control-label text-white" for="switchOMEGA">OMEGA</label>
+												</div>
+											</div>
+										</div>
+										<div class="form-check form-check-inline">
+											<div class="btn btn-dark mb-3">
+												<div class="custom-control custom-switch">
+													<input type="checkbox" class="custom-control-input" id="switchSLFFL" name="SLFFL" value="1" onchange="document.getElementById('filterForm').submit();" <% If Session.Contents("switchSLFFL") = 1 Then %>checked<% End If %>>
+													<label class="custom-control-label text-white" for="switchSLFFL">SLFFL</label>
+												</div>
+											</div>
+										</div>
+										<div class="form-check form-check-inline">
+											<div class="btn btn-dark mb-3">
+												<div class="custom-control custom-switch">
+													<input type="checkbox" class="custom-control-input" id="switchFLFFL" name="FLFFL" value="1" onchange="document.getElementById('filterForm').submit();" <% If Session.Contents("switchFLFFL") = 1 Then %>checked<% End If %>>
+													<label class="custom-control-label text-white" for="switchFLFFL">FLFFL</label>
+												</div>
+											</div>
+										</div>
+										<div class="form-check form-check-inline">
+											<div class="btn btn-dark mb-3">
+												<div class="custom-control custom-switch">
+													<input type="checkbox" class="custom-control-input" id="switchBLFFL" name="BLFFL" value="1" onchange="document.getElementById('filterForm').submit();" <% If Session.Contents("switchBLFFL") = 1 Then %>checked<% End If %>>
+													<label class="custom-control-label text-white" for="switchBLFFL">BLFFL</label>
+												</div>
+											</div>
+										</div>
+									</div>
+									
+								</div>
+                            </form>
 
 						</div>
 
-					</form>
+					</div>
 
-					<div class="row mt-2">
+					<div class="row mb-3">
 
-						<div class="col-12">
 
-							<ul class="list-group mb-4">
+
 <%
-								sqlGetTransactions = "SELECT TransactionID, TransactionCBSID, TransactionDateTime, Levels.Title AS LevelTitle, Accounts.ProfileName, Accounts.ProfileImage, Year, EffectivePeriod, MoveType, MoveAction, PlayerID, PlayerName, PlayerTeam, PlayerPosition "
+								sqlGetTransactions = "SELECT TransactionID, Transactions.LevelID, TransactionCBSID, TransactionDateTime, Levels.Title AS LevelTitle, Teams.TeamID, Teams.TeamName, Teams.AbbreviatedName, Accounts.ProfileName, Accounts.ProfileImage, Year, EffectivePeriod, MoveType, MoveAction, PlayerID, PlayerName, PlayerTeam, PlayerPosition "
 								sqlGetTransactions = sqlGetTransactions & "FROM Transactions "
 								sqlGetTransactions = sqlGetTransactions & "INNER JOIN Levels ON Levels.LevelID = Transactions.LevelID "
 								sqlGetTransactions = sqlGetTransactions & "INNER JOIN LinkAccountsTeams ON LinkAccountsTeams.TeamID = Transactions.TeamID "
 								sqlGetTransactions = sqlGetTransactions & "INNER JOIN Accounts ON Accounts.AccountID = LinkAccountsTeams.AccountID "
-								sqlGetTransactions = sqlGetTransactions & "WHERE 1 = 1 AND "
+								sqlGetTransactions = sqlGetTransactions & "INNER JOIN Teams ON Teams.TeamID = Transactions.TeamID "
+								sqlGetTransactions = sqlGetTransactions & "WHERE 1 = 1 AND Year = " & Session.Contents("CurrentYear") & " AND "
+								If Session.Contents("switchOMEGA") = 1 Or Session.Contents("switchSLFFL") = 1 Or Session.Contents("switchFLFFL") = 1 Or Session.Contents("switchBLFFL") = 1 Then
+									sqlGetTransactions = sqlGetTransactions & "Transactions.LevelID IN ("
+									If Session.Contents("switchOMEGA") Then sqlGetTransactions = sqlGetTransactions & "1,"
+									If Session.Contents("switchSLFFL") Then sqlGetTransactions = sqlGetTransactions & "2,"
+									If Session.Contents("switchFLFFL") Then sqlGetTransactions = sqlGetTransactions & "3,"
+									If Session.Contents("switchBLFFL") Then sqlGetTransactions = sqlGetTransactions & "4,"
+									If Right(sqlGetTransactions, 1) = "," Then sqlGetTransactions = Left(sqlGetTransactions, Len(sqlGetTransactions)-1)
+									sqlGetTransactions = sqlGetTransactions & ") AND "
+								End If
 								If Len(Session.Contents("SITE_Transactions_AccountID")) > 0 And IsNumeric(Session.Contents("SITE_Transactions_AccountID")) Then sqlGetTransactions = sqlGetTransactions & "Accounts.AccountID = " & Session.Contents("SITE_Transactions_AccountID") & " AND "
-								If Session.Contents("SITE_Transactions_LevelID") > 0 Then sqlGetTransactions = sqlGetTransactions & "Levels.LevelID = " & Session.Contents("SITE_Transactions_LevelID") & " AND "
+								If Session.Contents("SITE_Transactions_LevelID") > 0 Then sqlGetTransactions = sqlGetTransactions & "Levels.LevelID = " & Session.Contents("SITE_Transactions_LevelID") & " AND Year = " & Session.Contents("CurrentYear")
 								sqlGetTransactions = Left(sqlGetTransactions, Len(sqlGetTransactions) - 4)
 								sqlGetTransactions = sqlGetTransactions & "ORDER BY TransactionDateTime DESC"
 
@@ -127,18 +230,20 @@
 
 								If rsTransactions.Eof Then
 %>
-									<li class="list-group-item list-group-item-action pl-0 pr-0">
-										<b>NO TRANSACTIONS FOUND</b>
-									</li>
+
 <%
 								Else
 
 									Do While Not rsTransactions.Eof
 
 										thisTransactionID = rsTransactions("TransactionID")
+										thisLevelID = rsTransactions("LevelID")
+										thisTeamID = rsTransactions("TeamID")
 										thisTransactionCBSID = rsTransactions("TransactionCBSID")
-										thisTransactionDateTime = DateAdd("h", -5, rsTransactions("TransactionDateTime"))
+										thisTransactionDateTime = DateAdd("h", -4, rsTransactions("TransactionDateTime"))
 										thisLevelTitle = rsTransactions("LevelTitle")
+										thisTeamName = rsTransactions("TeamName")
+										thisAbbreviatedName = rsTransactions("AbbreviatedName")
 										thisProfileName = rsTransactions("ProfileName")
 										thisProfileImage = rsTransactions("ProfileImage")
 										thisYear = rsTransactions("Year")
@@ -151,17 +256,29 @@
 										thisPlayerPosition = rsTransactions("PlayerPosition")
 										thisProfileImage = "<img src=""https://samelevel.imgix.net/" & thisProfileImage & "?w=40&h=40&fit=crop&crop=focalpoint"" class=""rounded-circle float-left"">"
 
-										If thisLevelTitle = "Omega Level" Then
+										If CInt(thisLevelID) = 1 Then
+											headerBGcolor = "FFBA08"
+											headerTextColor = "fff"
+											cardText = "520000"
 											thisLevelLabel = "OMEGA"
-											thisLevelColor = "FFBA08"
 										End If
-										If thisLevelTitle = "Same Level" Then
+										If CInt(thisLevelID) = 2 Then
+											headerBGcolor = "136F63"
+											headerTextColor = "fff"
+											cardText = "0F574D"
 											thisLevelLabel = "SLFFL"
-											thisLevelColor = "136F63"
 										End If
-										If thisLevelTitle = "Farm Level" Then
+										If CInt(thisLevelID) = 3 Then
+											headerBGcolor = "995D81"
+											headerTextColor = "fff"
+											cardText = "03324F"
 											thisLevelLabel = "FLFFL"
-											thisLevelColor = "032B43"
+										End If
+										If CInt(thisLevelID) = 4 Then
+											headerBGcolor = "39A9DB"
+											headerTextColor = "fff"
+											cardText = "03324F"
+											thisLevelLabel = "BLFFL"
 										End If
 
 										If Left(thisMoveAction, 6) = "Signed" Then thisMoveIcon = "plus"
@@ -169,6 +286,7 @@
 										If Left(thisMoveAction, 6) = "Traded" Then thisMoveIcon = "plus"
 
 										arrthisTransactionDateTime = Split(thisTransactionDateTime, " ")
+										arrthisTransactionTime = Split(arrthisTransactionDateTime(1), ":")
 
 										pairMoveType = ""
 										pairMoveAction = ""
@@ -199,36 +317,26 @@
 											End If
 
 										End If
+
+										If thisTeamID = 87 Then thisTeamName = thisAbbreviatedName
 %>
-										<a href="#" class="list-group-item list-group-item-action pl-2 pr-2">
-											<div class="row mb-2 mb-lg-0">
-												<!-- TEAM INFO -->
-												<div class="col-8 col-lg-3 align-self-center order-1">
-													<%= thisProfileImage %>
-													<div class="float-left pl-2">
-														<div><b><%= thisProfileName %></b></div>
-														<div><%= Month(thisTransactionDateTime) %>/<%= Day(thisTransactionDateTime) %>&nbsp;<%= arrthisTransactionDateTime(1) %>&nbsp;<%= arrthisTransactionDateTime(2) %></div>
-													</div>
-												</div>
+										<div class="col-xxxl-3 col-xxl-4 col-xl-4 col-lg-6 col-md-6 col-sm-12 col-xs-12 col-xxs-12">
+											<ul class="list-group mb-3">
+												<li class="list-group-item py-2" style="background-color: #<%= headerBGcolor %>; color: #<%= headerTextColor %>;">
+													<div class="float-right"><small><%= Month(thisTransactionDateTime) %>/<%= Day(thisTransactionDateTime) %>&nbsp;<%= arrthisTransactionTime(0) %>:<%= arrthisTransactionTime(1) %>&nbsp;<%= arrthisTransactionDateTime(2) %></small></div>
+													<b><%= thisTeamName %></b>
+												</li>
+												<li class="list-group-item">
+													<div class="my-1"><span class="p-2 badge-light rounded"><small><i class="dripicons-<%= thisMoveIcon %>"></i></small></span> &nbsp;<b><%= thisPlayerName %></b>, <%= thisPlayerPosition %> (<%= thisPlayerTeam %>) &nbsp;<% If thisMoveAction <> "Signed for $0" And thisMoveAction <> "Dropped" Then %><span class="p-2 badge-light rounded"><small><%= thisMoveAction %></small><span><% End If %></div>
+												</li>
+												<% If Len(pairPlayerName) > 0 Then %>
+												<li class="list-group-item">
+													<div class="my-1"><span class="p-2 badge-light rounded"><small><i class="dripicons-<%= pairMoveIcon %>"></i></small></span> &nbsp;<b><%= pairPlayerName %></b>, <%= pairPlayerPosition %> (<%= pairPlayerTeam %>) &nbsp;<% If pairMoveAction <> "Dropped" Then %><span class="p-2 badge-light rounded"><small><%= pairMoveAction %></small><span><% End If %></div>
+												</li>
+												<% End If %>
+											</ul>
+										</div>
 
-												<!-- MOVE 1 -->
-												<div class="col-12 col-lg-4 align-self-center order-3 order-lg-2 pl-3 pl-lg-2 pt-3 pt-lg-0">
-													<div class="pl-1 pl-lg-0"><span class="p-2 badge-light rounded"><small><i class="dripicons-<%= thisMoveIcon %>"></i></small></span> &nbsp;<b><%= thisPlayerName %></b>, <%= thisPlayerPosition %> (<%= thisPlayerTeam %>) &nbsp;<% If thisMoveAction <> "Signed for $0" Then %><span class="p-2 badge-light rounded"><small><%= thisMoveAction %></small><span><% End If %></div>
-												</div>
-
-												<!-- MOVE TWO -->
-												<div class="col-12 col-lg-4 align-self-center order-4 order-lg-3 <% If Len(pairPlayerName) > 0 Then %>pl-3 pl-lg-2 pt-3 pt-lg-0<% End If %>">
-													<% If Len(pairPlayerName) > 0 Then %>
-														<div class="pl-1 pl-lg-0"><span class="p-2 badge-light rounded"><small><i class="dripicons-<%= pairMoveIcon %>"></i></small></span> &nbsp;<b><%= pairPlayerName %></b>, <%= pairPlayerPosition %> (<%= pairPlayerTeam %>) &nbsp;<% If pairMoveAction <> "Dropped" Then %><span class="p-2 badge-light rounded"><small><%= pairMoveAction %></small><span><% End If %></div>
-													<% End If %>
-												</div>
-
-												<div class="col-4 col-lg-1 align-self-center text-right order-2 order-lg-4">
-													<span class="p-2 badge-info rounded" style="background-color: #<%= thisLevelColor %>;"><small><%= thisLevelLabel %> (<%= thisEffectivePeriod %>)</small></span>
-												</div>
-
-											</div>
-										</a>
 <%
 									Loop
 
@@ -237,9 +345,9 @@
 
 								End If
 %>
-							</ul>
 
-						</div>
+
+
 
 					</div>
 
