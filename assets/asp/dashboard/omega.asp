@@ -63,11 +63,11 @@
 
 				End If
 
-				thisDateTime_EST = DateAdd("h", -4, Now())
-				thisWinnersSelect_EST = DateAdd("h", -4, Session.Contents("OmegaSelectionsOpening"))
+				thisDateTime_EST = DateAdd("h", -5, Now())
+				thisWinnersSelect_EST = DateAdd("h", -5, Session.Contents("OmegaSelectionsOpening"))
 				thissWinnersSelectCloses_EST = DateAdd("d", 1, thisWinnersSelect_EST)
-				thisNextOpenSelect_EST = DateAdd("h", -4, DateAdd("d", 7, Session.Contents("CurrentPeriodStart")))
-				thisOpenSelect_EST = DateAdd("h", -4, Session.Contents("CurrentPeriodStart"))
+				thisNextOpenSelect_EST = DateAdd("h", -5, DateAdd("d", 7, Session.Contents("CurrentPeriodStart")))
+				thisOpenSelect_EST = DateAdd("h", -5, Session.Contents("CurrentPeriodStart"))
 				thisOpenSelectCloses_EST = DateAdd("h", 10, DateAdd("d", 1, thisOpenSelect_EST))
 %>
 				<div class="card-body pt-2 pb-2">

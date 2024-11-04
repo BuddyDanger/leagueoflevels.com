@@ -240,7 +240,7 @@
 										thisLevelID = rsTransactions("LevelID")
 										thisTeamID = rsTransactions("TeamID")
 										thisTransactionCBSID = rsTransactions("TransactionCBSID")
-										thisTransactionDateTime = DateAdd("h", -4, rsTransactions("TransactionDateTime"))
+										thisTransactionDateTime = DateAdd("h", -5, rsTransactions("TransactionDateTime"))
 										thisLevelTitle = rsTransactions("LevelTitle")
 										thisTeamName = rsTransactions("TeamName")
 										thisAbbreviatedName = rsTransactions("AbbreviatedName")

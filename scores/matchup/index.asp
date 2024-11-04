@@ -194,7 +194,7 @@
 
 						<div class="row">
 
-							<div class="col-6 col-lg-3 pl-0 pr-0">
+							<div class="col-6 col-lg-4 pl-0 pr-0">
 
 								<ul class="list-group" id="team-1-roster" style="margin-bottom: 1rem;">
 <%
@@ -278,7 +278,7 @@
 
 							</div>
 
-							<div class="col-6 col-lg-3 pl-0 pr-0">
+							<div class="col-6 col-lg-4 pl-0 pr-0">
 
 								<ul class="list-group" id="team-2-roster" style="margin-bottom: 1rem;">
 <%
@@ -320,7 +320,7 @@
 									</li>
 <%
 									HitReserves = 0
-									'For i = 0 to (objTeamPlayers2.length - 1)
+									'For i = 0 to (objTeamPlayers2.length - 2)
 									For i = 0 to (12)
 
 										Set objPlayer = objTeamPlayers2.item(i)

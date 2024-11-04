@@ -209,7 +209,7 @@
 						If Right(sqlGetWeek, 1) = "," Then sqlGetWeek = Left(sqlGetWeek, Len(sqlGetWeek)-1)
 						sqlGetWeek = sqlGetWeek & ") "
 					End If
-					sqlGetWeek = sqlGetWeek & "AND (DateTimeEST IS NULL OR DateTimeEST > '" & DateAdd("h", -4, Now()) & "') AND (AwayPercentage IS NULL OR (AwayPercentage < 0.7 AND HomePercentage < 0.7)) "
+					sqlGetWeek = sqlGetWeek & "AND (DateTimeEST IS NULL OR DateTimeEST > '" & DateAdd("h", -5, Now()) & "') AND (AwayPercentage IS NULL OR (AwayPercentage < 0.7 AND HomePercentage < 0.7)) "
 					sqlGetWeek = sqlGetWeek & "ORDER BY LevelID, DateTimeEST"
 					Set rsWeek = sqlDatabase.Execute(sqlGetWeek)
 

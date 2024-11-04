@@ -1,4 +1,5 @@
- <script>
+<% If thisMatchupLevelID <> 5 And Not IsNumeric(thisNFLGameID) Then %>
+<script>
 
 	var MATCHUPS = [0]
 
@@ -103,7 +104,7 @@
 
 				if (live_Player_Position == "DST") { live_Player_ShortName = live_Player_LastName; }
 
-				if (scoreboardPlayerPhoto.classList.contains('d-none')) {
+				if (scoreboardPlayerPhoto && scoreboardPlayerPhoto.classList.contains('d-none')) {
 
 					scoreboardPlayerPhoto.src = live_Player_Photo.replaceAll('http:', 'https:');
 					scoreboardPlayerPhotoLoading.classList.add("d-none");
@@ -112,7 +113,7 @@
 
 				}
 
-				if (live_GameInfo_Week != null) {
+				if (scoreboardPlayerGameTime && live_GameInfo_Week != null) {
 
 					var live_GameInfo_GameStatus = player.game_info.game_status;
 					var live_GameInfo_GameTimestamp = player.game_info.game_start_timestamp;
@@ -156,8 +157,10 @@
 
 				} else {
 
-					scoreboardPlayerGameLine.innerHTML = "BYE";
-					scoreboardPlayer.classList.add("inactive-player");
+					if (scoreboardPlayerGameLine) {
+						scoreboardPlayerGameLine.innerHTML = "BYE";
+						scoreboardPlayer.classList.add("inactive-player");
+					}
 
 				}
 			}
@@ -165,3 +168,4 @@
 
 	});
 </script>
+<% End If %>
