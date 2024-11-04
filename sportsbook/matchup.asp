@@ -257,8 +257,8 @@
 
 				<div class="container-fluid pl-0 pl-lg-2 pr-0 pr-lg-2">
 
-					<div class="row mt-4">
-						<div class="col-12 col-xl-4">
+					<div class="row mt-0 mt-xl-4">
+						<div class="col-12 col-xl-4 pl-0 pl-lg-2 pr-0 pr-lg-2">
 
 <%
 						If Session.Contents("SITE_Bet_Type") = "nfl" Then
@@ -383,11 +383,11 @@
 
 						</div>
 
-						<div class="accordion mb-5" id="bettingOptions">
+						<div class="accordion mb-4" id="bettingOptions">
 
 							<div class="card mb-0" style="border-bottom: 1px solid #fff;">
 
-								<div class="card-header bg-dark text-white" id="bettingOptions_Heading1" data-toggle="collapse" data-target="#collapse1" aria-expanded="true" aria-controls="collapse1"><b>MONEYLINE</b> <%= BoostText %></div>
+								<div class="card-header bg-warning text-black-50" id="bettingOptions_Heading1" data-toggle="collapse" data-target="#collapse1" aria-expanded="true" aria-controls="collapse1"><b>MONEYLINE</b> <%= BoostText %></div>
 
 								<div id="collapse1" class="collapse show" aria-labelledby="bettingOptions_Heading1" data-parent="#bettingOptions">
 
@@ -469,7 +469,7 @@
 
 							<div class="card mb-0" style="border-bottom: 1px solid #fff;">
 
-								<div class="card-header bg-dark text-white" id="bettingOptions_Heading2" data-toggle="collapse" data-target="#collapse2" aria-expanded="false" aria-controls="collapse2"><b>POINT SPREAD</b> <%= BoostText %></div>
+								<div class="card-header bg-warning text-black-50" id="bettingOptions_Heading2" data-toggle="collapse" data-target="#collapse2" aria-expanded="false" aria-controls="collapse2"><b>POINT SPREAD</b> <%= BoostText %></div>
 
 								<div id="collapse2" class="collapse" aria-labelledby="bettingOptions_Heading2" data-parent="#bettingOptions">
 
@@ -588,7 +588,7 @@
 
 							<div class="card mb-0">
 
-								<div class="card-header bg-dark text-white" id="bettingOptions_Heading3" data-toggle="collapse" data-target="#collapse3" aria-expanded="false" aria-controls="collapse3"><b>POINT TOTAL</b> <%= BoostText %></div>
+								<div class="card-header bg-warning text-black-50" id="bettingOptions_Heading3" data-toggle="collapse" data-target="#collapse3" aria-expanded="false" aria-controls="collapse3"><b>POINT TOTAL</b> <%= BoostText %></div>
 
 								<div id="collapse3" class="collapse" aria-labelledby="bettingOptions_Heading3" data-parent="#bettingOptions">
 
@@ -784,7 +784,7 @@
 <%
 					If CInt(thisMatchupLevelID) < 5 And Len(thisNFLGameID) = 0 Then
 %>
-						<div class="col-6 col-xl-4 pr-0">
+						<div class="col-6 col-xl-4 pl-0 pl-lg-2 pr-0">
 
 							<ul class="list-group" id="team-1-roster" style="margin-bottom: 1rem;">
 <%
@@ -868,7 +868,7 @@
 
 						</div>
 
-						<div class="col-6 col-xl-4 pl-0">
+						<div class="col-6 col-xl-4 pl-0 pr-0 pr-lg-2">
 
 							<ul class="list-group" id="team-2-roster" style="margin-bottom: 1rem;">
 <%
@@ -966,7 +966,7 @@
 
 					If Len(thisNFLGameID) > 0 Then ticketsNFLGameID = thisNFLGameID
 					If Len(thisMatchupID) > 0 Then ticketsMatchupID = thisMatchupID
-					Response.Write("<div class=""col-12 col-xl-8"">")
+					Response.Write("<div class=""col-12 col-xl-8 pb-4"">")
 						Call TicketRow (ticketsNFLGameID, ticketsMatchupID, ticketsAccountID, ticketsTypeID, ticketsProcessed, 0)
 					Response.Write("</div>")
 %>

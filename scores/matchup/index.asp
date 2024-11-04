@@ -388,7 +388,9 @@
 
 		<script src="/assets/plugins/countUp/countUp.min.js" type="text/javascript"></script>
 		<script src="/assets/plugins/howler/howler.min.js" type="text/javascript"></script>
-
+<%
+		thisNFLGameID = ""
+%>
 		<!--#include virtual="/assets/js/matchup.asp"-->
 
 	</body>
