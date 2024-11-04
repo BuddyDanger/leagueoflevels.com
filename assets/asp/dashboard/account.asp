@@ -65,19 +65,19 @@
 
 		End If
 %>
-		<a href="#" style="display: block;">
+
 			<ul class="list-group mb-4">
 				<li class="list-group-item p-0">
 					<h4 class="text-left bg-dark text-white p-3 mt-0 mb-0 rounded-top"><b>DASHBOARD</b><span class="float-right dripicons-meter"></i></h4>
 				</li>
-				<li class="list-group-item rounded-0">
+				<a class="list-group-item" href="/account/">
 					<span class="float-right"><%= Session.Contents("AccountName") %></span>
 					<div><b><i class="fas fa-fw fa-user"></i> &nbsp;ACCOUNT NAME</b></div>
-				</li>
-				<li class="list-group-item rounded-0">
+				</a>
+				<a class="list-group-item" href="/schmeckles/<%= Session.Contents("AccountProfileURL") %>/">
 					<span class="float-right"><%= FormatNumber(thisSchmeckleSackBalance, 0) %></span>
 					<div><b><i class="fas fa-fw fa-wallet"></i> &nbsp;SCHMECKLE SACK</b></div>
-				</li>
+				</a>
 				<!--
 				<li class="list-group-item rounded-0">
 					<span class="float-right"><%= Session.Contents("AccountBalls_Standard") %></span>
@@ -88,20 +88,20 @@
 					<div><b><i class="fas fa-fw fa-wallet"></i> &nbsp;OMEGA BALLS</b></div>
 				</li>
 				-->
-				<li class="list-group-item">
+				<a class="list-group-item" href="/standings/">
 					<span class="float-right"><%= thisCurrentWins %>-<%= thisCurrentLosses %>-<%= thisCurrentTies %></span>
 					<div><b><i class="fas fa-fw fa-table"></i> &nbsp;CURRENT RECORD</b></div>
-				</li>
-				<li class="list-group-item">
+				</a>
+				<a class="list-group-item" href="/standings/">
 					<span class="float-right"><%= FormatNumber(thisCurrentPoints, 2) %></span>
 					<div><b><i class="fas fa-fw fa-calculator"></i> &nbsp;POINTS SCORED</b></div>
-				</li>
-				<li class="list-group-item">
+				</a>
+				<a class="list-group-item" href="/power-rankings/">
 					<span class="float-right"><%= thisCurrentPowerRanking & ordsuffix %> (<%= thisPowerRankPoints %>/96)</span>
 					<div><b><i class="fas fa-fw fa-star"></i> &nbsp;POWER RANKING</b></div>
-				</li>
+				</a>
 			</ul>
-		</a>
+
 <%
 	End If
 %>

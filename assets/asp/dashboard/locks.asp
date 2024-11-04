@@ -8,7 +8,7 @@
 		sqlGetFullMatchups = sqlGetFullMatchups & "INNER JOIN Teams T1 ON T1.TeamID = Matchups.TeamID1 "
 		sqlGetFullMatchups = sqlGetFullMatchups & "INNER JOIN Teams T2 ON T2.TeamID = Matchups.TeamID2 "
 		sqlGetFullMatchups = sqlGetFullMatchups & "WHERE Year = " & Session.Contents("CurrentYear") & " AND Period = " & Session.Contents("CurrentPeriod") & " AND "
-		sqlGetFullMatchups = sqlGetFullMatchups & "((TeamID1 IN (" & Session.Contents("AccountTeams") & ") OR TeamID2 IN (" & Session.Contents("AccountTeams") & ")) AND (TeamPMR1 = 600 AND TeamPMR2 = 600) OR (TeamID1 IN (" & Session.Contents("AccountTeams") & ") OR TeamID2 IN (" & Session.Contents("AccountTeams") & ")) AND (TeamPMR1 = 420 AND TeamPMR2 = 420))"
+		sqlGetFullMatchups = sqlGetFullMatchups & "((TeamID1 IN (" & Session.Contents("AccountTeams") & ") OR TeamID2 IN (" & Session.Contents("AccountTeams") & ")) AND (TeamPMR1 = 420 AND TeamPMR2 = 420))"
 		Set rsFullMatchups = sqlDatabase.Execute(sqlGetFullMatchups)
 
 		If Not rsFullMatchups.Eof Then
@@ -148,7 +148,23 @@
 						<div><b>OPENS WEDNESDAY</b></div>
 					</div>
 				</div>
+<%
+				sqlGetLockchain = "SELECT Matchups.MatchupID, T1.TeamID, T2.TeamID, T1.TeamName AS TeamName1, T2.TeamName AS TeamName2 FROM TicketSlips INNER JOIN Matchups ON Matchups.MatchupID = TicketSlips.MatchupID INNER JOIN Teams T1 ON T1.TeamID = Matchups.TeamID1 INNER JOIN Teams T2 ON T2.TeamID = Matchups.TeamID2 WHERE TicketTypeID = 5 AND IsWinner IS NULL AND AccountID = " & Session.Contents("AccountID") & " AND InsertDateTime > '1/1/2024' ORDER BY InsertDateTime DESC"
+				Set rsLockchain = sqlDatabase.Execute(sqlGetLockchain)
 
+				If Not rsLockchain.Eof Then
+%>
+					<div class="row bg-light rounded mt-3 mb-2 pb-2 pt-2">
+						<div class="col-12 text-left">
+							<a href="/scores/<%= rsLockchain("MatchupID") %>/">
+							<div><b>Active Lock</b></div>
+							<div><%= rsLockchain("TeamName1") %> vs. <%= rsLockchain("TeamName2") %></div>
+							</a>
+						</div>
+					</div>
+<%
+				End If
+%>
 			</div>
 <%
 		End If

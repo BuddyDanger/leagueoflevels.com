@@ -370,7 +370,7 @@
 				If ticketsDashboard Then
 					Response.Write("<div class=""col-xl-4 col-lg-4 col-md-4 col-sm-6 col-xs-12 col-xxs-12"">")
 				Else
-					Response.Write("<div class=""col-12 col-sm-6"">")
+					Response.Write("<div class=""col-12 col-sm-6 col-xxl-4"">")
 				End If
 
 					Response.Write("<ul class=""list-group mb-4"">")

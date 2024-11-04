@@ -346,40 +346,37 @@
 						End If
 %>
 						<div>
-							<a href="<%= thisMatchupURL %>" style="text-decoration: none; display: block;">
-								<ul class="list-group mb-4">
-<%
-									If Session.Contents("SITE_Bet_Type") = "nfl" Then
-%>
-										<li class="list-group-item p-0"><h4 class="text-left text-white p-3 mt-0 mb-0 rounded-top bg-dark"><strong><%= headerText %></strong> <%= thisGameTimeEST %></h4></li>
-<%
-									Else
-%>
-										<li class="list-group-item p-0"><h4 class="text-left text-white p-3 mt-0 mb-0 rounded-top bg-dark"><strong><%= headerText %></strong> #<%= thisMatchupID %></h4></li>
-<%
-									End If
-%>
-									<li class="list-group-item rounded-0">
-										<span class="float-right"><%= thisTeamScore1 %></span>
-										<div><b><%= thisTeamName1 %></b></div>
-										<div><%= thisTeamProjected1 %> Proj., <% If Session.Contents("SITE_Bet_Type") <> "nfl" Then %><%= thisTeamWinPercentage1 %> Win, <% End If %><%= thisTeamSpread1 %> Spread, <%= thisTeamMoneyline1 %> ML</div>
-									</li>
-									<li class="list-group-item">
-										<span class="float-right"><%= thisTeamScore2 %></span>
-										<div><b><%= thisTeamName2 %></b></div>
-										<div><%= thisTeamProjected2 %> Proj., <% If Session.Contents("SITE_Bet_Type") <> "nfl" Then %><%= thisTeamWinPercentage2 %> Win, <% End If %><%= thisTeamSpread2 %> Spread, <%= thisTeamMoneyline2 %> ML</div>
-									</li>
 
-									<li class="list-group-item" style="border-top: 2px dashed #ddd;">
-										<span class="float-right"><%= FormatNumber(thisSchmeckleTotal, 0) %></span>
-										<div><b>Available Schmeckles</b></div>
+							<ul class="list-group mb-4">
+<%
+								If Session.Contents("SITE_Bet_Type") = "nfl" Then
+%>
+									<li class="list-group-item p-0"><h4 class="text-left text-white p-3 mt-0 mb-0 rounded-top bg-dark"><strong><%= headerText %></strong> <%= thisGameTimeEST %></h4></li>
+<%
+								Else
+%>
+									<li class="list-group-item p-0">
+										<h4 class="text-left text-white p-3 mt-0 mb-0 rounded-top bg-dark"><strong><%= headerText %></strong> #<%= thisMatchupID %><span id="countdownTimer" class="float-right badge badge-sm badge-primary py-1">180</span></h4>
 									</li>
-									<li class="list-group-item">
-										<span id="countdownTimer" class="float-right">180</span>
-										<div><b>Refresh Countdown</b></div>
-									</li>
-								</ul>
-							</a>
+<%
+								End If
+%>
+								<li class="list-group-item rounded-0">
+									<span class="float-right"><%= thisTeamScore1 %></span>
+									<div><b><%= thisTeamName1 %></b></div>
+									<div><%= thisTeamProjected1 %> Proj., <% If Session.Contents("SITE_Bet_Type") <> "nfl" Then %><%= thisTeamWinPercentage1 %> Win, <% End If %><%= thisTeamSpread1 %> Spread, <%= thisTeamMoneyline1 %> ML</div>
+								</li>
+								<li class="list-group-item">
+									<span class="float-right"><%= thisTeamScore2 %></span>
+									<div><b><%= thisTeamName2 %></b></div>
+									<div><%= thisTeamProjected2 %> Proj., <% If Session.Contents("SITE_Bet_Type") <> "nfl" Then %><%= thisTeamWinPercentage2 %> Win, <% End If %><%= thisTeamSpread2 %> Spread, <%= thisTeamMoneyline2 %> ML</div>
+								</li>
+
+								<a class="list-group-item" href="/schmeckles/<%= Session.Contents("AccountProfileURL") %>/">
+									<div class="float-right"><%= FormatNumber(thisSchmeckleTotal, 0) %></div>
+									<div><b>Available Schmeckles</b></div>
+								</a>
+							</ul>
 
 						</div>
 
