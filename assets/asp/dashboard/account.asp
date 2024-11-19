@@ -97,7 +97,7 @@
 					<div><b><i class="fas fa-fw fa-calculator"></i> &nbsp;POINTS SCORED</b></div>
 				</a>
 				<a class="list-group-item" href="/power-rankings/">
-					<span class="float-right"><%= thisCurrentPowerRanking & ordsuffix %> (<%= thisPowerRankPoints %>/96)</span>
+					<span class="float-right"><%= thisCurrentPowerRanking & ordsuffix %> (<%= thisPowerRankPoints %>/144)</span>
 					<div><b><i class="fas fa-fw fa-star"></i> &nbsp;POWER RANKING</b></div>
 				</a>
 			</ul>

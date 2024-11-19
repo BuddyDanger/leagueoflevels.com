@@ -56,7 +56,7 @@
 
 					<div class="row mt-4">
 <%
-						sqlGetMajors = "SELECT MajorID, Majors.LevelID, Levels.Title, MajorTitle FROM Majors INNER JOIN Levels ON Levels.LevelID = Majors.LevelID WHERE Year = 2024 AND StartPeriod = 4 ORDER BY StartPeriod DESC, LevelID ASC"
+						sqlGetMajors = "SELECT MajorID, Majors.StartPeriod, Majors.EndPeriod, Majors.LevelID, Levels.Title, MajorTitle FROM Majors INNER JOIN Levels ON Levels.LevelID = Majors.LevelID WHERE Year = 2024 ORDER BY StartPeriod DESC, LevelID ASC"
 						Set rsMajors = sqlDatabase.Execute(sqlGetMajors)
 
 						Do While Not rsMajors.Eof
@@ -64,6 +64,8 @@
 							thisMajorTitle = UCase(rsMajors("Title") & " " & rsMajors("MajorTitle"))
 							thisMajorID = rsMajors("MajorID")
 							thisLevelID = rsMajors("LevelID")
+							thisStartPeriod = rsMajors("StartPeriod")
+							thisEndPeriod = rsMajors("EndPeriod")
 %>
 							<div class="col-12 col-xxl-4">
 
@@ -133,7 +135,7 @@
 									sqlGetMajorMatchups = sqlGetMajorMatchups & "INNER JOIN LinkAccountsTeams L2 ON L2.TeamID = T2.TeamID "
 									sqlGetMajorMatchups = sqlGetMajorMatchups & "INNER JOIN Accounts A1 ON A1.AccountID = L1.AccountID "
 									sqlGetMajorMatchups = sqlGetMajorMatchups & "INNER JOIN Accounts A2 ON A2.AccountID = L2.AccountID "
-									sqlGetMajorMatchups = sqlGetMajorMatchups & "WHERE Year = 2024 AND (Period >= 4 AND Period <= 7) AND (Matchups.LevelID = " & thisLevelID & ") AND IsMajor = 1 "
+									sqlGetMajorMatchups = sqlGetMajorMatchups & "WHERE Year = 2024 AND (Period >= " & thisStartPeriod & " AND Period <= " & thisEndPeriod & ") AND (Matchups.LevelID = " & thisLevelID & ") AND IsMajor = 1 "
 									sqlGetMajorMatchups = sqlGetMajorMatchups & "ORDER BY Period ASC, LevelID ASC"
 
 									Set rsMajorMatchups = sqlDatabase.Execute(sqlGetMajorMatchups)
@@ -178,64 +180,7 @@
 									rsMajorMatchups.Close
 									Set rsMajorMatchups = Nothing
 %>
-									<div class="col-12 mt-3">
-
-										<div class="card">
-
-											<div class="card-body p-0">
-
-												<table class="table mb-1 rounded">
-													<thead>
-														<tr>
-															<th class="pl-3"><b><%= thisMajorTitle %> QUALIFYING</b></th>
-															<th class="text-center">W-L-T</th>
-															<th class="text-center d-none d-sm-table-cell">PF</th>
-															<th class="text-center d-none d-sm-table-cell">PA</th>
-														</tr>
-													</thead>
-													<tbody>
-<%
-														sqlGetMajorTwo = "SELECT Levels.Title, Teams.TeamName, SUM([ActualWins]) AS WinTotal, SUM([ActualLosses]) AS LossTotal, SUM([ActualTies]) AS TieTotal, SUM([PointsScored]) AS PointsScored, SUM([PointsAgainst]) AS PointsAgainst, SUM([BreakdownWins]) AS BreakdownWins, SUM([BreakdownLosses]) AS BreakdownLosses, SUM([BreakdownTies]) AS BreakdownTies, CAST(AVG([Position]) AS DECIMAL(10,2)) AS AveragePositionYTD, "
-														sqlGetMajorTwo = sqlGetMajorTwo & "(SELECT ProfileImage FROM Accounts WHERE Accounts.AccountID IN (SELECT AccountID FROM LinkAccountsTeams WHERE LinkAccountsTeams.TeamID = Standings.TeamID)) AS ProfileImage FROM Standings "
-														sqlGetMajorTwo = sqlGetMajorTwo & "INNER JOIN Teams ON Teams.TeamID = Standings.TeamID "
-														sqlGetMajorTwo = sqlGetMajorTwo & "INNER JOIN Levels ON Levels.LevelID = Standings.LevelID "
-														sqlGetMajorTwo = sqlGetMajorTwo & "WHERE Levels.LevelID = " & thisLevelID & " "
-														sqlGetMajorTwo = sqlGetMajorTwo & "AND Standings.Year = 2024 "
-														sqlGetMajorTwo = sqlGetMajorTwo & "AND Standings.Period >= 1 "
-														sqlGetMajorTwo = sqlGetMajorTwo & "AND Standings.Period <= 3 "
-														sqlGetMajorTwo = sqlGetMajorTwo & "GROUP BY Levels.LevelID, Levels.Title, Teams.TeamName, Standings.TeamID ORDER BY Levels.LevelID ASC, WinTotal DESC, PointsScored DESC; "
-
-														Set rsStandings = sqlDatabase.Execute(sqlGetMajorTwo)
-
-														thisPosition = 1
-														Do While Not rsStandings.Eof
-															thisTeamName = rsStandings("TeamName")
-															If thisTeamName = "The District of Columbia(n) Neckties" Then thisTeamName = "DC Neckties"
-%>
-															<tr style="<%= thisBorderBottom %>">
-																<td class="pl-3"><img src="https://samelevel.imgix.net/<%= rsStandings("ProfileImage") %>?w=40&h=40&fit=crop&crop=focalpoint" class="rounded-circle hidden d-none d-sm-none d-md-inline mr-2"><b><%= thisPosition %>.</b> &nbsp;<%= thisTeamName %></td>
-																<td class="text-center"><%= rsStandings("WinTotal") %>-<%= rsStandings("LossTotal") %>-<%= rsStandings("TieTotal") %></td>
-																<td class="text-center d-none d-sm-table-cell"><%= FormatNumber(rsStandings("PointsScored"), 2) %></td>
-																<td class="text-center d-none d-sm-table-cell"><%= FormatNumber(rsStandings("PointsAgainst"), 2) %></td>
-															</tr>
-<%
-															rsStandings.MoveNext
-															thisPosition = thisPosition + 1
-
-														Loop
-
-														rsStandings.Close
-														Set rsStandings = Nothing
-%>
-													</tbody>
-
-												</table>
-
-											</div>
-
-										</div>
-
-									</div>
+									
 
 								</div>
 
