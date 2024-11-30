@@ -47,50 +47,86 @@
 
 	Function Slack_SendSchmeckles (thisSenderID, thisRecipientID, thisAmount, thisMemo, thisSlackChannel)
 
-		sqlGetRecipient = "SELECT ProfileName FROM Accounts WHERE AccountID = " & thisRecipientID
-		Set rsRecipient = sqlDatabase.Execute(sqlGetRecipient)
+    ' Retrieve sender details
+    sqlGetSender = "SELECT ProfileName, SlackUserID FROM Accounts WHERE AccountID = " & thisSenderID
+    Set rsSender = sqlDatabase.Execute(sqlGetSender)
 
-		If Not rsRecipient.Eof Then
+    If Not rsSender.Eof Then
+        thisSenderName = rsSender("ProfileName")
+        thisSenderSlackID = rsSender("SlackUserID")
+        rsSender.Close
+        Set rsSender = Nothing
+    Else
+        thisSenderSlackID = "unknown"
+    End If
 
-			thisRecipientName = rsRecipient("ProfileName")
+    ' Retrieve recipient details
+    sqlGetRecipient = "SELECT ProfileName, SlackUserID FROM Accounts WHERE AccountID = " & thisRecipientID
+    Set rsRecipient = sqlDatabase.Execute(sqlGetRecipient)
 
-			rsRecipient.Close
-			Set rsRecipient = Nothing
+    If Not rsRecipient.Eof Then
+        thisRecipientName = rsRecipient("ProfileName")
+        thisRecipientSlackID = rsRecipient("SlackUserID")
+        rsRecipient.Close
+        Set rsRecipient = Nothing
+    Else
+        thisRecipientSlackID = "unknown"
+    End If
 
-			quickText = "Schmeckles"
-			If thisAmount = 1 Then quickText = "Schmeckle"
+    ' Determine pluralization of "Schmeckle"
+    quickText = "Schmeckles"
+    If thisAmount = 1 Then quickText = "Schmeckle"
 
-			thisMemo = Server.HTMLEncode(thisMemo)
+    ' Escape and sanitize memo text
+    thisMemo = Replace(thisMemo, "\", "\\")  ' Escape backslashes
+    thisMemo = Replace(thisMemo, """", "\""") ' Escape double quotes
+    thisMemo = Replace(thisMemo, "/", "\/")  ' Escape forward slashes
+    thisMemo = Replace(thisMemo, vbCrLf, "\n") ' Handle newlines
+    thisMemo = Replace(thisMemo, vbLf, "\n")  ' Handle line feeds
+    thisMemo = Replace(thisMemo, vbTab, "\t") ' Handle tabs
+    thisMemo = Replace(thisMemo, "’", "'")  ' Fix smart apostrophes
+    thisMemo = Replace(thisMemo, "“", "\""")  ' Fix smart opening quotes
+    thisMemo = Replace(thisMemo, "”", "\""")  ' Fix smart closing quotes
+    thisMemo = Replace(thisMemo, "…", "...") ' Fix ellipses
+    thisMemo = Replace(thisMemo, "—", "-")  ' Fix em dashes
+    thisMemo = Replace(thisMemo, "–", "-")  ' Fix en dashes
 
-			JSON = "{"
-				JSON = JSON & """text"": """ & Session.Contents("AccountName") & " paid " & thisRecipientName & """, "
-				JSON = JSON & """blocks"": [ "
+    ' Construct the JSON payload
+	JSON = ""
 
-					JSON = JSON & "{"
-						JSON = JSON & """type"": ""section"", "
-						JSON = JSON & """text"": { "
-							JSON = JSON & """type"": ""mrkdwn"", "
-							JSON = JSON & """text"": "":money_with_wings: " & Session.Contents("AccountName") & " paid " & thisRecipientName & "\n>*" & thisAmount & " " & quickText & "*\n>`" & thisMemo & "`"""
-						JSON = JSON & "} "
-					JSON = JSON & "} "
+    JSON = JSON & "{"
+	    JSON = JSON & """text"": ""<@" & thisSenderSlackID & "> paid <@" & thisRecipientSlackID & ">"", "
+	    JSON = JSON & """blocks"": ["
+		    JSON = JSON & "{"
+			    JSON = JSON & """type"": ""section"", "
+			    JSON = JSON & """text"": {"
+			    	JSON = JSON & """type"": ""mrkdwn"", "
+			    	JSON = JSON & """text"": "":money_with_wings: <@" & thisSenderSlackID & "> paid <@" & thisRecipientSlackID & ">\n>*" & thisAmount & " " & quickText & "*\n>`" & thisMemo & "`"""
+			    JSON = JSON & "}"
+		    JSON = JSON & "}"
+	    JSON = JSON & "]"
+    JSON = JSON & "}"
 
-				JSON = JSON & "] "
-			JSON = JSON & "}"
+	JSON = Replace(JSON, vbcrlf, "")
 
-			sqlGetChannel = "SELECT URL FROM SlackHooks WHERE SlackHookID = " & thisSlackChannel
-			Set rsChannel = sqlDatabase.Execute(sqlGetChannel)
-			slackHookURL = rsChannel("URL")
-			rsChannel.Close
-			Set rsChannel = Nothing
+    ' Retrieve Slack webhook URL
+    sqlGetChannel = "SELECT URL FROM SlackHooks WHERE SlackHookID = " & thisSlackChannel
+    Set rsChannel = sqlDatabase.Execute(sqlGetChannel)
+    slackHookURL = rsChannel("URL")
+    rsChannel.Close
+    Set rsChannel = Nothing
 
-			Set httpPOST = Server.CreateObject("Microsoft.XMLHTTP")
-			httpPOST.Open "POST", slackHookURL, false
-			httpPOST.setRequestHeader "Content-Type","Application/JSON"
-			httpPOST.Send JSON
+    ' Send HTTP POST request to Slack
+    Set httpPOST = Server.CreateObject("Microsoft.XMLHTTP")
+    httpPOST.Open "POST", slackHookURL, false
+    httpPOST.setRequestHeader "Content-Type", "Application/JSON"
+    httpPOST.Send JSON
 
-		End If
+    ' Debug output
+    Response.Write(JSON)
 
-	End Function
+End Function
+
 
 	Function Slack_OmegaAttack (thisMatchupID, thisSlackChannel)
 
@@ -135,142 +171,130 @@
 
 	Function Slack_SportsbookBet (thisTicketSlipID, thisSlackChannel, isNFL)
 
-		If isNFL Then
+	    If isNFL Then
+	        sqlGetBetInfo = "SELECT TicketSlipID, TicketTypes.TicketTypeID, TicketTypes.TypeTitle, Accounts.SlackUserID, Accounts.SlackEmoji, A.Name AS AwayTeam, B.Name AS HomeTeam, C.Name AS BetTeam, TicketSlips.TeamID, Moneyline, Spread, OverUnderAmount, OverUnderBet, PropQuestionID, PropAnswerID, BetAmount, PayoutAmount FROM TicketSlips "
+	        sqlGetBetInfo = sqlGetBetInfo & "INNER JOIN NFLGames ON NFLGames.NFLGameID = TicketSlips.NFLGameID "
+	        sqlGetBetInfo = sqlGetBetInfo & "INNER JOIN NFLTeams A ON A.NFLTeamID = NFLGames.AwayTeamID "
+	        sqlGetBetInfo = sqlGetBetInfo & "INNER JOIN NFLTeams B ON B.NFLTeamID = NFLGames.HomeTeamID "
+	        sqlGetBetInfo = sqlGetBetInfo & "LEFT  JOIN NFLTeams C ON C.NFLTeamID = TicketSlips.TeamID "
+	        sqlGetBetInfo = sqlGetBetInfo & "INNER JOIN Accounts ON Accounts.AccountID = TicketSlips.AccountID "
+	        sqlGetBetInfo = sqlGetBetInfo & "INNER JOIN TicketTypes ON TicketTypes.TicketTypeID = TicketSlips.TicketTypeID "
+	        sqlGetBetInfo = sqlGetBetInfo & "WHERE TicketSlips.NFLGameID IS NOT NULL AND TicketSlipID = " & thisTicketSlipID
+	    Else
+	        sqlGetBetInfo = "SELECT TicketSlipID, TicketTypes.TicketTypeID, TicketTypes.TypeTitle, Accounts.SlackUserID, Accounts.SlackEmoji, A.TeamName AS AwayTeam, B.TeamName AS HomeTeam, C.TeamName AS BetTeam, TicketSlips.TeamID, Moneyline, Spread, OverUnderAmount, OverUnderBet, PropQuestionID, PropAnswerID, BetAmount, PayoutAmount FROM TicketSlips "
+	        sqlGetBetInfo = sqlGetBetInfo & "INNER JOIN Matchups ON Matchups.MatchupID = TicketSlips.MatchupID "
+	        sqlGetBetInfo = sqlGetBetInfo & "INNER JOIN Teams A ON A.TeamID = Matchups.TeamID2 "
+	        sqlGetBetInfo = sqlGetBetInfo & "INNER JOIN Teams B ON B.TeamID = Matchups.TeamID1 "
+	        sqlGetBetInfo = sqlGetBetInfo & "LEFT  JOIN Teams C ON C.TeamID = TicketSlips.TeamID "
+	        sqlGetBetInfo = sqlGetBetInfo & "INNER JOIN Accounts ON Accounts.AccountID = TicketSlips.AccountID "
+	        sqlGetBetInfo = sqlGetBetInfo & "INNER JOIN TicketTypes ON TicketTypes.TicketTypeID = TicketSlips.TicketTypeID "
+	        sqlGetBetInfo = sqlGetBetInfo & "WHERE TicketSlips.MatchupID IS NOT NULL AND TicketSlipID = " & thisTicketSlipID
+	    End If
 
-			sqlGetBetInfo = "SELECT TicketSlipID, TicketTypes.TicketTypeID, TicketTypes.TypeTitle, Accounts.SlackHandle, Accounts.SlackEmoji, A.Name AS AwayTeam, B.Name AS HomeTeam, C.Name AS BetTeam, TicketSlips.TeamID, Moneyline, Spread, OverUnderAmount, OverUnderBet, PropQuestionID, PropAnswerID, BetAmount, PayoutAmount FROM TicketSlips "
-			sqlGetBetInfo = sqlGetBetInfo & "INNER JOIN NFLGames ON NFLGames.NFLGameID = TicketSlips.NFLGameID "
-			sqlGetBetInfo = sqlGetBetInfo & "INNER JOIN NFLTeams A ON A.NFLTeamID = NFLGames.AwayTeamID "
-			sqlGetBetInfo = sqlGetBetInfo & "INNER JOIN NFLTeams B ON B.NFLTeamID = NFLGames.HomeTeamID "
-			sqlGetBetInfo = sqlGetBetInfo & "LEFT  JOIN NFLTeams C ON C.NFLTeamID = TicketSlips.TeamID "
-			sqlGetBetInfo = sqlGetBetInfo & "INNER JOIN Accounts ON Accounts.AccountID = TicketSlips.AccountID "
-			sqlGetBetInfo = sqlGetBetInfo & "INNER JOIN TicketTypes ON TicketTypes.TicketTypeID = TicketSlips.TicketTypeID "
-			sqlGetBetInfo = sqlGetBetInfo & "WHERE TicketSlips.NFLGameID IS NOT NULL AND TicketSlipID = " & thisTicketSlipID
+	    Set rsBetInfo = sqlDatabase.Execute(sqlGetBetInfo)
 
-		Else
+	    If Not rsBetInfo.Eof Then
+	        thisTicketSlipID = rsBetInfo("TicketSlipID")
+	        thisTicketTypeID = rsBetInfo("TicketTypeID")
+	        thisSlackUserID = rsBetInfo("SlackUserID")
+	        thisSlackEmoji = rsBetInfo("SlackEmoji")
+	        thisAwayTeam = rsBetInfo("AwayTeam")
+	        thisHomeTeam = rsBetInfo("HomeTeam")
+	        thisBetTeam = rsBetInfo("BetTeam")
+	        thisMoneyline = rsBetInfo("Moneyline")
+	        thisSpread = rsBetInfo("Spread")
+	        thisOverUnderAmount = rsBetInfo("OverUnderAmount")
+	        thisPropQuestionID = rsBetInfo("PropQuestionID")
+	        thisPropAnswerID = rsBetInfo("PropAnswerID")
+	        thisOverUnderBet = rsBetInfo("OverUnderBet")
+	        thisBetAmount = rsBetInfo("BetAmount")
+	        thisPayoutAmount = rsBetInfo("PayoutAmount")
+	        If Left(thisSpread, 1) <> "-" Then thisSpread = "+" & thisSpread
+	        If Left(thisMoneyline, 1) <> "-" Then thisMoneyline = "+" & thisMoneyline
 
-			sqlGetBetInfo = "SELECT TicketSlipID, TicketTypes.TicketTypeID, TicketTypes.TypeTitle, Accounts.SlackHandle, Accounts.SlackEmoji, A.TeamName AS AwayTeam, B.TeamName AS HomeTeam, C.TeamName AS BetTeam, TicketSlips.TeamID, Moneyline, Spread, OverUnderAmount, OverUnderBet, PropQuestionID, PropAnswerID, BetAmount, PayoutAmount FROM TicketSlips "
-			sqlGetBetInfo = sqlGetBetInfo & "INNER JOIN Matchups ON Matchups.MatchupID = TicketSlips.MatchupID "
-			sqlGetBetInfo = sqlGetBetInfo & "INNER JOIN Teams A ON A.TeamID = Matchups.TeamID2 "
-			sqlGetBetInfo = sqlGetBetInfo & "INNER JOIN Teams B ON B.TeamID = Matchups.TeamID1 "
-			sqlGetBetInfo = sqlGetBetInfo & "LEFT  JOIN Teams C ON C.TeamID = TicketSlips.TeamID "
-			sqlGetBetInfo = sqlGetBetInfo & "INNER JOIN Accounts ON Accounts.AccountID = TicketSlips.AccountID "
-			sqlGetBetInfo = sqlGetBetInfo & "INNER JOIN TicketTypes ON TicketTypes.TicketTypeID = TicketSlips.TicketTypeID "
-			sqlGetBetInfo = sqlGetBetInfo & "WHERE TicketSlips.MatchupID IS NOT NULL AND TicketSlipID = " & thisTicketSlipID
+	        rsBetInfo.Close
+	        Set rsBetInfo = Nothing
 
-		End If
+	        If Len(thisOverUnderBet) > 0 Then
+	            thisBetLine = "(" & thisOverUnderBet & " " & thisOverUnderAmount & ")"
+	        ElseIf Len(thisMoneyline) > 0 Then
+	            thisBetLine = "(" & thisBetTeam & " " & thisMoneyline & "ML)"
+	        Else
+	            thisBetLine = "(" & thisBetTeam & " " & thisSpread & ")"
+	        End If
 
-		Set rsBetInfo = sqlDatabase.Execute(sqlGetBetInfo)
+	        If thisTicketTypeID = 4 Then
+	            sqlGetBetInfo = "SELECT PropQuestions.Question, PropAnswers.Answer, PropAnswers.Moneyline FROM PropQuestions "
+	            sqlGetBetInfo = sqlGetBetInfo & "INNER JOIN PropAnswers ON PropAnswers.PropQuestionID = PropQuestions.PropQuestionID "
+	            sqlGetBetInfo = sqlGetBetInfo & "WHERE PropQuestions.PropQuestionID = " & thisPropQuestionID & " AND PropAnswers.PropAnswerID = " & thisPropAnswerID
 
-		If Not rsBetInfo.Eof Then
+	            Set rsBetInfo = sqlDatabase.Execute(sqlGetBetInfo)
+	            thisPropQuestion = rsBetInfo("Question")
+	            thisPropAnswer = rsBetInfo("Answer")
+	            thisPropMoneyline = rsBetInfo("Moneyline")
 
-			thisTicketSlipID = rsBetInfo("TicketSlipID")
-			thisTicketTypeID = rsBetInfo("TicketTypeID")
-			thisSlackHandle = rsBetInfo("SlackHandle")
-			thisSlackEmoji = rsBetInfo("SlackEmoji")
-			thisAwayTeam = rsBetInfo("AwayTeam")
-			thisHomeTeam = rsBetInfo("HomeTeam")
-			thisBetTeam = rsBetInfo("BetTeam")
-			thisMoneyline = rsBetInfo("Moneyline")
-			thisSpread = rsBetInfo("Spread")
-			thisOverUnderAmount = rsBetInfo("OverUnderAmount")
-			thisPropQuestionID = rsBetInfo("PropQuestionID")
-			thisPropAnswerID = rsBetInfo("PropAnswerID")
-			thisOverUnderBet = rsBetInfo("OverUnderBet")
-			thisBetAmount = rsBetInfo("BetAmount")
-			thisPayoutAmount = rsBetInfo("PayoutAmount")
-			If Left(thisSpread, 1) <> "-" Then thisSpread = "+" & thisSpread
-			If Left(thisMoneyline, 1) <> "-" Then thisMoneyline = "+" & thisMoneyline
+	            If Left(thisPropMoneyline, 1) <> "-" Then thisPropMoneyline = "+" & thisPropMoneyline
 
-			rsBetInfo.Close
-			Set rsBetInfo = Nothing
+	            If Not rsBetInfo.Eof Then
+	                thisBetLine = thisPropQuestion & "`\n>:crystal_ball: `" & thisPropAnswer & " (" & thisPropMoneyline & "ML)"
+	            End If
+	        End If
 
-			If Len(thisOverUnderBet) > 0 Then
-				thisBetLine = "(" & thisOverUnderBet & " " & thisOverUnderAmount & ")"
-			ElseIf Len(thisMoneyline) > 0 Then
-				thisBetLine = "(" & thisBetTeam & " " & thisMoneyline & "ML)"
-			Else
-				thisBetLine = "(" & thisBetTeam & " " & thisSpread & ")"
-			End If
+	        JSON = "{"
+	        JSON = JSON & """text"": ""<@" & thisSlackUserID & "> :admission_tickets: :admission_tickets: :admission_tickets:"", "
+	        JSON = JSON & """blocks"": [ "
 
-			If thisTicketTypeID = 4 Then
+	        JSON = JSON & "{"
+	        JSON = JSON & """type"": ""section"", "
+	        JSON = JSON & """text"": { "
+	        JSON = JSON & """type"": ""mrkdwn"", "
+	        JSON = JSON & """text"": "">:football: _" & thisAwayTeam & " @ " & thisHomeTeam & "_\n>:admission_tickets: `" & thisBetLine & "`\n>:" & thisSlackEmoji & ": <@" & thisSlackUserID & ">\n>:moneybag: *" & FormatNumber(thisBetAmount, 0) & "* to win *" & FormatNumber(thisPayoutAmount, 0) & "*"" "
+	        JSON = JSON & "} "
+	        JSON = JSON & "} "
 
-				sqlGetBetInfo = "SELECT PropQuestions.Question, PropAnswers.Answer, PropAnswers.Moneyline FROM PropQuestions "
-				sqlGetBetInfo = sqlGetBetInfo & "INNER JOIN PropAnswers ON PropAnswers.PropQuestionID = PropQuestions.PropQuestionID "
-				sqlGetBetInfo = sqlGetBetInfo & "WHERE PropQuestions.PropQuestionID = " & thisPropQuestionID & " AND PropAnswers.PropAnswerID = " & thisPropAnswerID
+	        JSON = JSON & "] "
+	        JSON = JSON & "}"
 
-				Set rsBetInfo = sqlDatabase.Execute(sqlGetBetInfo)
-				thisPropQuestion = rsBetInfo("Question")
-				thisPropAnswer = rsBetInfo("Answer")
-				thisPropMoneyline = rsBetInfo("Moneyline")
+			JSON = Replace(JSON, vbcrlf, "")
 
-				If Left(thisPropMoneyline, 1) <> "-" Then thisPropMoneyline = "+" & thisPropMoneyline
+	        sqlGetChannel = "SELECT URL FROM SlackHooks WHERE SlackHookID = " & thisSlackChannel
+	        Set rsChannel = sqlDatabase.Execute(sqlGetChannel)
+	        slackHookURL = rsChannel("URL")
+	        rsChannel.Close
+	        Set rsChannel = Nothing
 
-				If Not rsBetInfo.Eof Then
+	        Set httpPOST = Server.CreateObject("Microsoft.XMLHTTP")
+	        httpPOST.Open "POST", slackHookURL, false
+	        httpPOST.setRequestHeader "Content-Type","Application/JSON"
+	        httpPOST.Send JSON
 
-					thisBetLine = thisPropQuestion & "`\n>:crystal_ball: `" & thisPropAnswer & " (" & thisPropMoneyline & "ML)"
+	        sqlGetCirculation = "SELECT SUM(Balance) AS TotalSchmecks FROM (SELECT SUM(TransactionTotal) AS Balance FROM SchmeckleTransactions INNER JOIN Accounts ON Accounts.AccountID = SchmeckleTransactions.AccountID WHERE Accounts.Active = 1 GROUP BY Accounts.AccountID) A"
+	        Set rsCirculation = sqlDatabase.Execute(sqlGetCirculation)
 
-				End If
+	        If Not rsCirculation.Eof Then
+	            thisSchmeckleCirculation = rsCirculation("TotalSchmecks")
+	            rsCirculation.Close
+	            Set rsCirculation = Nothing
 
-			End If
+	            thisCirculationPercentage = FormatNumber(((CDbl(thisBetAmount) * 100) / CDbl(thisSchmeckleCirculation)), 2)
 
-			JSON = "{"
-				JSON = JSON & """text"": ""@" & thisSlackHandle & " :admission_tickets: :admission_tickets: :admission_tickets:"", "
-				JSON = JSON & """blocks"": [ "
+	            If thisCirculationPercentage >= 2.50 Then
+	                'BIG BET NOTIFICATION #GENERAL'
+	                sqlGetChannel = "SELECT URL FROM SlackHooks WHERE SlackHookID = 1"
+	                Set rsChannel = sqlDatabase.Execute(sqlGetChannel)
+	                slackHookURL = rsChannel("URL")
+	                rsChannel.Close
+	                Set rsChannel = Nothing
 
-					JSON = JSON & "{"
-						JSON = JSON & """type"": ""section"", "
-						JSON = JSON & """text"": { "
-							JSON = JSON & """type"": ""mrkdwn"", "
-							JSON = JSON & """text"": "">:football: _" & thisAwayTeam & " @ " & thisHomeTeam & "_\n>:admission_tickets: `" & thisBetLine & "`\n>:" & thisSlackEmoji & ": @" & thisSlackHandle & "\n>:moneybag: *" & FormatNumber(thisBetAmount, 0) & "* to win *" & FormatNumber(thisPayoutAmount, 0) & "*"" "
-						JSON = JSON & "} "
-					JSON = JSON & "} "
+	                Set httpPOST = Server.CreateObject("Microsoft.XMLHTTP")
+	                httpPOST.Open "POST", slackHookURL, false
+	                httpPOST.setRequestHeader "Content-Type","Application/JSON"
+	                httpPOST.Send JSON
+	            End If
+	        End If
+	    End If
 
-				JSON = JSON & "] "
-			JSON = JSON & "}"
-
-			sqlGetChannel = "SELECT URL FROM SlackHooks WHERE SlackHookID = " & thisSlackChannel
-			Set rsChannel = sqlDatabase.Execute(sqlGetChannel)
-			slackHookURL = rsChannel("URL")
-			rsChannel.Close
-			Set rsChannel = Nothing
-
-			Set httpPOST = Server.CreateObject("Microsoft.XMLHTTP")
-			httpPOST.Open "POST", slackHookURL, false
-			httpPOST.setRequestHeader "Content-Type","Application/JSON"
-			httpPOST.Send JSON
-
-			sqlGetCirculation = "SELECT SUM(Balance) AS TotalSchmecks FROM (SELECT SUM(TransactionTotal) AS Balance FROM SchmeckleTransactions INNER JOIN Accounts ON Accounts.AccountID = SchmeckleTransactions.AccountID WHERE Accounts.Active = 1 GROUP BY Accounts.AccountID) A"
-			Set rsCirculation = sqlDatabase.Execute(sqlGetCirculation)
-
-			If Not rsCirculation.Eof Then
-
-				thisSchmeckleCirculation = rsCirculation("TotalSchmecks")
-				rsCirculation.Close
-				Set rsCirculation = Nothing
-
-				thisCirculationPercentage = FormatNumber(((CDbl(thisBetAmount) * 100) / CDbl(thisSchmeckleCirculation)), 2)
-
-				If thisCirculationPercentage >= 2.50 Then
-
-					'BIG BET NOTIFICATION #GENERAL'
-					sqlGetChannel = "SELECT URL FROM SlackHooks WHERE SlackHookID = 1"
-					Set rsChannel = sqlDatabase.Execute(sqlGetChannel)
-					slackHookURL = rsChannel("URL")
-					rsChannel.Close
-					Set rsChannel = Nothing
-
-					Set httpPOST = Server.CreateObject("Microsoft.XMLHTTP")
-					httpPOST.Open "POST", slackHookURL, false
-					httpPOST.setRequestHeader "Content-Type","Application/JSON"
-					httpPOST.Send JSON
-
-				End If
-
-			End If
-
-		End If
-
-		Slack_SportsbookBet = JSON
+	    Slack_SportsbookBet = JSON
 
 	End Function
 

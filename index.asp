@@ -137,42 +137,41 @@
 
 	If Request.Form("action") = "send" Then
 
-		thisRecipientID = Request.Form("inputRecipientID")
-		thisTotalSchmeckles = Request.Form("inputTotalSchmeckles")
-		thisMemo = Request.Form("inputMemo")
+	    thisRecipientID = Request.Form("inputRecipientID")
+	    thisTotalSchmeckles = Request.Form("inputTotalSchmeckles")
+	    thisMemo = Request.Form("inputMemo")
+	    thisSenderID = Session.Contents("AccountID") ' Use a separate variable for the sender
 
-		If thisTotalSchmeckles > 0 Then
+	    If thisTotalSchmeckles > 0 Then
 
-			sqlGetSchmeckles = "SELECT SUM(TransactionTotal) AS CurrentSchmeckleTotal FROM SchmeckleTransactions WHERE AccountID = " & Session.Contents("AccountID")
-			Set rsSchmeckles = sqlDatabase.Execute(sqlGetSchmeckles)
+	        sqlGetSchmeckles = "SELECT SUM(TransactionTotal) AS CurrentSchmeckleTotal FROM SchmeckleTransactions WHERE AccountID = " & thisSenderID
+	        Set rsSchmeckles = sqlDatabase.Execute(sqlGetSchmeckles)
 
-			thisCurrentSchmeckleTotal = rsSchmeckles("CurrentSchmeckleTotal")
+	        thisCurrentSchmeckleTotal = rsSchmeckles("CurrentSchmeckleTotal")
 
-			If CDbl(thisCurrentSchmeckleTotal) >= CDbl(thisTotalSchmeckles) Then
+	        If CDbl(thisCurrentSchmeckleTotal) >= CDbl(thisTotalSchmeckles) Then
 
-				thisTransactionTypeID = 1015
-				thisTransactionDateTime = Now()
-				thisTransactionTotal = thisTotalSchmeckles * -1
-				thisAccountID = Session.Contents("AccountID")
-				thisTransactionDescription = ""
+	            thisTransactionTypeID = 1015
+	            thisTransactionDateTime = Now()
+	            thisTransactionTotal = thisTotalSchmeckles * -1
+	            thisTransactionDescription = ""
 
-				thisTransactionStatus = SchmeckleTransaction(thisAccountID, thisTransactionTypeID, NULL, thisTransactionTotal, thisMemo)
+	            thisTransactionStatus = SchmeckleTransaction(thisSenderID, thisTransactionTypeID, NULL, thisTransactionTotal, thisMemo)
 
-				thisTransactionTypeID = 1015
-				thisTransactionDateTime = Now()
-				thisTransactionTotal = thisTotalSchmeckles
-				thisAccountID = thisRecipientID
-				thisTransactionDescription = ""
+	            thisTransactionTypeID = 1015
+	            thisTransactionDateTime = Now()
+	            thisTransactionTotal = thisTotalSchmeckles
+	            thisTransactionDescription = ""
 
-				thisTransactionStatus = SchmeckleTransaction(thisAccountID, thisTransactionTypeID, NULL, thisTransactionTotal, NULL)
+	            thisTransactionStatus = SchmeckleTransaction(thisRecipientID, thisTransactionTypeID, NULL, thisTransactionTotal, NULL)
 
-				thisSlackNotificationStatus = Slack_SendSchmeckles(thisAccountID, thisRecipientID, thisTransactionTotal, thisMemo, 1)
+	            thisSlackNotificationStatus = Slack_SendSchmeckles(thisSenderID, thisRecipientID, thisTotalSchmeckles, thisMemo, 1)
 
-			End If
+	        End If
 
-			Response.Redirect("/")
+	        'Response.Redirect("/")
 
-		End If
+	    End If
 
 	End If
 
@@ -296,7 +295,7 @@
 					<% If Session.Contents("LoggedIn") = "yes" Then %>
 						<div class="row mt-4">
 
-							<div class="col-12 col-lg-6 col-xl-5">
+							<div class="col-12 col-lg-6 col-xxxl-5">
 
 								<!--#include virtual="/assets/asp/dashboard/account.asp" -->
 
@@ -310,7 +309,7 @@
 
 							</div>
 
-							<div class="col-12 col-lg-6 col-xl-7 col-xxl-5">
+							<div class="col-12 col-lg-6 col-xxxl-5">
 
 								<!--#include virtual="/assets/asp/dashboard/timeline.asp" -->
 
