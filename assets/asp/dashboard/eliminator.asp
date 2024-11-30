@@ -7,14 +7,14 @@
 
 		thisTotalCorrectPicks = rsCorrectPicks("TotalCorrectPicks")
 
-		If thisTotalCorrectPicks < (Session.Contents("CurrentPeriod") - 4) Then thisAccountEliminated = 1
+		If thisTotalCorrectPicks < (Session.Contents("CurrentPeriod") - 13) Then thisAccountEliminated = 1
 
 		rsCorrectPicks.Close
 		Set rsCorrectPicks = Nothing
 
 		thisEliminatorRoundID = Session.Contents("EliminatorRoundID")
 
-		sqlGetSurvivors = "SELECT TotalCorrect, AccountID FROM ( SELECT COUNT(*) AS TotalCorrect, AccountID FROM EliminatorPicks WHERE CorrectPick = 1 AND EliminatorRoundID = " & thisEliminatorRoundID & " GROUP BY AccountID) A WHERE TotalCorrect = " & (Session.Contents("CurrentPeriod") - 4)
+		sqlGetSurvivors = "SELECT TotalCorrect, AccountID FROM ( SELECT COUNT(*) AS TotalCorrect, AccountID FROM EliminatorPicks WHERE CorrectPick = 1 AND EliminatorRoundID = " & thisEliminatorRoundID & " GROUP BY AccountID) A WHERE TotalCorrect = " & (Session.Contents("CurrentPeriod") - 13)
 		Set rsSurvivors = sqlDatabase.Execute(sqlGetSurvivors)
 
 		If rsSurvivors.RecordCount > 0 Then
