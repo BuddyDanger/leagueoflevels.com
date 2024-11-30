@@ -60,6 +60,8 @@
 			quickText = "Schmeckles"
 			If thisAmount = 1 Then quickText = "Schmeckle"
 
+			thisMemo = Server.HTMLEncode(thisMemo)
+
 			JSON = "{"
 				JSON = JSON & """text"": """ & Session.Contents("AccountName") & " paid " & thisRecipientName & """, "
 				JSON = JSON & """blocks"": [ "
