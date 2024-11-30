@@ -126,75 +126,71 @@
 
 								For i = 0 To UBound(arrOmega, 2)
 
-									MatchupID = arrOmega(0, i)
-									TeamID1 = arrOmega(2, i)
-									TeamName1 = arrOmega(3, i)
-									TeamLogo1 = arrOmega(4, i)
-									TeamCBSID1 = arrOmega(5, i)
-									TeamID2 = arrOmega(6, i)
-									TeamName2 = arrOmega(7, i)
-									TeamLogo2 = arrOmega(8, i)
-									TeamCBSID2 = arrOmega(9, i)
-									TeamScore1 = FormatNumber(arrOmega(10, i) + arrOmega(16, i), 2)
-									TeamScore2 = FormatNumber(arrOmega(11, i) + arrOmega(17, i), 2)
-									TeamPMR1 = arrOmega(12, i)
-									TeamPMR2 = arrOmega(13, i)
-									TeamAbbreviatedName1 = arrOmega(14, i)
-									TeamAbbreviatedName2 = arrOmega(15, i)
-									TeamOmegaTravel1 = arrOmega(16, i)
-									TeamOmegaTravel2 = arrOmega(17, i)
+							        MatchupID = arrOmega(0, i)
+							        TeamID1 = arrOmega(2, i)
+							        TeamName1 = arrOmega(3, i)
+							        TeamLogo1 = arrOmega(4, i)
+							        TeamCBSID1 = arrOmega(5, i)
+							        TeamID2 = arrOmega(6, i)
+							        TeamName2 = arrOmega(7, i)
+							        TeamLogo2 = arrOmega(8, i)
+							        TeamCBSID2 = arrOmega(9, i)
+							        TeamScore1 = FormatNumber(arrOmega(10, i) + arrOmega(16, i), 2)
+							        TeamScore2 = FormatNumber(arrOmega(11, i) + arrOmega(17, i), 2)
+							        TeamPMR1 = arrOmega(12, i)
+							        TeamPMR2 = arrOmega(13, i)
+							        TeamAbbreviatedName1 = arrOmega(14, i)
+							        TeamAbbreviatedName2 = arrOmega(15, i)
+							        TeamOmegaTravel1 = arrOmega(16, i)
+							        TeamOmegaTravel2 = arrOmega(17, i)
 
-									thisWeeklyMatchups = thisWeeklyMatchups & MatchupID & ","
+							        thisWeeklyMatchups = thisWeeklyMatchups & MatchupID & ","
 
-									TeamPMRColor1 = "success"
-									TeamPMRPercent1 = (TeamPMR1 * 100) / 420
-									If TeamPMRPercent1 < 66.66 Then TeamPMRColor1 = "warning"
-									If TeamPMRPercent1 < 33.33 Then TeamPMRColor1 = "danger"
+							        TeamPMRColor1 = "success"
+							        TeamPMRPercent1 = (TeamPMR1 * 100) / 420
+							        If TeamPMRPercent1 < 66.66 Then TeamPMRColor1 = "warning"
+							        If TeamPMRPercent1 < 33.33 Then TeamPMRColor1 = "danger"
 
-									TeamPMRColor2 = "success"
-									TeamPMRPercent2 = (TeamPMR2 * 100) / 420
-									If TeamPMRPercent2 < 66.66 Then TeamPMRColor2 = "warning"
-									If TeamPMRPercent2 < 33.33 Then TeamPMRColor2 = "danger"
+							        TeamPMRColor2 = "success"
+							        TeamPMRPercent2 = (TeamPMR2 * 100) / 420
+							        If TeamPMRPercent2 < 66.66 Then TeamPMRColor2 = "warning"
+							        If TeamPMRPercent2 < 33.33 Then TeamPMRColor2 = "danger"
 
-									If MatchupID = 4403 Then MatchupTitle = "OMEGA CHAMPIONSHIP"
-									If MatchupID = 4404 Then MatchupTitle = "OMEGA 3RD PLACE"
-									If MatchupID = 4405 Then MatchupTitle = "OMEGA 5TH PLACE"
-
-									Response.Write("<div class=""col-6 col-xl-4 col-xxxl-2 pl-1 pr-1 pl-lg-3 pr-lg-0"">")
+							        Response.Write("<div class=""col-6 col-xl-4 col-xxxl-2 pl-1 pr-1 pl-lg-3 pr-lg-0"">")
 %>
-										<a href="/scores/<%= MatchupID %>/" class="matchup-<%= MatchupID %>" style="text-decoration: none; display: block;">
-											<ul class="list-group" style="margin-bottom: 1rem;">
-												<li class="list-group-item" style="padding-top: 0.25rem; padding-bottom: 0.25rem; font-size: 0.75rem; text-align: center; background-color: #FFBA08; color: #fff;"><strong><%= MatchupTitle %></strong></li>
-												<li class="list-group-item px-3 team-omega-box-<%= TeamID1 %>">
-													<span class="team-omega-score-<%= TeamID1 %>" style="font-size: 1em; background-color: #fff; color: #805C04; float: right;"><%= TeamScore1 %></span>
-													<img src="https://samelevel.imgix.net/<%= TeamLogo1 %>?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-none d-lg-inline mr-2" /><span class="d-none d-lg-inline" style="font-size: 13px; color: #805C04;"><%= TeamName1 %></span><span class="d-inline d-lg-none" style="font-size: 13px; color: #805C04;"><%= TeamAbbreviatedName1 %></span><% If TeamOmegaTravel1 <> 0 Then %><span style="font-size: 13px; color: #805C04;"> (<%= TeamOmegaTravel1 %>)</span><% End If %>
-													<div class="progress team-omega-progress-<%= TeamID1 %>" style="height: 1px; margin-top: 6px; margin-bottom: 0; padding-bottom: 0;">
-														<div class="progress-bar progress-bar-<%= TeamPMRColor1 %>" role="progressbar" aria-valuenow="<%= TeamPMRPercent1 %>" aria-valuemin="0" aria-valuemax="100" style="width: <%= TeamPMRPercent1 %>%">
-															<span class="sr-only team-omega-progress-sr-<%= TeamID1 %>"><%= TeamPMRPercent1 %>%</span>
-														</div>
-													</div>
-												</li>
-												<li class="list-group-item px-3 team-omega-box-<%= TeamID2 %>">
-													<span class="team-omega-score-<%= TeamID2 %>" style="font-size: 1em; background-color: #fff; color: #805C04; float: right;"><%= TeamScore2 %></span>
-													<img src="https://samelevel.imgix.net/<%= TeamLogo2 %>?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-none d-lg-inline mr-2" /><span class="d-none d-lg-inline" style="font-size: 13px; color: #805C04;"><%= TeamName2 %></span><span class="d-inline d-lg-none" style="font-size: 13px; color: #805C04;"><%= TeamAbbreviatedName2 %></span>
-													<div class="progress team-omega-progress-<%= TeamID2 %>" style="height: 1px; margin-top: 4px; margin-bottom: 0; padding-bottom: 0;">
-														<div class="progress-bar progress-bar-<%= TeamPMRColor2 %>" role="progressbar" aria-valuenow="<%= TeamPMRPercent2 %>" aria-valuemin="0" aria-valuemax="<%= TeamPMRPercent2 %>" style="width: <%= TeamPMRPercent2 %>%">
-															<span class="sr-only team-omega-progress-sr-<%= TeamID2 %>"><%= TeamPMRPercent2 %>%</span>
-														</div>
-													</div>
-												</li>
-											</ul>
-										</a>
+							        <a href="/scores/<%= MatchupID %>/" class="matchup-<%= MatchupID %>" style="text-decoration: none; display: block;">
+							            <ul class="list-group" style="margin-bottom: 1rem;">
+							                <li class="list-group-item" style="padding-top: 0.25rem; padding-bottom: 0.25rem; font-size: 0.75rem; text-align: center; background-color: #FFBA08; color: #fff;"><strong><%= MatchupTitle %></strong></li>
+							                <li class="list-group-item px-3 team-omega-box-<%= TeamID1 %>-<%= MatchupID %>">
+							                    <span class="team-omega-score-<%= TeamID1 %>-<%= MatchupID %>" style="font-size: 1em; background-color: #fff; color: #805C04; float: right;"><%= TeamScore1 %></span>
+							                    <img src="https://samelevel.imgix.net/<%= TeamLogo1 %>?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-none d-lg-inline mr-2" /><span class="d-none d-lg-inline" style="font-size: 13px; color: #805C04;"><%= TeamName1 %></span><span class="d-inline d-lg-none" style="font-size: 13px; color: #805C04;"><%= TeamAbbreviatedName1 %></span><% If TeamOmegaTravel1 <> 0 Then %><span style="font-size: 13px; color: #805C04;"> (<%= TeamOmegaTravel1 %>)</span><% End If %>
+							                    <div class="progress team-omega-progress-<%= TeamID1 %>-<%= MatchupID %>" style="height: 1px; margin-top: 6px; margin-bottom: 0; padding-bottom: 0;">
+							                        <div class="progress-bar progress-bar-<%= TeamPMRColor1 %>" role="progressbar" aria-valuenow="<%= TeamPMRPercent1 %>" aria-valuemin="0" aria-valuemax="100" style="width: <%= TeamPMRPercent1 %>%">
+							                            <span class="sr-only team-omega-progress-sr-<%= TeamID1 %>-<%= MatchupID %>"><%= TeamPMRPercent1 %>%</span>
+							                        </div>
+							                    </div>
+							                </li>
+							                <li class="list-group-item px-3 team-omega-box-<%= TeamID2 %>-<%= MatchupID %>">
+							                    <span class="team-omega-score-<%= TeamID2 %>-<%= MatchupID %>" style="font-size: 1em; background-color: #fff; color: #805C04; float: right;"><%= TeamScore2 %></span>
+							                    <img src="https://samelevel.imgix.net/<%= TeamLogo2 %>?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-none d-lg-inline mr-2" /><span class="d-none d-lg-inline" style="font-size: 13px; color: #805C04;"><%= TeamName2 %></span><span class="d-inline d-lg-none" style="font-size: 13px; color: #805C04;"><%= TeamAbbreviatedName2 %></span>
+							                    <div class="progress team-omega-progress-<%= TeamID2 %>-<%= MatchupID %>" style="height: 1px; margin-top: 4px; margin-bottom: 0; padding-bottom: 0;">
+							                        <div class="progress-bar progress-bar-<%= TeamPMRColor2 %>" role="progressbar" aria-valuenow="<%= TeamPMRPercent2 %>" aria-valuemin="0" aria-valuemax="<%= TeamPMRPercent2 %>" style="width: <%= TeamPMRPercent2 %>%">
+							                            <span class="sr-only team-omega-progress-sr-<%= TeamID2 %>-<%= MatchupID %>"><%= TeamPMRPercent2 %>%</span>
+							                        </div>
+							                    </div>
+							                </li>
+							            </ul>
+							        </a>
 <%
-									Response.Write("</div>")
+							        Response.Write("</div>")
 
-								Next
+							    Next
 
 							End If
 
-							Response.Write("</div>")
+						Response.Write("</div>")
 
-							Response.Write("<div class=""row"">")
+						Response.Write("<div class=""row"">")
 
 							If IsArray(arrCup) Then
 
@@ -285,35 +281,30 @@
 									TeamPMRPercent2 = (TeamPMR2 * 100) / 420
 									If TeamPMRPercent2 < 66.66 Then TeamPMRColor2 = "warning"
 									If TeamPMRPercent2 < 33.33 Then TeamPMRColor2 = "danger"
-
-									If TeamID1 = 38 Then TeamName1 = "München"
-									If TeamID2 = 38 Then TeamName2 = "München"
-
-									If TeamID1 = 36 Then TeamName1 = "Hanging With Hern"
-									If TeamID2 = 36 Then TeamName2 = "Hanging With Hern"
-
-									If TeamID1 = 59 Then TeamName1 = "Filthy Animals"
-									If TeamID2 = 59 Then TeamName2 = "Filthy Animals"
 %>
 									<div class="col-6 col-xl-4 col-xxl-3 col-xxxl-2 pl-1 pr-1 pl-lg-3 pr-lg-0">
 										<a href="/scores/<%= MatchupID %>/" class="matchup-<%= MatchupID %>" style="text-decoration: none; display: block;">
 											<ul class="list-group" style="margin-bottom: 1rem;">
 												<li class="list-group-item" style="padding-top: 0.25rem; padding-bottom: 0.25rem; font-size: 0.75rem; text-align: center; background-color: #D00000; color: #fff;"></li>
-												<li class="list-group-item px-3 team-cup-box-<%= TeamID1 %>">
-													<span class="team-cup-score-<%= TeamID1 %>" style="font-size: 1em; background-color: #fff; color: #520000; float: right;"><%= TeamScore1 %></span>
-													<img src="https://samelevel.imgix.net/<%= TeamLogo1 %>?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-none d-lg-inline mr-2" /><span class="d-none d-lg-inline" style="font-size: 13px; color: #520000;"><%= TeamAbbreviatedName1 %></span><span class="d-inline d-lg-none" style="font-size: 13px; color: #520000;"><%= TeamAbbreviatedName1 %></span>
-													<div class="progress team-cup-progress-<%= TeamID1 %>" style="height: 1px; margin-top: 6px; margin-bottom: 0; padding-bottom: 0;">
+												<li class="list-group-item px-3 team-cup-box-<%= TeamID1 %>-<%= MatchupID %>">
+													<span class="team-cup-score-<%= TeamID1 %>-<%= MatchupID %>" style="font-size: 1em; background-color: #fff; color: #520000; float: right;"><%= TeamScore1 %></span>
+													<img src="https://samelevel.imgix.net/<%= TeamLogo1 %>?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-none d-lg-inline mr-2" />
+													<span class="d-none d-lg-inline" style="font-size: 13px; color: #520000;"><%= TeamAbbreviatedName1 %></span>
+													<span class="d-inline d-lg-none" style="font-size: 13px; color: #520000;"><%= TeamAbbreviatedName1 %></span>
+													<div class="progress team-cup-progress-<%= TeamID1 %>-<%= MatchupID %>" style="height: 1px; margin-top: 6px; margin-bottom: 0; padding-bottom: 0;">
 														<div class="progress-bar progress-bar-<%= TeamPMRColor1 %>" role="progressbar" aria-valuenow="<%= TeamPMRPercent1 %>" aria-valuemin="0" aria-valuemax="100" style="width: <%= TeamPMRPercent1 %>%">
-															<span class="sr-only team-cup-progress-sr-<%= TeamID1 %>"><%= TeamPMRPercent1 %>%</span>
+															<span class="sr-only team-cup-progress-sr-<%= TeamID1 %>-<%= MatchupID %>"><%= TeamPMRPercent1 %>%</span>
 														</div>
 													</div>
 												</li>
-												<li class="list-group-item px-3 team-cup-box-<%= TeamID2 %>">
-													<span class="team-cup-score-<%= TeamID2 %>" style="font-size: 1em; background-color: #fff; color: #520000; float: right;"><%= TeamScore2 %></span>
-													<img src="https://samelevel.imgix.net/<%= TeamLogo2 %>?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-none d-lg-inline mr-2" /><span class="d-none d-lg-inline" style="font-size: 13px; color: #520000;"><%= TeamAbbreviatedName2 %></span><span class="d-inline d-lg-none" style="font-size: 13px; color: #520000;"><%= TeamAbbreviatedName2 %></span>
-													<div class="progress team-cup-progress-<%= TeamID2 %>" style="height: 1px; margin-top: 4px; margin-bottom: 0; padding-bottom: 0;">
-														<div class="progress-bar progress-bar-<%= TeamPMRColor2 %>" role="progressbar" aria-valuenow="<%= TeamPMRPercent2 %>" aria-valuemin="0" aria-valuemax="<%= TeamPMRPercent2 %>" style="width: <%= TeamPMRPercent2 %>%">
-															<span class="sr-only team-cup-progress-sr-<%= TeamID2 %>"><%= TeamPMRPercent2 %>%</span>
+												<li class="list-group-item px-3 team-cup-box-<%= TeamID2 %>-<%= MatchupID %>">
+													<span class="team-cup-score-<%= TeamID2 %>-<%= MatchupID %>" style="font-size: 1em; background-color: #fff; color: #520000; float: right;"><%= TeamScore2 %></span>
+													<img src="https://samelevel.imgix.net/<%= TeamLogo2 %>?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-none d-lg-inline mr-2" />
+													<span class="d-none d-lg-inline" style="font-size: 13px; color: #520000;"><%= TeamAbbreviatedName2 %></span>
+													<span class="d-inline d-lg-none" style="font-size: 13px; color: #520000;"><%= TeamAbbreviatedName2 %></span>
+													<div class="progress team-cup-progress-<%= TeamID2 %>-<%= MatchupID %>" style="height: 1px; margin-top: 4px; margin-bottom: 0; padding-bottom: 0;">
+														<div class="progress-bar progress-bar-<%= TeamPMRColor2 %>" role="progressbar" aria-valuenow="<%= TeamPMRPercent2 %>" aria-valuemin="0" aria-valuemax="100" style="width: <%= TeamPMRPercent2 %>%">
+															<span class="sr-only team-cup-progress-sr-<%= TeamID2 %>-<%= MatchupID %>"><%= TeamPMRPercent2 %>%</span>
 														</div>
 													</div>
 												</li>
@@ -323,371 +314,352 @@
 <%
 								Next
 
-								'Response.Write("<div class=""col-12 col-xl-4 col-xxxl-3 pl-1 pr-1 pl-lg-3 pr-lg-0""></div>")
 							End If
+
+						Response.Write("</div>")
+
+						If IsArray(arrSLFFL) Then
+
+							Response.Write("<div class=""row"">")
+
+								For i = 0 To UBound(arrSLFFL, 2)
+
+									MatchupID = arrSLFFL(0, i)
+									TeamID1 = arrSLFFL(2, i)
+									TeamName1 = arrSLFFL(3, i)
+									TeamLogo1 = arrSLFFL(4, i)
+									TeamCBSID1 = arrSLFFL(5, i)
+									TeamID2 = arrSLFFL(6, i)
+									TeamName2 = arrSLFFL(7, i)
+									TeamLogo2 = arrSLFFL(8, i)
+									TeamCBSID2 = arrSLFFL(9, i)
+									TeamScore1 = FormatNumber(arrSLFFL(10, i), 2)
+									TeamScore2 = FormatNumber(arrSLFFL(11, i), 2)
+									TeamPMR1 = arrSLFFL(12, i)
+									TeamPMR2 = arrSLFFL(13, i)
+									IsPlayoffs = arrSLFFL(14, i)
+									IsMajor = arrSLFFL(15, i)
+									MatchupPower = arrSLFFL(16, i)
+									TeamAbbreviatedName1 = arrSLFFL(19, i)
+									TeamAbbreviatedName2 = arrSLFFL(20, i)
+
+									thisWeeklyMatchups = thisWeeklyMatchups & MatchupID & ","
+
+									TeamPMRColor1 = "success"
+									TeamPMRPercent1 = (TeamPMR1 * 100) / 420
+									If TeamPMRPercent1 < 66.66 Then TeamPMRColor1 = "warning"
+									If TeamPMRPercent1 < 33.33 Then TeamPMRColor1 = "danger"
+
+									TeamPMRColor2 = "success"
+									TeamPMRPercent2 = (TeamPMR2 * 100) / 420
+									If TeamPMRPercent2 < 66.66 Then TeamPMRColor2 = "warning"
+									If TeamPMRPercent2 < 33.33 Then TeamPMRColor2 = "danger"
+
+									MatchupURL = "/scores/" & MatchupID & "/"
+
+									MajorText = ""
+									If IsMajor Then MajorText = "<span class=""badge badge-pill badge-warning"" title=""Major Matchup""><i class=""fa fa-star-of-life p-1""></i></span>"
+
+									TeamNameLogo2 = "<img src=""https://samelevel.imgix.net/" & TeamLogo2 & "?w=16&h=16&fit=crop&crop=focalpoint"" class=""rounded-circle d-none d-lg-inline mr-2"" /><span class=""d-none d-lg-inline"" style=""font-size: 13px; color: #0F574D;"">" & TeamName2 & "</span><span class=""d-inline d-lg-none"" style=""font-size: 13px; color: #0F574D;"">" & TeamAbbreviatedName2 & "</span>"
+									If TeamID2 = 99999 Then TeamNameLogo2 = "<img src=""https://samelevel.imgix.net/slffl-gold-icon.png?w=16&h=16"" class=""rounded-circle d-none d-lg-inline mr-2"" /><span class=""d-none d-lg-inline"" style=""font-size: 13px; color: #0F574D;"">BYE</span><span class=""d-inline d-lg-none"" style=""font-size: 13px; color: #0F574D;"">BYE</span>"
+
+									Response.Write("<div class=""col-6 col-xl-4 col-xxl-3 col-xxxl-2 pl-1 pr-1 pl-lg-3 pr-lg-0"">")
+%>
+										<a href="<%= MatchupURL %>" class="matchup-<%= MatchupID %>" style="text-decoration: none; display: block;">
+											<ul class="list-group" style="margin-bottom: 1rem;">
+												<li class="list-group-item" style="padding-top: 0.25rem; padding-bottom: 0.25rem; font-size: 0.75rem; text-align: center; background-color: #136F63; color: #fff;"><strong><%= MatchupTitle %></strong></li>
+												<li class="list-group-item team-slffl-box-<%= TeamID1 %>-<%= MatchupID %>" style="position: relative;">
+													<div style="position: absolute; top: -18px; right: -10px;"><%= MajorText %></div>
+													<span class="team-slffl-score-<%= TeamID1 %>-<%= MatchupID %>" style="font-size: 1em; background-color: #fff; color: #0F574D; float: right;"><%= TeamScore1 %></span>
+													<img src="https://samelevel.imgix.net/<%= TeamLogo1 %>?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-none d-lg-inline mr-2" /><span class="d-none d-lg-inline" style="font-size: 13px; color: #0F574D;"><%= TeamName1 %></span><span class="d-inline d-lg-none" style="font-size: 13px; color: #0F574D;"><%= TeamAbbreviatedName1 %></span>
+													<div class="progress team-slffl-progress-<%= TeamID1 %>-<%= MatchupID %>" style="height: 1px; margin-top: 6px; margin-bottom: 0; padding-bottom: 0;">
+														<div class="progress-bar progress-bar-<%= TeamPMRColor1 %>" role="progressbar" aria-valuenow="<%= TeamPMRPercent1 %>" aria-valuemin="0" aria-valuemax="100" style="width: <%= TeamPMRPercent1 %>%">
+															<span class="sr-only team-slffl-progress-sr-<%= TeamID1 %>-<%= MatchupID %>"><%= TeamPMRPercent1 %>%</span>
+														</div>
+													</div>
+												</li>
+												<li class="list-group-item team-slffl-box-<%= TeamID2 %>-<%= MatchupID %>">
+													<span class="team-slffl-score-<%= TeamID2 %>-<%= MatchupID %>" style="font-size: 1em; background-color: #fff; color: #0F574D; float: right;"><%= TeamScore2 %></span>
+													<%= TeamNameLogo2 %>
+													<div class="progress team-slffl-progress-<%= TeamID2 %>-<%= MatchupID %>" style="height: 1px; margin-top: 4px; margin-bottom: 0; padding-bottom: 0;">
+														<div class="progress-bar progress-bar-<%= TeamPMRColor2 %>" role="progressbar" aria-valuenow="<%= TeamPMRPercent2 %>" aria-valuemin="0" aria-valuemax="<%= TeamPMRPercent2 %>" style="width: <%= TeamPMRPercent2 %>%">
+															<span class="sr-only team-slffl-progress-sr-<%= TeamID2 %>-<%= MatchupID %>"><%= TeamPMRPercent2 %>%</span>
+														</div>
+													</div>
+												</li>
+											</ul>
+										</a>
+<%
+									Response.Write("</div>")
+
+								Next
 
 							Response.Write("</div>")
 
-									If IsArray(arrSLFFL) Then
+						End If
 
-										Response.Write("<div class=""row"">")
+						If IsArray(arrFLFFL) Then
 
-										For i = 0 To UBound(arrSLFFL, 2)
+							Response.Write("<div class=""row"">")
 
-											MatchupID = arrSLFFL(0, i)
-											TeamID1 = arrSLFFL(2, i)
-											TeamName1 = arrSLFFL(3, i)
-											TeamLogo1 = arrSLFFL(4, i)
-											TeamCBSID1 = arrSLFFL(5, i)
-											TeamID2 = arrSLFFL(6, i)
-											TeamName2 = arrSLFFL(7, i)
-											TeamLogo2 = arrSLFFL(8, i)
-											TeamCBSID2 = arrSLFFL(9, i)
-											TeamScore1 = FormatNumber(arrSLFFL(10, i), 2)
-											TeamScore2 = FormatNumber(arrSLFFL(11, i), 2)
-											TeamPMR1 = arrSLFFL(12, i)
-											TeamPMR2 = arrSLFFL(13, i)
-											IsPlayoffs = arrSLFFL(14, i)
-											IsMajor = arrSLFFL(15, i)
-											MatchupPower = arrSLFFL(16, i)
-											TeamAbbreviatedName1 = arrSLFFL(19, i)
-											TeamAbbreviatedName2 = arrSLFFL(20, i)
+								For i = 0 To UBound(arrFLFFL, 2)
 
-											thisWeeklyMatchups = thisWeeklyMatchups & MatchupID & ","
+									MatchupID = arrFLFFL(0, i)
+									TeamID1 = arrFLFFL(2, i)
+									TeamName1 = arrFLFFL(3, i)
+									TeamLogo1 = arrFLFFL(4, i)
+									TeamCBSID1 = arrFLFFL(5, i)
+									TeamID2 = arrFLFFL(6, i)
+									TeamName2 = arrFLFFL(7, i)
+									TeamLogo2 = arrFLFFL(8, i)
+									TeamCBSID2 = arrFLFFL(9, i)
+									TeamScore1 = FormatNumber(arrFLFFL(10, i), 2)
+									TeamScore2 = FormatNumber(arrFLFFL(11, i), 2)
+									TeamPMR1 = arrFLFFL(12, i)
+									TeamPMR2 = arrFLFFL(13, i)
+									IsPlayoffs = arrFLFFL(14, i)
+									IsMajor = arrFLFFL(15, i)
+									MatchupPower = arrFLFFL(16, i)
+									TeamAbbreviatedName1 = arrFLFFL(19, i)
+									TeamAbbreviatedName2 = arrFLFFL(20, i)
 
-											TeamPMRColor1 = "success"
-											TeamPMRPercent1 = (TeamPMR1 * 100) / 420
-											If TeamPMRPercent1 < 66.66 Then TeamPMRColor1 = "warning"
-											If TeamPMRPercent1 < 33.33 Then TeamPMRColor1 = "danger"
+									thisWeeklyMatchups = thisWeeklyMatchups & MatchupID & ","
 
-											TeamPMRColor2 = "success"
-											TeamPMRPercent2 = (TeamPMR2 * 100) / 420
-											If TeamPMRPercent2 < 66.66 Then TeamPMRColor2 = "warning"
-											If TeamPMRPercent2 < 33.33 Then TeamPMRColor2 = "danger"
+									TeamPMRColor1 = "success"
+									TeamPMRPercent1 = (TeamPMR1 * 100) / 420
+									If TeamPMRPercent1 < 66.66 Then TeamPMRColor1 = "warning"
+									If TeamPMRPercent1 < 33.33 Then TeamPMRColor1 = "danger"
 
-											If MatchupID = 4406 Then MatchupTitle = "SLFFL CHAMPIONSHIP"
-											If MatchupID = 4407 Then MatchupTitle = "SLFFL 3RD PLACE"
-											If MatchupID = 4408 Then MatchupTitle = "SLFFL SECOND-CHANCE"
-											If MatchupID = 4409 Then MatchupTitle = "SLFFL 7TH PLACE"
-											If MatchupID = 4410 Then MatchupTitle = "SLFFL 9TH PLACE"
-											If MatchupID = 4411 Then MatchupTitle = "SLFFL AOL FINAL"
+									TeamPMRColor2 = "success"
+									TeamPMRPercent2 = (TeamPMR2 * 100) / 420
+									If TeamPMRPercent2 < 66.66 Then TeamPMRColor2 = "warning"
+									If TeamPMRPercent2 < 33.33 Then TeamPMRColor2 = "danger"
 
-											MatchupURL = "/scores/" & MatchupID & "/"
+									MatchupURL = "/scores/" & MatchupID & "/"
 
-											MajorText = ""
-											If IsMajor Then MajorText = "<span class=""badge badge-pill badge-warning"" title=""Major Matchup""><i class=""fa fa-star-of-life p-1""></i></span>"
+									MajorText = ""
+									If IsMajor Then MajorText = "<span class=""badge badge-pill badge-warning"" title=""Major Matchup""><i class=""fa fa-star-of-life p-1""></i></span>"
 
-											Response.Write("<div class=""col-6 col-xl-4 col-xxl-3 col-xxxl-2 pl-1 pr-1 pl-lg-3 pr-lg-0"">")
+									TeamNameLogo2 = "<img src=""https://samelevel.imgix.net/" & TeamLogo2 & "?w=16&h=16&fit=crop&crop=focalpoint"" class=""rounded-circle d-none d-lg-inline mr-2"" /><span class=""d-none d-lg-inline"" style=""font-size: 13px; color: #0F574D;"">" & TeamName2 & "</span><span class=""d-inline d-lg-none"" style=""font-size: 13px; color: #0F574D;"">" & TeamAbbreviatedName2 & "</span>"
+									If TeamID2 = 99999 Then TeamNameLogo2 = "<img src=""https://samelevel.imgix.net/flffl-gold-icon.png?w=16&h=16"" class=""rounded-circle d-none d-lg-inline mr-2"" /><span class=""d-none d-lg-inline"" style=""font-size: 13px; color: #0F574D;"">BYE</span><span class=""d-inline d-lg-none"" style=""font-size: 13px; color: #0F574D;"">BYE</span>"
+
+									Response.Write("<div class=""col-6 col-xl-4 col-xxl-3 col-xxxl-2 pl-1 pr-1 pl-lg-3 pr-lg-0"">")
 %>
-												<a href="<%= MatchupURL %>" class="matchup-<%= MatchupID %>" style="text-decoration: none; display: block;">
-													<ul class="list-group" style="margin-bottom: 1rem;">
-														<li class="list-group-item" style="padding-top: 0.25rem; padding-bottom: 0.25rem; font-size: 0.75rem; text-align: center; background-color: #136F63; color: #fff;"><strong><%= MatchupTitle %></strong></li>
-														<li class="list-group-item team-slffl-box-<%= TeamID1 %>" style="position: relative;">
-															<div style="position: absolute; top: -18px; right: -10px;"><%= MajorText %></div>
-															<span class="team-slffl-score-<%= TeamID1 %>" style="font-size: 1em; background-color: #fff; color: #0F574D; float: right;"><%= TeamScore1 %></span>
-															<img src="https://samelevel.imgix.net/<%= TeamLogo1 %>?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-none d-lg-inline mr-2" /><span class="d-none d-lg-inline" style="font-size: 13px; color: #0F574D;"><%= TeamName1 %></span><span class="d-inline d-lg-none" style="font-size: 13px; color: #0F574D;"><%= TeamAbbreviatedName1 %></span>
-															<div class="progress team-slffl-progress-<%= TeamID1 %>" style="height: 1px; margin-top: 6px; margin-bottom: 0; padding-bottom: 0;">
-																<div class="progress-bar progress-bar-<%= TeamPMRColor1 %>" role="progressbar" aria-valuenow="<%= TeamPMRPercent1 %>" aria-valuemin="0" aria-valuemax="100" style="width: <%= TeamPMRPercent1 %>%">
-																	<span class="sr-only team-slffl-progress-sr-<%= TeamID1 %>"><%= TeamPMRPercent1 %>%</span>
-																</div>
-															</div>
-														</li>
-														<li class="list-group-item team-slffl-box-<%= TeamID2 %>">
-															<span class="team-slffl-score-<%= TeamID2 %>" style="font-size: 1em; background-color: #fff; color: #0F574D; float: right;"><%= TeamScore2 %></span>
+										<a href="<%= MatchupURL %>" class="matchup-<%= MatchupID %>" style="text-decoration: none; display: block;">
+											<ul class="list-group" style="margin-bottom: 1rem;">
+												<li class="list-group-item" style="padding-top: 0.25rem; padding-bottom: 0.25rem; font-size: 0.75rem; text-align: center; background-color: #136F63; color: #fff;"><strong><%= MatchupTitle %></strong></li>
+												<li class="list-group-item team-flffl-box-<%= TeamID1 %>-<%= MatchupID %>" style="position: relative;">
+													<div style="position: absolute; top: -18px; right: -10px;"><%= MajorText %></div>
+													<span class="team-flffl-score-<%= TeamID1 %>-<%= MatchupID %>" style="font-size: 1em; background-color: #fff; color: #0F574D; float: right;"><%= TeamScore1 %></span>
+													<img src="https://samelevel.imgix.net/<%= TeamLogo1 %>?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-none d-lg-inline mr-2" /><span class="d-none d-lg-inline" style="font-size: 13px; color: #0F574D;"><%= TeamName1 %></span><span class="d-inline d-lg-none" style="font-size: 13px; color: #0F574D;"><%= TeamAbbreviatedName1 %></span>
+													<div class="progress team-flffl-progress-<%= TeamID1 %>-<%= MatchupID %>" style="height: 1px; margin-top: 6px; margin-bottom: 0; padding-bottom: 0;">
+														<div class="progress-bar progress-bar-<%= TeamPMRColor1 %>" role="progressbar" aria-valuenow="<%= TeamPMRPercent1 %>" aria-valuemin="0" aria-valuemax="100" style="width: <%= TeamPMRPercent1 %>%">
+															<span class="sr-only team-flffl-progress-sr-<%= TeamID1 %>-<%= MatchupID %>"><%= TeamPMRPercent1 %>%</span>
+														</div>
+													</div>
+												</li>
+												<li class="list-group-item team-flffl-box-<%= TeamID2 %>-<%= MatchupID %>">
+													<span class="team-flffl-score-<%= TeamID2 %>-<%= MatchupID %>" style="font-size: 1em; background-color: #fff; color: #0F574D; float: right;"><%= TeamScore2 %></span>
+													<%= TeamNameLogo2 %>
+													<div class="progress team-flffl-progress-<%= TeamID2 %>-<%= MatchupID %>" style="height: 1px; margin-top: 4px; margin-bottom: 0; padding-bottom: 0;">
+														<div class="progress-bar progress-bar-<%= TeamPMRColor2 %>" role="progressbar" aria-valuenow="<%= TeamPMRPercent2 %>" aria-valuemin="0" aria-valuemax="<%= TeamPMRPercent2 %>" style="width: <%= TeamPMRPercent2 %>%">
+															<span class="sr-only team-flffl-progress-sr-<%= TeamID2 %>-<%= MatchupID %>"><%= TeamPMRPercent2 %>%</span>
+														</div>
+													</div>
+												</li>
+											</ul>
+										</a>
 <%
-															If TeamID2 = 99999 Then
+									Response.Write("</div>")
+
+								Next
+
+							Response.Write("</div>")
+
+						End If
+
+						If IsArray(arrBLFFL) Then
+
+							Response.Write("<div class=""row"">")
+
+								For i = 0 To UBound(arrBLFFL, 2)
+
+									MatchupID = arrBLFFL(0, i)
+									TeamID1 = arrBLFFL(2, i)
+									TeamName1 = arrBLFFL(3, i)
+									TeamLogo1 = arrBLFFL(4, i)
+									TeamCBSID1 = arrBLFFL(5, i)
+									TeamID2 = arrBLFFL(6, i)
+									TeamName2 = arrBLFFL(7, i)
+									TeamLogo2 = arrBLFFL(8, i)
+									TeamCBSID2 = arrBLFFL(9, i)
+									TeamScore1 = FormatNumber(arrBLFFL(10, i), 2)
+									TeamScore2 = FormatNumber(arrBLFFL(11, i), 2)
+									TeamPMR1 = arrBLFFL(12, i)
+									TeamPMR2 = arrBLFFL(13, i)
+									IsPlayoffs = arrBLFFL(14, i)
+									IsMajor = arrBLFFL(15, i)
+									MatchupPower = arrBLFFL(16, i)
+									TeamAbbreviatedName1 = arrBLFFL(19, i)
+									TeamAbbreviatedName2 = arrBLFFL(20, i)
+
+									If TeamName1 = "The District of Columbia(n) Neckties" Then TeamName1 = "DC Neckties"
+									If TeamName2 = "The District of Columbia(n) Neckties" Then TeamName2 = "DC Neckties"
+
+									If TeamName1 = "Death by a Thousand Punts" Then TeamName1 = "Death by Punts"
+									If TeamName2 = "Death by a Thousand Punts" Then TeamName2 = "Death by Punts"
+
+									thisWeeklyMatchups = thisWeeklyMatchups & MatchupID & ","
+
+									TeamPMRColor1 = "success"
+									TeamPMRPercent1 = (TeamPMR1 * 100) / 420
+									If TeamPMRPercent1 < 66.66 Then TeamPMRColor1 = "warning"
+									If TeamPMRPercent1 < 33.33 Then TeamPMRColor1 = "danger"
+
+									TeamPMRColor2 = "success"
+									TeamPMRPercent2 = (TeamPMR2 * 100) / 420
+									If TeamPMRPercent2 < 66.66 Then TeamPMRColor2 = "warning"
+									If TeamPMRPercent2 < 33.33 Then TeamPMRColor2 = "danger"
+
+									MatchupURL = "/scores/" & MatchupID & "/"
+
+									MajorText = ""
+									If IsMajor Then MajorText = "<span class=""badge badge-pill badge-warning"" title=""Major Matchup""><i class=""fa fa-star-of-life p-1""></i></span>"
+
+									TeamNameLogo2 = "<img src=""https://samelevel.imgix.net/" & TeamLogo2 & "?w=16&h=16&fit=crop&crop=focalpoint"" class=""rounded-circle d-none d-lg-inline mr-2"" /><span class=""d-none d-lg-inline"" style=""font-size: 13px; color: #0F574D;"">" & TeamName2 & "</span><span class=""d-inline d-lg-none"" style=""font-size: 13px; color: #0F574D;"">" & TeamAbbreviatedName2 & "</span>"
+									If TeamID2 = 99999 Then TeamNameLogo2 = "<img src=""https://samelevel.imgix.net/blffl-gold-icon.png?w=16&h=16"" class=""rounded-circle d-none d-lg-inline mr-2"" /><span class=""d-none d-lg-inline"" style=""font-size: 13px; color: #0F574D;"">BYE</span><span class=""d-inline d-lg-none"" style=""font-size: 13px; color: #0F574D;"">BYE</span>"
+
+									Response.Write("<div class=""col-6 col-xl-4 col-xxl-3 col-xxxl-2 pl-1 pr-1 pl-lg-3 pr-lg-0"">")
 %>
-																<img src="https://samelevel.imgix.net/slffl-gold-icon.png?w=16&h=16" class="rounded-circle d-none d-lg-inline mr-2" /><span class="d-none d-lg-inline" style="font-size: 13px; color: #0F574D;">BYE</span><span class="d-inline d-lg-none" style="font-size: 13px; color: #0F574D;">BYE</span>
+										<a href="<%= MatchupURL %>" class="matchup-<%= MatchupID %>" style="text-decoration: none; display: block;">
+											<ul class="list-group" style="margin-bottom: 1rem;">
+												<li class="list-group-item" style="padding-top: 0.25rem; padding-bottom: 0.25rem; font-size: 0.75rem; text-align: center; background-color: #136F63; color: #fff;"><strong><%= MatchupTitle %></strong></li>
+												<li class="list-group-item team-blffl-box-<%= TeamID1 %>-<%= MatchupID %>" style="position: relative;">
+													<div style="position: absolute; top: -18px; right: -10px;"><%= MajorText %></div>
+													<span class="team-blffl-score-<%= TeamID1 %>-<%= MatchupID %>" style="font-size: 1em; background-color: #fff; color: #0F574D; float: right;"><%= TeamScore1 %></span>
+													<img src="https://samelevel.imgix.net/<%= TeamLogo1 %>?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-none d-lg-inline mr-2" /><span class="d-none d-lg-inline" style="font-size: 13px; color: #0F574D;"><%= TeamName1 %></span><span class="d-inline d-lg-none" style="font-size: 13px; color: #0F574D;"><%= TeamAbbreviatedName1 %></span>
+													<div class="progress team-blffl-progress-<%= TeamID1 %>-<%= MatchupID %>" style="height: 1px; margin-top: 6px; margin-bottom: 0; padding-bottom: 0;">
+														<div class="progress-bar progress-bar-<%= TeamPMRColor1 %>" role="progressbar" aria-valuenow="<%= TeamPMRPercent1 %>" aria-valuemin="0" aria-valuemax="100" style="width: <%= TeamPMRPercent1 %>%">
+															<span class="sr-only team-blffl-progress-sr-<%= TeamID1 %>-<%= MatchupID %>"><%= TeamPMRPercent1 %>%</span>
+														</div>
+													</div>
+												</li>
+												<li class="list-group-item team-blffl-box-<%= TeamID2 %>-<%= MatchupID %>">
+													<span class="team-blffl-score-<%= TeamID2 %>-<%= MatchupID %>" style="font-size: 1em; background-color: #fff; color: #0F574D; float: right;"><%= TeamScore2 %></span>
+													<%= TeamNameLogo2 %>
+													<div class="progress team-blffl-progress-<%= TeamID2 %>-<%= MatchupID %>" style="height: 1px; margin-top: 4px; margin-bottom: 0; padding-bottom: 0;">
+														<div class="progress-bar progress-bar-<%= TeamPMRColor2 %>" role="progressbar" aria-valuenow="<%= TeamPMRPercent2 %>" aria-valuemin="0" aria-valuemax="<%= TeamPMRPercent2 %>" style="width: <%= TeamPMRPercent2 %>%">
+															<span class="sr-only team-blffl-progress-sr-<%= TeamID2 %>-<%= MatchupID %>"><%= TeamPMRPercent2 %>%</span>
+														</div>
+													</div>
+												</li>
+											</ul>
+										</a>
 <%
-															Else
+									Response.Write("</div>")
+
+								Next
+
+							Response.Write("</div>")
+
+						End If
+
+						If IsArray(arrTAG) Then
+
+							Response.Write("<div class=""row"">")
+
+								For i = 0 To UBound(arrTAG, 2)
+
+									MatchupID = arrTAG(0, i)
+									TeamID1 = arrTAG(2, i)
+									TeamID2 = arrTAG(3, i)
+									TeamName1 = arrTAG(4, i)
+									TeamName2 = arrTAG(5, i)
+									TeamScore1 = FormatNumber(arrTAG(6, i), 2)
+									TeamScore2 = FormatNumber(arrTAG(7, i), 2)
+									TeamPMR1 = arrTAG(8, i)
+									TeamPMR2 = arrTAG(9, i)
+									TeamAbbreviatedName1 = arrTAG(11, i)
+									TeamAbbreviatedName2 = arrTAG(12, i)
+									thisWeeklyMatchups = thisWeeklyMatchups & MatchupID & ","
+									sqlGetTeam1 = "SELECT Accounts.AccountID, ProfileName, ProfileURL, ProfileImage FROM Accounts INNER JOIN LinkAccountsTeams ON Accounts.AccountID = LinkAccountsTeams.AccountID WHERE LinkAccountsTeams.TeamID = " & TeamID1 & ";"
+									sqlGetTeam2 = "SELECT Accounts.AccountID, ProfileName, ProfileURL, ProfileImage FROM Accounts INNER JOIN LinkAccountsTeams ON Accounts.AccountID = LinkAccountsTeams.AccountID WHERE LinkAccountsTeams.TeamID = " & TeamID2 & ";"
+
+									Set rsTeams = sqlDatabase.Execute(sqlGetTeam1 & sqlGetTeam2)
+									Team1Partner1_AccountID = rsTeams("AccountID")
+									Team1Partner1_ProfileName = rsTeams("ProfileName")
+									Team1Partner1_ProfileURL = rsTeams("ProfileURL")
+									Team1Partner1_ProfileImage = rsTeams("ProfileImage")
+									rsTeams.MoveNext
+									Team1Partner2_AccountID = rsTeams("AccountID")
+									Team1Partner2_ProfileName = rsTeams("ProfileName")
+									Team1Partner2_ProfileURL = rsTeams("ProfileURL")
+									Team1Partner2_ProfileImage = rsTeams("ProfileImage")
+									Set rsTeams = rsTeams.NextRecordset()
+									Team2Partner1_AccountID = rsTeams("AccountID")
+									Team2Partner1_ProfileName = rsTeams("ProfileName")
+									Team2Partner1_ProfileURL = rsTeams("ProfileURL")
+									Team2Partner1_ProfileImage = rsTeams("ProfileImage")
+									rsTeams.MoveNext
+									Team2Partner2_AccountID = rsTeams("AccountID")
+									Team2Partner2_ProfileName = rsTeams("ProfileName")
+									Team2Partner2_ProfileURL = rsTeams("ProfileURL")
+									Team2Partner2_ProfileImage = rsTeams("ProfileImage")
+
+									rsTeams.Close
+									Set rsTeams = Nothing
+
+									TeamPMRColor1 = "success"
+									TeamPMRPercent1 = (TeamPMR1 * 100) / 840
+									If TeamPMRPercent1 < 66.66 Then TeamPMRColor1 = "warning"
+									If TeamPMRPercent1 < 33.33 Then TeamPMRColor1 = "danger"
+
+									TeamPMRColor2 = "success"
+									TeamPMRPercent2 = (TeamPMR2 * 100) / 840
+									If TeamPMRPercent2 < 66.66 Then TeamPMRColor2 = "warning"
+									If TeamPMRPercent2 < 33.33 Then TeamPMRColor2 = "danger"
+
+									Response.Write("<div class=""col-12 col-md-6 col-xxl-4 pl-1 pr-1 pl-lg-3 pr-lg-0"">")
 %>
-																<img src="https://samelevel.imgix.net/<%= TeamLogo2 %>?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-none d-lg-inline mr-2" /><span class="d-none d-lg-inline" style="font-size: 13px; color: #0F574D;"><%= TeamName2 %></span><span class="d-inline d-lg-none" style="font-size: 13px; color: #0F574D;"><%= TeamAbbreviatedName2 %></span>
+										<a href="#" class="matchup-<%= MatchupID %>" style="text-decoration: none; display: block;">
+											<ul class="list-group" style="margin-bottom: 1rem;">
+
+												<li class="list-group-item" style="padding-top: 0.25rem; padding-bottom: 0.25rem; font-size: 0.75rem; text-align: center; background-color: #CDE7B0; color: #003985;"><strong><%= MatchupTitle %></strong></li>
+												<li class="list-group-item px-3 team-tag-box-<%= TeamID1 %>-<%= MatchupID %>">
+													<img src="https://samelevel.imgix.net/<%= Team1Partner1_ProfileImage %>?w=32&h=32&fit=crop&crop=focalpoint" class="rounded-circle" title="<%= Team1Partner1_ProfileName %>" style="position: relative; z-index: 1; border: 2px solid #fff;" />
+													<img src="https://samelevel.imgix.net/<%= Team1Partner2_ProfileImage %>?w=32&h=32&fit=crop&crop=focalpoint" class="rounded-circle" title="<%= Team1Partner2_ProfileName %>" style="position: relative; z-index: 0; border: 2px solid #fff; left: -15px;" />
+													<span class="team-tag-score-<%= TeamID1 %>-<%= MatchupID %>" style="font-size: 13px; line-height: 32px; background-color: #fff; color: #354335; float: right;"><%= TeamScore1 %></span>
+													<span style="font-size: 13px; color: #354335;"><b><%= TeamName1 %></b></span>
+													<div class="progress team-tag-progress-<%= TeamID1 %>-<%= MatchupID %>" style="height: 1px; margin-top: 6px; margin-bottom: 0; padding-bottom: 0;">
+														<div class="progress-bar progress-bar-<%= TeamPMRColor1 %>" role="progressbar" aria-valuenow="<%= TeamPMRPercent1 %>" aria-valuemin="0" aria-valuemax="100" style="width: <%= TeamPMRPercent1 %>%">
+															<span class="sr-only team-tag-progress-sr-<%= TeamID1 %>-<%= MatchupID %>"><%= TeamPMRPercent1 %>%</span>
+														</div>
+													</div>
+												</li>
+
+												<li class="list-group-item px-3 team-tag-box-<%= TeamID2 %>-<%= MatchupID %>">
+													<img src="https://samelevel.imgix.net/<%= Team2Partner1_ProfileImage %>?w=32&h=32&fit=crop&crop=focalpoint" class="rounded-circle" title="<%= Team2Partner1_ProfileName %>" style="position: relative; z-index: 1; border: 2px solid #fff;" />
+													<img src="https://samelevel.imgix.net/<%= Team2Partner2_ProfileImage %>?w=32&h=32&fit=crop&crop=focalpoint" class="rounded-circle" title="<%= Team2Partner2_ProfileName %>" style="position: relative; z-index: 0; border: 2px solid #fff; left: -15px;" />
+													<span class="team-tag-score-<%= TeamID2 %>-<%= MatchupID %>" style="font-size: 13px; line-height: 32px; background-color: #fff; color: #354335; float: right;"><%= TeamScore2 %></span>
+													<span style="font-size: 13px; color: #354335;"><b><%= TeamName2 %></b></span>
+													<div class="progress team-tag-progress-<%= TeamID2 %>-<%= MatchupID %>" style="height: 1px; margin-top: 4px; margin-bottom: 0; padding-bottom: 0;">
+														<div class="progress-bar progress-bar-<%= TeamPMRColor2 %>" role="progressbar" aria-valuenow="<%= TeamPMRPercent2 %>" aria-valuemin="0" aria-valuemax="<%= TeamPMRPercent2 %>" style="width: <%= TeamPMRPercent2 %>%">
+															<span class="sr-only team-tag-progress-sr-<%= TeamID2 %>-<%= MatchupID %>"><%= TeamPMRPercent2 %></span>
+														</div>
+													</div>
+												</li>
+
+											</ul>
+										</a>
 <%
-															End If
-%>
-															<div class="progress team-slffl-progress-<%= TeamID2 %>" style="height: 1px; margin-top: 4px; margin-bottom: 0; padding-bottom: 0;">
-																<div class="progress-bar progress-bar-<%= TeamPMRColor2 %>" role="progressbar" aria-valuenow="<%= TeamPMRPercent2 %>" aria-valuemin="0" aria-valuemax="<%= TeamPMRPercent2 %>" style="width: <%= TeamPMRPercent2 %>%">
-																	<span class="sr-only team-slffl-progress-sr-<%= TeamID2 %>"><%= TeamPMRPercent2 %>%</span>
-																</div>
-															</div>
-														</li>
-													</ul>
-												</a>
-<%
-											Response.Write("</div>")
+									Response.Write("</div>")
 
-										Next
+								Next
 
-										Response.Write("</div>")
+							Response.Write("</div>")
 
-									End If
+						End If
 
-
-											If IsArray(arrFLFFL) Then
-												Response.Write("<div class=""row"">")
-
-
-												For i = 0 To UBound(arrFLFFL, 2)
-
-													MatchupID = arrFLFFL(0, i)
-													TeamID1 = arrFLFFL(2, i)
-													TeamName1 = arrFLFFL(3, i)
-													TeamLogo1 = arrFLFFL(4, i)
-													TeamCBSID1 = arrFLFFL(5, i)
-													TeamID2 = arrFLFFL(6, i)
-													TeamName2 = arrFLFFL(7, i)
-													TeamLogo2 = arrFLFFL(8, i)
-													TeamCBSID2 = arrFLFFL(9, i)
-													TeamScore1 = FormatNumber(arrFLFFL(10, i), 2)
-													TeamScore2 = FormatNumber(arrFLFFL(11, i), 2)
-													TeamPMR1 = arrFLFFL(12, i)
-													TeamPMR2 = arrFLFFL(13, i)
-													IsPlayoffs = arrFLFFL(14, i)
-													IsMajor = arrFLFFL(15, i)
-													TeamAbbreviatedName1 = arrFLFFL(19, i)
-													TeamAbbreviatedName2 = arrFLFFL(20, i)
-
-													thisWeeklyMatchups = thisWeeklyMatchups & MatchupID & ","
-
-													TeamPMRColor1 = "success"
-													TeamPMRPercent1 = (TeamPMR1 * 100) / 420
-													If TeamPMRPercent1 < 66.66 Then TeamPMRColor1 = "warning"
-													If TeamPMRPercent1 < 33.33 Then TeamPMRColor1 = "danger"
-
-													TeamPMRColor2 = "success"
-													TeamPMRPercent2 = (TeamPMR2 * 100) / 420
-													If TeamPMRPercent2 < 66.66 Then TeamPMRColor2 = "warning"
-													If TeamPMRPercent2 < 33.33 Then TeamPMRColor2 = "danger"
-
-													If TeamID1 = 38 Then TeamName1 = "München"
-													If TeamID2 = 38 Then TeamName2 = "München"
-
-													If TeamID1 = 36 Then TeamName1 = "Hanging With Hern"
-													If TeamID2 = 36 Then TeamName2 = "Hanging With Hern"
-
-													If TeamID1 = 59 Then TeamName1 = "Filthy Animals"
-													If TeamID2 = 59 Then TeamName2 = "Filthy Animals"
-
-													MajorText = ""
-													If IsMajor Then MajorText = "<span class=""badge badge-pill badge-warning"" title=""Major Matchup""><i class=""fa fa-star-of-life p-1""></i></span>"
-
-													If MatchupID = 4412 Then MatchupTitle = "FARM CHAMPIONSHIP"
-													If MatchupID = 4413 Then MatchupTitle = "FARM 3RD PLACE"
-													If MatchupID = 4414 Then MatchupTitle = "FARM SECOND-CHANCE"
-													If MatchupID = 4415 Then MatchupTitle = "FARM 7TH PLACE"
-													If MatchupID = 4416 Then MatchupTitle = "FARM 9TH PLACE"
-													If MatchupID = 4417 Then MatchupTitle = "FARM AOL FINAL"
-
-													MatchupURL = "/scores/" & MatchupID & "/"
-
-													Response.Write("<div class=""col-6 col-xl-4 col-xxl-3 col-xxxl-2 pl-1 pr-1 pl-lg-3 pr-lg-0"">")
-%>
-														<a href="<%= MatchupURL %>" class="matchup-<%= MatchupID %>" style="text-decoration: none; display: block;">
-															<ul class="list-group" style="margin-bottom: 1rem;">
-																<li class="list-group-item" style="padding-top: 0.25rem; padding-bottom: 0.25rem; font-size: 0.75rem; text-align: center; background-color: #995D81; color: #fff;"><strong><%= MatchupTitle %></strong></li>
-																<li class="list-group-item team-flffl-box-<%= TeamID1 %>" style="position: relative;">
-																	<div style="position: absolute; top: -18px; right: -10px;"><%= MajorText %></div>
-																	<span class="team-flffl-score-<%= TeamID1 %>" style="font-size: 1em; background-color: #fff; color: #0F574D; float: right;"><%= TeamScore1 %></span>
-																	<img src="https://samelevel.imgix.net/<%= TeamLogo1 %>?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-none d-lg-inline mr-2" /><span class="d-none d-lg-inline" style="font-size: 13px; color: #0F574D;"><%= TeamName1 %></span><span class="d-inline d-lg-none" style="font-size: 13px; color: #0F574D;"><%= TeamAbbreviatedName1 %></span>
-																	<div class="progress team-flffl-progress-<%= TeamID1 %>" style="height: 1px; margin-top: 6px; margin-bottom: 0; padding-bottom: 0;">
-																		<div class="progress-bar progress-bar-<%= TeamPMRColor1 %>" role="progressbar" aria-valuenow="<%= TeamPMRPercent1 %>" aria-valuemin="0" aria-valuemax="100" style="width: <%= TeamPMRPercent1 %>%">
-																			<span class="sr-only team-flffl-progress-sr-<%= TeamID1 %>"><%= TeamPMRPercent1 %>%</span>
-																		</div>
-																	</div>
-																</li>
-																<li class="list-group-item team-flffl-box-<%= TeamID2 %>">
-																	<span class="team-flffl-score-<%= TeamID2 %>" style="font-size: 1em; background-color: #fff; color: #0F574D; float: right;"><%= TeamScore2 %></span>
-<%
-																	If TeamID2 = 99999 Then
-%>
-																		<img src="https://samelevel.imgix.net/flffl-logo-icon.png?w=16&h=16" class="rounded-circle d-none d-lg-inline mr-2" /><span class="d-none d-lg-inline" style="font-size: 13px; color: #0F574D;">BYE</span><span class="d-inline d-lg-none" style="font-size: 13px; color: #0F574D;">BYE</span>
-<%
-																	Else
-%>
-																		<img src="https://samelevel.imgix.net/<%= TeamLogo2 %>?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-none d-lg-inline mr-2" /><span class="d-none d-lg-inline" style="font-size: 13px; color: #0F574D;"><%= TeamName2 %></span><span class="d-inline d-lg-none" style="font-size: 13px; color: #0F574D;"><%= TeamAbbreviatedName2 %></span>
-<%
-																	End If
-%>
-																	<div class="progress team-flffl-progress-<%= TeamID2 %>" style="height: 1px; margin-top: 4px; margin-bottom: 0; padding-bottom: 0;">
-																		<div class="progress-bar progress-bar-<%= TeamPMRColor2 %>" role="progressbar" aria-valuenow="<%= TeamPMRPercent2 %>" aria-valuemin="0" aria-valuemax="<%= TeamPMRPercent2 %>" style="width: <%= TeamPMRPercent2 %>%">
-																			<span class="sr-only team-flffl-progress-sr-<%= TeamID2 %>"><%= TeamPMRPercent2 %>%</span>
-																		</div>
-																	</div>
-																</li>
-															</ul>
-														</a>
-		<%
-													Response.Write("</div>")
-												Next
-
-												Response.Write("</div>")
-											End If
-
-											If IsArray(arrBLFFL) Then
-	        Response.Write("<div class=""row"">")
-	        For i = 0 To UBound(arrBLFFL, 2)
-	            MatchupID = arrBLFFL(0, i)
-	            TeamID1 = arrBLFFL(2, i)
-	            TeamName1 = arrBLFFL(3, i)
-	            TeamLogo1 = arrBLFFL(4, i)
-	            TeamCBSID1 = arrBLFFL(5, i)
-	            TeamID2 = arrBLFFL(6, i)
-	            TeamName2 = arrBLFFL(7, i)
-	            TeamLogo2 = arrBLFFL(8, i)
-	            TeamCBSID2 = arrBLFFL(9, i)
-	            TeamScore1 = FormatNumber(arrBLFFL(10, i), 2)
-	            TeamScore2 = FormatNumber(arrBLFFL(11, i), 2)
-	            TeamPMR1 = arrBLFFL(12, i)
-	            TeamPMR2 = arrBLFFL(13, i)
-				IsPlayoffs = arrBLFFL(14, i)
-				IsMajor = arrBLFFL(15, i)
-				TeamAbbreviatedName1 = arrBLFFL(19, i)
-				TeamAbbreviatedName2 = arrBLFFL(20, i)
-				MatchupURL = "/scores/" & MatchupID & "/"
-
-				thisWeeklyMatchups = thisWeeklyMatchups & MatchupID & ","
-
-				MajorText = ""
-				If IsMajor Then MajorText = "<span class=""badge badge-pill badge-warning"" title=""Major Matchup""><i class=""fa fa-star-of-life p-1""></i></span>"
-	            ' Display matchups for BLFFL
-	            Response.Write("<div class=""col-6 col-xl-4 col-xxl-3 col-xxxl-2 pl-1 pr-1 pl-lg-3 pr-lg-0"">")
-%>
-					<a href="<%= MatchupURL %>" class="matchup-<%= MatchupID %>" style="text-decoration: none; display: block;">
-					<ul class="list-group" style="margin-bottom: 1rem;">
-						<li class="list-group-item" style="padding-top: 0.25rem; padding-bottom: 0.25rem; font-size: 0.75rem; text-align: center; background-color: #39A9DB; color: #fff;"><strong><%= MatchupTitle %></strong></li>
-						<li class="list-group-item team-blffl-box-<%= TeamID1 %>" style="position: relative;">
-							<div style="position: absolute; top: -18px; right: -10px;"><%= MajorText %></div>
-							<span class="team-blffl-score-<%= TeamID1 %>" style="font-size: 1em; background-color: #fff; color: #282A36; float: right;"><%= TeamScore1 %></span>
-							<img src="https://samelevel.imgix.net/<%= TeamLogo1 %>?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-none d-lg-inline mr-2" /><span class="d-none d-lg-inline" style="font-size: 13px; color: #282A36;"><%= TeamAbbreviatedName1 %></span><span class="d-inline d-lg-none" style="font-size: 13px; color: #282A36;"><%= TeamAbbreviatedName1 %></span>
-							<div class="progress team-blffl-progress-<%= TeamID1 %>" style="height: 1px; margin-top: 6px; margin-bottom: 0; padding-bottom: 0;">
-								<div class="progress-bar progress-bar-<%= TeamPMRColor1 %>" role="progressbar" aria-valuenow="<%= TeamPMRPercent1 %>" aria-valuemin="0" aria-valuemax="100" style="width: <%= TeamPMRPercent1 %>%">
-									<span class="sr-only team-blffl-progress-sr-<%= TeamID1 %>"><%= TeamPMRPercent1 %>%</span>
-								</div>
-							</div>
-						</li>
-						<li class="list-group-item team-blffl-box-<%= TeamID2 %>">
-							<span class="team-blffl-score-<%= TeamID2 %>" style="font-size: 1em; background-color: #fff; color: #282A36; float: right;"><%= TeamScore2 %></span>
-							<%
-								If TeamID2 = 99999 Then
-							%>
-								<img src="https://samelevel.imgix.net/blffl-logo-icon.png?w=16&h=16" class="rounded-circle d-none d-lg-inline mr-2" /><span class="d-none d-lg-inline" style="font-size: 13px; color: #282A36;">BYE</span><span class="d-inline d-lg-none" style="font-size: 13px; color: #003366;">BYE</span>
-							<%
-								Else
-							%>
-								<img src="https://samelevel.imgix.net/<%= TeamLogo2 %>?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-none d-lg-inline mr-2" /><span class="d-none d-lg-inline" style="font-size: 13px; color: #282A36;"><%= TeamAbbreviatedName2 %></span><span class="d-inline d-lg-none" style="font-size: 13px; color: #282A36;"><%= TeamAbbreviatedName2 %></span>
-							<%
-								End If
-							%>
-							<div class="progress team-blffl-progress-<%= TeamID2 %>" style="height: 1px; margin-top: 4px; margin-bottom: 0; padding-bottom: 0;">
-								<div class="progress-bar progress-bar-<%= TeamPMRColor2 %>" role="progressbar" aria-valuenow="<%= TeamPMRPercent2 %>" aria-valuemin="0" aria-valuemax="100" style="width: <%= TeamPMRPercent2 %>%">
-									<span class="sr-only team-blffl-progress-sr-<%= TeamID2 %>"><%= TeamPMRPercent2 %>%</span>
-								</div>
-							</div>
-						</li>
-					</ul>
-					</a>
-
-<%
-	            Response.Write("</div>")
-	        Next
-	        Response.Write("</div>")
-	    End If
-		Response.Write("<div class=""row"">")
-
-		If IsArray(arrTAG) Then
-
-			For i = 0 To UBound(arrTAG, 2)
-
-				MatchupID = arrTAG(0, i)
-				TeamID1 = arrTAG(2, i)
-				TeamID2 = arrTAG(3, i)
-				TeamName1 = arrTAG(4, i)
-				TeamName2 = arrTAG(5, i)
-				TeamScore1 = FormatNumber(arrTAG(6, i), 2)
-				TeamScore2 = FormatNumber(arrTAG(7, i), 2)
-				TeamPMR1 = arrTAG(8, i)
-				TeamPMR2 = arrTAG(9, i)
-				TeamAbbreviatedName1 = arrTAG(11, i)
-				TeamAbbreviatedName2 = arrTAG(12, i)
-				thisWeeklyMatchups = thisWeeklyMatchups & MatchupID & ","
-				sqlGetTeam1 = "SELECT Accounts.AccountID, ProfileName, ProfileURL, ProfileImage FROM Accounts INNER JOIN LinkAccountsTeams ON Accounts.AccountID = LinkAccountsTeams.AccountID WHERE LinkAccountsTeams.TeamID = " & TeamID1 & ";"
-				sqlGetTeam2 = "SELECT Accounts.AccountID, ProfileName, ProfileURL, ProfileImage FROM Accounts INNER JOIN LinkAccountsTeams ON Accounts.AccountID = LinkAccountsTeams.AccountID WHERE LinkAccountsTeams.TeamID = " & TeamID2 & ";"
-
-				Set rsTeams = sqlDatabase.Execute(sqlGetTeam1 & sqlGetTeam2)
-				Team1Partner1_AccountID = rsTeams("AccountID")
-				Team1Partner1_ProfileName = rsTeams("ProfileName")
-				Team1Partner1_ProfileURL = rsTeams("ProfileURL")
-				Team1Partner1_ProfileImage = rsTeams("ProfileImage")
-				rsTeams.MoveNext
-				Team1Partner2_AccountID = rsTeams("AccountID")
-				Team1Partner2_ProfileName = rsTeams("ProfileName")
-				Team1Partner2_ProfileURL = rsTeams("ProfileURL")
-				Team1Partner2_ProfileImage = rsTeams("ProfileImage")
-				Set rsTeams = rsTeams.NextRecordset()
-				Team2Partner1_AccountID = rsTeams("AccountID")
-				Team2Partner1_ProfileName = rsTeams("ProfileName")
-				Team2Partner1_ProfileURL = rsTeams("ProfileURL")
-				Team2Partner1_ProfileImage = rsTeams("ProfileImage")
-				rsTeams.MoveNext
-				Team2Partner2_AccountID = rsTeams("AccountID")
-				Team2Partner2_ProfileName = rsTeams("ProfileName")
-				Team2Partner2_ProfileURL = rsTeams("ProfileURL")
-				Team2Partner2_ProfileImage = rsTeams("ProfileImage")
-
-				rsTeams.Close
-				Set rsTeams = Nothing
-
-				TeamPMRColor1 = "success"
-				TeamPMRPercent1 = (TeamPMR1 * 100) / 840
-				If TeamPMRPercent1 < 66.66 Then TeamPMRColor1 = "warning"
-				If TeamPMRPercent1 < 33.33 Then TeamPMRColor1 = "danger"
-
-				TeamPMRColor2 = "success"
-				TeamPMRPercent2 = (TeamPMR2 * 100) / 840
-				If TeamPMRPercent2 < 66.66 Then TeamPMRColor2 = "warning"
-				If TeamPMRPercent2 < 33.33 Then TeamPMRColor2 = "danger"
-
-				Response.Write("<div class=""col-12 col-md-6 col-xxl-4 pl-1 pr-1 pl-lg-3 pr-lg-0"">")
-%>
-					<a href="#" class="matchup-<%= MatchupID %>" style="text-decoration: none; display: block;">
-						<ul class="list-group" style="margin-bottom: 1rem;">
-							<li class="list-group-item" style="padding-top: 0.25rem; padding-bottom: 0.25rem; font-size: 0.75rem; text-align: center; background-color: #CDE7B0; color: #003985;"><strong><%= MatchupTitle %></strong></li>
-							<li class="list-group-item px-3 team-tag-box-<%= TeamID1 %>">
-								<img src="https://samelevel.imgix.net/<%= Team1Partner1_ProfileImage %>?w=32&h=32&fit=crop&crop=focalpoint" class="rounded-circle" title="<%= Team1Partner1_ProfileName %>" style="position: relative; z-index: 1; border: 2px solid #fff;" />
-								<img src="https://samelevel.imgix.net/<%= Team1Partner2_ProfileImage %>?w=32&h=32&fit=crop&crop=focalpoint" class="rounded-circle" title="<%= Team1Partner2_ProfileName %>" style="position: relative; z-index: 0; border: 2px solid #fff; left: -15px;" />
-								<span class="team-tag-score-<%= TeamID1 %>" style="font-size: 13px; line-height: 32px; background-color: #fff; color: #354335; float: right;"><%= TeamScore1 %></span>
-								<span style="font-size: 13px; color: #354335;"><b><%= TeamName1 %></b></span>
-								<div class="progress team-tag-progress-<%= TeamID1 %>" style="height: 1px; margin-top: 6px; margin-bottom: 0; padding-bottom: 0;">
-									<div class="progress-bar progress-bar-<%= TeamPMRColor1 %>" role="progressbar" aria-valuenow="<%= TeamPMRPercent1 %>" aria-valuemin="0" aria-valuemax="100" style="width: <%= TeamPMRPercent1 %>%">
-										<span class="sr-only team-tag-progress-sr-<%= TeamID1 %>"><%= TeamPMRPercent1 %>%</span>
-									</div>
-								</div>
-							</li>
-
-							<li class="list-group-item px-3 team-tag-box-<%= TeamID2 %>">
-								<img src="https://samelevel.imgix.net/<%= Team2Partner1_ProfileImage %>?w=32&h=32&fit=crop&crop=focalpoint" class="rounded-circle" title="<%= Team2Partner1_ProfileName %>" style="position: relative; z-index: 1; border: 2px solid #fff;" />
-								<img src="https://samelevel.imgix.net/<%= Team2Partner2_ProfileImage %>?w=32&h=32&fit=crop&crop=focalpoint" class="rounded-circle" title="<%= Team2Partner2_ProfileName %>" style="position: relative; z-index: 0; border: 2px solid #fff; left: -15px;" />
-								<span class="team-tag-score-<%= TeamID2 %>" style="font-size: 13px; line-height: 32px; background-color: #fff; color: #354335; float: right;"><%= TeamScore2 %></span>
-								<span style="font-size: 13px; color: #354335;"><b><%= TeamName2 %></b></span>
-								<div class="progress team-tag-progress-<%= TeamID2 %>" style="height: 1px; margin-top: 4px; margin-bottom: 0; padding-bottom: 0;">
-									<div class="progress-bar progress-bar-<%= TeamPMRColor2 %>" role="progressbar" aria-valuenow="<%= TeamPMRPercent2 %>" aria-valuemin="0" aria-valuemax="<%= TeamPMRPercent2 %>" style="width: <%= TeamPMRPercent2 %>%">
-										<span class="sr-only team-tag-progress-sr-<%= TeamID2 %>"><%= TeamPMRPercent2 %>%</span>
-									</div>
-								</div>
-							</li>
-						</ul>
-					</a>
-<%
-				Response.Write("</div>")
-
-			Next
-
-		End If
-
-		Response.Write("</div>")
-%>
-
-<%
 					Else
 %>
 						<div class="row">
