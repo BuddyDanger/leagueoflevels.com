@@ -423,6 +423,9 @@
 									TeamAbbreviatedName1 = arrFLFFL(19, i)
 									TeamAbbreviatedName2 = arrFLFFL(20, i)
 
+									If TeamName1 = "Hanging with Hernandez" Then TeamName1 = "Hanging Hernandez"
+									If TeamName2 = "Hanging with Hernandez" Then TeamName2 = "Hanging Hernandez"
+
 									thisWeeklyMatchups = thisWeeklyMatchups & MatchupID & ","
 
 									TeamPMRColor1 = "success"

@@ -151,7 +151,7 @@
 
 							<ul class="list-group mb-4">
 <%
-								sqlGetSchmeckles = "SELECT TOP 500 SchmeckleTransactions.TransactionID, DateAdd(hour, -4, SchmeckleTransactions.TransactionDate) AS TransactionDate, SchmeckleTransactions.TransactionTypeID, TransactionTypeTitle, SchmeckleTransactions.TransactionTotal, "
+								sqlGetSchmeckles = "SELECT TOP 500 SchmeckleTransactions.TransactionID, DATEADD(hour, -5, SchmeckleTransactions.TransactionDate) AS TransactionDate, SchmeckleTransactions.TransactionTypeID, TransactionTypeTitle, SchmeckleTransactions.TransactionTotal, "
 								sqlGetSchmeckles = sqlGetSchmeckles & "SchmeckleTransactions.TransactionHash, SchmeckleTransactions.AccountID, SchmeckleTransactions.TicketSlipID, Accounts.ProfileName, Accounts.ProfileImage, SchmeckleTransactions.TransactionDescription "
 								If Len(Session.Contents("SITE_Schmeckles_AccountID")) > 0 And IsNumeric(Session.Contents("SITE_Schmeckles_AccountID")) Then sqlGetSchmeckles = sqlGetSchmeckles & ", (SELECT SUM(TransactionTotal) FROM SchmeckleTransactions S2 WHERE S2.AccountID = " & Session.Contents("SITE_Schmeckles_AccountID") & " AND S2.TransactionID <= SchmeckleTransactions.TransactionID) AS Balance "
 								sqlGetSchmeckles = sqlGetSchmeckles & "FROM SchmeckleTransactions "

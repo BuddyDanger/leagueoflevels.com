@@ -1,3 +1,4 @@
+<% If CInt(Session.Contents("AccountLocks")) > 0 Then %>
 <div class="card">
 <%
 	If Len(Session.Contents("AccountID")) > 0 Then
@@ -171,5 +172,5 @@
 
 	End If
 %>
-
 </div>
+<% End If %>
