@@ -87,11 +87,11 @@
 
 							<a href="/schmeckles/leaderboard/" class="btn btn-light btn-block card-text mb-4">VIEW FULL LEADERBOARD</a>
 
-							<h4 class="text-left bg-dark text-white p-3 mt-0 mb-0 rounded-top"><b>TOP 2023 PAYOUTS</b><span class="float-right dripicons-trophy"></i></h4>
+							<h4 class="text-left bg-dark text-white p-3 mt-0 mb-0 rounded-top"><b>TOP 2024 PAYOUTS</b><span class="float-right dripicons-trophy"></i></h4>
 
 							<ul class="list-group list-group-flush">
 <%
-								sqlGetLargest = "SELECT TOP (5) TransactionDate, TransactionTotal, TransactionHash, Accounts.ProfileName, Accounts.ProfileImage FROM SchmeckleTransactions INNER JOIN Accounts ON Accounts.AccountID = SchmeckleTransactions.AccountID WHERE TransactionDate >= '9/1/2023' AND TransactionTypeID = 1008 ORDER BY TransactionTotal DESC"
+								sqlGetLargest = "SELECT TOP (10) TransactionDate, TransactionTotal, TransactionHash, Accounts.ProfileName, Accounts.ProfileImage FROM SchmeckleTransactions INNER JOIN Accounts ON Accounts.AccountID = SchmeckleTransactions.AccountID WHERE TransactionDate >= '9/1/2024' AND TransactionTypeID = 1008 ORDER BY TransactionTotal DESC"
 								Set rsLargest = sqlDatabase.Execute(sqlGetLargest)
 
 								Do While Not rsLargest.Eof
@@ -134,8 +134,6 @@
 								Set rsLargest = Nothing
 %>
 							</ul>
-
-							<a href="#" class="btn btn-light btn-block card-text mb-5">VIEW ALL-TIME PAYOUTS</a>
 
 						</div>
 
