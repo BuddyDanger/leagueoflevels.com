@@ -61,7 +61,7 @@
 							<ul class="list-group list-flush">
 								<li class="list-group-item p-0">
 									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-top">
-										<img src="https://samelevel.imgix.net/neckties.jpeg?w=20&h=20&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-2">DC Neckties
+										<img src="https://samelevel.imgix.net/dcnecktie.jpg?w=20&h=20&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-2">DC Neckties
 										<div class="float-right badge badge-success">217.56</div>
 									</h6>
 								</li>
@@ -91,7 +91,7 @@
 							<ul class="list-group list-flush">
 								<li class="list-group-item p-0">
 									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-top">
-										<img src="https://samelevel.imgix.net/wife_bandit.png?w=20&h=20&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-2">Wife Bandits
+										<img src="https://samelevel.imgix.net/bandit.jpg?w=20&h=20&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-2">Wife Bandits
 										<div class="float-right badge badge-danger">170.90</div>
 									</h6>
 								</li>
@@ -164,7 +164,7 @@
 							<ul class="list-group list-flush">
 								<li class="list-group-item p-0">
 									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-top">
-										<img src="https://samelevel.imgix.net/neckties.jpeg?w=20&h=20&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-2">DC Neckties
+										<img src="https://samelevel.imgix.net/dcnecktie.jpg?w=20&h=20&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-2">DC Neckties
 										<div class="float-right badge badge-success">260.46</div>
 									</h6>
 								</li>
@@ -387,7 +387,7 @@
 								</li>
 								<li class="list-group-item p-0">
 									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-bottom">
-										<img src="https://samelevel.imgix.net/buddy.jpg?w=20&h=20&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-2">Buddy Danger
+										<img src="https://samelevel.imgix.net/buddy2.jpg?w=20&h=20&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-2">Buddy Danger
 										<div class="float-right badge badge-success">289.58</div>
 									</h6>
 								</li>
@@ -463,7 +463,7 @@
 							<ul class="list-group list-flush">
 								<li class="list-group-item p-0">
 									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-top">
-										<img src="https://samelevel.imgix.net/neckties.jpeg?w=20&h=20&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-2">DC Neckties
+										<img src="https://samelevel.imgix.net/dcnecktie.jpg?w=20&h=20&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-2">DC Neckties
 										<div class="float-right badge badge-danger">273.06</div>
 									</h6>
 								</li>
@@ -598,7 +598,7 @@
 							<ul class="list-group list-flush">
 								<li class="list-group-item p-0">
 									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-top">
-										<img src="https://samelevel.imgix.net/buddy.jpg?w=20&h=20&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-2">Buddy Danger
+										<img src="https://samelevel.imgix.net/buddy2.jpg?w=20&h=20&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-2">Buddy Danger
 										<div class="float-right badge badge-danger">259.84</div>
 									</h6>
 								</li>
@@ -755,13 +755,13 @@
 							<ul class="list-group list-flush">
 								<li class="list-group-item p-0">
 									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-top">
-										&nbsp;
+										<img src="https://samelevel.imgix.net/punts.jpg?w=20&h=20&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-2">Death by Punts
 										<div class="float-right"></div>
 									</h6>
 								</li>
 								<li class="list-group-item p-0">
 									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-bottom">
-										&nbsp;
+										<img src="https://samelevel.imgix.net/bigballers.jpg?w=20&h=20&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-2">Big Ballers
 										<div class="float-right"></div>
 									</h6>
 								</li>
@@ -787,13 +787,13 @@
 							<ul class="list-group list-flush">
 								<li class="list-group-item p-0">
 									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-top">
-										&nbsp;
+										<img src="https://samelevel.imgix.net/icon-b8294734ebb85e4802c52047a51ec241626a97bdfe46e0f43d6bb565d165a568.jpg?w=20&h=20&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-2">Blitzed
 										<div class="float-right"></div>
 									</h6>
 								</li>
 								<li class="list-group-item p-0">
 									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-bottom">
-										&nbsp;
+										<img src="https://samelevel.imgix.net/icon-9aad698267bff349d84ee940906149280f61c71c745848f1749a13336a331d0b.png?w=20&h=20&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-2">Sacks in the City
 										<div class="float-right"></div>
 									</h6>
 								</li>
@@ -825,13 +825,13 @@
 							<ul class="list-group list-flush">
 								<li class="list-group-item p-0">
 									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-top">
-										&nbsp;
+										<img src="https://samelevel.imgix.net/bigballers.jpg?w=20&h=20&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-2">Big Ballers
 										<div class="float-right">&nbsp;</div>
 									</h6>
 								</li>
 								<li class="list-group-item p-0">
 									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-bottom">
-										&nbsp;
+										<img src="https://samelevel.imgix.net/icon-b8294734ebb85e4802c52047a51ec241626a97bdfe46e0f43d6bb565d165a568.jpg?w=20&h=20&fit=crop&crop=focalpoint" class="rounded-circle d-inline mr-2">Blitzed
 										<div class="float-right">&nbsp;</div>
 									</h6>
 								</li>
