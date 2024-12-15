@@ -58,9 +58,9 @@
 				sqlGetGametime = "SELECT DateTimeEST FROM NFLGames WHERE Year = " & Session.Contents("CurrentYear") & " AND Period = " & Session.Contents("CurrentPeriod") & " AND (AwayTeamID = " & thisNFLTeamID & " OR HomeTeamID = " & thisNFLTeamID & ")"
 				Set rsGametime = sqlDatabase.Execute(sqlGetGametime)
 
-				thisGameTimeEST = DateAdd("h", 4, rsGametime("DateTimeEST"))
+				thisGameTimeEST = rsGametime("DateTimeEST")
 
-				If thisGameTimeEST < Now() Then
+				If thisGameTimeEST < DateAdd("h", -5, Now()) Then
 					alreadyPlayed = 1
 					selectPlaceholder = "Selection Locked"
 				End If
