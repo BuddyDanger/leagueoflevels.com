@@ -174,8 +174,8 @@
 
 							<ul class="list-group list-flush">
 								<li class="list-group-item p-0 text-nowrap overflow-hidden">
-									<h6 class="text-xl-right bg-white p-3 mt-0 mb-0 rounded-top">
-										&nbsp;
+									<h6 class="text-xl-right bg-white p-3 mt-0 mb-0 rounded-bottom">
+										<span class="d-inline"><%= arrSLFFL789101112(2,1) %> (8) <img src="https://samelevel.imgix.net/<%= arrSLFFL789101112(12,1) %>?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-none d-lg-inline ml-2" /></span>
 										<div class="float-right"></div>
 									</h6>
 								</li>
@@ -197,8 +197,8 @@
 									</h6>
 								</li>
 								<li class="list-group-item p-0 text-nowrap overflow-hidden">
-									<h6 class="text-xl-right bg-white p-3 mt-0 mb-0 rounded-bottom">
-										&nbsp;
+									<h6 class="text-xl-right bg-white p-3 mt-0 mb-0 rounded-top">
+										<span class="d-inline"><%= arrSLFFL789101112(2,0) %> (7) <img src="https://samelevel.imgix.net/<%= arrSLFFL789101112(12,0) %>?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-none d-lg-inline ml-2" /></span>
 										<div class="float-right"></div>
 									</h6>
 								</li>
@@ -297,8 +297,8 @@
 
 							<ul class="list-group list-flush">
 								<li class="list-group-item p-0 text-nowrap overflow-hidden">
-									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-top">
-										&nbsp;
+									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-bottom">
+										<img src="https://samelevel.imgix.net/<%= arrSLFFL56(12,0) %>?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-none d-lg-inline mr-2" /><span class="d-inline">(5) <%= arrSLFFL56(2,0) %></span>
 										<div class="float-right"></div>
 									</h6>
 								</li>
@@ -320,8 +320,8 @@
 									</h6>
 								</li>
 								<li class="list-group-item p-0 text-nowrap overflow-hidden">
-									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-bottom">
-										&nbsp;
+									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-top">
+										<img src="https://samelevel.imgix.net/<%= arrSLFFL1234(12,2) %>?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-none d-lg-inline mr-2" /><span class="d-inline">(3) <%= arrSLFFL1234(2,2) %></span>
 										<div class="float-right"></div>
 									</h6>
 								</li>
@@ -401,8 +401,8 @@
 
 							<ul class="list-group list-flush">
 								<li class="list-group-item p-0 text-nowrap overflow-hidden">
-									<h6 class="text-xl-right bg-white p-3 mt-0 mb-0 rounded-top">
-										&nbsp;
+									<h6 class="text-xl-right bg-white p-3 mt-0 mb-0 rounded-bottom">
+										<span class="d-inline"><%= arrFLFFL789101112(2,2) %> (9) <img src="https://samelevel.imgix.net/<%= arrFLFFL789101112(12,2) %>?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-none d-lg-inline ml-2" /></span>
 										<div class="float-right"></div>
 									</h6>
 								</li>
@@ -425,7 +425,7 @@
 								</li>
 								<li class="list-group-item p-0 text-nowrap overflow-hidden">
 									<h6 class="text-xl-right bg-white p-3 mt-0 mb-0 rounded-bottom">
-										&nbsp;
+										<span class="d-inline"><%= arrFLFFL789101112(2,3) %> (10) <img src="https://samelevel.imgix.net/<%= arrFLFFL789101112(12,3) %>?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-none d-lg-inline ml-2" /></span>
 										<div class="float-right"></div>
 									</h6>
 								</li>
@@ -524,8 +524,8 @@
 
 							<ul class="list-group list-flush">
 								<li class="list-group-item p-0 text-nowrap overflow-hidden">
-									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-top">
-										&nbsp;
+									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-bottom">
+										<img src="https://samelevel.imgix.net/<%= arrFLFFL56(12,0) %>?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-none d-lg-inline mr-2" /><span class="d-inline">(5) <%= arrFLFFL56(2,0) %></span>
 										<div class="float-right"></div>
 									</h6>
 								</li>
@@ -547,8 +547,8 @@
 									</h6>
 								</li>
 								<li class="list-group-item p-0 text-nowrap overflow-hidden">
-									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-bottom">
-										&nbsp;
+									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-top">
+										<img src="https://samelevel.imgix.net/<%= arrFLFFL1234(12,2) %>?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-none d-lg-inline mr-2" /><span class="d-inline">(3) <%= arrFLFFL1234(2,2) %></span>
 										<div class="float-right"></div>
 									</h6>
 								</li>
@@ -628,8 +628,8 @@
 
 							<ul class="list-group list-flush">
 								<li class="list-group-item p-0 text-nowrap overflow-hidden">
-									<h6 class="text-xl-right bg-white p-3 mt-0 mb-0 rounded-top">
-										&nbsp;
+									<h6 class="text-xl-right bg-white p-3 mt-0 mb-0 rounded-bottom">
+										<span class="d-inline"><%= arrBLFFL789101112(2,1) %> (8) <img src="https://samelevel.imgix.net/<%= arrBLFFL789101112(12,1) %>?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-none d-lg-inline ml-2" /></span>
 										<div class="float-right"></div>
 									</h6>
 								</li>
@@ -652,7 +652,7 @@
 								</li>
 								<li class="list-group-item p-0 text-nowrap overflow-hidden">
 									<h6 class="text-xl-right bg-white p-3 mt-0 mb-0 rounded-bottom">
-										&nbsp;
+										<span class="d-inline">DC Neckties (10) <img src="https://samelevel.imgix.net/<%= arrBLFFL789101112(12,3) %>?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-none d-lg-inline ml-2" /></span>
 										<div class="float-right"></div>
 									</h6>
 								</li>
@@ -751,8 +751,8 @@
 
 							<ul class="list-group list-flush">
 								<li class="list-group-item p-0 text-nowrap overflow-hidden">
-									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-top">
-										&nbsp;
+									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-bottom">
+										<img src="https://samelevel.imgix.net/<%= arrBLFFL56(12,0) %>?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-none d-lg-inline mr-2" /><span class="d-inline">(5) <%= arrBLFFL56(2,0) %></span>
 										<div class="float-right"></div>
 									</h6>
 								</li>
@@ -774,8 +774,8 @@
 									</h6>
 								</li>
 								<li class="list-group-item p-0 text-nowrap overflow-hidden">
-									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-bottom">
-										&nbsp;
+									<h6 class="text-left bg-white p-3 mt-0 mb-0 rounded-top">
+										<img src="https://samelevel.imgix.net/<%= arrBLFFL1234(12,2) %>?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-none d-lg-inline mr-2" /><span class="d-inline">(3) <%= arrBLFFL1234(2,2) %></span>
 										<div class="float-right"></div>
 									</h6>
 								</li>
