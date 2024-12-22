@@ -55,6 +55,13 @@
 
 				<div class="container-fluid pl-0 pl-lg-2 pr-0 pr-lg-2">
 <%
+					cupBGcolor = "D00000"
+					omegaBGcolor = "FFBA08"
+					slfflBGcolor = "136F63"
+					flfflBGcolor = "995D81"
+					blfflBGcolor = "39A9DB"
+					tagBGcolor = "CDE7B0"
+
 					If CInt(Session.Contents("CurrentPeriod")) < 18 Then
 
 						'sqlGetSLFFLTotal = "SELECT (sum([TeamScore1]) + sum([TeamScore2]))/2 AS LevelTotal FROM [dbo].[Matchups] WHERE year =2022 and period=6 and levelid=2"
@@ -160,7 +167,7 @@
 %>
 							        <a href="/scores/<%= MatchupID %>/" class="matchup-<%= MatchupID %>" style="text-decoration: none; display: block;">
 							            <ul class="list-group" style="margin-bottom: 1rem;">
-							                <li class="list-group-item" style="padding-top: 0.25rem; padding-bottom: 0.25rem; font-size: 0.75rem; text-align: center; background-color: #FFBA08; color: #fff;"><strong><%= MatchupTitle %></strong></li>
+							                <li class="list-group-item" style="padding-top: 0.25rem; padding-bottom: 0.25rem; font-size: 0.75rem; text-align: center; background-color: #<%= omegaBGcolor %>; color: #fff;"><strong><%= MatchupTitle %></strong></li>
 							                <li class="list-group-item px-3 team-omega-box-<%= TeamID1 %>-<%= MatchupID %>">
 							                    <span class="team-omega-score-<%= TeamID1 %>-<%= MatchupID %>" style="font-size: 1em; background-color: #fff; color: #805C04; float: right;"><%= TeamScore1 %></span>
 							                    <img src="https://samelevel.imgix.net/<%= TeamLogo1 %>?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-none d-lg-inline mr-2" /><span class="d-none d-lg-inline" style="font-size: 13px; color: #805C04;"><%= TeamName1 %></span><span class="d-inline d-lg-none" style="font-size: 13px; color: #805C04;"><%= TeamAbbreviatedName1 %></span><% If TeamOmegaTravel1 <> 0 Then %><span style="font-size: 13px; color: #805C04;"> (<%= TeamOmegaTravel1 %>)</span><% End If %>
@@ -188,9 +195,7 @@
 
 							End If
 
-						Response.Write("</div>")
-
-						Response.Write("<div class=""row"">")
+						
 
 							If IsArray(arrCup) Then
 
@@ -285,7 +290,7 @@
 									<div class="col-6 col-xl-4 col-xxl-3 col-xxxl-2 pl-1 pr-1 pl-lg-3 pr-lg-0">
 										<a href="/scores/<%= MatchupID %>/" class="matchup-<%= MatchupID %>" style="text-decoration: none; display: block;">
 											<ul class="list-group" style="margin-bottom: 1rem;">
-												<li class="list-group-item" style="padding-top: 0.25rem; padding-bottom: 0.25rem; font-size: 0.75rem; text-align: center; background-color: #D00000; color: #fff;"></li>
+												<li class="list-group-item" style="padding-top: 0.25rem; padding-bottom: 0.25rem; font-size: 0.75rem; text-align: center; background-color: #<%= cupBGcolor %>; color: #fff;"></li>
 												<li class="list-group-item px-3 team-cup-box-<%= TeamID1 %>-<%= MatchupID %>">
 													<span class="team-cup-score-<%= TeamID1 %>-<%= MatchupID %>" style="font-size: 1em; background-color: #fff; color: #520000; float: right;"><%= TeamScore1 %></span>
 													<img src="https://samelevel.imgix.net/<%= TeamLogo1 %>?w=16&h=16&fit=crop&crop=focalpoint" class="rounded-circle d-none d-lg-inline mr-2" />
@@ -367,7 +372,7 @@
 %>
 										<a href="<%= MatchupURL %>" class="matchup-<%= MatchupID %>" style="text-decoration: none; display: block;">
 											<ul class="list-group" style="margin-bottom: 1rem;">
-												<li class="list-group-item" style="padding-top: 0.25rem; padding-bottom: 0.25rem; font-size: 0.75rem; text-align: center; background-color: #136F63; color: #fff;"><strong><%= MatchupTitle %></strong></li>
+												<li class="list-group-item" style="padding-top: 0.25rem; padding-bottom: 0.25rem; font-size: 0.75rem; text-align: center; background-color: #<%= slfflBGcolor %>; color: #fff;"><strong><%= MatchupTitle %></strong></li>
 												<li class="list-group-item team-slffl-box-<%= TeamID1 %>-<%= MatchupID %>" style="position: relative;">
 													<div style="position: absolute; top: -18px; right: -10px;"><%= MajorText %></div>
 													<span class="team-slffl-score-<%= TeamID1 %>-<%= MatchupID %>" style="font-size: 1em; background-color: #fff; color: #0F574D; float: right;"><%= TeamScore1 %></span>
@@ -450,7 +455,7 @@
 %>
 										<a href="<%= MatchupURL %>" class="matchup-<%= MatchupID %>" style="text-decoration: none; display: block;">
 											<ul class="list-group" style="margin-bottom: 1rem;">
-												<li class="list-group-item" style="padding-top: 0.25rem; padding-bottom: 0.25rem; font-size: 0.75rem; text-align: center; background-color: #136F63; color: #fff;"><strong><%= MatchupTitle %></strong></li>
+												<li class="list-group-item" style="padding-top: 0.25rem; padding-bottom: 0.25rem; font-size: 0.75rem; text-align: center; background-color: #<%= flfflBGcolor %>; color: #fff;"><strong><%= MatchupTitle %></strong></li>
 												<li class="list-group-item team-flffl-box-<%= TeamID1 %>-<%= MatchupID %>" style="position: relative;">
 													<div style="position: absolute; top: -18px; right: -10px;"><%= MajorText %></div>
 													<span class="team-flffl-score-<%= TeamID1 %>-<%= MatchupID %>" style="font-size: 1em; background-color: #fff; color: #0F574D; float: right;"><%= TeamScore1 %></span>
@@ -536,7 +541,7 @@
 %>
 										<a href="<%= MatchupURL %>" class="matchup-<%= MatchupID %>" style="text-decoration: none; display: block;">
 											<ul class="list-group" style="margin-bottom: 1rem;">
-												<li class="list-group-item" style="padding-top: 0.25rem; padding-bottom: 0.25rem; font-size: 0.75rem; text-align: center; background-color: #136F63; color: #fff;"><strong><%= MatchupTitle %></strong></li>
+												<li class="list-group-item" style="padding-top: 0.25rem; padding-bottom: 0.25rem; font-size: 0.75rem; text-align: center; background-color: #<%= blfflBGcolor %>; color: #fff;"><strong><%= MatchupTitle %></strong></li>
 												<li class="list-group-item team-blffl-box-<%= TeamID1 %>-<%= MatchupID %>" style="position: relative;">
 													<div style="position: absolute; top: -18px; right: -10px;"><%= MajorText %></div>
 													<span class="team-blffl-score-<%= TeamID1 %>-<%= MatchupID %>" style="font-size: 1em; background-color: #fff; color: #0F574D; float: right;"><%= TeamScore1 %></span>
@@ -627,7 +632,7 @@
 										<a href="#" class="matchup-<%= MatchupID %>" style="text-decoration: none; display: block;">
 											<ul class="list-group" style="margin-bottom: 1rem;">
 
-												<li class="list-group-item" style="padding-top: 0.25rem; padding-bottom: 0.25rem; font-size: 0.75rem; text-align: center; background-color: #CDE7B0; color: #003985;"><strong><%= MatchupTitle %></strong></li>
+												<li class="list-group-item" style="padding-top: 0.25rem; padding-bottom: 0.25rem; font-size: 0.75rem; text-align: center; background-color: #<%= tagBGcolor %>; color: #003985;"><strong><%= MatchupTitle %></strong></li>
 												<li class="list-group-item px-3 team-tag-box-<%= TeamID1 %>-<%= MatchupID %>">
 													<img src="https://samelevel.imgix.net/<%= Team1Partner1_ProfileImage %>?w=32&h=32&fit=crop&crop=focalpoint" class="rounded-circle" title="<%= Team1Partner1_ProfileName %>" style="position: relative; z-index: 1; border: 2px solid #fff;" />
 													<img src="https://samelevel.imgix.net/<%= Team1Partner2_ProfileImage %>?w=32&h=32&fit=crop&crop=focalpoint" class="rounded-circle" title="<%= Team1Partner2_ProfileName %>" style="position: relative; z-index: 0; border: 2px solid #fff; left: -15px;" />
