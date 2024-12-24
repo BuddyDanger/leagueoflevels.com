@@ -303,8 +303,6 @@
 
 								<!--#include virtual="/assets/asp/dashboard/locks.asp" -->
 
-								<!--#include virtual="/assets/asp/dashboard/omega.asp" -->
-
 								<!--#include virtual="/assets/asp/dashboard/sender.asp" -->
 
 							</div>
