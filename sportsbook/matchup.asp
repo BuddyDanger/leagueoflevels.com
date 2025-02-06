@@ -384,7 +384,7 @@
 
 							<div class="card mb-0" style="border-bottom: 1px solid #fff;">
 
-								<div class="card-header bg-warning text-black-50" id="bettingOptions_Heading1" data-toggle="collapse" data-target="#collapse1" aria-expanded="true" aria-controls="collapse1"><b>MONEYLINE</b> <%= BoostText %></div>
+								<div class="card-header bg-warning text-black-50" style="cursor: pointer;" id="bettingOptions_Heading1" data-toggle="collapse" data-target="#collapse1" aria-expanded="true" aria-controls="collapse1"><b>MONEYLINE</b> <%= BoostText %></div>
 
 								<div id="collapse1" class="collapse show" aria-labelledby="bettingOptions_Heading1" data-parent="#bettingOptions">
 
@@ -466,7 +466,7 @@
 
 							<div class="card mb-0" style="border-bottom: 1px solid #fff;">
 
-								<div class="card-header bg-warning text-black-50" id="bettingOptions_Heading2" data-toggle="collapse" data-target="#collapse2" aria-expanded="false" aria-controls="collapse2"><b>POINT SPREAD</b> <%= BoostText %></div>
+								<div class="card-header bg-warning text-black-50" style="cursor: pointer;" id="bettingOptions_Heading2" data-toggle="collapse" data-target="#collapse2" aria-expanded="false" aria-controls="collapse2"><b>POINT SPREAD</b> <%= BoostText %></div>
 
 								<div id="collapse2" class="collapse" aria-labelledby="bettingOptions_Heading2" data-parent="#bettingOptions">
 
@@ -583,9 +583,9 @@
 
 							</div>
 
-							<div class="card mb-0">
+							<div class="card mb-0" style="border-bottom: 1px solid #fff;">
 
-								<div class="card-header bg-warning text-black-50" id="bettingOptions_Heading3" data-toggle="collapse" data-target="#collapse3" aria-expanded="false" aria-controls="collapse3"><b>POINT TOTAL</b> <%= BoostText %></div>
+								<div class="card-header bg-warning text-black-50" style="cursor: pointer;" id="bettingOptions_Heading3" data-toggle="collapse" data-target="#collapse3" aria-expanded="false" aria-controls="collapse3"><b>POINT TOTAL</b> <%= BoostText %></div>
 
 								<div id="collapse3" class="collapse" aria-labelledby="bettingOptions_Heading3" data-parent="#bettingOptions">
 
@@ -681,103 +681,110 @@
 								</div>
 
 							</div>
-
-						</div>
 <%
-						sqlGetProps = "SELECT PropQuestions.PropQuestionID, PropQuestions.PropCorrectAnswerID, PropQuestions.MatchupID, PropQuestions.Question FROM PropQuestions WHERE PropQuestions.PropCorrectAnswerID IS NULL AND "
-						If Session.Contents("SITE_Bet_Type") = "nfl" Then sqlGetProps = sqlGetProps & " NFLGameID = " & thisNFLGameID
-						If Session.Contents("SITE_Bet_Type") <> "nfl" Then sqlGetProps = sqlGetProps & " MatchupID = " & thisMatchupID
-						Set rsProps = sqlDatabase.Execute(sqlGetProps)
+							sqlGetProps = "SELECT PropQuestions.PropQuestionID, PropQuestions.PropCorrectAnswerID, PropQuestions.MatchupID, PropQuestions.Question FROM PropQuestions WHERE PropQuestions.PropCorrectAnswerID IS NULL AND "
+							If Session.Contents("SITE_Bet_Type") = "nfl" Then sqlGetProps = sqlGetProps & " NFLGameID = " & thisNFLGameID
+							If Session.Contents("SITE_Bet_Type") <> "nfl" Then sqlGetProps = sqlGetProps & " MatchupID = " & thisMatchupID
+							Set rsProps = sqlDatabase.Execute(sqlGetProps)
 
-						Do While Not rsProps.Eof
+							Do While Not rsProps.Eof
 
-							thisPropQuestionID = rsProps("PropQuestionID")
-							thisPropQuestion = rsProps("Question")
+								thisPropQuestionID = rsProps("PropQuestionID")
 %>
+								<div class="card mb-0" style="border-bottom: 1px solid #fff;">
 
+										<div class="card-header text-white" style="cursor: pointer; background-color: #796332;" id="propHeading<%= rsProps("PropQuestionID") %>" data-toggle="collapse" data-target="#collapseProp<%= rsProps("PropQuestionID") %>" aria-expanded="false" aria-controls="collapseProp<%= rsProps("PropQuestionID") %>"><b><%= rsProps("Question") %></b></div>
 
-								<div class="card">
+										<div id="collapseProp<%= rsProps("PropQuestionID") %>" class="collapse" aria-labelledby="propHeading<%= rsProps("PropQuestionID") %>" data-parent="#bettingOptions">
 
-									<div class="card-body pb-0 pt-0">
+											<div class="card-body pb-0 pt-0">
 
-										<form id="betProp<%= thisPropQuestionID %>" action="/sportsbook/submit-bet/">
+												<form id="betProp<%= rsProps("PropQuestionID") %>" action="/sportsbook/submit-bet/">
 
-											<div class="form-group">
+													<div class="form-group pt-3 pb-0 mb-0">
 
-												<input type="hidden" id="inputTicketGo" name="inputTicketGo" value="go" />
-												<input type="hidden" id="inputTicketType" name="inputTicketType" value="4" />
-												<input type="hidden" id="inputMatchupID" name="inputMatchupID" value="<%= thisMatchupID %>" />
-												<input type="hidden" id="inputNFLGameID" name="inputNFLGameID" value="<%= thisNFLGameID %>" />
-												<input type="hidden" id="inputPropQuestionID" name="inputPropQuestionID" value="<%= thisPropQuestionID %>" />
-												<input type="hidden" id="inputPropWin<%= thisPropQuestionID %>" name="inputPropWin<%= thisPropQuestionID %>" value="" />
-												<input type="hidden" id="inputPropPayout<%= thisPropQuestionID %>" name="inputPropPayout<%= thisPropQuestionID %>" value="" />
+												    <input type="hidden" id="inputTicketGo" name="inputTicketGo" value="go" />
+												    <input type="hidden" id="inputTicketType" name="inputTicketType" value="4" />
+												    <input type="hidden" id="inputMatchupID" name="inputMatchupID" value="<%= thisMatchupID %>" />
+												    <input type="hidden" id="inputNFLGameID" name="inputNFLGameID" value="<%= thisNFLGameID %>" />
+												    <input type="hidden" id="inputPropQuestionID" name="inputPropQuestionID" value="<%= thisPropQuestionID %>" />
+												    <input type="hidden" id="inputPropWin<%= thisPropQuestionID %>" name="inputPropWin<%= thisPropQuestionID %>" value="" />
+												    <input type="hidden" id="inputPropPayout<%= thisPropQuestionID %>" name="inputPropPayout<%= thisPropQuestionID %>" value="" />
 <%
-												sqlGetAnswers = "SELECT * FROM PropAnswers WHERE PropQuestionID = " & thisPropQuestionID
-												Set rsAnswers = sqlDatabase.Execute(sqlGetAnswers)
+															sqlGetAnswers = "SELECT PropAnswerID, Answer, Moneyline FROM PropAnswers WHERE PropQuestionID = " & rsProps("PropQuestionID")
+															Set rsAnswers = sqlDatabase.Execute(sqlGetAnswers)
 
-												Do While Not rsAnswers.Eof
+															Do While Not rsAnswers.Eof
 
-													Response.Write("<input type=""hidden"" id=""inputPropBetMoneyline" & rsAnswers("PropAnswerID") & """ name=""inputPropBetMoneyline" & rsAnswers("PropAnswerID") & """ value=""" & rsAnswers("Moneyline") & """ />")
-													rsAnswers.MoveNext
+													      Response.Write("<input type=""hidden"" id=""inputPropBetMoneyline" & rsAnswers("PropAnswerID") & """ name=""inputPropBetMoneyline" & rsAnswers("PropAnswerID") & """ value=""" & rsAnswers("Moneyline") & """ />")
+													      rsAnswers.MoveNext
 
-												Loop
+													    Loop
 
-												rsAnswers.MoveFirst
+													    rsAnswers.MoveFirst
 %>
-												<label class="form-check-label-lg mt-4" for="inputPropAnswer<%= thisPropQuestionID %>" class="col-form-label"><b><%= thisPropQuestion %></b></label>
-												<select <%= thisFormDisabled %> class="form-control form-control-lg form-check-input-lg" name="inputPropAnswer<%= thisPropQuestionID %>" id="inputPropAnswer<%= thisPropQuestionID %>" onchange="calculate_prop_payout(<%= thisPropQuestionID %>, document.getElementById('inputPropBetAmount<%= thisPropQuestionID %>').value)">
-													<option></option>
+															<select <%= thisFormDisabled %> class="form-control form-control-lg form-check-input-lg mb-3" name="inputPropAnswer<%= thisPropQuestionID %>" id="inputPropAnswer<%= thisPropQuestionID %>" onchange="calculate_prop_payout(<%= thisPropQuestionID %>, document.getElementById('inputPropBetAmount<%= thisPropQuestionID %>').value)">
+																<option></option>
 <%
-													Do While Not rsAnswers.Eof
+																Do While Not rsAnswers.Eof
 
-														thisPropAnswerID = rsAnswers("PropAnswerID")
-														thisPropAnswer = rsAnswers("Answer")
-														thisPropMoneyline = rsAnswers("Moneyline")
+																	thisPropMoneyline = rsAnswers("Moneyline")
 
-														If CInt(thisPropMoneyline) > 0 Then thisPropMoneyline = "+" & thisPropMoneyline
-
-														Response.Write("<option value=""" & thisPropAnswerID & """>" & thisPropAnswer & " (" & thisPropMoneyline & " ML)</option>")
-														rsAnswers.MoveNext
-
-													Loop
-
-													rsAnswers.Close
-													Set rsAnswers = Nothing
+																	If CInt(thisPropMoneyline) > 0 Then thisPropMoneyline = "+" & thisPropMoneyline
 %>
-												</select>
+																	<option value="<%= rsAnswers("PropAnswerID") %>" data-moneyline="<%= rsAnswers("Moneyline") %>">
+																			<%= rsAnswers("Answer") %> (<%= thisPropMoneyline %> ML)
+																	</option>
+<%
+																	rsAnswers.MoveNext
 
-												<label for="inputPropBetAmount<%= thisPropQuestionID %>" class="col-form-label mt-2"><b>Bet Amount (Schmeckles)</b></label>
-												<input <%= thisFormDisabled %> type="number" class="form-control form-control-lg" min="0" max="<%= thisSchmeckleTotal %>" id="inputPropBetAmount<%= thisPropQuestionID %>" name="inputPropBetAmount<%= thisPropQuestionID %>" onkeyup="calculate_prop_payout(<%= thisPropQuestionID %>, this.value)">
+																Loop
 
-												<div class="row">
-													<div class="col-12 col-md-6">
-														<label class="col-form-label mt-3 mb-md-3 mb-sm-0"><b>TO WIN:</b>  <span id="winPropBet<%= thisPropQuestionID %>"><span></label>
+																rsAnswers.Close
+																Set rsAnswers = Nothing
+%>
+														</select>
+
+														<div class="row">
+															<div class="col-9 px-2 py-0 m-0">
+																<input <%= thisFormDisabled %> type="number" class="form-control form-control-lg" min="0" max="<%= thisSchmeckleTotal %>" id="inputPropBetAmount<%= thisPropQuestionID %>" name="inputPropBetAmount<%= thisPropQuestionID %>" onkeyup="calculate_prop_payout(<%= thisPropQuestionID %>, this.value)">
+															</div>
+															<div class="col-3 px-2 py-0 m-0">
+																<button id="propButton<%= thisPropQuestionID %>" <%= thisFormDisabled %> type="submit" class="btn btn-block btn-success mb-3">Bet</button>
+															</div>
+														</div>
+
 													</div>
-													<div class="col-12 col-md-6">
-														<label class="col-form-label mt-3 mb-3"><b>PAYOUT:</b>  <span id="payoutPropBet<%= thisPropQuestionID %>"><span></label>
-													</div>
-												</div>
 
-												<button id="propButton<%= thisPropQuestionID %>" <%= thisFormDisabled %> type="submit" class="btn btn-block btn-success">Place Bet</button>
+												</form>
 
 											</div>
 
-										</form>
+											<div class="card-footer py-2">
+												<div class="row py-0">
+													<div class="col-6 py-0">
+														<label class="col-form-label"><small><b>TO WIN:</b>  <span id="winPropBet<%= rsProps("PropQuestionID") %>"></span></small></label>
+													</div>
+													<div class="col-6 py-0">
+														<label class="col-form-label"><small><b>PAYOUT:</b>  <span id="payoutPropBet<%= rsProps("PropQuestionID") %>"></span></small></label>
+													</div>
+												</div>
+											</div>
+
+										</div>
 
 									</div>
-
-								</div>
-
-
 <%
-							rsProps.MoveNext
+									rsProps.MoveNext
 
-						Loop
+								Loop
 
-						rsProps.Close
-						Set rsProps = Nothing
+								rsProps.Close
+								Set rsProps = Nothing
 %>
-</div>
+						</div>
+
+					</div>
 <%
 					If CInt(thisMatchupLevelID) < 5 And Len(thisNFLGameID) = 0 Then
 %>
@@ -1157,7 +1164,7 @@
 			var countdownTimer = new Date();
 			countdownTimer.setSeconds( countdownTimer.getSeconds() + 180 );
 
-			var x = setInterval(function() {
+			/*var x = setInterval(function() {
 
 				var now = new Date().getTime();
 
@@ -1172,7 +1179,7 @@
 					window.location.href = "<%= thisMatchupURL %>";
 				}
 
-			}, 1000);
+			}, 1000);*/
 
 		</script>
 
